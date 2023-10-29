@@ -5,17 +5,17 @@ import cssnano from 'cssnano';
 import { handlebarsPlugin } from './hbs.config';
 
 function getPagePath(prefix: string) {
-  const index = 'index.html';
+  const suffix = 'index.html';
 
-  return prefix !== 'main' ? resolve(prefix + '/' + index) : resolve(index);
+  return prefix !== 'main' ? resolve(prefix + '/' + suffix) : resolve(suffix);
 }
 
 const pageList = [
   'main',
   'signin',
   'signup',
-  'edit_profile',
-  'change_password',
+  'edit-profile',
+  'change-password',
   '404',
   '500',
 ];
