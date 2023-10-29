@@ -1,0 +1,5 @@
+@import url(../../components/button/button.css);
+
+.form__button {
+  height: 80px;
+}

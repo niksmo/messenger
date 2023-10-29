@@ -4,8 +4,6 @@ import autoprefixer from 'autoprefixer';
 import cssnano from 'cssnano';
 import { handlebarsPlugin } from './hbs.config';
 
-const STATIC_PATH_NAME = 'static';
-
 function getPagePath(prefix: string) {
   const index = 'index.html';
 
@@ -26,7 +24,6 @@ export default defineConfig({
   server: {
     open: true,
   },
-  publicDir: STATIC_PATH_NAME,
   css: { postcss: { plugins: [autoprefixer, cssnano] } },
   plugins: [handlebarsPlugin],
   build: {
