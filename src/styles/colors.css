@@ -1,0 +1,40 @@
+:root {
+  --color-base-black: #161a26;
+  --color-base-white: #fff;
+
+  --color-base-gray-0: #7a7a7a;
+  --color-base-gray-1: #999999;
+  --color-base-gray-2: #b7b5bd;
+  --color-base-gray-3: #eaeaea;
+  --color-base-gray-4: #efeff3;
+  --color-base-gray-5: #f4f4f4;
+
+  --color-base-blue-0: #4081c6;
+  --color-base-blue-1: #5d90c2;
+  --color-base-blue-2: #62a2dd;
+  --color-base-blue-3: #ebf5ff;
+
+  --color-base-red-0: #e84a42;
+  --color-base-red-1: #ec625c;
+
+  --color-text-primary: var(--color-base-black);
+  --color-text-secondary: var(--color-base-gray-1);
+  --color-text-accent: var(--color-base-blue-0);
+  --color-text-error: var(--color-base-red-0);
+  --color-text-white: var(--color-base-white);
+
+  --color-element-primary: var(--color-base-gray-0);
+  --color-element-secondary: var(--color-base-gray-2);
+  --color-element-tertiary: var(--color-base-gray-3);
+  --color-element-accent: var(--color-base-blue-0);
+  --color-element-special: var(--color-base-blue-2);
+  --color-element-error: var(--color-base-red-0);
+  --color-element-white: var(--color-base-white);
+
+  --color-background-basic: var(--color-base-gray-5);
+  --color-background-special: var(--color-base-gray-4);
+  --color-background-accent: var(--color-base-blue-1);
+  --color-background-accent-light: var(--color-base-blue-3);
+  --color-background-error: var(--color-base-red-1);
+  --color-background-white: var(--color-base-white);
+}
