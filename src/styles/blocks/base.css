@@ -1,5 +1,7 @@
 .base {
   font-family: var(--font-family);
+  font-size: var(--font-size-m, 100%);
+  line-height: 1.15;
   color: var(--color-text-primary);
   background-color: var(--color-background-white);
   scroll-behavior: smooth;

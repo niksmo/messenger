@@ -1,16 +1,16 @@
 {{#>page title="Sign in" style="/src/styles/pages/signin.css"}}
 
-  <h1>Sign in</h1>
+  <main class="centered">
 
-  <section>
+    <h1 class="headline">Sign in to Messenger</h1>
 
     {{#>layouts/form/form}}
       {{>components/input/input type="text" placeholder="login"}}
 
-      {{>components/button/button label="sign in"}}
+      {{>components/button/button extClass="form__button" label="sign in"}}
 
     {{/layouts/form/form}}
 
-  </section>
+  </main>
 
 {{/page}}
