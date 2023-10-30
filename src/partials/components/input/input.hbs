@@ -1,1 +1,5 @@
-<input type={{type}} placeholder={{placeholder}}>
+<div class="form-input{{#if extClass}} {{extClass}}{{/if}}">
+<input class="form-input__inner" type={{type}} name={{name}} placeholder={{placeholder}} id={{id}}>
+<label class="form-input__label" for={{id}}>{{placeholder}}</label>
+<span class="form-input__error-text">{{errorText}}</span>
+</div>
