@@ -1,5 +1,5 @@
 <div class="form-input{{#if extClass}} {{extClass}}{{/if}}">
-<input class="form-input__inner" type={{type}} name={{name}} placeholder={{placeholder}} id={{id}}>
+<input class="form-input__inner{{#if error}} form-input__inner_error{{/if}}" type={{type}} name={{name}} placeholder={{placeholder}} id={{id}}>
 <label class="form-input__label" for={{id}}>{{placeholder}}</label>
-<span class="form-input__error-text">{{errorText}}</span>
+<p class="form-input__support{{#if support}} form-input__support_visible{{/if}}{{#if error}} form-input__support_error{{/if}}">{{support}}</p>
 </div>
