@@ -28,9 +28,9 @@ export default defineConfig({
   plugins: [handlebarsPlugin],
   build: {
     rollupOptions: {
-      input: pageList.reduce((acc, page) => {
-        acc[page] = getPagePath(page);
-        return acc;
+      input: pageList.reduce((path, page) => {
+        path[page] = getPagePath(page);
+        return path;
       }, {}),
     },
   },
