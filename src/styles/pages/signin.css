@@ -1,4 +1,6 @@
-@import url(../../partials/layouts/form/form.css);
+@import '../../partials/layouts/form/form.css';
+@import '../../partials/components/input/input.css';
+@import '../../partials/components/button/button.css';
 
 .headline {
   margin: 0 0 40px 0;

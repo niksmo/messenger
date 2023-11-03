@@ -1,5 +1,5 @@
-@import url(../../components/button/button.css);
-
-.form__button {
-  height: 80px;
+.form {
+  display: flex;
+  flex-direction: column;
+  row-gap: 32px;
 }
