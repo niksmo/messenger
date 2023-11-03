@@ -6,7 +6,6 @@
 .form-input__label {
   display: block;
   visibility: hidden;
-  opacity: 0;
 
   padding: 0 4px;
 
@@ -16,7 +15,7 @@
   letter-spacing: var(--font-body-large-spacing);
 
   position: absolute;
-  translate: 16px -40px;
+  translate: 13px -40px;
   scale: 1;
   transition: translate 100ms linear, background-color 50ms linear 30ms,
     visibility 100ms linear, opacity 100ms linear, scale 100ms linear;
@@ -50,7 +49,7 @@
   font-weight: var(--font-body-large-weight);
   letter-spacing: var(--font-body-large-spacing);
   color: var(--color-text-primary);
-  transition: all 50ms linear 100ms;
+  transition: visibility 50ms linear 100ms;
 }
 
 .form-input__inner:focus::placeholder {
