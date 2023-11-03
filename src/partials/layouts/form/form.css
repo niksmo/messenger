@@ -1,5 +1,6 @@
 .form {
-  display: flex;
-  flex-direction: column;
+  margin: 0;
+  display: grid;
   row-gap: 32px;
+  grid-template-columns: minmax(min-content, 416px);
 }
