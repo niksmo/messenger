@@ -78,10 +78,6 @@
   translate: 16px -68px;
 }
 
-.form-input__inner:not(:placeholder-shown) {
-  border-color: var(--color-element-accent);
-}
-
 .form-input__inner_error,
 .form-input__inner_error:not(:placeholder-shown),
 .form-input__inner_error:focus,
