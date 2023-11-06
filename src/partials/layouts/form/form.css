@@ -1,6 +1,10 @@
 .form {
   margin: 0;
   display: grid;
-  row-gap: 32px;
+  row-gap: 12px;
   grid-template-columns: minmax(min-content, 416px);
+}
+
+.form__submit {
+  margin-top: 12px;
 }
