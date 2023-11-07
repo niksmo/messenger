@@ -1,7 +1,25 @@
 {{#>page title="Edit profile" style="/src/styles/pages/edit-profile.css"}}
 
-  <h1>Edit profile</h1>
+  <main class="page page_align_center">
 
-  <p>my-profile</p>
+    <h1 class="page__headline">Edit profile</h1>
+
+    {{#>layouts/form/form method="post" autocomplete="off"}}
+      <div class="form__two-columns">
+        {{>components/input/input extClass="page__input" type="text" name="first_name" id="first_name" placeholder="First name"}}
+        {{>components/input/input extClass="page__input" type="text" name="second_name" id="second_name" placeholder="Last name"}}
+      </div>
+      {{>components/input/input type="text" name="email" id="email" placeholder="Email"}}
+      {{>components/input/input type="text" name="phone" id="phone" placeholder="Phone"}}
+      {{>components/input/input type="text" name="login" id="login" placeholder="Login"}}
+      {{>components/input/input type="text" name="display_name" id="display_name" placeholder="Username"}}
+      {{>components/button/button extClass="form__submit" type="submit" label="Save" style="filled"}}
+    {{/layouts/form/form}}
+
+    <a class="base__link page__transition" href="/">
+        {{>components/button/button extClass="page__transition-button" type="button" label="Cancel" style="text"}}
+      </a>
+
+  </main>
 
 {{/page}}

@@ -4,7 +4,8 @@
 
     <h1 class="page__headline">Sign in to Messenger</h1>
 
-    <p class="page__message {{#if signin.unauth}}page__message_visible{{/if}}">We&nbsp;couldn&rsquo;t find an&nbsp;account matching the login and password you entered.
+    <p class="page__message {{#if signin.unauth}}page__message_visible{{/if}}">We&nbsp;couldn&rsquo;t find
+      an&nbsp;account matching the login and password you entered.
       Please check your login and password and try again.</p>
 
     {{#>layouts/form/form method="post" autocomplete="off"}}
@@ -15,7 +16,7 @@
 
     <div class="page__transition">
       <p class="page__transition-text">Don&rsquo;t have an&nbsp;account?</p>
-      <a class="page__transition-link" href="/signup/">
+      <a class="base__link page__transition-link" href="/signup/">
         {{>components/button/button type="button" label="Sign up" style="text"}}
       </a>
     </div>

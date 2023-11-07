@@ -16,3 +16,7 @@
 .base__body {
   margin: 0;
 }
+
+.base__link {
+  text-decoration: none;
+}

@@ -1,0 +1,28 @@
+@import '../../partials/layouts/form/form.css';
+@import '../../partials/components/input/input.css';
+@import '../../partials/components/button/button.css';
+
+.page__headline {
+  margin: 0 0 50px 0;
+  text-align: center;
+  font-size: var(--font-title-large-size);
+  line-height: var(--font-title-large-height);
+  font-weight: var(--font-title-large-weight);
+  letter-spacing: var(--font-title-large-spacing);
+}
+
+.form__two-columns {
+  display: flex;
+  column-gap: 32px;
+}
+
+.page__input {
+  width: 100%;
+}
+
+.page__transition {
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
