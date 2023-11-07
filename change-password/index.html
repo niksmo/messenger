@@ -1,5 +1,20 @@
 {{#>page title="Change pasword" style="/src/styles/pages/change-password.css"}}
 
-  <h1>Change password</h1>
+  <main class="page page_align_center">
+
+    <h1 class="page__headline">Change password</h1>
+
+    {{#>layouts/form/form method="post" autocomplete="off"}}
+      {{>components/input/input type="password" name="oldPassword" id="password" placeholder="Current password"}}
+      {{>components/input/input type="password" name="newPassword" id="password" placeholder="New password"}}
+      {{>components/input/input type="password" name="confirm" id="confirm" placeholder="Confirm password"}}
+      {{>components/button/button extClass="form__submit" type="submit" label="Change" style="filled"}}
+    {{/layouts/form/form}}
+
+    <a class="base__link page__transition" href="/">
+      {{>components/button/button extClass="page__transition-button" type="button" label="Cancel" style="text"}}
+    </a>
+
+  </main>
 
 {{/page}}
