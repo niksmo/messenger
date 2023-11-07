@@ -2,14 +2,13 @@
 
   <main class="page page_align_center">
 
-    <h1 class="page__headline">500</h1>
+    {{#>layouts/error-page/error-page errCode="500" message="Something went wrong. But we&nbsp;are already fixing&nbsp;it."}}
 
-    <p class="page__message">Something went wrong. But we&nbsp;are already
-      fixing&nbsp;it.</p>
+      <a class="base__link" href="/">
+        {{>components/button/button type="button" label="Back to chats" style="text"}}
+      </a>
 
-    <a class="base__link" href="/">
-      {{>components/button/button type="button" label="Back to chats" style="text"}}
-    </a>
+    {{/layouts/error-page/error-page}}
 
   </main>
 

@@ -2,13 +2,13 @@
 
   <main class="page page_align_center">
 
-  <h1 class="page__headline">404</h1>
+    {{#>layouts/error-page/error-page errCode="404" message="The page no&nbsp;longer exists or&nbsp;it&nbsp;never existed."}}
 
-  <p class="page__message">The page no&nbsp;longer exists or&nbsp;it&nbsp;never existed.</p>
+      <a class="base__link" href="/">
+        {{>components/button/button type="button" label="Back to chats" style="text"}}
+      </a>
 
-  <a class="base__link" href="/">
-    {{>components/button/button type="button" label="Back to chats" style="text"}}
-  </a>
+    {{/layouts/error-page/error-page}}
 
   </main>
 
