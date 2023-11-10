@@ -37,6 +37,4 @@
   --color-background-accent-light: var(--color-base-blue-3);
   --color-background-error: var(--color-base-red-1);
   --color-background-white: var(--color-base-white);
-
-  --hover-opacity: 0.9;
 }
