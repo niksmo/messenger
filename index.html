@@ -2,15 +2,50 @@
 
   <main class="messenger">
 
-    <div class="side messenger__side">
+    <div class="messenger__side">
 
-      <header class="side__header">
+      <div class="side side_type_main">
+      <header class="side-header side-header_type_main">
+
+        {{#> components/icon-button/icon-button extClass="header-button"}}
+        <div class="icon-menu"></div>
+        {{/components/icon-button/icon-button}}
+
         {{> components/search/search id="search" name="search" placeholder="Search"}}
+
+        {{#> components/icon-button/icon-button extClass="header-button"}}
+        <div class="icon-add-chat"></div>
+        {{/components/icon-button/icon-button}}
+
       </header>
 
-      <ul class="side__list base-list">
-        <li class="side__list-item"></li>
+      <ul class="chat-list base-list">
+        <li class="chat-list__item"></li>
       </ul>
+
+      </div>
+
+      <div class="side side_type_settings side_hidden">
+        <header class="side-header side-header_type_settings">
+
+          {{#> components/icon-button/icon-button extClass="header-button"}}
+            <div class="icon-backward"></div>
+          {{/components/icon-button/icon-button}}
+
+          <h2 class="title title_style_side">Settings</h2>
+
+        </header>
+
+        <div class="side__profile"></div>
+
+        <nav class="settings">
+        <ul class="settings__list base-list">
+          <li class="settings__item">One</li>
+          <li class="settings__item">Two</li>
+        </ul>
+        </nav>
+
+      </div>
 
     </div>
 
