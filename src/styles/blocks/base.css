@@ -16,6 +16,7 @@
 
 .base__body {
   margin: 0;
+  overscroll-behavior: none;
 }
 
 .base__link {

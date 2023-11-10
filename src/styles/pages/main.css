@@ -1,3 +1,5 @@
+@import '../../partials/components/search/search.css';
+
 .messenger {
   display: flex;
 }
