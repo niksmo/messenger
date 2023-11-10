@@ -5,6 +5,7 @@
   color: var(--color-text-primary);
   background-color: var(--color-background-white);
   scroll-behavior: smooth;
+  overscroll-behavior: none;
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

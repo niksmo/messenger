@@ -2,6 +2,8 @@
 
 @import './fonts.css';
 @import './colors.css';
+@import './animation.css';
+@import './decoration.css';
 @import './blocks/font-theme.css';
 @import './blocks/base.css';
 @import './blocks/base-list.css';
