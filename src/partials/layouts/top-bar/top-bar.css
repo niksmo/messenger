@@ -1,0 +1,7 @@
+.tob-bar {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  padding: 8px 6px;
+  box-shadow: var(--shadow-elevation-1);
+}

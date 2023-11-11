@@ -1,0 +1,22 @@
+<div class="settings-block{{#if extClass}} {{extClass}}{{/if}}">
+
+  {{#> layouts/top-bar/top-bar extClass="settings__top"}}
+
+    {{#> components/icon-button/icon-button extClass="settings__button"}}
+      <div class="settings__icon icon-backward"></div>
+    {{/components/icon-button/icon-button}}
+
+    <h2 class="settings__title">Settings</h2>
+
+  {{/layouts/top-bar/top-bar}}
+
+  <div class="settings__profile"></div>
+
+  <nav class="settings__nav">
+    <ul class="settings__list base-list">
+      <li class="settings__item">One</li>
+      <li class="settings__item">Two</li>
+    </ul>
+  </nav>
+
+</div>

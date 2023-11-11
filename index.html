@@ -1,21 +1,16 @@
 {{#>page title="Messenger" style="/src/styles/pages/main.css"}}
 
-  <main class="messenger">
+  <div class="messenger">
 
-    <div class="side messenger__side">
+    <aside class="messenger__side">
+      {{> components/chat-list/chat-list extClass="side side_type_main"}}
+      {{> components/settings/settings extClass="side side_type_settings side_hidden"}}
+    </aside>
 
-      <header class="side__header">
-        {{> components/search/search id="search" name="search" placeholder="Search"}}
-      </header>
+    <main class="chat messenger__chat">
 
-      <ul class="side__list base-list">
-        <li class="side__list-item"></li>
-      </ul>
+    </main>
 
-    </div>
-
-    <div class="chat messenger__chat"></div>
-
-  </main>
+  </div>
 
 {{/page}}
