@@ -1,5 +1,5 @@
-@import '../../partials/components/search/search.css';
-@import '../../partials/components/icon-button/icon-button.css';
+@import '../../partials/components/chat-list/chat-list.css';
+@import '../../partials/components/settings/settings.css';
 
 .messenger {
   display: flex;
@@ -36,66 +36,4 @@
   top: 0;
   left: 0;
   z-index: 2;
-}
-
-.side-header {
-  display: flex;
-  align-items: center;
-  min-height: 40px;
-  padding: 8px 6px;
-  box-shadow: var(--shadow-elevation-1);
-}
-
-.side-header_type_main {
-  gap: 4px;
-}
-
-.side-header_type_settings {
-}
-
-.header-button {
-  width: 40px;
-  height: 40px;
-}
-
-.icon-menu {
-  color: var(--color-element-primary);
-  background-color: currentColor;
-  mask-size: 100%;
-  mask-image: url(../../svg/icon-40-menu.svg);
-}
-
-.icon-add-chat {
-  color: var(--color-element-accent);
-  background-color: currentColor;
-  mask-size: 100%;
-  mask-image: url(../../svg/icon-40-add-chat.svg);
-}
-
-.icon-backward {
-  color: var(--color-element-primary);
-  background-color: currentColor;
-  mask-size: 100%;
-  mask-image: url(../../svg/icon-40-backward.svg);
-}
-
-.title {
-  margin: 0;
-  padding: 0;
-}
-
-.title_style_side {
-  font-size: var(--font-title-large-size);
-  line-height: var(--font-title-large-height);
-  font-weight: var(--font-title-large-weight);
-  letter-spacing: var(--font-title-large-spacing);
-}
-
-.chat-list {
-}
-
-.chat-list__item {
-}
-
-.messenger__chat {
 }

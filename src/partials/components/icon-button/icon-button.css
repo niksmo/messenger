@@ -11,7 +11,7 @@
   background-color: unset;
 }
 
-.icon-button :first-child {
+.icon-button > :first-child {
   flex-grow: 1;
   aspect-ratio: 1/1;
 }
