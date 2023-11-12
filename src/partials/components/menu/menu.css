@@ -1,0 +1,7 @@
+@import './menu-item.css';
+
+.menu {
+  padding: 2px;
+  border-radius: 4px;
+  background-color: var(--color-background-white);
+}

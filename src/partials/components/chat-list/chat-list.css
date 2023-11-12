@@ -1,27 +1,22 @@
 @import '../../layouts/top-bar/top-bar.css';
 @import '../search/search.css';
 @import '../icon-button/icon-button.css';
+@import '../menu/menu.css';
 
 .chat-list__top {
   gap: 4px;
 }
 
 .chat-list__button {
+  --button-size: 40px;
   width: 40px;
   height: 40px;
 }
 
-.chat-list__icon {
-  background-color: currentColor;
-  mask-size: 100%;
-}
-
-.icon-menu {
+.open-settings {
   color: var(--color-element-primary);
-  mask-image: url(../../../svg/icon-40-menu.svg);
 }
 
-.icon-add-chat {
+.add-chat {
   color: var(--color-element-accent);
-  mask-image: url(../../../svg/icon-40-add-chat.svg);
 }

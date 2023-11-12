@@ -5,9 +5,8 @@
   height: 40px;
 }
 
-.settings__icon {
-  background-color: currentColor;
-  mask-size: 100%;
+.close-settings {
+  color: var(--color-element-primary);
 }
 
 .settings__title {
@@ -17,9 +16,4 @@
   line-height: var(--font-title-large-height);
   font-weight: var(--font-title-large-weight);
   letter-spacing: var(--font-title-large-spacing);
-}
-
-.icon-backward {
-  color: var(--color-element-primary);
-  mask-image: url(../../../svg/icon-40-backward.svg);
 }

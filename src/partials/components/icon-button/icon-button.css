@@ -1,25 +1,22 @@
 .icon-button {
   margin: 0;
   padding: 0;
-  display: flex;
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
   border: none;
-  cursor: pointer;
   appearance: none;
   background-color: unset;
 }
 
-.icon-button > :first-child {
-  flex-grow: 1;
-  aspect-ratio: 1/1;
+.icon-button__icon {
+  cursor: pointer;
 }
 
-.icon-button:hover {
+.icon-button__icon:hover {
   opacity: var(--hover-opacity);
 }
 
-.icon-button:active {
+.icon-button__icon:active {
   opacity: 1;
 }

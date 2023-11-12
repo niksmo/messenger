@@ -1,14 +1,15 @@
-const C_VISIBLE = 'overlay_visible';
+const CN_VISIBLE = 'overlay_visible';
 
-function openOverlay(evt: Event) {
-  if (evt.currentTarget && evt.currentTarget instanceof HTMLDivElement) {
-    evt.currentTarget.classList.add(C_VISIBLE);
+function openOverlay(className: string) {
+  const overlayEl = document.querySelector('.' + className);
+  if (overlayEl && overlayEl instanceof HTMLDivElement) {
+    overlayEl.classList.add(CN_VISIBLE);
   }
 }
 
 function closeOverlay(evt: Event) {
   if (evt.currentTarget && evt.currentTarget instanceof HTMLDivElement) {
-    evt.currentTarget.classList.remove(C_VISIBLE);
+    evt.currentTarget.classList.remove(CN_VISIBLE);
   }
 }
 

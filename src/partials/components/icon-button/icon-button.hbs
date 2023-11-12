@@ -1,1 +1,6 @@
-<button type="button" class="icon-button{{#if extClass}} {{extClass}}{{/if}}">{{> @partial-block}}</button>
+<button type="button" class="icon-button{{#if extClass}} {{extClass}}{{/if}}">
+  <svg class="icon-button__icon" viewBox="0 0 40 40">
+    <use href="src/svg/icon-40-sprite.svg#{{leadingIcon}}">
+  </svg>
+  {{> @partial-block}}
+</button>
