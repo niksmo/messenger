@@ -1,6 +1,3 @@
-@import '../../partials/components/chat-list/chat-list.css';
-@import '../../partials/components/settings/settings.css';
-
 .messenger {
   display: flex;
 }
