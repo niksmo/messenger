@@ -34,3 +34,7 @@
   left: 0;
   z-index: 2;
 }
+
+.menus-overlay {
+  z-index: var(--z-menus-overlay);
+}
