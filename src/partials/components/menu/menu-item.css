@@ -4,13 +4,13 @@
   padding: 8px 12px;
   column-gap: 12px;
   color: var(--color-text-primary);
-  border-radius: 4px;
+  border-radius: 8px;
   max-width: 280px;
 }
 
 .menu-item:hover {
   cursor: pointer;
-  background-color: hsla(var(--color-base-blue-2) / 0.07);
+  background-color: hsla(var(--color-base-gray-4) / 0.6);
 }
 
 .menu-item_negative {
