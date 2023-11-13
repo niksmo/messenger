@@ -1,8 +1,9 @@
 import '../styles/index.css';
 import '../styles/pages/main.css';
-import '../partials/components/chat-list/chat-list.css';
-import '../partials/components/settings/settings.css';
+import '../partials/components/sidebar/sidebar.css';
 import '../partials/components/overlay/overlay.css';
+
+import '../partials/components/sidebar/sidebar';
 
 import {
   openOverlay,
@@ -15,15 +16,8 @@ const VISIBLE = 'visible';
 
 const menusOverlayEl = document.querySelector('.menus-overlay');
 
-const settings = document.querySelector('.side_type_settings');
-const openSettingsBtn = document.querySelector('.open-settings');
-const closeSettingsBtn = document.querySelector('.close-settings');
 const addChatBtn = document.querySelector('.add-chat');
 const menus = document.querySelectorAll('.dropdown');
-
-function toggleSettings() {
-  settings?.classList.toggle('side_hidden');
-}
 
 function showMenu(evt: Event) {
   const tg = evt.currentTarget;
@@ -41,9 +35,6 @@ function closeMenus(evt: Event) {
   });
   closeOverlay(evt);
 }
-
-openSettingsBtn?.addEventListener('click', toggleSettings);
-closeSettingsBtn?.addEventListener('click', toggleSettings);
 
 addChatBtn?.addEventListener('click', showMenu);
 

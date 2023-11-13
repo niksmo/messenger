@@ -1,37 +1,14 @@
-.messenger {
+.main {
   display: flex;
 }
 
-.messenger__side {
+.main__side {
   --side-width: 360px;
   position: relative;
   height: 100dvh;
   flex-basis: var(--side-width);
   flex-shrink: 0;
   flex-grow: 0;
-}
-
-.side {
-  width: 100%;
-  height: 100%;
-  border-right: 1px solid var(--color-element-tertiary);
-  background-color: var(--color-background-white);
-  transition: translate 300ms ease-out;
-}
-
-.side_hidden {
-  translate: calc(var(--side-width) * -1);
-}
-
-.side_type_main {
-  z-index: 1;
-}
-
-.side_type_settings {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 2;
 }
 
 .menus-overlay {
