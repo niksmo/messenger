@@ -1,11 +1,9 @@
-@import '../icon-button/icon-button.css';
-
 .settings__button {
   width: 40px;
   height: 40px;
 }
 
-.close-settings {
+#close-settings {
   color: var(--color-element-primary);
 }
 

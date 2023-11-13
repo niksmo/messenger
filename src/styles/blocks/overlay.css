@@ -10,7 +10,3 @@
 .overlay_visible {
   display: block;
 }
-
-.overlay_style_transparent {
-  background-color: transparent;
-}

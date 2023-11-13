@@ -9,6 +9,14 @@
   background-color: unset;
 }
 
+.icon-button_style_primary {
+  color: var(--color-element-primary);
+}
+
+.icon-button_style_accent {
+  color: var(--color-element-accent);
+}
+
 .icon-button__icon {
   cursor: pointer;
 }

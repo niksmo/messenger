@@ -2,21 +2,11 @@
 
   {{#> layouts/top-bar/top-bar extClass="chat-list__top"}}
 
-    {{#> components/icon-button/icon-button extClass="chat-list__button open-settings" leadingIcon="menu"}}
-    {{/components/icon-button/icon-button}}
+    {{> components/icon-button/icon-button id="open-settings" type="button" style="primary" extClass="chat-list__button" icon="menu"}}
 
     {{> components/search/search extClass="chat-list__search" id="search" name="search" placeholder="Search"}}
 
-    {{#> components/icon-button/icon-button extClass="chat-list__button add-chat tg-dropdown" leadingIcon="add-chat"}}
-      {{#> components/menu/menu extClass="dropdown dropdown_bottom dropdown_left"}}
-        <li>
-          {{> components/menu/menu-item leadingIcon="paperclip" label="test label"}}
-        </li>
-        <li>
-          {{> components/menu/menu-item leadingIcon="paperclip" label="test label" negative=true}}
-        </li>
-      {{/components/menu/menu}}
-    {{/components/icon-button/icon-button}}
+    {{> components/dropdown/dropdown id="add-chat" icon="add-chat" extClass="chat-list__button" items=main.menu.addChat style="accent" posX="left" posY="bottom"}}
 
   {{/layouts/top-bar/top-bar}}
 
