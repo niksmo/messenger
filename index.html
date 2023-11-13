@@ -1,13 +1,10 @@
-{{#>page title="Messenger" style="/src/styles/pages/main.css"}}
+{{#>page title="Messenger" scriptSrc="./src/scripts/main.ts"}}
 
-  <div class="messenger">
+  <div class="main">
 
-    <aside class="messenger__side">
-      {{> components/chat-list/chat-list extClass="side side_type_main"}}
-      {{> components/settings/settings extClass="side side_type_settings side_hidden"}}
-    </aside>
+    {{> components/sidebar/sidebar extClass="main__side"}}
 
-    <main class="chat messenger__chat">
+    <main class="chat main__chat">
 
     </main>
 

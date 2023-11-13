@@ -8,5 +8,10 @@ export const handlebarsPlugin = handlebars({
     signin: {
       unauth: false,
     },
+    main: {
+      menu: {
+        addChat: [{ style: 'primary', icon: 'paperclip', label: 'New Chat' }],
+      },
+    },
   },
 }) as unknown as Plugin;
