@@ -36,8 +36,8 @@
 .menu-item {
   display: flex;
   align-items: center;
-  padding: 8px 12px;
-  column-gap: 12px;
+  padding: 4px;
+  column-gap: 6px;
   border-radius: 8px;
   max-width: 280px;
   cursor: pointer;
@@ -47,16 +47,12 @@
   color: var(--color-text-primary);
 }
 
-.menu-item_style_primary:hover {
+.menu-item:hover {
   background-color: hsla(var(--color-base-gray-4) / 0.6);
 }
 
 .menu-item_style_adverse {
   color: var(--color-text-error);
-}
-
-.menu-item_style_adverse:hover {
-  background-color: hsla(var(--color-base-red-1) / 0.06);
 }
 
 .menu-item__icon {
