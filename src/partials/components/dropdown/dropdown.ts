@@ -19,31 +19,20 @@ export class Dropdown {
 
   _addListeners() {
     if (this.triggerEl) {
-      this.triggerEl.addEventListener('click', this._openMenu.bind(this));
+      this.triggerEl.addEventListener('click', this._toggleMenu.bind(this));
     }
 
     if (this.overlayEl) {
-      this.overlayEl.addEventListener('click', this._closeMenu.bind(this));
+      this.overlayEl.addEventListener('click', this._toggleMenu.bind(this));
     }
   }
 
-  _toggleMenu() {
+  _toggleMenu(evt: Event) {
     this.menuEl?.classList.toggle('menu_visible');
-  }
-
-  _toggleOverlay() {
     this.overlayEl?.classList.toggle('overlay_visible');
-  }
 
-  _openMenu() {
-    this._toggleMenu();
-    this._toggleOverlay();
-  }
-
-  _closeMenu(evt: Event) {
-    this._toggleMenu();
-    this._toggleOverlay();
-
-    evt.stopPropagation();
+    if (evt.target === this.overlayEl) {
+      evt.stopPropagation();
+    }
   }
 }
