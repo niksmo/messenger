@@ -10,7 +10,9 @@ export const handlebarsPlugin = handlebars({
     },
     main: {
       menu: {
-        addChat: [{ style: 'primary', icon: 'paperclip', label: 'New Chat' }],
+        addChat: [
+          { style: 'primary', icon: 'new-contact', label: 'New Contact' },
+        ],
       },
     },
   },
