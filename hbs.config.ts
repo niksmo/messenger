@@ -13,6 +13,11 @@ export const handlebarsPlugin = handlebars({
         addChat: [
           { style: 'primary', icon: 'new-contact', label: 'New Contact' },
         ],
+        chatOpt: [{ style: 'adverse', icon: 'bucket', label: 'Delete Chat' }],
+        message: [
+          { style: 'primary', icon: 'media', label: 'Photo Or Video' },
+          { style: 'primary', icon: 'file', label: 'File' },
+        ],
       },
     },
   },
