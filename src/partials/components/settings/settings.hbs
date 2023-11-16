@@ -12,6 +12,9 @@
   <div class="settings__profile settings-content">
     <div class="settings__avatar">
       {{> components/avatar/avatar name=viewer.username }}
+      <label class="settings__upload-avatar">
+        <input class="settings__upload-input visually-hidden" type="file" name="avatar" accept="image/png, image/jpeg">
+      </label>
     </div>
     <div class=" settings__names-container">
       <div class="settings__names-header">

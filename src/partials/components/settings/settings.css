@@ -27,6 +27,62 @@
   column-gap: var(--profile-gap);
 }
 
+.settings__avatar {
+  position: relative;
+}
+
+.settings__upload-avatar {
+  border-radius: var(--border-radius-circle);
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  cursor: pointer;
+}
+
+.settings__upload-avatar::before {
+  content: '';
+  visibility: hidden;
+  position: absolute;
+  border-radius: var(--border-radius-circle);
+  display: block;
+  width: 100%;
+  height: 100%;
+  transition: all 100ms linear;
+}
+
+.settings__upload-avatar:hover::before {
+  visibility: visible;
+  background-color: hsla(var(--color-base-black) / 0.6);
+}
+
+.settings__upload-avatar::after {
+  content: '';
+  position: absolute;
+  visibility: hidden;
+  border-radius: var(--border-radius-circle);
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: transparent;
+  background-color: currentColor;
+  mask-image: url(../../../svg/cam.svg);
+  mask-repeat: no-repeat;
+  mask-position: center;
+  transition: all 100ms linear;
+}
+
+.settings__upload-avatar:hover::after {
+  visibility: visible;
+  color: var(--color-element-special);
+  background-color: currentColor;
+  mask-image: url(../../../svg/cam.svg);
+  mask-repeat: no-repeat;
+  mask-position: center;
+}
+
 .settings__names-container {
   width: calc(100% - var(--avatar-size) - var(--profile-gap));
   display: flex;

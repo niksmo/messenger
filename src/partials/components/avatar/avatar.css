@@ -1,6 +1,6 @@
 .avatar {
   --avatar-size: 60px;
-  border-radius: 50%;
+  border-radius: var(--border-radius-circle);
   overflow: hidden;
   box-sizing: border-box;
   width: var(--avatar-size);
