@@ -37,4 +37,6 @@
   --color-background-accent-light: hsla(var(--color-base-blue-3) / 1);
   --color-background-error: hsla(var(--color-base-red-1) / 1);
   --color-background-white: hsla(var(--color-base-white) / 1);
+
+  --color-gradient-gray: linear-gradient(180deg, #b7b7ba 0%, #99999d 100%);
 }

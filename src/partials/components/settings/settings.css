@@ -15,3 +15,110 @@
   font-weight: var(--font-title-large-weight);
   letter-spacing: var(--font-title-large-spacing);
 }
+
+.settings-content {
+  padding: 16px;
+}
+
+.settings__profile {
+  --avatar-size: 60px;
+  --profile-gap: 12px;
+  display: flex;
+  column-gap: var(--profile-gap);
+}
+
+.settings__avatar {
+  position: relative;
+}
+
+.settings__upload-avatar {
+  border-radius: var(--border-radius-circle);
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  cursor: pointer;
+}
+
+.settings__upload-avatar::before {
+  content: '';
+  visibility: hidden;
+  position: absolute;
+  border-radius: var(--border-radius-circle);
+  display: block;
+  width: 100%;
+  height: 100%;
+  transition: all 100ms linear;
+}
+
+.settings__upload-avatar:hover::before {
+  visibility: visible;
+  background-color: hsla(var(--color-base-black) / 0.6);
+}
+
+.settings__upload-avatar::after {
+  content: '';
+  position: absolute;
+  visibility: hidden;
+  border-radius: var(--border-radius-circle);
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: transparent;
+  background-color: currentColor;
+  mask-image: url(../../../svg/cam.svg);
+  mask-repeat: no-repeat;
+  mask-position: center;
+  transition: all 100ms linear;
+}
+
+.settings__upload-avatar:hover::after {
+  visibility: visible;
+  color: var(--color-element-special);
+  background-color: currentColor;
+  mask-image: url(../../../svg/cam.svg);
+  mask-repeat: no-repeat;
+  mask-position: center;
+}
+
+.settings__names-container {
+  width: calc(100% - var(--avatar-size) - var(--profile-gap));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  row-gap: 4px;
+}
+
+.settings__names-header {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 4px;
+}
+
+.viewer-name {
+  margin: 0;
+}
+
+.viewer-name_style_common {
+  color: var(--color-text-primary);
+  font-size: var(--font-body-large-size);
+  line-height: var(--font-body-large-height);
+  font-weight: var(--font-body-large-weight);
+  letter-spacing: var(--font-body-large-spacing);
+}
+
+.viewer-name_style_nickname {
+  color: var(--color-text-secondary);
+  font-size: var(--font-body-medium-size);
+  line-height: var(--font-body-medium-height);
+  font-weight: var(--font-body-medium-weight);
+  letter-spacing: var(--font-body-medium-spacing);
+}
+
+.settings__names-footer {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-wrap: nowrap;
+}
