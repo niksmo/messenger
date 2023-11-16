@@ -15,3 +15,54 @@
   font-weight: var(--font-title-large-weight);
   letter-spacing: var(--font-title-large-spacing);
 }
+
+.settings-content {
+  padding: 16px;
+}
+
+.settings__profile {
+  --avatar-size: 60px;
+  --profile-gap: 12px;
+  display: flex;
+  column-gap: var(--profile-gap);
+}
+
+.settings__names-container {
+  width: calc(100% - var(--avatar-size) - var(--profile-gap));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  row-gap: 4px;
+}
+
+.settings__names-header {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 4px;
+}
+
+.viewer-name {
+  margin: 0;
+}
+
+.viewer-name_style_common {
+  color: var(--color-text-primary);
+  font-size: var(--font-body-large-size);
+  line-height: var(--font-body-large-height);
+  font-weight: var(--font-body-large-weight);
+  letter-spacing: var(--font-body-large-spacing);
+}
+
+.viewer-name_style_nickname {
+  color: var(--color-text-secondary);
+  font-size: var(--font-body-medium-size);
+  line-height: var(--font-body-medium-height);
+  font-weight: var(--font-body-medium-weight);
+  letter-spacing: var(--font-body-medium-spacing);
+}
+
+.settings__names-footer {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-wrap: nowrap;
+}
