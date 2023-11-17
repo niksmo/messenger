@@ -14,7 +14,7 @@
     {{#each main.settings.nav as | item | }}
       <li class="settings__nav-item">
         {{#if item.href }}
-          <a class="base-link" href={{item.href}} aria-label="{{item.label}}">
+          <a class="base-link" href={{item.href}} aria-label="{{item.label}}" draggable="false">
             {{> components/settings/nav-item style=item.style icon=item.icon label=item.label }}
           </a>
         {{else}}

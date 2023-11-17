@@ -83,7 +83,7 @@
   margin: 0;
 }
 
-.profile__text_style_common {
+.profile__text_style_name {
   color: var(--color-text-primary);
   font-size: var(--font-body-large-size);
   line-height: var(--font-body-large-height);
@@ -91,7 +91,7 @@
   letter-spacing: var(--font-body-large-spacing);
 }
 
-.profile__text_style_nickname {
+.profile__text_style_username {
   color: var(--color-text-secondary);
   font-size: var(--font-body-medium-size);
   line-height: var(--font-body-medium-height);
