@@ -1,6 +1,12 @@
 @import '../search/search.css';
 @import '../dropdown/dropdown.css';
+@import './chat-item.css';
 
-.chat-list__top {
+.chat-list__top-bar {
   gap: 4px;
+}
+
+.chat-list {
+  height: calc(100% - var(--top-bar-height));
+  overflow-y: scroll;
 }
