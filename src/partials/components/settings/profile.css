@@ -11,6 +11,8 @@
 
 .profile__avatar {
   position: relative;
+  width: 60px;
+  height: 60px;
 }
 
 .profile__upload-avatar {

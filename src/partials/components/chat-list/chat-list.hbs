@@ -1,9 +1,13 @@
-<header class="top-bar chat-list__top">
+<header class="top-bar chat-list__top-bar">
   {{> components/icon-button/icon-button id="open-settings" type="button" style="primary" icon="menu"}}
   {{> components/search/search id="search" name="search" placeholder="Search"}}
   {{> components/dropdown/dropdown id="add-chat" icon="add-chat" items=main.menu.addChat style="accent" posX="left" posY="bottom"}}
 </header>
 
 <ul class="chat-list base-list">
-  <li class="chat-list__item"></li>
+  {{#each main.chatList }}
+    <li class="chat-list__item">
+      {{> components/chat-list/chat-item }}
+    </li>
+  {{/each}}
 </ul>
