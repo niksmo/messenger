@@ -9,7 +9,10 @@
 
 <body class="base__body">
   {{> @partial-block}}
-  <script type="module" src={{scriptSrc}}></script>
+
+  {{#if scriptSrc}}
+    <script type="module" src={{scriptSrc}}></script>
+  {{/if}}
 </body>
 
 </html>

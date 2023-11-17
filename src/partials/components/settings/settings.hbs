@@ -1,35 +1,29 @@
-<div class="settings-block{{#if extClass}} {{extClass}}{{/if}}">
+<header class="top-bar settings__top">
+  {{> components/icon-button/icon-button id="close-settings" type="button" style="primary" extClass="settings__button" icon="backward"}}
+  <h2 class="settings__title">Settings</h2>
+</header>
 
-  {{#> layouts/top-bar/top-bar extClass="settings__top"}}
-
-    {{#> components/icon-button/icon-button id="close-settings" type="button" style="primary" extClass="settings__button" icon="backward"}}
-    {{/components/icon-button/icon-button}}
-
-    <h2 class="settings__title">Settings</h2>
-
-  {{/layouts/top-bar/top-bar}}
-
-  <div class="settings__profile settings-content">
-    <div class="settings__avatar">
-      {{> components/avatar/avatar name=viewer.username }}
-      <label class="settings__upload-avatar">
-        <input class="settings__upload-input visually-hidden" type="file" name="avatar" accept="image/png, image/jpeg">
-      </label>
-    </div>
-    <div class=" settings__names-container">
-      <div class="settings__names-header">
-        <p class="viewer-name viewer-name_style_common">{{viewer.firstName}}</p>
-        <p class="viewer-name viewer-name_style_common">{{viewer.lastName}}</p>
-      </div>
-      <p class="settings__names-footer viewer-name viewer-name_style_nickname">{{viewer.username}}</p>
-    </div>
-  </div>
-
-  <nav class="settings__nav settings-content">
-    <ul class="settings__list base-list">
-      <li class="settings__item">One</li>
-      <li class="settings__item">Two</li>
-    </ul>
-  </nav>
-
+<div class="settings-content">
+  {{> components/settings/profile }}
 </div>
+
+
+<nav class="settings__nav settings-content">
+
+  <ul class="settings__list base-list">
+    {{#each main.settings.nav as | item | }}
+      <li class="settings__nav-item">
+        {{#if item.href }}
+          <a class="base-link" href={{item.href}} aria-label="{{item.label}}">
+            {{> components/settings/nav-item style=item.style icon=item.icon label=item.label }}
+          </a>
+        {{else}}
+          <button class="base-button" type="button" aria-label="{{item.label}}">
+            {{> components/settings/nav-item style=item.style icon=item.icon label=item.label }}
+          </button>
+        {{/if}}
+      </li>
+    {{/each}}
+  </ul>
+
+</nav>

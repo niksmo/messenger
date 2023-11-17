@@ -4,7 +4,7 @@
 
     <h1 class="page__headline">Edit profile</h1>
 
-    {{#>layouts/form/form method="post" autocomplete="off"}}
+    <form class="form" method="post" autocomplete="off">
       <div class="form__two-columns">
         {{>components/input/input extClass="page__input" type="text" name="first_name" id="first_name" placeholder="First name"}}
         {{>components/input/input extClass="page__input" type="text" name="second_name" id="second_name" placeholder="Last name"}}
@@ -13,10 +13,12 @@
       {{>components/input/input type="text" name="phone" id="phone" placeholder="Phone"}}
       {{>components/input/input type="text" name="login" id="login" placeholder="Login"}}
       {{>components/input/input type="text" name="display_name" id="display_name" placeholder="Username"}}
-      {{>components/button/button extClass="form__submit" type="submit" label="Save" style="filled"}}
-    {{/layouts/form/form}}
+      <div class="form__submit">
+        {{>components/button/button type="submit" label="Save" style="filled"}}
+      </div>
+    </form>
 
-    <a class="base__link page__transition" href="/">
+    <a class="base__link page__transition" href="/" tabindex="-1" aria-hidden="true">
       {{>components/button/button extClass="page__transition-button" type="button" label="Cancel" style="text"}}
     </a>
 

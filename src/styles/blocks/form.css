@@ -1,0 +1,21 @@
+.form {
+  margin: 0;
+  display: grid;
+  row-gap: 12px;
+  grid-template-columns: minmax(min-content, 416px);
+}
+
+.form__two-columns {
+  display: flex;
+  column-gap: 32px;
+}
+
+.form__two-columns :nth-child(n) {
+  width: 100%;
+}
+
+.form__submit {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+}

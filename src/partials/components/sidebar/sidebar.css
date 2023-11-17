@@ -1,6 +1,5 @@
 @import '../chat-list/chat-list.css';
 @import '../settings/settings.css';
-@import '../avatar/avatar.css';
 
 .sidebar-content {
   width: 100%;
