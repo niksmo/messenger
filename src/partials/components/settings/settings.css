@@ -1,3 +1,6 @@
+@import '../avatar/avatar.css';
+@import './nav-item.css';
+
 .settings__button {
   width: 40px;
   height: 40px;
