@@ -8,15 +8,17 @@
       an&nbsp;account matching the login and password you entered.
       Please check your login and password and try again.</p>
 
-    {{#>layouts/form/form method="post" autocomplete="off"}}
+    <form class="form" method="post" autocomplete="off">
       {{>components/input/input type="text" name="login" id="login" placeholder="Login"}}
       {{>components/input/input type="password" name="password" id="password" placeholder="Password"}}
-      {{>components/button/button extClass="form__submit" type="submit" label="Sign in" style="filled"}}
-    {{/layouts/form/form}}
+      <div class="form__submit">
+        {{>components/button/button type="submit" label="Sign in" style="filled"}}
+      </div>
+    </form>
 
     <div class="page__transition">
       <p class="page__transition-text">Don&rsquo;t have an&nbsp;account?</p>
-      <a class="base-link page__transition-link" href="/signup/">
+      <a class="base__link page__transition-link" href="/signup/" tabindex="-1" aria-hidden="true">
         {{>components/button/button type="button" label="Sign up" style="text"}}
       </a>
     </div>

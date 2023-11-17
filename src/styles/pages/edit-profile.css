@@ -7,15 +7,6 @@
   letter-spacing: var(--font-title-large-spacing);
 }
 
-.form__two-columns {
-  display: flex;
-  column-gap: 32px;
-}
-
-.page__input {
-  width: 100%;
-}
-
 .page__transition {
   margin-top: 4px;
   display: flex;

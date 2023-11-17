@@ -1,17 +1,9 @@
-<div class="chat-list-block{{#if extClass}} {{extClass}}{{/if}}">
+<header class="top-bar chat-list__top">
+  {{> components/icon-button/icon-button id="open-settings" type="button" style="primary" icon="menu"}}
+  {{> components/search/search id="search" name="search" placeholder="Search"}}
+  {{> components/dropdown/dropdown id="add-chat" icon="add-chat" items=main.menu.addChat style="accent" posX="left" posY="bottom"}}
+</header>
 
-  {{#> layouts/top-bar/top-bar extClass="chat-list__top"}}
-
-    {{> components/icon-button/icon-button id="open-settings" type="button" style="primary" extClass="chat-list__button" icon="menu"}}
-
-    {{> components/search/search extClass="chat-list__search" id="search" name="search" placeholder="Search"}}
-
-    {{> components/dropdown/dropdown id="add-chat" icon="add-chat" extClass="chat-list__button" items=main.menu.addChat style="accent" posX="left" posY="bottom"}}
-
-  {{/layouts/top-bar/top-bar}}
-
-  <ul class="chat-list__list base-list">
-    <li class="chat-list__item"></li>
-  </ul>
-
-</div>
+<ul class="chat-list base-list">
+  <li class="chat-list__item"></li>
+</ul>

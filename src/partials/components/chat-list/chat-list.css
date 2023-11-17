@@ -1,12 +1,6 @@
-@import '../../layouts/top-bar/top-bar.css';
 @import '../search/search.css';
 @import '../dropdown/dropdown.css';
 
 .chat-list__top {
   gap: 4px;
-}
-
-.chat-list__button {
-  width: 40px;
-  height: 40px;
 }

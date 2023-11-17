@@ -4,7 +4,7 @@
 
     <h1 class="page__headline">Sign up to Messenger</h1>
 
-    {{#>layouts/form/form method="post" autocomplete="off"}}
+    <form class="form" method="post" autocomplete="off">
       <div class="form__two-columns">
         {{>components/input/input extClass="page__input" type="text" name="first_name" id="first_name" placeholder="First name"}}
         {{>components/input/input extClass="page__input" type="text" name="second_name" id="second_name" placeholder="Last name"}}
@@ -14,12 +14,14 @@
       {{>components/input/input type="text" name="login" id="login" placeholder="Login"}}
       {{>components/input/input type="password" name="password" id="password" placeholder="Password"}}
       {{>components/input/input type="password" name="confirm" id="confirm" placeholder="Confirm password"}}
-      {{>components/button/button extClass="form__submit" type="submit" label="Sign up" style="filled"}}
-    {{/layouts/form/form}}
+      <div class="form__submit">
+        {{>components/button/button type="submit" label="Sign up" style="filled"}}
+      </div>
+    </form>
 
     <div class="page__transition">
       <p class="page__transition-text">Already have an&nbsp;account?</p>
-      <a class="base-link page__transition-link" href="/signin/">
+      <a class="base__link page__transition-link" href="/signin/" tabindex="-1" aria-hidden="true">
         {{>components/button/button type="button" label="Sign in" style="text"}}
       </a>
     </div>

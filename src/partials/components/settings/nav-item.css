@@ -30,3 +30,7 @@
   font-weight: var(--font-label-large-weight);
   letter-spacing: var(--font-label-large-spacing);
 }
+
+.nav-item:hover {
+  opacity: var(--hover-opacity);
+}
