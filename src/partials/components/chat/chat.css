@@ -1,0 +1,32 @@
+.chat {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.chat_top-bar {
+  padding-left: 16px;
+  padding-right: 16px;
+  column-gap: 10px;
+  flex: 0 0 56px;
+}
+
+.chat__avatar {
+  width: 44px;
+  font-size: 28px;
+}
+
+.chat__username {
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-right: auto;
+  font-size: var(--font-title-medium-size);
+  line-height: var(--font-title-medium-height);
+  font-weight: var(--font-title-medium-weight);
+  letter-spacing: var(--font-title-medium-spacing);
+}
+
+.messages-container {
+  flex-grow: 1;
+  overflow: hidden;
+}

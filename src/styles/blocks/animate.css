@@ -1,11 +1,7 @@
-:root {
-  --hover-opacity: 0.8;
-}
-
-.animate-hover {
+.animate_hover-opacity {
   transition: opacity 250ms ease-in-out;
 }
 
-.animate-hover:hover {
+.animate_hover-opacity:hover {
   opacity: var(--hover-opacity);
 }

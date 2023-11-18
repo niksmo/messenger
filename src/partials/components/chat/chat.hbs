@@ -1,0 +1,16 @@
+<div class="chat">
+  <header class="top-bar chat_top-bar">
+    <div class="chat__avatar">
+      {{> components/avatar/avatar name=main.chat.user.name src=main.chat.user.src }}
+    </div>
+    <p class="chat__username no-select">{{ username }}</p>
+    {{> components/dropdown/dropdown id="chat-opt" icon="dots" items=main.menu.chatOpt style="primary" posX="right" posY="bottom"}}
+  </header>
+
+  <div class="messages-container"></div>
+
+  <div class="message-input-container">
+    {{> components/chat/message-input }}
+  </div>
+
+</div>

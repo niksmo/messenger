@@ -21,6 +21,10 @@ interface IContext {
     settings: {
       nav: INavItem[];
     };
+    chat: {
+      user: { name: string; src?: string };
+      messages: [];
+    };
   };
 }
 
@@ -83,6 +87,10 @@ const context: IContext = {
           label: 'Log Out',
         },
       ],
+    },
+    chat: {
+      user: { name: chatListData[0].name, src: chatListData[0].src },
+      messages: [],
     },
   },
 };
