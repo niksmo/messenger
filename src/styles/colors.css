@@ -32,6 +32,7 @@
   --color-element-white: hsla(var(--color-base-white) / 1);
 
   --color-background-basic: hsla(var(--color-base-gray-5) / 1);
+  --color-background-secondary: hsla(var(--color-base-gray-3) / 1);
   --color-background-special: hsla(var(--color-base-gray-4) / 1);
   --color-background-accent: hsla(var(--color-base-blue-1) / 1);
   --color-background-accent-light: hsla(var(--color-base-blue-3) / 1);

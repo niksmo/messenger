@@ -2,7 +2,6 @@
   border-radius: var(--border-radius-circle);
   overflow: hidden;
   box-sizing: border-box;
-  user-select: none;
 }
 
 .avatar-inner {
