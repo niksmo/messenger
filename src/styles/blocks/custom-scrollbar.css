@@ -1,0 +1,6 @@
+.custom-scrollbar {
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  display: none;
+}
