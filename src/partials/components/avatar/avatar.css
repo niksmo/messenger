@@ -13,7 +13,7 @@
 }
 
 .avatar__char {
-  font-size: calc(var(--avatar-size) * 0.5);
+  font-size: 1em;
   color: var(--color-text-white);
   background-image: var(--color-gradient-gray);
 }

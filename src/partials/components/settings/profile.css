@@ -1,18 +1,16 @@
 @import '../avatar/avatar.css';
 
 .profile {
-  --avatar-size: 60px;
-  --profile-gap: 12px;
   padding-top: 16px;
   padding-bottom: 16px;
   display: flex;
-  column-gap: var(--profile-gap);
+  column-gap: 12px;
 }
 
 .profile__avatar {
   position: relative;
-  width: 60px;
-  height: 60px;
+  font-size: 30px;
+  flex: 0 0 60px;
 }
 
 .profile__upload-avatar {
@@ -68,11 +66,11 @@
 }
 
 .profile__name-container {
-  width: calc(100% - var(--avatar-size) - var(--profile-gap));
   display: flex;
   flex-direction: column;
   justify-content: center;
   row-gap: 4px;
+  overflow: hidden;
 }
 
 .profile__name-header {
