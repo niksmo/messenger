@@ -5,6 +5,7 @@
 
 @import './blocks/font-theme.css';
 @import './blocks/base.css';
+@import './blocks/custom-scrollbar.css';
 @import './blocks/base-list.css';
 @import './blocks/base-link.css';
 @import './blocks/base-button.css';
