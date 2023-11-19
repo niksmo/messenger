@@ -5,8 +5,10 @@ import { getNamePrefix } from './src/partials/components/avatar/getNamePrefix';
 import type { IMenuItem } from './src/partials/components/dropdown/menu-item-type';
 import type { INavItem } from './src/partials/components/settings/nav-item-type';
 import type { IChatItem } from './src/partials/components/chat-list/chat-item-type';
+import type { IMessagesByDay } from './src/partials/components/chat/chat-types';
 
 import chatListData from './src/mock-data/chat-list.json';
+import messagesData from './src/mock-data/messages.json';
 
 interface IContext {
   viewer: { firstName: string; lastName: string; username: string };
@@ -23,7 +25,7 @@ interface IContext {
     };
     chat: {
       user: { name: string; src?: string };
-      messages: [];
+      messages: IMessagesByDay[];
     };
   };
 }
@@ -90,7 +92,7 @@ const context: IContext = {
     },
     chat: {
       user: { name: chatListData[0].name, src: chatListData[0].src },
-      messages: [],
+      messages: messagesData,
     },
   },
 };
