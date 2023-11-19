@@ -15,12 +15,17 @@
   color: var(--color-element-primary);
 }
 
+.icon-button_style_secondary {
+  color: var(--color-element-secondary);
+}
+
 .icon-button_style_accent {
   color: var(--color-element-accent);
 }
 
 .icon-button__icon {
   cursor: pointer;
+  transition: color 150ms ease-in-out;
 }
 
 .icon-button__icon:hover {

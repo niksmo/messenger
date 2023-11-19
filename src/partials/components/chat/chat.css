@@ -1,3 +1,5 @@
+@import './message-input.css';
+
 .chat {
   display: flex;
   flex-direction: column;
@@ -29,4 +31,8 @@
 .messages-container {
   flex-grow: 1;
   overflow: hidden;
+}
+
+.message-input-container {
+  display: flex;
 }

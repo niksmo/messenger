@@ -7,15 +7,15 @@
 
     {{#each items }}
       <li>
-        <div role="menuitem" class="menu-item menu-item_style_{{this.style}}">
+        <div role="menuitem" class="menu-item menu-item_style_{{style}}">
 
-          {{#if this.icon}}
+          {{#if icon}}
             <svg class="menu-item__icon" viewBox="0 0 24 24" aria-hidden="true">
-              <use href="src/svg/icon-24-sprite.svg#{{this.icon}}">
+              <use href="src/svg/icon-24-sprite.svg#{{icon}}">
             </svg>
           {{/if}}
 
-          <p class="menu-item__label">{{this.label}}</p>
+          <p class="menu-item__label">{{label}}</p>
 
         </div>
       </li>
