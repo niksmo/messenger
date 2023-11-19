@@ -1,0 +1,94 @@
+[
+  {
+    "date": "Desember 28, 2022",
+    "messages": [
+      {
+        "text": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Libero ex, incidunt repellat maxime minima quidem? Autem, cupiditate. Sunt, fugiat officia.",
+        "time": "14:44"
+      },
+      {
+        "text": "Lorem ipsum dolor sit amet consectetur.",
+        "time": "14:44"
+      },
+      {
+        "text": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa, possimus id doloribus modi quidem qui dolore reprehenderit? Eligendi animi ea delectus. Voluptas asperiores iure excepturi magnam, minus aliquid similique laborum!",
+        "time": "14:44",
+        "status": "readed"
+      },
+      {
+        "text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis libero dolor error optio et. Obcaecati, facilis ut!",
+        "time": "14:44",
+        "status": "readed"
+      }
+    ]
+  },
+  {
+    "date": "Desember 29, 2022",
+    "messages": [
+      {
+        "text": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa, possimus id doloribus modi quidem qui dolore reprehenderit? Eligendi animi ea delectus. Voluptas asperiores iure excepturi magnam, minus aliquid similique laborum!",
+        "time": "14:44"
+      },
+      {
+        "text": "Lorem, ipsum dolor sit amet consectetur adipisicing elit.",
+        "time": "14:44",
+        "status": "readed"
+      },
+      {
+        "text": "Lorem ipsum dolor sit amet.",
+        "time": "14:44"
+      },
+      {
+        "text": "Lorem ipsum dolor sit amet.",
+        "time": "14:44",
+        "status": "readed"
+      }
+    ]
+  },
+  {
+    "date": "Wednesday",
+    "messages": [
+      {
+        "text": "Lorem, ipsum dolor sit amet consectetur adipisicing elit.",
+        "time": "14:44",
+        "status": "readed"
+      },
+      {
+        "text": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum, modi.",
+        "time": "14:44"
+      },
+      {
+        "text": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem optio veniam consequatur laboriosam sunt ducimus.",
+        "time": "14:44"
+      },
+      {
+        "text": "Lorem, ipsum dolor sit amet consectetur adipisicing elit.",
+        "time": "14:44",
+        "status": "readed"
+      }
+    ]
+  },
+  {
+    "date": "Today",
+    "messages": [
+      {
+        "text": "Lorem, ipsum dolor.",
+        "time": "14:44"
+      },
+      {
+        "text": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem optio veniam consequatur laboriosam sunt ducimus.",
+        "time": "14:44",
+        "status": "readed"
+      },
+      {
+        "text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis libero dolor error optio et. Obcaecati, facilis ut!",
+        "time": "14:44"
+      },
+      {
+        "text": "Lorem, ipsum dolor.",
+        "time": "14:44",
+        "status": "delivered"
+      }
+    ]
+  }
+]

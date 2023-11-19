@@ -1,0 +1,12 @@
+{{#if status }}
+  <div class="bubble bubble_own bubble_type_text">
+    <p class="bubble__text">{{text}}</p>
+    <p class="bubble__time">{{time}}</p>
+    <span class="msg-status msg-status_style_{{status}}">{{status}}</span>
+  </div>
+{{else}}
+  <div class="bubble bubble_type_text">
+    <p class="bubble__text">{{text}}</p>
+    <p class="bubble__time">{{time}}</p>
+  </div>
+{{/if}}

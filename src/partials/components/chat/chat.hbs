@@ -3,11 +3,25 @@
     <div class="chat__avatar">
       {{> components/avatar/avatar name=main.chat.user.name src=main.chat.user.src }}
     </div>
-    <p class="chat__username no-select">{{ username }}</p>
+    <h2 class="chat__username no-select">{{ username }}</h2>
     {{> components/dropdown/dropdown id="chat-opt" icon="dots" items=main.menu.chatOpt style="primary" posX="right" posY="bottom"}}
   </header>
 
-  <div class="messages-container"></div>
+  <div class="messages-container">
+    <ul class="base-list messages__list">
+      {{#each main.chat.messages as | day | }}
+        <li class="messages__by-day">
+          <h3 class="day-title">{{day.date}}</h3>
+          <ul class="base-list messages__through-day">
+            {{#each day.messages as | message | }}
+              {{> components/chat/bubble }}
+            {{/each}}
+          </ul>
+        </li>
+
+      {{/each}}
+    </ul>
+  </div>
 
   <div class="message-input-container">
     {{> components/chat/message-input }}
