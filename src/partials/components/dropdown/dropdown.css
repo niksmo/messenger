@@ -58,7 +58,7 @@
 .menu-item {
   display: flex;
   align-items: center;
-  padding: 4px;
+  padding: 4px 8px 4px 4px;
   column-gap: 6px;
   border-radius: 6px;
   max-width: 280px;
