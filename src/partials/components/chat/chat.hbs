@@ -11,10 +11,12 @@
     <ul class="base-list messages__list">
       {{#each main.chat.messages as | day | }}
         <li class="messages__by-day">
-          <h3 class="day-title">{{day.date}}</h3>
+          <h3 class="day-title messages__day-title no-select">{{day.date}}</h3>
           <ul class="base-list messages__through-day">
             {{#each day.messages as | message | }}
-              {{> components/chat/bubble }}
+              <li class="messages__buble">
+                {{> components/chat/bubble }}
+              </li>
             {{/each}}
           </ul>
         </li>
