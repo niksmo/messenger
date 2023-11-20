@@ -1,0 +1,57 @@
+.font-theme {
+  --font-family: 'Roboto', sans-serif;
+
+  --font-size-xs: 12px;
+  --font-size-s: 14px;
+  --font-size-m: 16px;
+  --font-size-l: 22px;
+  --font-size-xl: 28px;
+  --font-size-xxl: 57px;
+
+  --font-height-xs: 16px;
+  --font-height-s: 20px;
+  --font-height-m: 24px;
+  --font-height-l: 28px;
+  --font-height-xl: 36px;
+  --font-height-xxl: 64px;
+
+  --font-display-large-size: var(--font-size-xxl);
+  --font-display-large-height: var(--font-height-xxl);
+  --font-display-large-wieght: 400;
+  --font-display-large-spacing: -0.25px;
+
+  --font-headline-medium-size: var(--font-size-xl);
+  --font-headline-medium-height: var(--font-height-xl);
+  --font-headline-medium-weight: 400;
+  --font-headline-medium-spacing: 0;
+
+  --font-title-medium-size: var(--font-size-m);
+  --font-title-medium-height: var(--font-height-m);
+  --font-title-medium-weight: 500;
+  --font-title-medium-spacing: 0.15px;
+
+  --font-title-large-size: var(--font-size-l);
+  --font-title-large-height: var(--font-height-l);
+  --font-title-large-weight: 400;
+  --font-title-large-spacing: 0;
+
+  --font-body-small-size: var(--font-size-xs);
+  --font-body-small-height: var(--font-height-xs);
+  --font-body-small-weight: 400;
+  --font-body-small-spacing: 0;
+
+  --font-body-medium-size: var(--font-size-s);
+  --font-body-medium-height: var(--font-height-s);
+  --font-body-medium-weight: 400;
+  --font-body-medium-spacing: 0.25px;
+
+  --font-body-large-size: var(--font-size-m);
+  --font-body-large-height: var(--font-height-m);
+  --font-body-large-weight: 400;
+  --font-body-large-spacing: 0.5px;
+
+  --font-label-large-size: var(--font-size-s);
+  --font-label-large-height: var(--font-height-s);
+  --font-label-large-weight: 500;
+  --font-label-large-spacing: 0.1px;
+}

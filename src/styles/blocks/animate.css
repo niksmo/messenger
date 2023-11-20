@@ -1,0 +1,7 @@
+.animate_hover-opacity {
+  transition: opacity 250ms ease-in-out;
+}
+
+.animate_hover-opacity:hover {
+  opacity: var(--hover-opacity);
+}

@@ -1,0 +1,18 @@
+<div class="profile">
+
+  <div class="profile__avatar">
+    {{> components/avatar/avatar name=viewer.username }}
+    <label class="profile__upload-avatar">
+      <input class="profile__upload-input visually-hidden" type="file" name="avatar" accept="image/png, image/jpeg">
+    </label>
+  </div>
+
+  <div class="profile__name-container no-select">
+    <div class="profile__name-header">
+      <p class="profile__text profile__text_style_name">{{viewer.firstName}}</p>
+      <p class="profile__text profile__text_style_name">{{viewer.lastName}}</p>
+    </div>
+    <p class="profile__name-footer profile__text profile__text_style_username">{{viewer.username}}</p>
+  </div>
+
+</div>

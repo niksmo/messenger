@@ -1,0 +1,11 @@
+<div class="message-input">
+  <div class="message-input__menu">
+    {{> components/dropdown/dropdown id="attach" icon="paperclip" style="primary" items=main.menu.message posX="left" posY="top"}}
+  </div>
+  <form class="message-input__form">
+    <input class="message-input__text" type="text" name="message" placeholder="Write a message..." autocomplete="off"
+      spellcheck="false">
+    {{> components/icon-button/icon-button type="submit" id="send-msg" icon="paperplane" style="secondary" }}
+  </form>
+
+</div>

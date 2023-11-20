@@ -1,0 +1,28 @@
+{{#>page title="Sign in" scriptSrc="../src/scripts/signin.ts"}}
+
+  <main class="page page_align_center">
+
+    <h1 class="page__headline">Sign in to Messenger</h1>
+
+    <p class="page__message {{#if signin.unauth}}page__message_visible{{/if}}">We&nbsp;couldn&rsquo;t find
+      an&nbsp;account matching the login and password you entered.
+      Please check your login and password and try again.</p>
+
+    <form class="form" method="post" autocomplete="off">
+      {{>components/input/input type="text" name="login" id="login" placeholder="Login"}}
+      {{>components/input/input type="password" name="password" id="password" placeholder="Password"}}
+      <div class="form__submit">
+        {{>components/button/button type="submit" label="Sign in" style="filled"}}
+      </div>
+    </form>
+
+    <div class="page__transition">
+      <p class="page__transition-text">Don&rsquo;t have an&nbsp;account?</p>
+      <a class="base-link page__transition-link" href="/signup/" tabindex="-1" aria-hidden="true" draggable="false">
+        {{>components/button/button type="button" label="Sign up" style="text"}}
+      </a>
+    </div>
+
+  </main>
+
+{{/page}}

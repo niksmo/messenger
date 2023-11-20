@@ -1,0 +1,26 @@
+{
+  "name": "messenger",
+  "author": "niksmo",
+  "description": "web messenger",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "start": "npm run build && node server/app.js",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.9",
+    "autoprefixer": "^10.4.16",
+    "cssnano": "^6.0.1",
+    "express": "^4.18.2",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.5",
+    "vite-plugin-handlebars": "^1.6.0"
+  },
+  "dependencies": {
+    "handlebars": "^4.7.8"
+  }
+}

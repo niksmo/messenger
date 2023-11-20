@@ -1,0 +1,27 @@
+<button role="menu" id={{id}} type="button" class="icon-button trigger icon-button_style_{{style}}"
+  aria-label="More actions">
+  <svg class="icon-button__icon animate_hover-opacity" viewBox="0 0 40 40" aria-hidden="true">
+    <use href="src/svg/icon-40-sprite.svg#{{icon}}">
+  </svg>
+  <ul class="base-list menu menu_{{posX}} menu_{{posY}}">
+
+    {{#each items }}
+      <li>
+        <div role="menuitem" class="menu-item menu-item_style_{{style}}">
+
+          {{#if icon}}
+            <svg class="menu-item__icon" viewBox="0 0 24 24" aria-hidden="true">
+              <use href="src/svg/icon-24-sprite.svg#{{icon}}">
+            </svg>
+          {{/if}}
+
+          <p class="menu-item__label">{{label}}</p>
+
+        </div>
+      </li>
+    {{/each}}
+
+  </ul>
+
+  <div class="overlay menu-overlay"></div>
+</button>

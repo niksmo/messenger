@@ -1,0 +1,22 @@
+{{#>page title="Change pasword" scriptSrc="../src/scripts/change-password.ts"}}
+
+  <main class="page page_align_center">
+
+    <h1 class="page__headline">Change password</h1>
+
+    <form class="form" method="post" autocomplete="off">
+      {{>components/input/input type="password" name="oldPassword" id="oldPassword" placeholder="Current password"}}
+      {{>components/input/input type="password" name="newPassword" id="newPassword" placeholder="New password"}}
+      {{>components/input/input type="password" name="confirm" id="confirm" placeholder="Confirm password"}}
+      <div class="form__submit">
+        {{>components/button/button type="submit" label="Change" style="filled"}}
+      </div>
+    </form>
+
+    <a class="base-link page__transition" href="/" tabindex="-1" aria-hidden="true" draggable="false">
+      {{>components/button/button extClass="page__transition-button" type="button" label="Cancel" style="text"}}
+    </a>
+
+  </main>
+
+{{/page}}
