@@ -13,16 +13,16 @@ interface InputProps extends IBlockProps {
   support?: string;
 }
 
-export default class Input extends Block {
+export class Input extends Block {
   constructor(props: InputProps) {
     super(props, styles);
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected _getTemplateSpec() {
     return templateSpec;
   }
 
-  public setProps(newProps: Partial<InputProps>): void {
+  public setProps(newProps: Partial<InputProps>) {
     super.setProps(newProps);
   }
 }

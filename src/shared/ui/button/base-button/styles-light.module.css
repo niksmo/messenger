@@ -1,0 +1,8 @@
+.button_look {
+  padding-inline: 12px;
+  color: var(--color-element-accent);
+}
+
+.button_look:hover {
+  background-color: var(--color-element-tertiary);
+}
