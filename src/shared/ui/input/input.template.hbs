@@ -1,7 +1,8 @@
 <div class="{{styles.form-input}}">
   <input
     class="{{styles.form-input__inner}}{{#if error}} {{styles.form-input__inner_error}}{{/if}}"
-    type={{type}} name={{name}} placeholder="{{placeholder}}" id={{id}}>
+    type={{type}} name={{name}} placeholder="{{placeholder}}" id={{id}}
+    value={{value}}>
   <label class="{{styles.form-input__label}}" for={{id}}>{{placeholder}}</label>
   <p
     class="{{styles.form-input__support}}{{#if support}} {{styles.form-input__support_visible}}{{/if}}{{#if error}} {{styles.form-input__support_error}}{{/if}}">

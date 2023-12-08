@@ -9,8 +9,10 @@ interface InputProps extends IBlockProps {
   type: TInputTypes;
   name: string;
   placeholder: string;
+  value: string;
   error?: boolean;
   support?: string;
+  input?: (e: Event) => void;
 }
 
 export class Input extends Block {
