@@ -1,4 +1,4 @@
-import type { TIcon24 } from '../../../types/icon';
+import type { TIcon24 } from '../../../ui/icon/types';
 
 export interface INavItem {
   style: 'accent' | 'negative';

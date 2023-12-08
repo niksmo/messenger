@@ -1,21 +1,18 @@
-{{#>page title="Messenger" scriptSrc="./src/scripts/main.ts"}}
+<!DOCTYPE html>
+<html class="base font-theme" lang="en">
 
-  <div class="main">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="shortcut icon" href="favicon.svg" type="image/svg+xml">
+  <title>Messenger</title>
+</head>
 
-    <aside class="main__side">
-      {{> components/sidebar/sidebar }}
-    </aside>
+<body class="base__body">
 
-    <main class="main__chat">
+  <div id="app"></div>
 
-      {{#unless main.chat.user}}
-        {{> components/chat-plug/chat-plug}}
-      {{else}}
-        {{> components/chat/chat username=main.chat.user.name }}
-      {{/unless}}
+  <script type="module" src="/src/main.ts"></script>
+</body>
 
-    </main>
-
-  </div>
-
-{{/page}}
+</html>
