@@ -1,6 +1,7 @@
 import { template as templator } from 'handlebars/runtime';
 import { EventBus } from '../../packages/event-bus';
-import { shallowEqual, uuid } from './lib';
+import { uuid } from '../../packages/uuid';
+import { shallowEqual } from './lib';
 
 interface IBlockProps {
   [key: string]: unknown;

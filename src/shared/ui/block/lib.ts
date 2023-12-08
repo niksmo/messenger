@@ -1,7 +1,3 @@
-export function uuid() {
-  return crypto.randomUUID();
-}
-
 type TProps = Record<string, unknown>;
 
 export function shallowEqual(oldProps: TProps, newProps: TProps) {
