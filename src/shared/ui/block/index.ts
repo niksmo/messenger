@@ -146,21 +146,32 @@ abstract class Block {
   }
 
   private _didUpdate(oldProps: IBlockProps, newProps: IBlockProps) {
-    const isEqual = this._shallowEqual(oldProps, newProps);
+    const [isEqual, causeProps] = this._shallowEqual(oldProps, newProps);
 
-    if (!isEqual) {
+    const shouldRender = this._updateInterceptor(!isEqual, causeProps, this);
+
+    if (shouldRender) {
       this._eventBus.emit(EVENT.RENDER);
     }
   }
 
   protected _didMount() {}
 
+  protected _updateInterceptor(
+    shouldRender: boolean,
+    causeProps: Map<string, unknown>,
+    block: Block
+  ): boolean {
+    void causeProps, block;
+    return shouldRender;
+  }
+
   public dispatchDidMount() {
     this._eventBus.emit(EVENT.MOUNT);
   }
 
   public getContent() {
-    return this._element as Node;
+    return this._element as HTMLElement;
   }
 
   public setProps(newProps: IBlockProps) {

@@ -4,7 +4,7 @@ import styles from './styles.module.css';
 
 type TInputTypes = 'text' | 'email' | 'password' | 'tel' | 'number';
 
-interface InputProps extends IBlockProps {
+interface IInputProps {
   id: string;
   type: TInputTypes;
   name: string;
@@ -16,7 +16,7 @@ interface InputProps extends IBlockProps {
 }
 
 export class Input extends Block {
-  constructor(props: InputProps) {
+  constructor(props: IInputProps & IBlockProps) {
     super(props, styles);
   }
 
@@ -24,7 +24,26 @@ export class Input extends Block {
     return templateSpec;
   }
 
-  public setProps(newProps: Partial<InputProps>) {
+  public setProps(newProps: Partial<IInputProps>) {
     super.setProps(newProps);
+  }
+
+  protected _updateInterceptor(
+    shouldRender: boolean,
+    causeProps: Map<keyof IInputProps, IInputProps[keyof IInputProps]>,
+    block: Block
+  ): boolean {
+    if (shouldRender && causeProps.has('value')) {
+      shouldRender = false;
+      const input = block
+        .getContent()
+        .querySelector('input') as HTMLInputElement;
+      const errorStyle = input.classList.item(1);
+      if (errorStyle) {
+        input.classList.remove(errorStyle);
+      }
+    }
+
+    return shouldRender;
   }
 }

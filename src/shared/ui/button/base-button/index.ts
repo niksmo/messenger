@@ -11,7 +11,7 @@ const LOOK_STYLE = {
   light: lightStyles,
 };
 
-interface IButtonProps extends IBlockProps {
+interface IButtonProps {
   label: string;
   type: 'button' | 'submit';
   look: keyof typeof LOOK_STYLE;
@@ -19,7 +19,7 @@ interface IButtonProps extends IBlockProps {
 }
 
 export class Button extends Block {
-  constructor(props: IButtonProps) {
+  constructor(props: IButtonProps & IBlockProps) {
     const { look } = props;
 
     const styles = Object.assign(baseStyles, LOOK_STYLE[look]);
