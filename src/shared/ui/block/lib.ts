@@ -22,18 +22,30 @@ type TEventType = string;
 
 export function pickBlocksAndEvents(props: IBlockProps): {
   blocks: Map<TBlockId, Block>;
-  events: Map<TEventType, Function>;
+  events: Map<TEventType, EventListenerOrEventListenerObject>;
 } {
   const blocks = new Map<TBlockId, Block>();
-  const events = new Map<TEventType, Function>();
+  const events = new Map<TEventType, EventListenerOrEventListenerObject>();
 
-  const propsEntries = [...Object.entries(props)];
+  function setBlock(o: unknown) {
+    if (o instanceof Block) {
+      blocks.set(o.id, o);
+    }
+  }
+
+  const propsEntries = Object.entries(props);
 
   propsEntries.forEach(([pKey, pValue]) => {
+    setBlock(pValue);
+
     if (Array.isArray(pValue)) {
+      const list = pValue;
+      list.forEach(setBlock);
     }
 
-    if (DOMEvent[pKey]) {
+    if (DOMEvent[pKey] && typeof pValue === 'function') {
+      const normilezedType = pKey.slice(2).toLowerCase();
+      events.set(normilezedType, pValue as EventListenerOrEventListenerObject);
     }
   });
 

@@ -34,7 +34,7 @@ export class SigninController {
         id: 'password',
         name: 'password',
         placeholder: 'Password',
-        type: 'text',
+        type: 'password',
         error: false,
         value: self._passwordValue,
       })
@@ -50,8 +50,8 @@ export class SigninController {
       loginField: this._fields.get('login') as Input,
       pwdField: this._fields.get('password') as Input,
       submitButton,
-      input: this._onInput.bind(this),
-      submit: this._onSubmit.bind(this),
+      onInput: this._onInput.bind(this),
+      onSubmit: this._onSubmit.bind(this),
     });
 
     this._message = new SigninMessage({

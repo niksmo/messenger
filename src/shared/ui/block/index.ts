@@ -1,7 +1,7 @@
 import { template as templator } from 'handlebars/runtime';
 import { EventBus } from '../../packages/event-bus';
 import { uuid } from '../../packages/uuid';
-import { shallowEqual } from './lib';
+import { pickBlocksAndEvents, shallowEqual } from './lib';
 import { EVENT, TMP_TAG } from './consts';
 
 interface IBlockProps {
@@ -9,15 +9,13 @@ interface IBlockProps {
 }
 
 abstract class Block {
+  private _id = uuid();
   private _props: IBlockProps;
   private _styles: CSSModuleClasses;
-  private _id = uuid();
   private _eventBus = new EventBus();
   private _templator = templator;
   private _shallowEqual = shallowEqual;
   private _element: Node | null = null;
-  private _childBlocks = new Map<string, Block>();
-  private _events: Record<string, EventListener> = {};
   private _updatingPropsNum = 0;
 
   constructor(props: IBlockProps = {}, styles: CSSModuleClasses = {}) {
@@ -25,6 +23,10 @@ abstract class Block {
     this._styles = styles;
     this._subscribe();
     this._eventBus.emit(EVENT.INIT, props);
+  }
+
+  public get id() {
+    return this._id;
   }
 
   [Symbol.toPrimitive](a: 'string' | 'default' | 'number') {
@@ -72,38 +74,7 @@ abstract class Block {
   }
 
   private _init() {
-    this._parseProps();
     this._eventBus.emit(EVENT.RENDER);
-  }
-
-  private _parseProps() {
-    for (const key of Object.keys(this._props)) {
-      const value = this._props[key];
-
-      if (Array.isArray(value)) {
-        value.forEach(item => {
-          if (item instanceof Block) {
-            this._childBlocks.set(item._id, item);
-          }
-        });
-        continue;
-      }
-
-      if (value instanceof Block) {
-        this._childBlocks.set(value._id, value);
-        continue;
-      }
-
-      if (typeof value === 'function') {
-        this._events[key] = value as EventListener;
-      }
-    }
-  }
-
-  private _addListeners(block: HTMLElement) {
-    Object.entries(this._events).forEach(([event, cb]) => {
-      block.addEventListener(event, cb);
-    });
   }
 
   private _render() {
@@ -114,28 +85,35 @@ abstract class Block {
 
     const block = tmpElement.content.firstChild;
 
-    if (block instanceof HTMLElement) {
-      const stubs = Array.from(block.getElementsByTagName(TMP_TAG));
-      stubs.forEach(stub => {
-        if (stub instanceof HTMLUnknownElement && stub.dataset.id) {
-          const childBlock = this._childBlocks.get(stub.dataset.id);
-
-          const node = childBlock?.getContent();
-
-          if (node) {
-            stub.replaceWith(node);
-            childBlock?.dispatchDidMount();
-          }
-        }
-      });
-
-      this._addListeners(block);
-
-      if (this._element instanceof HTMLElement) {
-        this._element.replaceWith(block);
-      }
-      this._element = block;
+    if (!(block instanceof HTMLElement)) {
+      return;
     }
+
+    const { blocks: childBlocks, events } = pickBlocksAndEvents(this._props);
+
+    const stubs = Array.from(block.getElementsByTagName(TMP_TAG));
+
+    stubs.forEach(stub => {
+      if (stub instanceof HTMLUnknownElement && stub.dataset.id) {
+        const childBlock = childBlocks.get(stub.dataset.id);
+
+        const node = childBlock?.getContent();
+
+        if (node) {
+          stub.replaceWith(node);
+          childBlock?.dispatchDidMount();
+        }
+      }
+    });
+
+    events.forEach((cb, eventType) => {
+      block.addEventListener(eventType, cb);
+    });
+
+    if (this._element instanceof HTMLElement) {
+      this._element.replaceWith(block);
+    }
+    this._element = block;
   }
 
   private _didMount() {

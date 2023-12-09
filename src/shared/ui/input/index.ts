@@ -12,7 +12,9 @@ interface IInputProps {
   value: string;
   error?: boolean;
   support?: string;
-  input?: (e: Event) => void;
+  onInput?: (e: Event) => void;
+  onBlur?: (e: Event) => void;
+  onFocus?: (e: Event) => void;
 }
 
 export class Input extends Block {

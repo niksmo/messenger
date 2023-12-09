@@ -15,7 +15,7 @@ interface IButtonProps {
   label: string;
   type: 'button' | 'submit';
   look: keyof typeof LOOK_STYLE;
-  click?: (e: Event) => void;
+  onClick?: (e: Event) => void;
 }
 
 export class Button extends Block {
@@ -30,7 +30,7 @@ export class Button extends Block {
     return templateSpec;
   }
 
-  public setProps(newProps: Partial<Pick<IButtonProps, 'label' | 'click'>>) {
+  public setProps(newProps: Partial<Pick<IButtonProps, 'label' | 'onClick'>>) {
     super.setProps(newProps);
   }
 }
