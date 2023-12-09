@@ -132,6 +132,7 @@ abstract class Block {
 
           if (node) {
             stub.replaceWith(node);
+            childBlock?.dispatchDidMount();
           }
         }
       });
@@ -145,19 +146,27 @@ abstract class Block {
     }
   }
 
+  private _didMount() {
+    this.didMount();
+  }
+
   private _didUpdate(oldProps: IBlockProps, newProps: IBlockProps) {
     const [isEqual, causeProps] = this._shallowEqual(oldProps, newProps);
 
-    const shouldRender = this._updateInterceptor(!isEqual, causeProps, this);
+    const shouldRender = this.renderInterceptor(!isEqual, causeProps, this);
 
     if (shouldRender) {
       this._eventBus.emit(EVENT.RENDER);
     }
+
+    this.didUpdate();
   }
 
-  protected _didMount() {}
+  public didMount() {}
 
-  protected _updateInterceptor(
+  public didUpdate() {}
+
+  public renderInterceptor(
     shouldRender: boolean,
     causeProps: Map<string, unknown>,
     block: Block

@@ -4,7 +4,7 @@ import { Input } from '../../../../shared/ui/input';
 import templateSpec from './form.template.hbs';
 import styles from './styles.module.css';
 
-interface ISigninFormProps extends IBlockProps {
+interface ISigninFormProps {
   loginField: Input;
   pwdField: Input;
   submitButton: Button;
@@ -14,7 +14,7 @@ interface ISigninFormProps extends IBlockProps {
 }
 
 export class SigninForm extends Block {
-  constructor(props: ISigninFormProps) {
+  constructor(props: ISigninFormProps & IBlockProps) {
     super(props, styles);
   }
 

@@ -28,7 +28,7 @@ export class Input extends Block {
     super.setProps(newProps);
   }
 
-  protected _updateInterceptor(
+  public renderInterceptor(
     shouldRender: boolean,
     causeProps: Map<keyof IInputProps, IInputProps[keyof IInputProps]>,
     block: Block
