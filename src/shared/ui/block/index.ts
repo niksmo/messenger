@@ -2,19 +2,11 @@ import { template as templator } from 'handlebars/runtime';
 import { EventBus } from '../../packages/event-bus';
 import { uuid } from '../../packages/uuid';
 import { shallowEqual } from './lib';
+import { EVENT, TMP_TAG } from './consts';
 
 interface IBlockProps {
   [key: string]: unknown;
 }
-
-const enum EVENT {
-  INIT = 'init',
-  MOUNT = 'componentDidMount',
-  UPDATE = 'componentDidUpdate',
-  RENDER = 'render',
-}
-
-const TMP_TAG = 'tmp';
 
 abstract class Block {
   private _props: IBlockProps;
