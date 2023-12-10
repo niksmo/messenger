@@ -1,5 +1,14 @@
-import { SigninController } from '../../features/signin';
+import {
+  SigninFormDirector,
+  SigninForm,
+  ResponseMessage,
+} from '../../features/signin';
 
-const signinController = new SigninController();
+const signinForm = new SigninForm();
+const responseMessage = new ResponseMessage();
 
-export default signinController;
+const signinManager = new SigninFormDirector(signinForm, responseMessage);
+
+signinManager.init();
+
+export default signinForm;
