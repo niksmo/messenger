@@ -44,4 +44,12 @@ class EventBus {
   }
 }
 
-export { EventBus };
+abstract class EventsMember<T> {
+  protected eventMap = new Map<T, TCallBackFn>();
+
+  public addEventCb(eventType: T, cb: TCallBackFn) {
+    this.eventMap.set(eventType, cb);
+  }
+}
+
+export { EventBus, EventsMember };

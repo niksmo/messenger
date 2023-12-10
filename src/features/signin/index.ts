@@ -1,2 +1,1 @@
-export * from './view';
-export * from './director';
+export * from './ui';
