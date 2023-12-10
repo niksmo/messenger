@@ -1,7 +1,7 @@
 import { template as templator } from 'handlebars/runtime';
 import { EventBus } from '../../packages/event-bus';
 import { uuid } from '../../packages/uuid';
-import { pickBlocksAndEvents, shallowEqual } from './lib';
+import { isProps, pickBlocksAndEvents, shallowEqual } from './lib';
 import { EVENT, TMP_TAG } from './consts';
 
 interface IBlockProps {
@@ -120,7 +120,13 @@ abstract class Block {
     this.didMount();
   }
 
-  private _didUpdate(oldProps: IBlockProps, newProps: IBlockProps) {
+  private _didUpdate(...args: unknown[]) {
+    if (!isProps(args)) {
+      return;
+    }
+
+    const [oldProps, newProps] = args;
+
     const [isEqual, causeProps] = this._shallowEqual(oldProps, newProps);
 
     const shouldRender = this.renderInterceptor(!isEqual, causeProps, this);

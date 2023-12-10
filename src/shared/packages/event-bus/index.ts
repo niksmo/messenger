@@ -1,14 +1,12 @@
-interface callBackFn<T = any> {
-  (...args: T[]): void;
-}
+type TCallBackFn = (...args: unknown[]) => void;
 
 class EventBus {
-  private _listeners: Record<string, callBackFn[]>;
+  private _listeners: Record<string, TCallBackFn[]>;
   constructor() {
     this._listeners = Object.create(null);
   }
 
-  public on<T>(event: string, cb: callBackFn<T>) {
+  public on(event: string, cb: TCallBackFn) {
     if (!this._listeners[event]) {
       this._listeners[event] = [cb];
       return;
@@ -17,7 +15,7 @@ class EventBus {
     this._listeners?.[event]?.push(cb);
   }
 
-  public off<T>(event: string, targetCb: callBackFn<T>) {
+  public off(event: string, targetCb: TCallBackFn) {
     let curListeners = this._listeners[event];
 
     if (!curListeners) {
