@@ -34,6 +34,9 @@ class FormController
     const name = block.getName();
 
     this.elements[name] = block;
+
+    this.errors[name] = '';
+
     if (type !== FORM_ELEMENT.submit) {
       this.values[name] = block.getValue();
     }

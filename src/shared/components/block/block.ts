@@ -147,10 +147,9 @@ abstract class Block {
 
   public renderInterceptor(
     shouldRender: boolean,
-    causeProps: Map<string, unknown>,
-    block: Block
+    _causeProps: Map<string, unknown>,
+    _block: Block
   ): boolean {
-    void causeProps, block;
     return shouldRender;
   }
 
