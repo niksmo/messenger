@@ -1,4 +1,4 @@
-import { Block, IBlockProps } from '../../../../shared/ui/block';
+import { Block, IBlockProps } from '../../../../shared/components/block/block';
 import { Button } from '../../../../shared/ui/button';
 import { Input } from '../../../../shared/ui/input';
 import templateSpec from './form.template.hbs';

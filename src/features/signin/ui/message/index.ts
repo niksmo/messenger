@@ -1,4 +1,4 @@
-import { Block } from '../../../../shared/ui/block';
+import { Block } from '../../../../shared/components/block/block';
 import templateSpec from './message.template.hbs';
 import styles from './styles.module.css';
 

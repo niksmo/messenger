@@ -1,4 +1,5 @@
-import { Block, IBlockProps } from '../block';
+import { BlockInput } from '../../components/block';
+import { Block, IBlockProps } from '../../components/block/block';
 import templateSpec from './input.template.hbs';
 import styles from './styles.module.css';
 
@@ -17,13 +18,17 @@ interface IInputProps {
   onFocus?: (e: Event) => void;
 }
 
-export class Input extends Block {
+export class Input extends BlockInput {
   constructor(props: IInputProps & IBlockProps) {
-    super(props, styles);
+    super(props);
   }
 
   protected _getTemplateSpec() {
     return templateSpec;
+  }
+
+  protected _getStylesModule() {
+    return styles;
   }
 
   public setProps(newProps: Partial<IInputProps>) {

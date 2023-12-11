@@ -11,16 +11,14 @@ interface IBlockProps {
 abstract class Block {
   private _id = uuid();
   private _props: IBlockProps;
-  private _styles: CSSModuleClasses;
   private _eventBus = new EventBus();
   private _templator = templator;
   private _shallowEqual = shallowEqual;
   private _element: Node | null = null;
   private _updatingPropsNum = 0;
 
-  constructor(props: IBlockProps = {}, styles: CSSModuleClasses = {}) {
+  constructor(props: IBlockProps = {}) {
     this._props = this._proxyProps(props);
-    this._styles = styles;
     this._subscribe();
     this._eventBus.emit(EVENT.INIT, props);
   }
@@ -36,6 +34,7 @@ abstract class Block {
   }
 
   protected abstract _getTemplateSpec(): TemplateSpecification;
+  protected _getStylesModule?(): CSSModuleClasses;
 
   private _proxyProps(props: IBlockProps) {
     const self = this;
@@ -79,7 +78,11 @@ abstract class Block {
 
   private _render() {
     const compileTemplate = this._templator(this._getTemplateSpec());
-    const htmlCode = compileTemplate({ ...this._props, styles: this._styles });
+    const styles = this._getStylesModule ? this._getStylesModule() : {};
+    const htmlCode = compileTemplate({
+      ...this._props,
+      styles,
+    });
     const tmpElement = document.createElement('template');
     tmpElement.innerHTML = htmlCode;
 

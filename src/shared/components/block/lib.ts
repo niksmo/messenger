@@ -1,4 +1,4 @@
-import { Block, IBlockProps } from '.';
+import { Block, IBlockProps } from './block';
 import { DOMEvent } from './consts';
 
 type TPropsTuple = [IBlockProps, IBlockProps];
