@@ -1,7 +1,7 @@
 import { EventsMember } from '../../packages/event-bus';
 import { IBlockInput, IFormController } from '../interfaces';
 
-export const enum FORM_EVENT {
+const enum FORM_EVENT {
   onInput = 'onInput',
   onBlur = 'onBlur',
   onSubmit = 'onSubmit',
@@ -10,7 +10,7 @@ export const enum FORM_EVENT {
   onResponse = 'onResponse',
 }
 
-export const enum FORM_ELEMENT {
+const enum FORM_ELEMENT {
   text = 'text',
   password = 'password',
   submit = 'submit',
@@ -107,4 +107,4 @@ class FormController
   }
 }
 
-export { FormController };
+export { FormController, FORM_EVENT, FORM_ELEMENT };

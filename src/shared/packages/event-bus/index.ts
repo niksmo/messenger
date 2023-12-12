@@ -1,12 +1,10 @@
-type TCallBackFn = (...args: unknown[]) => void;
-
 class EventBus {
-  private _listeners: Record<string, TCallBackFn[]>;
+  private _listeners: Record<string, Function[]>;
   constructor() {
     this._listeners = Object.create(null);
   }
 
-  public on(event: string, cb: TCallBackFn) {
+  public on(event: string, cb: Function) {
     if (!this._listeners[event]) {
       this._listeners[event] = [cb];
       return;
@@ -15,7 +13,7 @@ class EventBus {
     this._listeners?.[event]?.push(cb);
   }
 
-  public off(event: string, targetCb: TCallBackFn) {
+  public off(event: string, targetCb: Function) {
     let curListeners = this._listeners[event];
 
     if (!curListeners) {
@@ -33,7 +31,7 @@ class EventBus {
     }
   }
 
-  public emit<T>(event: string, ...args: T[]) {
+  public emit(event: string, ...args: unknown[]) {
     if (!this._listeners[event]) {
       return;
     }
@@ -45,9 +43,9 @@ class EventBus {
 }
 
 abstract class EventsMember<T> {
-  protected eventMap = new Map<T, TCallBackFn>();
+  protected eventMap = new Map<T, Function>();
 
-  public addEventCb(eventType: T, cb: TCallBackFn) {
+  public addEventCb(eventType: T, cb: Function) {
     this.eventMap.set(eventType, cb);
   }
 }

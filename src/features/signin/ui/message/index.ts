@@ -1,17 +1,25 @@
-import { Block } from '../../../../shared/components/block/block';
+import { Block, IBlockProps } from '../../../../shared/components/block/block';
 import templateSpec from './message.template.hbs';
 import styles from './styles.module.css';
 
-export class ResponseMessage extends Block {
-  constructor() {
-    super({}, styles);
+interface ISigninMessageProps {
+  visible: boolean;
+}
+
+export class SigninMessage extends Block {
+  constructor(props: ISigninMessageProps & IBlockProps) {
+    super(props);
   }
 
   protected _getTemplateSpec() {
     return templateSpec;
   }
 
-  public isShow(bool: boolean) {
-    this.getContent().style.visibility = bool ? 'hidden' : 'visible';
+  protected _getStylesModule(): CSSModuleClasses {
+    return styles;
+  }
+
+  public setProps(newProps: Partial<ISigninMessageProps>): void {
+    super.setProps(newProps);
   }
 }

@@ -28,6 +28,15 @@ abstract class BlockInput extends Block implements IBlockInput {
   public getValue(): string {
     return this._value;
   }
+
+  public setProps(newProps: Partial<IBlockInputProps>): void {
+    const { type, name, value } = newProps;
+    this._type = type || this._type;
+    this._name = name || this._name;
+    this._value = String(value) || this._value;
+
+    super.setProps(newProps);
+  }
 }
 
 export { BlockInput };

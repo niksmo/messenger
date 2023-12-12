@@ -1,6 +1,8 @@
 interface IVerifier {
-  verify(map: Record<string, string>): Record<string, string>;
-  onVerifyResult(resultMap: Record<string, string>): void;
+  verify(
+    map: Record<string, string>,
+    cb: (result: Record<string, string>) => void
+  ): Record<string, string>;
 }
 
 class Verifier implements IVerifier {
@@ -22,41 +24,37 @@ class Verifier implements IVerifier {
     phone: 'From 10 to 15 digit, may start with plus symbol',
   };
 
-  public verify(map: Record<string, string>) {
+  public verify(
+    map: Record<string, string>,
+    cb: (result: Record<string, string>) => void
+  ) {
     const entries = Object.entries(map);
 
-    const resultEntries = entries.map(([key, value]) => {
+    const resultEntries: [string, string][] = entries.map(([key, value]) => {
       const templateName = key.endsWith('name') ? 'name' : key;
       const template = this.templateMap[templateName];
+      const support = this.supportMap[templateName];
 
-      if (!template) {
+      if (!template || !support) {
         throw Error(
-          `Verify template does not exist. Template: ${templateName}`
+          `Verify template or support does not exist. Template: ${templateName}`
         );
       }
 
-      const support = ~value.search(template)
-        ? ''
-        : this.supportMap[templateName];
+      const supportText = value.match(template) ? '' : support;
 
-      if (!support) {
-        throw Error(
-          `Verify support text does not exist. Template: ${templateName}`
-        );
-      }
-
-      return [key, support];
+      return [key, supportText];
     });
 
     const resultMap = Object.fromEntries(resultEntries);
 
-    this.onVerifyResult(resultMap);
+    cb(resultMap);
 
     return resultMap;
   }
-
-  public onVerifyResult(_resultMap: Record<string, string>): void {}
 }
 
-export { Verifier };
+const verifier = new Verifier();
+
+export { verifier };
 export type { IVerifier };

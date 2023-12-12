@@ -39,16 +39,10 @@ export class Input extends BlockInput {
     shouldRender: boolean,
     causeProps: Map<keyof IInputProps, IInputProps[keyof IInputProps]>,
     block: Block
-  ): boolean {
+  ) {
     if (shouldRender && causeProps.has('value')) {
       shouldRender = false;
-      const input = block
-        .getContent()
-        .querySelector('input') as HTMLInputElement;
-      const errorStyle = input.classList.item(1);
-      if (errorStyle) {
-        input.classList.remove(errorStyle);
-      }
+      block.setProps({ error: false });
     }
 
     return shouldRender;
