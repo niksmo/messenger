@@ -35,14 +35,22 @@ export class Input extends BlockInput {
     super.setProps(newProps);
   }
 
-  public renderInterceptor(
+  protected _getListenersSelector(): string {
+    return 'input';
+  }
+
+  protected renderInterceptor(
     shouldRender: boolean,
     causeProps: Map<keyof IInputProps, IInputProps[keyof IInputProps]>,
     block: Block
   ) {
     if (shouldRender && causeProps.has('value')) {
       shouldRender = false;
-      block.setProps({ error: false });
+      const htmlInput = block.getContent().querySelector('input');
+      const errorStyle = this._getStylesModule()['form-input__inner_error'];
+      if (htmlInput && errorStyle) {
+        htmlInput.classList.remove(errorStyle);
+      }
     }
 
     return shouldRender;

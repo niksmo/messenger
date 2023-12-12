@@ -18,7 +18,7 @@ const enum SigninEvent {
 
 type TFieldName = 'login' | 'password';
 
-const fieldMap = {
+const fieldsMap = {
   login: new Input({
     id: 'login',
     name: 'login',
@@ -26,6 +26,9 @@ const fieldMap = {
     type: 'text',
     error: false,
     value: '',
+    onBlur: () => {
+      onBlurEvent(getFormData());
+    },
   }),
   password: new Input({
     id: 'password',
@@ -34,6 +37,9 @@ const fieldMap = {
     type: 'password',
     error: false,
     value: '',
+    onBlur: () => {
+      onBlurEvent(getFormData());
+    },
   }),
 };
 
@@ -44,7 +50,7 @@ const submitButton = new ButtonFilled({
 });
 
 const signinForm = new SigninForm({
-  ...fieldMap,
+  ...fieldsMap,
   submitButton,
   onInput(e) {
     const { target } = e;
@@ -52,9 +58,6 @@ const signinForm = new SigninForm({
       const { value, name } = target;
       eventBus.emit(SigninEvent.INPUT, { name, value });
     }
-  },
-  onBlur() {
-    eventBus.emit(SigninEvent.BLUR, getFormData());
   },
   onSubmit(e) {
     e.preventDefault();
@@ -65,8 +68,8 @@ const signinForm = new SigninForm({
 const responseMsg = new SigninMessage({ visible: false });
 
 function getFormData() {
-  const fieldMapEntries = Object.entries(fieldMap);
-  const dataEntries: [string, string][] = fieldMapEntries.map(
+  const fieldsMapEntries = Object.entries(fieldsMap);
+  const dataEntries: [string, string][] = fieldsMapEntries.map(
     ([field, inputBlock]) => [field, inputBlock.getValue()]
   );
   return Object.fromEntries(dataEntries);
@@ -77,26 +80,27 @@ function showSupport(verifyResult: Record<string, string>): boolean {
 
   const entries = Object.entries(verifyResult);
 
-  entries.forEach(([key, support]) => {
-    if (support) {
-      isShow = true;
-      const field = key as keyof typeof fieldMap;
-      fieldMap[field].setProps({ error: true, support });
+  entries.forEach(([name, support]) => {
+    const isError = Boolean(support);
+    if (!isShow) {
+      isShow = isError;
     }
+    const field = name as keyof typeof fieldsMap;
+    fieldsMap[field].setProps({ error: isError, support });
   });
 
   return isShow;
 }
 
-function onInput({ name, value }: { name: TFieldName; value: string }) {
-  fieldMap[name].setProps({ value });
+function onInputEvent({ name, value }: { name: TFieldName; value: string }) {
+  fieldsMap[name].setProps({ value });
 }
 
-function onBlur(formValues: Record<string, string>) {
+function onBlurEvent(formValues: Record<string, string>) {
   verifier.verify(formValues, showSupport);
 }
 
-function onSubmit(formValues: Record<string, string>) {
+function onSubmitEvent(formValues: Record<string, string>) {
   verifier.verify(formValues, result => {
     if (!showSupport(result)) {
       eventBus.emit(SigninEvent.REQUEST, formValues);
@@ -104,9 +108,9 @@ function onSubmit(formValues: Record<string, string>) {
   });
 }
 
-function onRequest(formValues: Record<string, string>) {
+function onRequestEvent(formValues: Record<string, string>) {
   responseMsg.setProps({ visible: false });
-  submitButton.setProps({ load: true });
+  submitButton.setProps({ load: true, disabled: true });
 
   API.post(formValues)
     .then(() => {})
@@ -114,13 +118,13 @@ function onRequest(formValues: Record<string, string>) {
       responseMsg.setProps({ visible: true });
     })
     .finally(() => {
-      submitButton.setProps({ load: false });
+      submitButton.setProps({ load: false, disabled: false });
     });
 }
 
-eventBus.on(SigninEvent.INPUT, onInput);
-eventBus.on(SigninEvent.BLUR, onBlur);
-eventBus.on(SigninEvent.SUBMIT, onSubmit);
-eventBus.on(SigninEvent.REQUEST, onRequest);
+eventBus.on(SigninEvent.INPUT, onInputEvent);
+eventBus.on(SigninEvent.BLUR, onBlurEvent);
+eventBus.on(SigninEvent.SUBMIT, onSubmitEvent);
+eventBus.on(SigninEvent.REQUEST, onRequestEvent);
 
 export { signinForm, responseMsg };

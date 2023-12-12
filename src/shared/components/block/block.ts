@@ -1,7 +1,7 @@
 import { template as templator } from 'handlebars/runtime';
 import { EventBus } from '../../packages/event-bus';
 import { uuid } from '../../packages/uuid';
-import { isProps, pickBlocksAndEvents, shallowEqual } from './lib';
+import { pickBlocksAndEvents, shallowEqual } from './lib';
 import { EVENT, TMP_TAG } from './consts';
 
 interface IBlockProps {
@@ -109,8 +109,11 @@ abstract class Block {
       }
     });
 
+    const selector = this._getListenersSelector();
+    const listenersTarget = selector ? block.querySelector(selector) : block;
+
     events.forEach((cb, eventType) => {
-      block.addEventListener(eventType, cb);
+      listenersTarget?.addEventListener(eventType, cb);
     });
 
     if (this._element instanceof HTMLElement) {
@@ -119,17 +122,23 @@ abstract class Block {
     this._element = block;
   }
 
+  protected renderInterceptor(
+    shouldRender: boolean,
+    _causeProps: Map<string, unknown>,
+    _block: Block
+  ): boolean {
+    return shouldRender;
+  }
+
+  protected _getListenersSelector() {
+    return '';
+  }
+
   private _didMount() {
     this.didMount();
   }
 
-  private _didUpdate(...args: unknown[]) {
-    if (!isProps(args)) {
-      return;
-    }
-
-    const [oldProps, newProps] = args;
-
+  private _didUpdate(oldProps: IBlockProps, newProps: IBlockProps) {
     const [isEqual, causeProps] = this._shallowEqual(oldProps, newProps);
 
     const shouldRender = this.renderInterceptor(!isEqual, causeProps, this);
@@ -144,14 +153,6 @@ abstract class Block {
   public didMount() {}
 
   public didUpdate() {}
-
-  public renderInterceptor(
-    shouldRender: boolean,
-    _causeProps: Map<string, unknown>,
-    _block: Block
-  ): boolean {
-    return shouldRender;
-  }
 
   public dispatchDidMount() {
     this._eventBus.emit(EVENT.MOUNT);

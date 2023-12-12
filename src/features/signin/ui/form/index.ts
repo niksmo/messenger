@@ -9,7 +9,6 @@ interface ISigninFormProps {
   submitButton: Block;
   onSubmit?: (e: Event) => void;
   onInput?: (e: Event) => void;
-  onBlur?: (e: Event) => void;
 }
 
 export class SigninForm extends Block {

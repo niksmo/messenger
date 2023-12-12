@@ -1,14 +1,6 @@
 import { Block, IBlockProps } from './block';
 import { DOMEvent } from './consts';
 
-type TPropsTuple = [IBlockProps, IBlockProps];
-
-export function isProps(args: unknown[] | TPropsTuple): args is TPropsTuple {
-  const [oldProps, newProps] = args;
-
-  return typeof oldProps === 'object' && typeof newProps === 'object';
-}
-
 export function shallowEqual(
   oldProps: IBlockProps,
   newProps: IBlockProps
