@@ -120,17 +120,23 @@ eventBus.on(SigninEvent.BLUR, onBlurEvent);
 eventBus.on(SigninEvent.SUBMIT, onSubmitEvent);
 eventBus.on(SigninEvent.REQUEST, onRequestEvent);
 
-function addBlurListenersToFields() {
-  for (const fieldBlock of Object.values(fieldsMap)) {
-    fieldBlock.setProps({
-      onBlur() {
-        eventBus.emit(SigninEvent.BLUR, getFormData());
-      },
+function addBlurListenersOnFields() {
+  const inputBlocks = Object.values(fieldsMap);
+
+  const onBlur = () => {
+    eventBus.emit(SigninEvent.BLUR, getFormData());
+  };
+
+  const setOnBlur = (inputBlock: Input) => {
+    inputBlock.setProps({
+      onBlur,
     });
-  }
+  };
+
+  inputBlocks.forEach(setOnBlur);
 }
 
-addBlurListenersToFields();
+addBlurListenersOnFields();
 
 signinForm.setProps({
   onInput(e) {

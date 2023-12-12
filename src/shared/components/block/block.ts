@@ -126,6 +126,7 @@ abstract class Block implements IBlock {
   protected renderInterceptor(
     shouldRender: boolean,
     _causeProps: Map<string, unknown>,
+    _oldProps: IBlockProps,
     _block: Block
   ): boolean {
     return shouldRender;
@@ -142,7 +143,12 @@ abstract class Block implements IBlock {
   private _didUpdate(oldProps: IBlockProps, newProps: IBlockProps) {
     const [isEqual, causeProps] = this._shallowEqual(oldProps, newProps);
 
-    const shouldRender = this.renderInterceptor(!isEqual, causeProps, this);
+    const shouldRender = this.renderInterceptor(
+      !isEqual,
+      causeProps,
+      oldProps,
+      this
+    );
 
     if (shouldRender) {
       this._eventBus.emit(EVENT.RENDER);
