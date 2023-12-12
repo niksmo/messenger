@@ -3,12 +3,13 @@ import { EventBus } from '../../packages/event-bus';
 import { uuid } from '../../packages/uuid';
 import { pickBlocksAndEvents, shallowEqual } from './lib';
 import { EVENT, TMP_TAG } from './consts';
+import { IBlock } from '../interfaces';
 
 interface IBlockProps {
   [key: string]: unknown;
 }
 
-abstract class Block {
+abstract class Block implements IBlock {
   private _id = uuid();
   private _props: IBlockProps;
   private _eventBus = new EventBus();

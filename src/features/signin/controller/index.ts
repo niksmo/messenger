@@ -17,6 +17,9 @@ const enum SigninEvent {
 }
 
 type TFieldName = 'login' | 'password';
+
+type TFormData = { [key in TFieldName]: string };
+
 interface IFieldData {
   name: TFieldName;
   value: string;
@@ -59,7 +62,7 @@ function getFormData() {
   const dataEntries: [string, string][] = fieldsMapEntries.map(
     ([field, inputBlock]) => [field, inputBlock.getValue()]
   );
-  return Object.fromEntries(dataEntries);
+  return Object.fromEntries(dataEntries) as TFormData;
 }
 
 function showSupport(verifyResult: Record<string, string>): boolean {
@@ -87,7 +90,7 @@ function onBlurEvent(formValues: Record<string, string>) {
   verifier.verify(formValues, showSupport);
 }
 
-function onSubmitEvent(formValues: Record<string, string>) {
+function onSubmitEvent(formValues: TFormData) {
   verifier.verify(formValues, result => {
     if (!showSupport(result)) {
       eventBus.emit(SigninEvent.REQUEST, formValues);
@@ -95,13 +98,16 @@ function onSubmitEvent(formValues: Record<string, string>) {
   });
 }
 
-function onRequestEvent(formValues: Record<string, string>) {
+function onRequestEvent(formValues: TFormData) {
   responseMsg.setProps({ visible: false });
   submitButton.setProps({ load: true, disabled: true });
 
-  API.post(formValues)
-    .then(() => {})
-    .catch(() => {
+  API.signin(formValues)
+    .then(data => {
+      console.log('signin-then', data);
+    })
+    .catch(data => {
+      console.log('signin-catch', data);
       responseMsg.setProps({ visible: true });
     })
     .finally(() => {

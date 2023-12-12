@@ -12,8 +12,4 @@ interface IBlockInput extends IBlock {
   getValue(): string;
 }
 
-interface IFormController {
-  addElement(block: IBlockInput): void;
-}
-
-export type { IBlock, IBlockInput, IFormController };
+export type { IBlock, IBlockInput };
