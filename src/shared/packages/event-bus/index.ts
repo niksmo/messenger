@@ -1,14 +1,10 @@
-interface callBackFn<T = any> {
-  (...args: T[]): void;
-}
-
 class EventBus {
-  private _listeners: Record<string, callBackFn[]>;
+  private _listeners: Record<string, Function[]>;
   constructor() {
     this._listeners = Object.create(null);
   }
 
-  public on<T>(event: string, cb: callBackFn<T>) {
+  public on(event: string, cb: Function) {
     if (!this._listeners[event]) {
       this._listeners[event] = [cb];
       return;
@@ -17,7 +13,7 @@ class EventBus {
     this._listeners?.[event]?.push(cb);
   }
 
-  public off<T>(event: string, targetCb: callBackFn<T>) {
+  public off(event: string, targetCb: Function) {
     let curListeners = this._listeners[event];
 
     if (!curListeners) {
@@ -35,7 +31,7 @@ class EventBus {
     }
   }
 
-  public emit<T>(event: string, ...args: T[]) {
+  public emit(event: string, ...args: unknown[]) {
     if (!this._listeners[event]) {
       return;
     }
@@ -46,4 +42,12 @@ class EventBus {
   }
 }
 
-export { EventBus };
+abstract class EventsMember<T> {
+  protected eventMap = new Map<T, Function>();
+
+  public addEventCb(eventType: T, cb: Function) {
+    this.eventMap.set(eventType, cb);
+  }
+}
+
+export { EventBus, EventsMember };

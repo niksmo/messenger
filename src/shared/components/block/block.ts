@@ -1,37 +1,30 @@
 import { template as templator } from 'handlebars/runtime';
 import { EventBus } from '../../packages/event-bus';
-import { shallowEqual, uuid } from './lib';
+import { uuid } from '../../packages/uuid';
+import { pickBlocksAndEvents, shallowEqual } from './lib';
+import { EVENT, TMP_TAG } from './consts';
 
 interface IBlockProps {
   [key: string]: unknown;
 }
 
-const enum EVENT {
-  INIT = 'init',
-  MOUNT = 'componentDidMount',
-  UPDATE = 'componentDidUpdate',
-  RENDER = 'render',
-}
-
-const TMP_TAG = 'tmp';
-
 abstract class Block {
-  private _props: IBlockProps;
-  private _styles: CSSModuleClasses;
   private _id = uuid();
+  private _props: IBlockProps;
   private _eventBus = new EventBus();
   private _templator = templator;
   private _shallowEqual = shallowEqual;
   private _element: Node | null = null;
-  private _childBlocks = new Map<string, Block>();
-  private _events: Record<string, EventListener> = {};
   private _updatingPropsNum = 0;
 
-  constructor(props: IBlockProps = {}, styles: CSSModuleClasses = {}) {
+  constructor(props: IBlockProps = {}) {
     this._props = this._proxyProps(props);
-    this._styles = styles;
     this._subscribe();
     this._eventBus.emit(EVENT.INIT, props);
+  }
+
+  public get id() {
+    return this._id;
   }
 
   [Symbol.toPrimitive](a: 'string' | 'default' | 'number') {
@@ -41,6 +34,7 @@ abstract class Block {
   }
 
   protected abstract _getTemplateSpec(): TemplateSpecification;
+  protected _getStylesModule?(): CSSModuleClasses;
 
   private _proxyProps(props: IBlockProps) {
     const self = this;
@@ -79,87 +73,93 @@ abstract class Block {
   }
 
   private _init() {
-    this._parseProps();
     this._eventBus.emit(EVENT.RENDER);
-  }
-
-  private _parseProps() {
-    for (const key of Object.keys(this._props)) {
-      const value = this._props[key];
-
-      if (Array.isArray(value)) {
-        value.forEach(item => {
-          if (item instanceof Block) {
-            this._childBlocks.set(item._id, item);
-          }
-        });
-        continue;
-      }
-
-      if (value instanceof Block) {
-        this._childBlocks.set(value._id, value);
-        continue;
-      }
-
-      if (typeof value === 'function') {
-        this._events[key] = value as EventListener;
-      }
-    }
-  }
-
-  private _addListeners(block: HTMLElement) {
-    Object.entries(this._events).forEach(([event, cb]) => {
-      block.addEventListener(event, cb);
-    });
   }
 
   private _render() {
     const compileTemplate = this._templator(this._getTemplateSpec());
-    const htmlCode = compileTemplate({ ...this._props, styles: this._styles });
+    const styles = this._getStylesModule ? this._getStylesModule() : {};
+    const htmlCode = compileTemplate({
+      ...this._props,
+      styles,
+    });
     const tmpElement = document.createElement('template');
     tmpElement.innerHTML = htmlCode;
 
     const block = tmpElement.content.firstChild;
 
-    if (block instanceof HTMLElement) {
-      const stubs = Array.from(block.getElementsByTagName(TMP_TAG));
-      stubs.forEach(stub => {
-        if (stub instanceof HTMLUnknownElement && stub.dataset.id) {
-          const childBlock = this._childBlocks.get(stub.dataset.id);
-
-          const node = childBlock?.getContent();
-
-          if (node) {
-            stub.replaceWith(node);
-          }
-        }
-      });
-
-      this._addListeners(block);
-
-      if (this._element instanceof HTMLElement) {
-        this._element.replaceWith(block);
-      }
-      this._element = block;
+    if (!(block instanceof HTMLElement)) {
+      return;
     }
+
+    const { blocks: childBlocks, events } = pickBlocksAndEvents(this._props);
+
+    const stubs = Array.from(block.getElementsByTagName(TMP_TAG));
+
+    stubs.forEach(stub => {
+      if (stub instanceof HTMLUnknownElement && stub.dataset.id) {
+        const childBlock = childBlocks.get(stub.dataset.id);
+
+        const node = childBlock?.getContent();
+
+        if (node) {
+          stub.replaceWith(node);
+          childBlock?.dispatchDidMount();
+        }
+      }
+    });
+
+    const selector = this._getListenersSelector();
+    const listenersTarget = selector ? block.querySelector(selector) : block;
+
+    events.forEach((cb, eventType) => {
+      listenersTarget?.addEventListener(eventType, cb);
+    });
+
+    if (this._element instanceof HTMLElement) {
+      this._element.replaceWith(block);
+    }
+    this._element = block;
+  }
+
+  protected renderInterceptor(
+    shouldRender: boolean,
+    _causeProps: Map<string, unknown>,
+    _block: Block
+  ): boolean {
+    return shouldRender;
+  }
+
+  protected _getListenersSelector() {
+    return '';
+  }
+
+  private _didMount() {
+    this.didMount();
   }
 
   private _didUpdate(oldProps: IBlockProps, newProps: IBlockProps) {
-    const isEqual = this._shallowEqual(oldProps, newProps);
+    const [isEqual, causeProps] = this._shallowEqual(oldProps, newProps);
 
-    if (!isEqual) {
+    const shouldRender = this.renderInterceptor(!isEqual, causeProps, this);
+
+    if (shouldRender) {
       this._eventBus.emit(EVENT.RENDER);
     }
+
+    this.didUpdate();
   }
 
-  protected _didMount() {}
+  public didMount() {}
+
+  public didUpdate() {}
 
   public dispatchDidMount() {
     this._eventBus.emit(EVENT.MOUNT);
   }
 
   public getContent() {
-    return this._element as Node;
+    return this._element as HTMLElement;
   }
 
   public setProps(newProps: IBlockProps) {

@@ -1,0 +1,4 @@
+.button_style {
+  color: var(--color-text-white);
+  background-color: var(--color-element-accent);
+}
