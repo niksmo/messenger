@@ -1,14 +1,12 @@
-type TReqBody = Record<string, string>;
-
 const HTTP = 'http';
 const HTTPS = 'https';
 
-const METHOD = {
-  GET: 'GET',
-  POST: 'POST',
-  PUT: 'PUT',
-  DELETE: 'DELETE',
-};
+const enum METHOD {
+  GET = 'GET',
+  POST = 'POST',
+  PUT = 'PUT',
+  DELETE = 'DELETE',
+}
 
 const SCHEMES = [HTTP, HTTPS];
 
@@ -16,35 +14,60 @@ function isSupportScheme(scheme: string): boolean {
   return SCHEMES.some(supScheme => supScheme === scheme);
 }
 
-function isParams(possyblyParams: string): boolean {
-  return SCHEMES.some(scheme => possyblyParams.startsWith(scheme));
-}
+function normalizeURL(origin: string): string | null {
+  let result = null;
 
-function normalizeHost(host: string): string {
-  const splitted = host.split('/').filter(s => s !== '');
+  try {
+    const { href, protocol } = new URL(origin);
 
-  const [scheme, hostName] = splitted;
+    if (!isSupportScheme(protocol)) {
+      throw TypeError(
+        `Fetcher. Unsupport protocol: ${protocol}. Retype on "http(s)"`
+      );
+    }
 
-  if (!scheme || !hostName || !isSupportScheme(scheme)) {
-    throw 'Incorrect host. Fetcher support only http(s) scheme.';
+    result = href;
+  } catch (err) {
+    if (err instanceof Error) {
+      console.warn(err);
+    }
   }
-  return scheme + '://' + hostName;
+
+  return result;
 }
 
-function serializeToSearch(body: TReqBody): string {
+function getHref(baseURL: string | null, path: string): string {
+  if (baseURL) {
+    const { href } = new URL(path, baseURL);
+
+    return href;
+  }
+
+  const probHref = normalizeURL(path);
+
+  if (!probHref) {
+    throw TypeError(`Invalid origin. BaseURL: ${baseURL} | Path: ${path}.`);
+  }
+
+  const href = probHref;
+
+  return href;
+}
+
+function serializeToSearch(body: Record<string, string>): string {
   const entries = Object.entries(body);
 
   if (entries.length === 0) {
-    throw TypeError('Request body is empty');
+    return '';
   }
 
   const searchEntries = entries.map(entry => entry.join('='));
-  const searchString = ['/?', ...searchEntries.join('&')].join('');
+  const searchString = ['?', ...searchEntries.join('&')].join('');
   return searchString;
 }
 
-function serializeToJSON(body: TReqBody): string {
+function serializeToJSON(body: Record<string, string>): string {
   return JSON.stringify(body);
 }
 
-export { isParams, normalizeHost, serializeToSearch, serializeToJSON, METHOD };
+export { normalizeURL, getHref, serializeToSearch, serializeToJSON, METHOD };
