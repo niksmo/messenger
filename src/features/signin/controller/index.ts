@@ -17,6 +17,10 @@ const enum SigninEvent {
 }
 
 type TFieldName = 'login' | 'password';
+interface IFieldData {
+  name: TFieldName;
+  value: string;
+}
 
 const fieldsMap = {
   login: new Input({
@@ -26,9 +30,6 @@ const fieldsMap = {
     type: 'text',
     error: false,
     value: '',
-    onBlur: () => {
-      onBlurEvent(getFormData());
-    },
   }),
   password: new Input({
     id: 'password',
@@ -37,9 +38,6 @@ const fieldsMap = {
     type: 'password',
     error: false,
     value: '',
-    onBlur: () => {
-      onBlurEvent(getFormData());
-    },
   }),
 };
 
@@ -52,17 +50,6 @@ const submitButton = new ButtonFilled({
 const signinForm = new SigninForm({
   ...fieldsMap,
   submitButton,
-  onInput(e) {
-    const { target } = e;
-    if (target instanceof HTMLInputElement) {
-      const { value, name } = target;
-      eventBus.emit(SigninEvent.INPUT, { name, value });
-    }
-  },
-  onSubmit(e) {
-    e.preventDefault();
-    eventBus.emit(SigninEvent.SUBMIT, getFormData());
-  },
 });
 
 const responseMsg = new SigninMessage({ visible: false });
@@ -92,7 +79,7 @@ function showSupport(verifyResult: Record<string, string>): boolean {
   return isShow;
 }
 
-function onInputEvent({ name, value }: { name: TFieldName; value: string }) {
+function onInputEvent({ name, value }: IFieldData) {
   fieldsMap[name].setProps({ value });
 }
 
@@ -126,5 +113,31 @@ eventBus.on(SigninEvent.INPUT, onInputEvent);
 eventBus.on(SigninEvent.BLUR, onBlurEvent);
 eventBus.on(SigninEvent.SUBMIT, onSubmitEvent);
 eventBus.on(SigninEvent.REQUEST, onRequestEvent);
+
+function addBlurListenersToFields() {
+  for (const fieldBlock of Object.values(fieldsMap)) {
+    fieldBlock.setProps({
+      onBlur() {
+        eventBus.emit(SigninEvent.BLUR, getFormData());
+      },
+    });
+  }
+}
+
+addBlurListenersToFields();
+
+signinForm.setProps({
+  onInput(e) {
+    const { target } = e;
+    if (target instanceof HTMLInputElement) {
+      const { value, name } = target;
+      eventBus.emit(SigninEvent.INPUT, { name, value });
+    }
+  },
+  onSubmit(e) {
+    e.preventDefault();
+    eventBus.emit(SigninEvent.SUBMIT, getFormData());
+  },
+});
 
 export { signinForm, responseMsg };
