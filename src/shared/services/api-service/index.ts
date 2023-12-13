@@ -2,7 +2,7 @@ import Fetcher from '../../packages/fetcher';
 import TokenService from '../token-service';
 import { TSigninFormData } from './model';
 
-type TRequest = (
+export type TAPIRequest = (
   pathOrURL: string,
   body?: Record<string, string>,
   header?: Record<string, string>,
@@ -10,10 +10,10 @@ type TRequest = (
 ) => Promise<unknown>;
 
 interface IAPIFetcher {
-  get: TRequest;
-  post: TRequest;
-  put: TRequest;
-  delete: TRequest;
+  get: TAPIRequest;
+  post: TAPIRequest;
+  put: TAPIRequest;
+  delete: TAPIRequest;
 }
 
 interface IAPITokenService {

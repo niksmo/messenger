@@ -54,7 +54,7 @@ class Verifier implements IVerifier {
   }
 }
 
-const verifier = new Verifier();
+const verifyService = new Verifier();
 
-export { verifier };
+export { verifyService };
 export type { IVerifier };

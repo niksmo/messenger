@@ -1,4 +1,4 @@
-interface IBlock {
+export interface IBlock {
   didMount(): void;
   didUpdate(): void;
   dispatchDidMount(): void;
@@ -6,10 +6,30 @@ interface IBlock {
   setProps(arg: Record<string, unknown>): void;
 }
 
-interface IBlockInput extends IBlock {
+export interface IBlockInput extends IBlock {
   getType(): string;
   getName(): string;
   getValue(): string;
+  setProps(props: {
+    support?: string;
+    error?: boolean;
+    value?: string;
+    onInput?: (e: Event) => void;
+    onBlur?: (e: Event) => void;
+  }): void;
 }
 
-export type { IBlock, IBlockInput };
+export interface IBlockForm extends IBlock {
+  setProps(props: { onSubmit?: (e: Event) => void }): void;
+}
+
+export interface INotifyer {
+  on(cb: Function): void;
+  off(cb: Function): void;
+}
+
+export interface IContext<T> {
+  getState(): T;
+}
+
+export interface IStrategy {}

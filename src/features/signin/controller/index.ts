@@ -1,5 +1,5 @@
 import { EventBus } from '../../../shared/packages/event-bus';
-import { verifier } from '../../../shared/services/verifier-service';
+import { verifier } from '../../../shared/services/verify-service';
 import { API } from '../../../shared/services/api-service';
 import { Input } from '../../../shared/ui/input';
 import { ButtonFilled } from '../../../shared/ui/button';
