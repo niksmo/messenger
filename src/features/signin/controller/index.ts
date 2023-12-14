@@ -1,31 +1,13 @@
-import { EventBus } from '../../../shared/packages/event-bus';
-import { verifyService } from '../../../shared/services/verify-service';
 import { API } from '../../../shared/services/api-service';
-import { Input } from '../../../shared/ui/input';
+import { TSigninFormData } from '../../../shared/services/api-service/model';
+import { verifyService } from '../../../shared/services/verify-service';
+import { FormController } from '../../../shared/components/form';
 import { ButtonFilled } from '../../../shared/ui/button';
+import { Input } from '../../../shared/ui/input';
+import { isSomeValues } from '../../../shared/helpers';
 import { SigninForm, SigninMessage } from '..';
 
-const eventBus = new EventBus();
-
-const enum SigninEvent {
-  INPUT = 'input',
-  BLUR = 'blur',
-  SUBMIT = 'submit',
-  VERIFY = 'verify',
-  REQUEST = 'request',
-  RESPONSE = 'response',
-}
-
-type TFieldName = 'login' | 'password';
-
-type TFormData = { [key in TFieldName]: string };
-
-interface IFieldData {
-  name: TFieldName;
-  value: string;
-}
-
-const fieldsMap = {
+const inputMap = {
   login: new Input({
     id: 'login',
     name: 'login',
@@ -50,106 +32,57 @@ const submitButton = new ButtonFilled({
   name: 'signinSubmit',
 });
 
-const signinForm = new SigninForm({
-  ...fieldsMap,
+const form = new SigninForm({
+  ...inputMap,
   submitButton,
 });
 
-const responseMsg = new SigninMessage({ visible: false });
+const formElements = {
+  form,
+  inputMap,
+  buttonMap: { submitButton },
+};
 
-function getFormData() {
-  const fieldsMapEntries = Object.entries(fieldsMap);
-  const dataEntries: [string, string][] = fieldsMapEntries.map(
-    ([field, inputBlock]) => [field, inputBlock.getValue()]
-  );
-  return Object.fromEntries(dataEntries) as TFormData;
-}
+const informMsg = new SigninMessage({ visible: false });
 
-function showSupport(verifyResult: Record<string, string>): boolean {
-  let isShow = false;
+const signinForm = new FormController(formElements);
 
-  const entries = Object.entries(verifyResult);
-
-  entries.forEach(([name, support]) => {
-    const isError = Boolean(support);
-    if (!isShow) {
-      isShow = isError;
-    }
-    const field = name as keyof typeof fieldsMap;
-    fieldsMap[field].setProps({ error: isError, support });
-  });
-
-  return isShow;
-}
-
-function onInputEvent({ name, value }: IFieldData) {
-  fieldsMap[name].setProps({ value });
-}
-
-function onBlurEvent(formValues: Record<string, string>) {
-  verifyService.verify(formValues, showSupport);
-}
-
-function onSubmitEvent(formValues: TFormData) {
-  verifyService.verify(formValues, result => {
-    if (!showSupport(result)) {
-      eventBus.emit(SigninEvent.REQUEST, formValues);
-    }
-  });
-}
-
-function onRequestEvent(formValues: TFormData) {
-  responseMsg.setProps({ visible: false });
-  submitButton.setProps({ load: true, disabled: true });
-
-  API.signin(formValues)
-    .then(data => {
-      console.log('signin-then', data);
-    })
-    .catch(data => {
-      console.log('signin-catch', data);
-      responseMsg.setProps({ visible: true });
-    })
-    .finally(() => {
-      submitButton.setProps({ load: false, disabled: false });
-    });
-}
-
-eventBus.on(SigninEvent.INPUT, onInputEvent);
-eventBus.on(SigninEvent.BLUR, onBlurEvent);
-eventBus.on(SigninEvent.SUBMIT, onSubmitEvent);
-eventBus.on(SigninEvent.REQUEST, onRequestEvent);
-
-function addBlurListenersOnFields() {
-  const inputBlocks = Object.values(fieldsMap);
-
-  const onBlur = () => {
-    eventBus.emit(SigninEvent.BLUR, getFormData());
-  };
-
-  const setOnBlur = (inputBlock: Input) => {
-    inputBlock.setProps({
-      onBlur,
-    });
-  };
-
-  inputBlocks.forEach(setOnBlur);
-}
-
-addBlurListenersOnFields();
-
-signinForm.setProps({
-  onInput(e) {
-    const { target } = e;
-    if (target instanceof HTMLInputElement) {
-      const { value, name } = target;
-      eventBus.emit(SigninEvent.INPUT, { name, value });
-    }
-  },
-  onSubmit(e) {
-    e.preventDefault();
-    eventBus.emit(SigninEvent.SUBMIT, getFormData());
-  },
+signinForm.onInputBlur((formData, setHits) => {
+  const fieldHits = verifyService.verify(formData);
+  setHits(fieldHits);
 });
 
-export { signinForm, responseMsg };
+signinForm.onStartSubmit((formData, setHits, next) => {
+  const fieldHits = verifyService.verify(formData);
+  if (isSomeValues(fieldHits)) {
+    setHits(fieldHits);
+  } else {
+    next();
+  }
+});
+
+signinForm.onRequest(reqState => {
+  const { fetching } = reqState;
+  submitButton.setProps({ load: fetching, disabled: fetching });
+});
+
+signinForm.onRequest(reqState => {
+  const { error } = reqState;
+  informMsg.setProps({ visible: Boolean(error) });
+});
+
+signinForm.request((formData, update) => {
+  const postData = formData as TSigninFormData;
+  update({ error: '', fetching: true, success: false });
+  API.signin(postData)
+    .then(data => {
+      console.log(data);
+      update({ error: '', fetching: false, success: true });
+    })
+    .catch(error => {
+      console.log(error);
+      update({ error: '[debugg error]', fetching: false, success: false });
+    });
+});
+
+export { form, informMsg };

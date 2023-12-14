@@ -22,14 +22,3 @@ export interface IBlockInput extends IBlock {
 export interface IBlockForm extends IBlock {
   setProps(props: { onSubmit?: (e: Event) => void }): void;
 }
-
-export interface INotifyer {
-  on(cb: Function): void;
-  off(cb: Function): void;
-}
-
-export interface IContext<T> {
-  getState(): T;
-}
-
-export interface IStrategy {}
