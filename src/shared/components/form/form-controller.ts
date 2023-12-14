@@ -1,8 +1,8 @@
 import { EVENT, TFormElements, getFormData, renderHits } from './lib';
 import { EventBus } from '../../packages/event-bus';
 
-type TFormData = Record<string, string>;
-type TFormHints = Record<string, string>;
+type TFormData<FieldUnion extends string> = Record<FieldUnion, string>;
+type TFormHints<FieldUnion extends string> = Record<FieldUnion, string>;
 
 type TFetchState = {
   fetching: boolean;
@@ -10,26 +10,31 @@ type TFetchState = {
   error: string;
 };
 
-type TSetHintsFn = (hints: TFormHints) => void;
-type TOnInputBlurCb = (formData: TFormData, setHints: TSetHintsFn) => void;
+type TSetHintsFn<FieldUnion extends string> = (
+  hints: TFormHints<FieldUnion>
+) => void;
+type TOnInputBlurCb<FieldUnion extends string> = (
+  formData: TFormData<FieldUnion>,
+  setHints: TSetHintsFn<FieldUnion>
+) => void;
 type TNextFn = () => void;
 
-type TOnStartSubmitCb = (
-  formData: TFormData,
-  setHints: TSetHintsFn,
+type TOnStartSubmitCb<FieldUnion extends string> = (
+  formData: TFormData<FieldUnion>,
+  setHints: TSetHintsFn<FieldUnion>,
   next: TNextFn
 ) => void;
 
-type TRequestCb = (
-  formData: TFormData,
+type TRequestCb<FieldUnion extends string> = (
+  formData: TFormData<FieldUnion>,
   update: (state: TFetchState) => void
 ) => void;
 
-interface IFormController {
-  onInputBlur(cb: TOnInputBlurCb): void;
-  onStartSubmit(cb: TOnStartSubmitCb): void;
+interface IFormController<FieldUnion extends string> {
+  onInputBlur(cb: TOnInputBlurCb<FieldUnion>): void;
+  onStartSubmit(cb: TOnStartSubmitCb<FieldUnion>): void;
   onRequest(cb: (reqState: TFetchState) => void): void;
-  request(cb: TRequestCb): void;
+  request(cb: TRequestCb<FieldUnion>): void;
 }
 
 const initState: TFetchState = {
@@ -38,7 +43,9 @@ const initState: TFetchState = {
   success: false,
 };
 
-class FormController implements IFormController {
+class FormController<FieldUnion extends string>
+  implements IFormController<FieldUnion>
+{
   private _requestState: TFetchState;
   private _elements: TFormElements;
   private _eventBus = new EventBus();
@@ -90,7 +97,7 @@ class FormController implements IFormController {
     this._eventBus.emit(EVENT.submitStart, formData, setHits, next);
   }
 
-  private setHints(fieldHints: TFormHints): void {
+  private setHints(fieldHints: TFormHints<FieldUnion>): void {
     const { inputMap } = this._elements;
     renderHits(fieldHints, inputMap);
   }
@@ -106,11 +113,11 @@ class FormController implements IFormController {
     this._eventBus.emit(EVENT.fetch, { ...this._requestState });
   }
 
-  onInputBlur(cb: TOnInputBlurCb): void {
+  onInputBlur(cb: TOnInputBlurCb<FieldUnion>): void {
     this._eventBus.on(EVENT.inputBlur, cb);
   }
 
-  onStartSubmit(cb: TOnStartSubmitCb): void {
+  onStartSubmit(cb: TOnStartSubmitCb<FieldUnion>): void {
     this._eventBus.on(EVENT.submitStart, cb);
   }
 
@@ -118,7 +125,7 @@ class FormController implements IFormController {
     this._eventBus.on(EVENT.fetch, cb);
   }
 
-  request(cb: TRequestCb): void {
+  request(cb: TRequestCb<FieldUnion>): void {
     this._eventBus.on(EVENT.request, cb);
   }
 }

@@ -1,11 +1,12 @@
 import { API } from '../../../shared/services/api-service';
-import { TSigninFormData } from '../../../shared/services/api-service/model';
 import { verifyService } from '../../../shared/services/verify-service';
 import { FormController } from '../../../shared/components/form';
 import { ButtonFilled } from '../../../shared/ui/button';
 import { Input } from '../../../shared/ui/input';
 import { isSomeValues } from '../../../shared/helpers';
 import { SigninForm, SigninMessage } from '..';
+
+type TFieldUnion = 'login' | 'password';
 
 const inputMap = {
   login: new Input({
@@ -45,10 +46,10 @@ const formElements = {
 
 const informMsg = new SigninMessage({ visible: false });
 
-const signinForm = new FormController(formElements);
+const signinForm = new FormController<TFieldUnion>(formElements);
 
 signinForm.onInputBlur((formData, setHits) => {
-  const fieldHits = verifyService.verify(formData);
+  const fieldHits = verifyService.verify<TFieldUnion>(formData);
   setHits(fieldHits);
 });
 
@@ -72,7 +73,7 @@ signinForm.onRequest(reqState => {
 });
 
 signinForm.request((formData, update) => {
-  const postData = formData as TSigninFormData;
+  const postData = formData;
   update({ error: '', fetching: true, success: false });
   API.signin(postData)
     .then(data => {
