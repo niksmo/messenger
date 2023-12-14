@@ -26,7 +26,7 @@ class Verifier implements IVerifier {
 
   public verify(
     map: Record<string, string>,
-    cb: (result: Record<string, string>) => void
+    cb?: (result: Record<string, string>) => void
   ) {
     const entries = Object.entries(map);
 
@@ -48,7 +48,9 @@ class Verifier implements IVerifier {
 
     const resultMap = Object.fromEntries(resultEntries);
 
-    cb(resultMap);
+    if (cb) {
+      cb(resultMap);
+    }
 
     return resultMap;
   }

@@ -1,7 +1,11 @@
+// import {
+//   signinForm as form,
+//   responseMsg as message,
+// } from '../../features/signin/controller';
 import {
-  signinForm as form,
+  form,
   responseMsg as message,
-} from '../../features/signin/controller';
+} from '../../features/signin/controller/newtest';
 import { ButtonLight } from '../../shared/ui/button';
 import { PageSignin } from './signin-page';
 

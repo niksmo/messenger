@@ -1,5 +1,5 @@
 import { EventBus } from '../../../shared/packages/event-bus';
-import { verifier } from '../../../shared/services/verify-service';
+import { verifyService } from '../../../shared/services/verify-service';
 import { API } from '../../../shared/services/api-service';
 import { Input } from '../../../shared/ui/input';
 import { ButtonFilled } from '../../../shared/ui/button';
@@ -87,11 +87,11 @@ function onInputEvent({ name, value }: IFieldData) {
 }
 
 function onBlurEvent(formValues: Record<string, string>) {
-  verifier.verify(formValues, showSupport);
+  verifyService.verify(formValues, showSupport);
 }
 
 function onSubmitEvent(formValues: TFormData) {
-  verifier.verify(formValues, result => {
+  verifyService.verify(formValues, result => {
     if (!showSupport(result)) {
       eventBus.emit(SigninEvent.REQUEST, formValues);
     }
