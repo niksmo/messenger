@@ -5,6 +5,7 @@ interface IBlockInputProps {
   type: string;
   name: string;
   value?: string;
+  onInput?: (e: Event) => void;
 }
 
 abstract class BlockInput extends Block implements IBlockInput {

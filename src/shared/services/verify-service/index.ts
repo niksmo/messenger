@@ -24,13 +24,13 @@ class Verifier implements IVerifier {
     phone: 'From 10 to 15 digit, may start with plus symbol',
   };
 
-  public verify(
-    map: Record<string, string>,
-    cb: (result: Record<string, string>) => void
+  public verify<F extends string>(
+    map: Record<F, string>,
+    cb?: (result: Record<F, string>) => void
   ) {
-    const entries = Object.entries(map);
+    const entries = Object.entries(map) as [F, string][];
 
-    const resultEntries: [string, string][] = entries.map(([key, value]) => {
+    const resultEntries: [F, string][] = entries.map(([key, value]) => {
       const templateName = key.endsWith('name') ? 'name' : key;
       const template = this.templateMap[templateName];
       const support = this.supportMap[templateName];
@@ -46,15 +46,17 @@ class Verifier implements IVerifier {
       return [key, supportText];
     });
 
-    const resultMap = Object.fromEntries(resultEntries);
+    const resultMap = Object.fromEntries(resultEntries) as Record<F, string>;
 
-    cb(resultMap);
+    if (cb) {
+      cb(resultMap);
+    }
 
     return resultMap;
   }
 }
 
-const verifier = new Verifier();
+const verifyService = new Verifier();
 
-export { verifier };
+export { verifyService };
 export type { IVerifier };

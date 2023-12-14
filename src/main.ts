@@ -6,4 +6,5 @@ if (!root) {
   throw Error('add HTMLElement with id: #app');
 }
 
-root.append(app);
+root.append(app.getContent());
+app.dispatchDidMount;

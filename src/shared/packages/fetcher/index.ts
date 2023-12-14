@@ -6,10 +6,19 @@ import {
   serializeToSearch,
 } from './lib';
 
+if (!XMLHttpRequest) {
+  throw ReferenceError(
+    'Fetcher work only in browsers and includes XMLHttRequest under hood'
+  );
+}
+
+type TMode = 'prod' | 'dev';
+
 interface IFetcherConfig {
   setBaseURL(baseURL: string): IFetcherConfig;
   setTimeout(intMs: number): IFetcherConfig;
   setHeader(header: Record<string, string>): IFetcherConfig;
+  setMode(mode: TMode): void;
 }
 
 type TRequest = (
@@ -17,7 +26,7 @@ type TRequest = (
   body?: Record<string, string>,
   header?: Record<string, string>,
   timeout?: number
-) => Promise<XMLHttpRequest>;
+) => Promise<XMLHttpRequest> | Promise<unknown>;
 
 interface IFetcherRequest {
   get: TRequest;
@@ -26,17 +35,17 @@ interface IFetcherRequest {
   delete: TRequest;
 }
 
-if (XMLHttpRequest) {
-  throw ReferenceError(
-    'Fetcher work only in browsers and includes XMLHttRequest under hood'
-  );
-}
-
 class Fetcher implements IFetcherConfig, IFetcherRequest {
   private _baseURL: null | string = null;
   private _timeout = 1000;
   private _header: Record<string, string> = {};
+  private _mode: TMode = 'dev';
   constructor() {}
+
+  setMode(newMode: TMode) {
+    this._mode = newMode;
+    return this;
+  }
 
   public setBaseURL(baseURL: string): Fetcher {
     this._baseURL = normalizeURL(baseURL);
@@ -53,6 +62,40 @@ class Fetcher implements IFetcherConfig, IFetcherRequest {
     return this;
   }
 
+  private _debugg(
+    method: METHOD,
+    pathOrURL: string,
+    body: Record<string, string> = {},
+    rHeader: Record<string, string> = this._header,
+    rTimeout: number = this._timeout
+  ) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        function rollTheDice(
+          resolve: (v: unknown) => void,
+          reject: () => void
+        ) {
+          if (Math.floor(Math.random() * 100) < 40) {
+            return reject;
+          }
+          return resolve;
+        }
+
+        const resolveOrReject = rollTheDice(resolve, reject);
+
+        resolveOrReject({
+          request: body,
+          response:
+            method === METHOD.GET
+              ? serializeToSearch(body)
+              : serializeToJSON(body),
+          href: pathOrURL,
+          options: { header: rHeader, timeout: rTimeout },
+        });
+      }, 1000);
+    });
+  }
+
   private _request(
     method: METHOD,
     pathOrURL: string,
@@ -60,6 +103,9 @@ class Fetcher implements IFetcherConfig, IFetcherRequest {
     rHeader: Record<string, string> = this._header,
     rTimeout: number = this._timeout
   ) {
+    if (this._mode === 'dev') {
+      return this._debugg(method, pathOrURL, body, rHeader, rTimeout);
+    }
     return new Promise<XMLHttpRequest>((resolve, reject) => {
       const url = getHref(this._baseURL, pathOrURL);
       const rURL = METHOD.GET ? url + serializeToSearch(body) : url;

@@ -42,14 +42,20 @@ export class Input extends BlockInput {
   protected renderInterceptor(
     shouldRender: boolean,
     causeProps: Map<keyof IInputProps, IInputProps[keyof IInputProps]>,
+    oldProps: IBlockProps,
     block: Block
   ) {
+    const htmlInput = block.getContent().querySelector('input');
+    const errorStyle = this._getStylesModule()['form-input__inner_error'];
+
     if (shouldRender && causeProps.has('value')) {
       shouldRender = false;
-      const htmlInput = block.getContent().querySelector('input');
-      const errorStyle = this._getStylesModule()['form-input__inner_error'];
       if (htmlInput && errorStyle) {
         htmlInput.classList.remove(errorStyle);
+      }
+    } else if (!shouldRender && oldProps.error) {
+      if (htmlInput && errorStyle) {
+        htmlInput.classList.add(errorStyle);
       }
     }
 
