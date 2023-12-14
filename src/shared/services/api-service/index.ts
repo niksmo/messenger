@@ -1,4 +1,4 @@
-import Fetcher from '../../packages/fetcher';
+import Fetcher from 'shared/packages/fetcher';
 import TokenService from '../token-service';
 import { TSigninFormData } from './model';
 

@@ -1,5 +1,5 @@
-import { BlockInput } from '../../../components/block';
-import { IBlockProps } from '../../../components/block/block';
+import { BlockInput } from 'shared/components/block';
+import { IBlockProps } from 'shared/components/block/block';
 import templateSpec from './button.template.hbs';
 
 interface IButtonProps {

@@ -13,7 +13,14 @@
     "isolatedModules": true,
     "noEmit": true,
     "sourceMap": true,
-
+    "baseUrl": "src",
+    "paths": {
+      "app/*": ["app/*"],
+      "entites/*": ["entities/*"],
+      "features/*": ["features/*"],
+      "pages/*": ["pages/*"],
+      "shared/*": ["shared/*"],
+    },
     /* Linting */
     "strict": true,
     "noImplicitAny": true,

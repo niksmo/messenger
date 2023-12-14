@@ -7,4 +7,13 @@ export default defineConfig({
   css: { postcss: { plugins: [autoprefixer, cssnano] } },
   plugins: [handlebarsPrecompilePlugin()],
   publicDir: 'src/app/assets/public',
+  resolve: {
+    alias: {
+      app: '/src/app',
+      entites: '/src/entities',
+      features: '/src/features',
+      pages: '/src/pages',
+      shared: '/src/shared',
+    },
+  },
 });

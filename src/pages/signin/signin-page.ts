@@ -1,4 +1,4 @@
-import { Block, IBlockProps } from '../../shared/components/block';
+import { Block, IBlockProps } from 'shared/components/block';
 import templateSpec from './signin-page.template.hbs';
 import styles from './styles.module.css';
 

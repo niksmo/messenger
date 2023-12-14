@@ -1,5 +1,5 @@
+import { EventBus } from 'shared/packages/event-bus';
 import { EVENT, TFormElements, getFormData, renderHits } from './lib';
-import { EventBus } from '../../packages/event-bus';
 
 type TFormData<FieldUnion extends string> = Record<FieldUnion, string>;
 type TFormHints<FieldUnion extends string> = Record<FieldUnion, string>;

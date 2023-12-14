@@ -1,5 +1,5 @@
-import { form, informMsg as message } from '../../features/signin';
-import { ButtonLight } from '../../shared/ui/button';
+import { form, informMsg as message } from 'features/signin';
+import { ButtonLight } from 'shared/ui/button';
 import { PageSignin } from './signin-page';
 
 const transitionButton = new ButtonLight({
