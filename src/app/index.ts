@@ -1,4 +1,11 @@
-import './styles/index.css';
+import { registerPaths, routerProvider } from 'shared/components/router';
 import { signinPage } from 'pages/signin';
+import app from './app';
 
-export default signinPage;
+routerProvider(app);
+
+registerPaths([['/signin/', signinPage]]);
+
+app.setProps({ page: signinPage });
+
+export default app;
