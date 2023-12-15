@@ -7,6 +7,43 @@ export const enum EVENT {
   fetch = 'fetch',
 }
 
+type TFormData<FieldUnion extends string> = Record<FieldUnion, string>;
+export type TFormHints<FieldUnion extends string> = Record<FieldUnion, string>;
+
+export type TFetchState = {
+  fetching: boolean;
+  success: boolean;
+  error: string;
+};
+
+type TSetHintsFn<FieldUnion extends string> = (
+  hints: TFormHints<FieldUnion>
+) => void;
+export type TOnInputBlurCb<FieldUnion extends string> = (
+  formData: TFormData<FieldUnion>,
+  setHints: TSetHintsFn<FieldUnion>
+) => void;
+type TNextFn = () => void;
+
+export type TOnStartSubmitCb<FieldUnion extends string> = (
+  formData: TFormData<FieldUnion>,
+  setHints: TSetHintsFn<FieldUnion>,
+  next: TNextFn
+) => void;
+
+export type TRequestCb<FieldUnion extends string> = (
+  formData: TFormData<FieldUnion>,
+  update: (state: TFetchState) => void,
+  setHints: TSetHintsFn<FieldUnion>
+) => void;
+
+export interface IFormController<FieldUnion extends string> {
+  onInputBlur(cb: TOnInputBlurCb<FieldUnion>): void;
+  onStartSubmit(cb: TOnStartSubmitCb<FieldUnion>): void;
+  onRequest(cb: (reqState: TFetchState) => void): void;
+  request(cb: TRequestCb<FieldUnion>): void;
+}
+
 export type TFormElements = {
   form: IBlockForm;
   inputMap: Record<string, IBlockInput>;

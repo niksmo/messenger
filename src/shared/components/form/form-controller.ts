@@ -1,41 +1,16 @@
 import { EventBus } from 'shared/packages/event-bus';
-import { EVENT, TFormElements, getFormData, renderHits } from './lib';
-
-type TFormData<FieldUnion extends string> = Record<FieldUnion, string>;
-type TFormHints<FieldUnion extends string> = Record<FieldUnion, string>;
-
-type TFetchState = {
-  fetching: boolean;
-  success: boolean;
-  error: string;
-};
-
-type TSetHintsFn<FieldUnion extends string> = (
-  hints: TFormHints<FieldUnion>
-) => void;
-type TOnInputBlurCb<FieldUnion extends string> = (
-  formData: TFormData<FieldUnion>,
-  setHints: TSetHintsFn<FieldUnion>
-) => void;
-type TNextFn = () => void;
-
-type TOnStartSubmitCb<FieldUnion extends string> = (
-  formData: TFormData<FieldUnion>,
-  setHints: TSetHintsFn<FieldUnion>,
-  next: TNextFn
-) => void;
-
-type TRequestCb<FieldUnion extends string> = (
-  formData: TFormData<FieldUnion>,
-  update: (state: TFetchState) => void
-) => void;
-
-interface IFormController<FieldUnion extends string> {
-  onInputBlur(cb: TOnInputBlurCb<FieldUnion>): void;
-  onStartSubmit(cb: TOnStartSubmitCb<FieldUnion>): void;
-  onRequest(cb: (reqState: TFetchState) => void): void;
-  request(cb: TRequestCb<FieldUnion>): void;
-}
+import {
+  EVENT,
+  IFormController,
+  TFetchState,
+  TFormElements,
+  TFormHints,
+  TOnInputBlurCb,
+  TOnStartSubmitCb,
+  TRequestCb,
+  getFormData,
+  renderHits,
+} from './lib';
 
 const initState: TFetchState = {
   fetching: false,
@@ -85,16 +60,16 @@ class FormController<FieldUnion extends string>
 
   private onBlur() {
     const formData = getFormData(this._elements);
-    const setHits = this.setHints.bind(this);
-    this._eventBus.emit(EVENT.inputBlur, formData, setHits);
+    const setHints = this.setHints.bind(this);
+    this._eventBus.emit(EVENT.inputBlur, formData, setHints);
   }
 
   private onSubmit(e: Event) {
     e.preventDefault();
     const formData = getFormData(this._elements);
-    const setHits = this.setHints.bind(this);
+    const setHints = this.setHints.bind(this);
     const next = this.next.bind(this);
-    this._eventBus.emit(EVENT.submitStart, formData, setHits, next);
+    this._eventBus.emit(EVENT.submitStart, formData, setHints, next);
   }
 
   private setHints(fieldHints: TFormHints<FieldUnion>): void {
@@ -105,7 +80,8 @@ class FormController<FieldUnion extends string>
   private next() {
     const formData = getFormData(this._elements);
     const update = this.update.bind(this);
-    this._eventBus.emit(EVENT.request, formData, update);
+    const setHints = this.setHints.bind(this);
+    this._eventBus.emit(EVENT.request, formData, update, setHints);
   }
 
   private update(state: TFetchState) {
