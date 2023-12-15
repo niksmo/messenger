@@ -1,9 +1,9 @@
 import { template as templator } from 'handlebars/runtime';
-import { EventBus } from '../../packages/event-bus';
-import { uuid } from '../../packages/uuid';
+import { EventBus } from 'shared/packages/event-bus';
+import { uuid } from 'shared/packages/uuid';
+import { IBlock } from '../interfaces';
 import { pickBlocksAndEvents, shallowEqual } from './lib';
 import { EVENT, TMP_TAG } from './consts';
-import { IBlock } from '../interfaces';
 
 interface IBlockProps {
   [key: string]: unknown;

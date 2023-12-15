@@ -1,4 +1,4 @@
-import app from './app/index';
+import app from 'app';
 
 const root = document.getElementById('app');
 
@@ -7,4 +7,3 @@ if (!root) {
 }
 
 root.append(app.getContent());
-app.dispatchDidMount;

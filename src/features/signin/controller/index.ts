@@ -1,9 +1,9 @@
-import { API } from '../../../shared/services/api-service';
-import { verifyService } from '../../../shared/services/verify-service';
-import { FormController } from '../../../shared/components/form';
-import { ButtonFilled } from '../../../shared/ui/button';
-import { Input } from '../../../shared/ui/input';
-import { isSomeValues } from '../../../shared/helpers';
+import { verifyService } from 'shared/services/verify-service';
+import { API } from 'shared/services/api-service';
+import { FormController } from 'shared/components/form';
+import { isSomeValues } from 'shared/helpers';
+import { ButtonFilled } from 'shared/ui/button';
+import { Input } from 'shared/ui/input';
 import { SigninForm, SigninMessage } from '..';
 
 type TFieldUnion = 'login' | 'password';
@@ -73,9 +73,8 @@ signinForm.onRequest(reqState => {
 });
 
 signinForm.request((formData, update) => {
-  const postData = formData;
   update({ error: '', fetching: true, success: false });
-  API.signin(postData)
+  API.signin(formData)
     .then(data => {
       console.log(data);
       update({ error: '', fetching: false, success: true });
