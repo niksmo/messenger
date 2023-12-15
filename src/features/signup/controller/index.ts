@@ -4,11 +4,50 @@ import { FormController } from 'shared/components/form';
 import { isSomeValues } from 'shared/helpers';
 import { ButtonFilled } from 'shared/ui/button';
 import { Input } from 'shared/ui/input';
-import { SigninForm, SigninMessage } from '../ui';
+import { SignupForm } from '../ui';
 
-type TFieldUnion = 'login' | 'password';
+type TFieldUnion =
+  | 'first_name'
+  | 'second_name'
+  | 'email'
+  | 'phone'
+  | 'login'
+  | 'password'
+  | 'confirm';
 
 const inputMap = {
+  first_name: new Input({
+    id: 'first_name',
+    name: 'first_name',
+    placeholder: 'First name',
+    type: 'text',
+    error: false,
+    value: '',
+  }),
+  second_name: new Input({
+    id: 'second_name',
+    name: 'second_name',
+    placeholder: 'Last name',
+    type: 'text',
+    error: false,
+    value: '',
+  }),
+  email: new Input({
+    id: 'email',
+    name: 'email',
+    placeholder: 'Email',
+    type: 'text',
+    error: false,
+    value: '',
+  }),
+  phone: new Input({
+    id: 'phone',
+    name: 'phone',
+    placeholder: 'Phone',
+    type: 'text',
+    error: false,
+    value: '',
+  }),
   login: new Input({
     id: 'login',
     name: 'login',
@@ -25,15 +64,23 @@ const inputMap = {
     error: false,
     value: '',
   }),
+  confirm: new Input({
+    id: 'confirm',
+    name: 'confirm',
+    placeholder: 'Confirm password',
+    type: 'password',
+    error: false,
+    value: '',
+  }),
 };
 
 const submitButton = new ButtonFilled({
   type: 'submit',
-  label: 'Sign in',
+  label: 'Sign up',
   name: 'signinSubmit',
 });
 
-const form = new SigninForm({
+const form = new SignupForm({
   ...inputMap,
   submitButton,
 });
@@ -44,38 +91,31 @@ const formElements = {
   buttonMap: { submitButton },
 };
 
-const informMsg = new SigninMessage({ visible: false });
+const signupForm = new FormController<TFieldUnion>(formElements);
 
-const signinForm = new FormController<TFieldUnion>(formElements);
-
-signinForm.onInputBlur((formData, setHits) => {
+signupForm.onInputBlur((formData, setHints) => {
   const fieldHits = verifyService.verify<TFieldUnion>(formData);
-  setHits(fieldHits);
+  setHints(fieldHits);
 });
 
-signinForm.onStartSubmit((formData, setHits, next) => {
+signupForm.onStartSubmit((formData, setHints, next) => {
   const fieldHits = verifyService.verify(formData);
   if (isSomeValues(fieldHits)) {
-    setHits(fieldHits);
+    setHints(fieldHits);
   } else {
     next();
   }
 });
 
-signinForm.onRequest(reqState => {
+signupForm.onRequest(reqState => {
   const { fetching } = reqState;
   submitButton.setProps({ load: fetching, disabled: fetching });
 });
 
-signinForm.onRequest(reqState => {
-  const { error } = reqState;
-  informMsg.setProps({ visible: Boolean(error) });
-});
-
-signinForm.request((formData, update) => {
+signupForm.request((formData, update) => {
   console.log(formData);
   update({ error: '', fetching: true, success: false });
-  API.signin(formData)
+  API.signup(formData)
     .then(data => {
       console.log(data);
       update({ error: '', fetching: false, success: true });
@@ -86,4 +126,4 @@ signinForm.request((formData, update) => {
     });
 });
 
-export { form, informMsg };
+export { form };
