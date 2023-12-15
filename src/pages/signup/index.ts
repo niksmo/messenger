@@ -1,6 +1,6 @@
-import { form, informMsg as message } from 'features/signin';
+import { form } from 'features/signup';
 import { ButtonLight } from 'shared/ui/button';
-import { PageSignin } from './signin-page';
+import { PageSignup } from './signup-page';
 import { Link } from 'shared/components/router';
 
 const button = new ButtonLight({
@@ -10,15 +10,14 @@ const button = new ButtonLight({
 });
 
 const transitionButton = new Link({
-  href: '/signup/',
+  href: '/signin/',
   ariaHidden: true,
   children: button,
 });
 
-const signinPage = new PageSignin({
-  message,
+const signupPage = new PageSignup({
   form,
   transitionButton,
 });
 
-export { signinPage };
+export { signupPage };

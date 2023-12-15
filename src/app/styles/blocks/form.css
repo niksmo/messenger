@@ -5,12 +5,6 @@
   grid-template-columns: minmax(min-content, 416px);
 }
 
-.form__two-columns {
-  display: grid;
-  grid-template-columns: repeat(2, auto);
-  column-gap: 32px;
-}
-
 .form__submit {
   margin-top: 12px;
   display: flex;

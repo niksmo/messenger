@@ -36,9 +36,7 @@ class Verifier implements IVerifier {
       const support = this.supportMap[templateName];
 
       if (!template || !support) {
-        throw Error(
-          `Verify template or support does not exist. Template: ${templateName}`
-        );
+        return [key, ''];
       }
 
       const supportText = value.match(template) ? '' : support;
