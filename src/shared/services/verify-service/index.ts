@@ -1,3 +1,5 @@
+import { HINT, TEMPLATE } from './lib';
+
 interface IVerifier {
   verify(
     map: Record<string, string>,
@@ -7,21 +9,21 @@ interface IVerifier {
 
 class Verifier implements IVerifier {
   private templateMap: Record<string, RegExp> = {
-    name: /(^[A-Z]+[a-z\-]*$)|(^[А-ЯЁ]+[а-яё-]*$)/,
-    login: /^(?![0-9]{3,20}$)[a-z\d]{1}([a-z-_\d]){2,19}$/,
-    email: /^[a-zA-Z0-9.!#$%&'*+\=?^_`{|}~-]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/,
-    password:
-      /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d~!@#$%^&*()_+-=[\]\{}|;':",.\/<>?]{8,40}$/,
-    phone: /^\+?\d{10,15}$/,
+    first_name: TEMPLATE.name,
+    second_name: TEMPLATE.name,
+    login: TEMPLATE.login,
+    email: TEMPLATE.email,
+    password: TEMPLATE.password,
+    phone: TEMPLATE.phone,
   };
 
   private supportMap: Record<string, string> = {
-    name: 'Latin or сyrillic letters with first capital letter, without spaces',
-    login: 'Latin letters from 3 to 20 characters, can contain numbers',
-    email: 'Invalid address',
-    password:
-      'One uppercase letter and one digit are required, from 8 to 40 characters',
-    phone: 'From 10 to 15 digit, may start with plus symbol',
+    first_name: HINT.name,
+    second_name: HINT.name,
+    login: HINT.login,
+    email: HINT.email,
+    password: HINT.password,
+    phone: HINT.phone,
   };
 
   public verify<F extends string>(
@@ -31,7 +33,7 @@ class Verifier implements IVerifier {
     const entries = Object.entries(map) as [F, string][];
 
     const resultEntries: [F, string][] = entries.map(([key, value]) => {
-      const templateName = key.endsWith('name') ? 'name' : key;
+      const templateName = key;
       const template = this.templateMap[templateName];
       const support = this.supportMap[templateName];
 

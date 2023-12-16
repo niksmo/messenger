@@ -1,4 +1,13 @@
 import { IBlock } from '../../interfaces';
+
+window.addEventListener(
+  'load',
+  () => {
+    routeTo(location.pathname);
+  },
+  { once: true }
+);
+
 const pathMap = new Map<string, IBlock>();
 
 export let routeTo: (path: string) => void;

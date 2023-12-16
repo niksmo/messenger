@@ -1,6 +1,10 @@
 import Fetcher from 'shared/packages/fetcher';
 import TokenService from '../token-service';
-import { TSigninFormData, TSignupFormData } from './model';
+import {
+  TEditProfileFormData,
+  TSigninFormData,
+  TSignupFormData,
+} from './model';
 
 export type TAPIRequest = (
   pathOrURL: string,
@@ -57,6 +61,16 @@ class APIService implements IAPIService {
   }
 
   public signup(formData: TSignupFormData) {
+    const [fetcher] = this.checkSourses();
+    return fetcher.post(
+      '/signup',
+      formData,
+      { 'X-Debugg': 'mode/debugg' },
+      2000
+    );
+  }
+
+  public editProfile(formData: TEditProfileFormData) {
     const [fetcher] = this.checkSourses();
     return fetcher.post(
       '/signup',
