@@ -4,7 +4,7 @@ import { FormController } from 'shared/components/form';
 import { isSomeValues } from 'shared/helpers';
 import { ButtonFilled } from 'shared/ui/button';
 import { Input } from 'shared/ui/input';
-import { SignupForm } from '../ui';
+import { EditProfileForm } from '../ui';
 
 type TFieldUnion =
   | 'first_name'
@@ -12,8 +12,7 @@ type TFieldUnion =
   | 'email'
   | 'phone'
   | 'login'
-  | 'password'
-  | 'confirm';
+  | 'display_name';
 
 const inputMap = {
   first_name: new Input({
@@ -56,19 +55,11 @@ const inputMap = {
     error: false,
     value: '',
   }),
-  password: new Input({
-    id: 'password',
-    name: 'password',
-    placeholder: 'Password',
-    type: 'password',
-    error: false,
-    value: '',
-  }),
-  confirm: new Input({
-    id: 'confirm',
-    name: 'confirm',
-    placeholder: 'Confirm password',
-    type: 'password',
+  display_name: new Input({
+    id: 'display_name',
+    name: 'display_name',
+    placeholder: 'Username',
+    type: 'text',
     error: false,
     value: '',
   }),
@@ -76,11 +67,11 @@ const inputMap = {
 
 const submitButton = new ButtonFilled({
   type: 'submit',
-  label: 'Sign up',
-  name: 'signupSubmit',
+  label: 'Save',
+  name: 'saveButton',
 });
 
-const form = new SignupForm({
+const form = new EditProfileForm({
   ...inputMap,
   submitButton,
 });
@@ -91,14 +82,14 @@ const formElements = {
   buttonMap: { submitButton },
 };
 
-const signupForm = new FormController<TFieldUnion>(formElements);
+const editProfileForm = new FormController<TFieldUnion>(formElements);
 
-signupForm.onInputBlur((formData, setHints) => {
+editProfileForm.onInputBlur((formData, setHints) => {
   const fieldHits = verifyService.verify<TFieldUnion>(formData);
   setHints(fieldHits);
 });
 
-signupForm.onStartSubmit((formData, setHints, next) => {
+editProfileForm.onStartSubmit((formData, setHints, next) => {
   const fieldHits = verifyService.verify(formData);
   if (isSomeValues(fieldHits)) {
     setHints(fieldHits);
@@ -107,15 +98,15 @@ signupForm.onStartSubmit((formData, setHints, next) => {
   }
 });
 
-signupForm.onRequest(reqState => {
+editProfileForm.onRequest(reqState => {
   const { fetching } = reqState;
   submitButton.setProps({ load: fetching, disabled: fetching });
 });
 
-signupForm.request((formData, update) => {
+editProfileForm.request((formData, update) => {
   console.log(formData);
   update({ error: '', fetching: true, success: false });
-  API.signup(formData)
+  API.editProfile(formData)
     .then(data => {
       console.log(data);
       update({ error: '', fetching: false, success: true });

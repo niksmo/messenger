@@ -1,23 +1,23 @@
-import { form } from 'features/signup';
+import { form } from 'features/edit-profile';
 import { ButtonLight } from 'shared/ui/button';
-import { PageSignup } from './signup-page';
+import { PageEditProfile } from './edit-profile-page';
 import { Link } from 'shared/components/router';
 
 const button = new ButtonLight({
-  label: 'Sign in',
+  label: 'Cancel',
   name: 'transitionButton',
   type: 'button',
 });
 
 const transitionButton = new Link({
-  href: '/signin/',
+  href: '/',
   ariaHidden: true,
   children: button,
 });
 
-const signupPage = new PageSignup({
+const editProfilePage = new PageEditProfile({
   form,
   transitionButton,
 });
 
-export { signupPage };
+export { editProfilePage };
