@@ -19,6 +19,4 @@ registerPaths([
   ['/500/', internalErrorPage],
 ]);
 
-app.setProps({ page: signinPage });
-
 export default app;

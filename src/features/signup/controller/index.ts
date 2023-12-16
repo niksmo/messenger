@@ -98,7 +98,7 @@ signupForm.onInputBlur((formData, setHints) => {
   setHints(fieldHits);
 });
 
-signupForm.onStartSubmit((formData, setHints, next) => {
+signupForm.onStartSubmit((next, formData, setHints) => {
   const fieldHits = verifyService.verify(formData);
   if (isSomeValues(fieldHits)) {
     setHints(fieldHits);

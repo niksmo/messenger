@@ -3,12 +3,10 @@ import templateSpec from './bubble.template.hbs';
 import baseStyles from '../base-styles.module.css';
 import viewerStyles from './styles.module.css';
 
-type TMessageStatus = 'readed' | 'delivered';
-
 interface IOwnBubbleProps {
   text: string;
   time: string;
-  status: TMessageStatus;
+  status: string;
 }
 
 const styles = { ...baseStyles, ...viewerStyles };
@@ -20,7 +18,7 @@ const enum STATUS {
   DELIVERED = 'status_style_delivered',
 }
 
-let curStatus: TMessageStatus;
+let curStatus: string;
 
 export class BubbleOwn extends Block {
   constructor(props: IOwnBubbleProps & IBlockProps) {

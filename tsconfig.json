@@ -18,6 +18,7 @@
       "app/*": ["app/*"],
       "entites/*": ["entities/*"],
       "features/*": ["features/*"],
+      "widgets/*": ["widgets/*"],
       "pages/*": ["pages/*"],
       "shared/*": ["shared/*"],
     },

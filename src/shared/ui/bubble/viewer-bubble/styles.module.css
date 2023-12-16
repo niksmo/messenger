@@ -19,9 +19,9 @@
 }
 
 .status_style_readed {
-  mask-image: url(../../../../app/assets/svg/icon-16-readed.svg);
+  mask-image: url(/svg/icon-16-readed.svg);
 }
 
 .status_style_delivered {
-  mask-image: url(../../../../app/assets/svg/icon-16-delivered.svg);
+  mask-image: url(/svg/icon-16-delivered.svg);
 }

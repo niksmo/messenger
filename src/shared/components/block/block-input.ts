@@ -1,8 +1,8 @@
 import { Block, IBlockProps } from '.';
 import { IBlockInput } from '../interfaces';
 
-interface IBlockInputProps {
-  type: string;
+interface IBlockInputProps extends IBlockProps {
+  type?: string;
   name: string;
   value?: string;
   onInput?: (e: Event) => void;
@@ -12,10 +12,10 @@ abstract class BlockInput extends Block implements IBlockInput {
   private _type: string;
   private _name: string;
   private _value: string;
-  constructor(props: IBlockInputProps & IBlockProps) {
+  constructor(props: IBlockInputProps) {
     super(props);
     const { type, name, value } = props;
-    this._type = type;
+    this._type = type || '';
     this._name = name;
     this._value = value || '';
   }

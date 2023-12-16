@@ -69,7 +69,7 @@ class FormController<FieldUnion extends string>
     const formData = getFormData(this._elements);
     const setHints = this.setHints.bind(this);
     const next = this.next.bind(this);
-    this._eventBus.emit(EVENT.submitStart, formData, setHints, next);
+    this._eventBus.emit(EVENT.submitStart, next, formData, setHints);
   }
 
   private setHints(fieldHints: TFormHints<FieldUnion>): void {

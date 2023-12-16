@@ -59,7 +59,7 @@ changePasswordForm.onInputBlur((formData, setHints) => {
   setHints(fieldHits);
 });
 
-changePasswordForm.onStartSubmit((formData, setHints, next) => {
+changePasswordForm.onStartSubmit((next, formData, setHints) => {
   const fieldHits = verifyService.verify(formData);
   if (isSomeValues(fieldHits)) {
     setHints(fieldHits);

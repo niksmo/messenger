@@ -1,4 +1,11 @@
-import type { TIcon24 } from '../../../ui/icon/types';
+export type TIcon24 =
+  | 'new-contact'
+  | 'bucket'
+  | 'media'
+  | 'file'
+  | 'profile'
+  | 'lock'
+  | 'close';
 
 export interface IMenuItem {
   style: 'primary' | 'adverse';

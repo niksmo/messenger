@@ -53,7 +53,7 @@ signinForm.onInputBlur((formData, setHits) => {
   setHits(fieldHits);
 });
 
-signinForm.onStartSubmit((formData, setHits, next) => {
+signinForm.onStartSubmit((next, formData, setHits) => {
   const fieldHits = verifyService.verify(formData);
   if (isSomeValues(fieldHits)) {
     setHits(fieldHits);
