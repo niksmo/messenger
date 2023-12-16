@@ -20,3 +20,8 @@ export type TEditProfileFormData = {
   login: string;
   display_name: string;
 };
+
+export type TChangePasswordFormData = {
+  current_password: string;
+  new_password: string;
+};
