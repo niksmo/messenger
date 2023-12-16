@@ -1,4 +1,4 @@
-import { IBlock } from '../../interfaces';
+import { IBlock } from '../interfaces';
 
 window.addEventListener(
   'load',
