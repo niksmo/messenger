@@ -7,7 +7,11 @@ const app = express();
 
 const STATIC_ROOT = resolve('dist');
 
-app.use(express.static(STATIC_ROOT));
+app.use(express.static(STATIC_ROOT, { index: false }));
+
+app.get('*', (req, res) => {
+  res.sendFile(resolve(STATIC_ROOT, 'index.html'));
+});
 
 app.listen(PORT, () => {
   console.log(`express server listen ${PORT}`);

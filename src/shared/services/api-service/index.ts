@@ -1,6 +1,7 @@
 import Fetcher from 'shared/packages/fetcher';
 import TokenService from '../token-service';
 import {
+  TChangePasswordFormData,
   TEditProfileFormData,
   TSigninFormData,
   TSignupFormData,
@@ -73,7 +74,17 @@ class APIService implements IAPIService {
   public editProfile(formData: TEditProfileFormData) {
     const [fetcher] = this.checkSourses();
     return fetcher.post(
-      '/signup',
+      '/profile/edit-profile',
+      formData,
+      { 'X-Debugg': 'mode/debugg' },
+      2000
+    );
+  }
+
+  public changePassword(formData: TChangePasswordFormData) {
+    const [fetcher] = this.checkSourses();
+    return fetcher.post(
+      '/profile/change-password',
       formData,
       { 'X-Debugg': 'mode/debugg' },
       2000

@@ -14,6 +14,7 @@ class Verifier implements IVerifier {
     login: TEMPLATE.login,
     email: TEMPLATE.email,
     password: TEMPLATE.password,
+    new_password: TEMPLATE.password,
     phone: TEMPLATE.phone,
   };
 
@@ -23,16 +24,17 @@ class Verifier implements IVerifier {
     login: HINT.login,
     email: HINT.email,
     password: HINT.password,
+    new_password: HINT.password,
     phone: HINT.phone,
   };
 
-  public verify<F extends string>(
-    map: Record<F, string>,
-    cb?: (result: Record<F, string>) => void
+  public verify<FieldName extends string>(
+    map: Record<FieldName, string>,
+    cb?: (result: Record<FieldName, string>) => void
   ) {
-    const entries = Object.entries(map) as [F, string][];
+    const entries = Object.entries(map) as [FieldName, string][];
 
-    const resultEntries: [F, string][] = entries.map(([key, value]) => {
+    const resultEntries: [FieldName, string][] = entries.map(([key, value]) => {
       const templateName = key;
       const template = this.templateMap[templateName];
       const support = this.supportMap[templateName];
@@ -46,7 +48,10 @@ class Verifier implements IVerifier {
       return [key, supportText];
     });
 
-    const resultMap = Object.fromEntries(resultEntries) as Record<F, string>;
+    const resultMap = Object.fromEntries(resultEntries) as Record<
+      FieldName,
+      string
+    >;
 
     if (cb) {
       cb(resultMap);
