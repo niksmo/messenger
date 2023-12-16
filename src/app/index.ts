@@ -6,11 +6,13 @@ import { changePasswordPage } from 'pages/change-password';
 import { notFoundPage } from 'pages/404';
 import { internalErrorPage } from 'pages/500';
 import app from './app';
+import { mainPage } from 'pages/main';
 routerProvider(app);
 
 registerPaths([
   ['/signin/', signinPage],
   ['/signup/', signupPage],
+  ['/', mainPage],
   ['/edit-profile/', editProfilePage],
   ['/change-password/', changePasswordPage],
   ['/404/', notFoundPage],
