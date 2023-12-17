@@ -19,10 +19,10 @@ type TIcon =
 type TStyle = keyof typeof STYLE;
 
 interface IIconButtonProps {
-  id: string;
   type: 'button' | 'submit';
   icon: TIcon;
   style: TStyle;
+  onClick?(e: Event): void;
 }
 
 let curStyle: TStyle = 'primary';

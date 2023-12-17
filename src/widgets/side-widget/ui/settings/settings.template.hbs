@@ -1,0 +1,35 @@
+<div class="{{styles.sidebar-content}} {{styles.sidebar__settings}}">
+  <header class="top-bar {{styles.settings__top-bar}}">
+    <div class="{{styles.settings__button}}">
+      {{closeButton}}
+    </div>
+
+    <h2 class="{{styles.settings__title}} no-select">Settings</h2>
+  </header>
+
+  <div class="{{styles.settings-content}}">
+    {{!-- {{> components/settings/profile }} --}}
+  </div>
+
+
+  <nav class="{{styles.settings__nav}} {{styles.settings-content}}">
+
+    <ul class="base-list">
+      {{!-- {{#each main.settings.nav as | item | }}
+      <li class="settings__nav-item">
+        {{#if item.href }}
+          <a class="base-link" href={{item.href}} aria-label="{{item.label}}"
+            draggable="false">
+            {{> components/settings/nav-item style=item.style icon=item.icon label=item.label }}
+          </a>
+        {{else}}
+          <button class="base-button" type="button" aria-label="{{item.label}}">
+            {{> components/settings/nav-item style=item.style icon=item.icon label=item.label }}
+          </button>
+        {{/if}}
+      </li>
+    {{/each}} --}}
+    </ul>
+
+  </nav>
+</div>

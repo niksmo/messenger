@@ -1,0 +1,17 @@
+<div class="{{styles.sidebar-content}}">
+  <header class="top-bar {{styles.chat-list__top-bar}}">
+    {{menuButton}}
+    {{search}}
+    {{addContact}}
+    {{!-- {{> components/search/search id="search" name="search" placeholder="Search"}}
+    {{> components/dropdown/dropdown id="add-chat" icon="add-chat" items=main.menu.addChat style="accent" posX="left" posY="bottom"}} --}}
+  </header>
+
+  <ul class="base-list {{styles.chat-list}}">
+    {{#each list }}
+      <li>
+        {{this}}
+      </li>
+    {{/each}}
+  </ul>
+</div>

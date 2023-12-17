@@ -7,7 +7,7 @@
       "Lorem ipsum dolor sit amet consecte adipisicing elit. Nihil quo vel quisquga aliquam nemo deserunt! Quis numquam cum exercitationem.",
     "time": "11:46",
     "unread": 5,
-    "isActive": true
+    "active": true
   },
   {
     "href": "#0002",
@@ -15,7 +15,7 @@
     "message": "Lorem ipsum dolor sit amet.",
     "time": "15:32",
     "status": "readed",
-    "isActive": false
+    "active": false
   },
   {
     "href": "#0003",
@@ -23,7 +23,7 @@
     "message": "Lorem ipsum dolor sit amet consecte adipisicing elit. Nihil quo vel quisquga aliquam nemo deserunt! Quis numquam cum exercitationem.",
     "time": "21.10.23",
     "unread": 2,
-    "isActive": false
+    "active": false
   },
   {
     "href": "#0004",
@@ -31,7 +31,7 @@
     "message": "Lorem ipsum dolor sit amet.",
     "time": "21.10.23",
     "status": "delivered",
-    "isActive": false
+    "active": false
   },
   {
     "href": "#0005",
@@ -39,7 +39,7 @@
     "message": "Lorem ipsum dolor sit amet consecte adipisicing elit. Nihil quo vel quisquga aliquam nemo deserunt! Quis numquam cum exercitationem.",
     "time": "Thu",
     "status": "readed",
-    "isActive": false
+    "active": false
   },
   {
     "href": "#0006",
@@ -47,7 +47,7 @@
     "message": "Lorem ipsum dolor sit amet.",
     "time": "21.10.23",
     "unread": 100,
-    "isActive": false
+    "active": false
   },
   {
     "href": "#0007",
@@ -55,7 +55,7 @@
     "message": "Lorem ipsum dolor sit amet consecte adipisicing elit. Nihil quo vel quisquga aliquam nemo deserunt! Quis numquam cum exercitationem.",
     "time": "21.10.23",
     "status": "readed",
-    "isActive": false
+    "active": false
   },
   {
     "href": "#0008",
@@ -63,7 +63,7 @@
     "message": "Lorem ipsum dolor sit amet.",
     "time": "21.10.23",
     "status": "delivered",
-    "isActive": false
+    "active": false
   },
   {
     "href": "#0009",
@@ -71,7 +71,7 @@
     "message": "Lorem ipsum dolor sit amet consecte adipisicing elit. Nihil quo vel quisquga aliquam nemo deserunt! Quis numquam cum exercitationem.",
     "time": "21.10.23",
     "unread": 21,
-    "isActive": false
+    "active": false
   },
   {
     "href": "#0010",
@@ -79,7 +79,7 @@
     "message": "Lorem ipsum dolor sit amet.",
     "time": "21.10.23",
     "status": "delivered",
-    "isActive": false
+    "active": false
   },
   {
     "href": "#0011",
@@ -87,7 +87,7 @@
     "message": "Lorem ipsum dolor sit amet consecte adipisicing elit. Nihil quo vel quisquga aliquam nemo deserunt! Quis numquam cum exercitationem.",
     "time": "21.10.23",
     "status": "delivered",
-    "isActive": false
+    "active": false
   },
   {
     "href": "#0012",
@@ -95,7 +95,7 @@
     "message": "Lorem ipsum dolor sit amet.",
     "time": "Thu",
     "status": "readed",
-    "isActive": false
+    "active": false
   },
   {
     "href": "#0013",
@@ -103,7 +103,7 @@
     "message": "Lorem ipsum dolor sit amet consecte adipisicing elit. Nihil quo vel quisquga aliquam nemo deserunt! Quis numquam cum exercitationem.",
     "time": "21.10.23",
     "status": "delivered",
-    "isActive": false
+    "active": false
   },
   {
     "href": "#0014",
@@ -111,6 +111,6 @@
     "message": "Lorem ipsum dolor sit amet.",
     "time": "21.10.23",
     "status": "readed",
-    "isActive": false
+    "active": false
   }
 ]
