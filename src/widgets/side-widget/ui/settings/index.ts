@@ -1,16 +1,13 @@
 import { Block } from 'shared/components/block';
+import { IconButton } from 'shared/ui/button';
+import { profileInfo } from 'entites/viewer/controller';
+import { ChangeAvatarButton } from 'features/change-avatar';
 import templateSpec from './settings.template.hbs';
 import styles from './styles.module.css';
-import { IconButton } from 'shared/ui/button';
 
 interface ISettingsProps {
   navList?: Block[];
 }
-
-// interface IInnerProps {
-//   profile: Block;
-//   navList: Block[];
-// }
 
 const VISIBLE_STYLE = styles['sidebar__settings_visible'];
 
@@ -22,7 +19,13 @@ export class Settings extends Block {
       style: 'primary',
     });
 
-    super(Object.assign(props, { closeButton }));
+    profileInfo.setProps({
+      changeAvatar: new ChangeAvatarButton({ name: 'avatar' }),
+    });
+
+    const profile = profileInfo;
+
+    super(Object.assign(props, { closeButton, profile }));
 
     closeButton.setProps({ onClick: this.closeSettings.bind(this) });
   }

@@ -1,5 +1,5 @@
 import { BlockInput } from 'shared/components/block';
-import { IBlockProps } from 'shared/components/block/block';
+import { Block, IBlockProps } from 'shared/components/block/block';
 import templateSpec from './button.template.hbs';
 
 interface IButtonProps {
@@ -8,6 +8,7 @@ interface IButtonProps {
   name: string;
   load?: boolean;
   disabled?: boolean;
+  children?: Block;
   onClick?: (e: Event) => void;
 }
 

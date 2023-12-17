@@ -15,8 +15,8 @@ export interface IChatListItem {
 }
 
 interface IChatListProps {
-  search?: Block;
-  menuButton?: Block;
+  search: Block;
+  menuButton: Block;
   addContact?: Block;
   chatList: IChatListItem[];
 }

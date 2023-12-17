@@ -45,16 +45,16 @@
   padding-right: 16px;
 }
 
-.settings__nav-item {
+.nav-list > :nth-child(n) {
   margin-top: 16px;
 }
 
-.settings__nav-item:last-child {
+.nav-list > :last-child {
   position: relative;
   margin-top: 44px;
 }
 
-.settings__nav-item:last-child::before {
+.nav-list > :last-child::before {
   content: '';
   width: 100%;
   top: -18px;
