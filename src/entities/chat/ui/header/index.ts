@@ -5,7 +5,7 @@ import styles from './styles.module.css';
 interface IChatHeaderProps {
   username: string;
   avatar: Block;
-  menu?: Block;
+  menu: Block;
 }
 
 export class ChatHeader extends Block {

@@ -14,7 +14,7 @@ interface IDayMessagesProps extends IBlockProps {
   messageList: IMessage[];
 }
 
-export class DayMessages extends Block<IDayMessagesProps> {
+export class DayMessages extends Block {
   constructor(props: IDayMessagesProps) {
     const { messageList } = props;
 

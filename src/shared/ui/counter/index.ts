@@ -1,8 +1,8 @@
-import { Block, IBlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import templateSpec from './counter.template.hbs';
 import stylesModule from './styles.module.css';
 
-interface ICounterProps extends IBlockProps {
+interface ICounterProps {
   count?: number;
 }
 
@@ -10,7 +10,7 @@ let curCount: number | undefined;
 
 const styles = { ...stylesModule };
 
-export class Counter extends Block<ICounterProps> {
+export class Counter extends Block {
   constructor(props: ICounterProps) {
     const { count } = props;
     curCount = count;

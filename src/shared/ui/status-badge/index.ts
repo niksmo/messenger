@@ -1,17 +1,17 @@
-import { Block, IBlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import templateSpec from './status-badge.template.hbs';
 import stylesModule from './styles.module.css';
 
 export type TStatus = 'readed' | 'delivered' | 'none';
 
-export interface IStatusBadge extends IBlockProps {
+export interface IStatusBadge {
   status: TStatus;
 }
 
 let curStatus: TStatus;
 const styles = { ...stylesModule };
 
-export class StatusBadge extends Block<IStatusBadge> {
+export class StatusBadge extends Block {
   constructor(props: IStatusBadge) {
     const { status } = props;
     curStatus = status;

@@ -21,7 +21,7 @@ interface innerProps {
   unreadCounter: Counter;
 }
 
-export class ChatItem extends Block<IChatItemProps> {
+export class ChatItem extends Block {
   constructor(props: IChatItemProps) {
     const { name, imageSrc: src, status, unread: count } = props;
 

@@ -3,7 +3,7 @@ import templateSpec from './container.template.hbs';
 import styles from './styles.module.css';
 
 interface IMessageSenderProps {
-  menu?: Block;
+  menu: Block;
   form: Block;
 }
 

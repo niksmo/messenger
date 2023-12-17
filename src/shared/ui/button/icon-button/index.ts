@@ -22,9 +22,9 @@ interface IIconButtonProps {
   type: 'button' | 'submit';
   icon: TIcon;
   style: TStyle;
-  id?: string;
-  role?: string;
-  ariaLabel?: string;
+  children?: Block | Block[];
+  role: string;
+  ariaLabel: string;
   onClick?(e: Event): void;
 }
 

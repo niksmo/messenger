@@ -17,6 +17,8 @@ export class Settings extends Block {
       type: 'button',
       icon: 'backward',
       style: 'primary',
+      role: 'menu',
+      ariaLabel: 'Back to contacts',
     });
 
     profileInfo.setProps({

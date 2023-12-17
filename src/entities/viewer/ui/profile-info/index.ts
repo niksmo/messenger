@@ -2,7 +2,7 @@ import { Block, IBlockProps } from 'shared/components/block';
 import templateSpec from './profile-info.template.hbs';
 import styles from './styles.module.css';
 
-interface IProfileInfoProps extends IBlockProps {
+interface IProfileInfoProps {
   avatar: Block;
   firstName: string;
   lastName: string;
@@ -10,7 +10,11 @@ interface IProfileInfoProps extends IBlockProps {
   changeAvatar?: Block;
 }
 
-export class ProfileInfo extends Block<IProfileInfoProps> {
+export class ProfileInfo extends Block {
+  constructor(props: IProfileInfoProps & IBlockProps) {
+    super(props);
+  }
+
   protected _getTemplateSpec(): TemplateSpecification {
     return templateSpec;
   }
