@@ -1,1 +1,1 @@
-export * from './day-messages';
+export { DayMessages } from './day-messages';

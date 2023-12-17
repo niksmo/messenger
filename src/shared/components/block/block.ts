@@ -7,30 +7,34 @@ import { EVENT, TMP_TAG } from './consts';
 
 interface IBlockProps {
   [key: string]: unknown;
+  id?: string | number;
 }
 
-abstract class Block implements IBlock {
-  private _id = uuid();
-  private _props: IBlockProps;
+abstract class Block<TProps extends IBlockProps = {}> implements IBlock {
+  private _stubId = uuid();
+  protected id?: string | number;
+  protected props;
   private _eventBus = new EventBus();
   private _templator = templator;
   private _shallowEqual = shallowEqual;
   private _element: Node | null = null;
   private _updatingPropsNum = 0;
 
-  constructor(props: IBlockProps = {}) {
-    this._props = this._proxyProps(props);
+  constructor(props: TProps = {} as TProps) {
+    const { id } = props;
+    this.id = id;
+    this.props = this._proxyProps(props);
     this._subscribe();
     this._eventBus.emit(EVENT.INIT, props);
   }
 
-  public get id() {
-    return this._id;
+  public get stubId() {
+    return this._stubId;
   }
 
   [Symbol.toPrimitive](a: 'string' | 'default' | 'number') {
     if (a === 'string' || a === 'default') {
-      return `<${TMP_TAG} data-id=${this._id}></${TMP_TAG}>`;
+      return `<${TMP_TAG} data-id=${this._stubId}></${TMP_TAG}>`;
     }
   }
 
@@ -81,7 +85,7 @@ abstract class Block implements IBlock {
     const compileTemplate = this._templator(this._getTemplateSpec());
     const styles = this._getStylesModule ? this._getStylesModule() : {};
     const htmlCode = compileTemplate({
-      ...this._props,
+      ...this.props,
       styles,
     });
     const tmpElement = document.createElement('template');
@@ -93,7 +97,7 @@ abstract class Block implements IBlock {
       return;
     }
 
-    const { blocks: childBlocks, events } = pickBlocksAndEvents(this._props);
+    const { blocks: childBlocks, events } = pickBlocksAndEvents(this.props);
 
     const stubs = Array.from(block.getElementsByTagName(TMP_TAG));
 
@@ -127,7 +131,7 @@ abstract class Block implements IBlock {
     shouldRender: boolean,
     _causeProps: Map<string, unknown>,
     _oldProps: IBlockProps,
-    _block: Block
+    _block: Block<TProps>
   ): boolean {
     return shouldRender;
   }
@@ -140,7 +144,7 @@ abstract class Block implements IBlock {
     this.didMount();
   }
 
-  private _didUpdate(oldProps: IBlockProps, newProps: IBlockProps) {
+  private _didUpdate(oldProps: TProps, newProps: TProps) {
     const [isEqual, causeProps] = this._shallowEqual(oldProps, newProps);
 
     const shouldRender = this.renderInterceptor(
@@ -169,10 +173,18 @@ abstract class Block implements IBlock {
     return this._element as HTMLElement;
   }
 
-  public setProps(newProps: IBlockProps) {
+  public setProps(newProps: Partial<TProps>) {
     this._updatingPropsNum = Object.keys(newProps).length;
 
-    Object.assign(this._props, newProps);
+    Object.assign(this.props, newProps);
+  }
+
+  public setVisible() {
+    this.getContent().style.display = 'block';
+  }
+
+  public setHidden() {
+    this.getContent().style.display = 'none';
   }
 }
 

@@ -3,7 +3,7 @@ import templateSpec from './main-page.template.hbs';
 import styles from './styles.module.css';
 
 interface IMainPageProps {
-  // side: Block;
+  sideWidget: Block;
   chatWidget: Block;
 }
 

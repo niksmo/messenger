@@ -1,0 +1,19 @@
+.status-badge {
+  width: 16px;
+  aspect-ratio: 1/1;
+  color: var(--status-icon-color, var(--color-element-accent));
+  background-color: currentColor;
+  mask-size: 100%;
+}
+
+.delivered {
+  mask-image: url(/svg/icon-16-delivered.svg);
+}
+
+.readed {
+  mask-image: url(/svg/icon-16-readed.svg);
+}
+
+.none {
+  display: none;
+}

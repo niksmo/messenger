@@ -19,15 +19,15 @@ const formController = new FormController({
   buttonMap: { submitButton },
 });
 
-formController.onStartSubmit(next => {
-  next();
-});
-
-formController.request(formData => {
-  console.log(formData);
-  const formEl = form.getContent() as HTMLFormElement;
-  formEl.reset();
-});
+formController
+  .onStartSubmit(next => {
+    next();
+  })
+  .request(formData => {
+    console.log(formData);
+    const formEl = form.getContent() as HTMLFormElement;
+    formEl.reset();
+  });
 
 const messageSender = new MessageSender({ form });
 

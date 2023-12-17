@@ -89,20 +89,24 @@ class FormController<FieldUnion extends string>
     this._eventBus.emit(EVENT.fetch, { ...this._requestState });
   }
 
-  onInputBlur(cb: TOnInputBlurCb<FieldUnion>): void {
+  onInputBlur(cb: TOnInputBlurCb<FieldUnion>) {
     this._eventBus.on(EVENT.inputBlur, cb);
+    return this;
   }
 
-  onStartSubmit(cb: TOnStartSubmitCb<FieldUnion>): void {
+  onStartSubmit(cb: TOnStartSubmitCb<FieldUnion>) {
     this._eventBus.on(EVENT.submitStart, cb);
+    return this;
   }
 
-  onRequest(cb: (reqState: TFetchState) => void): void {
+  onRequest(cb: (reqState: TFetchState) => void) {
     this._eventBus.on(EVENT.fetch, cb);
+    return this;
   }
 
-  request(cb: TRequestCb<FieldUnion>): void {
+  request(cb: TRequestCb<FieldUnion>) {
     this._eventBus.on(EVENT.request, cb);
+    return this;
   }
 }
 

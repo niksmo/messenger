@@ -1,23 +1,49 @@
 import { Block, IBlockProps } from 'shared/components/block';
 import templateSpec from './day-messages.template.hbs';
 import styles from './styles.module.css';
+import { getMessageBlocks } from './lib';
 
-interface IDayMessagesProps {
-  date: string;
-  messages: Block[];
+export interface IMessage {
+  time: string;
+  text: string;
+  status?: string;
 }
 
-export class DayMessages extends Block {
-  constructor(props: IDayMessagesProps & IBlockProps) {
+interface IDayMessagesProps extends IBlockProps {
+  date: string;
+  messageList: IMessage[];
+}
+
+export class DayMessages extends Block<IDayMessagesProps> {
+  constructor(props: IDayMessagesProps) {
+    const { messageList } = props;
+
+    props.messages = getMessageBlocks(messageList);
+
     super(props);
   }
+
   protected _getTemplateSpec(): TemplateSpecification {
     return templateSpec;
   }
+
   protected _getStylesModule(): CSSModuleClasses {
     return styles;
   }
-  public setProps(newProps: Partial<IDayMessagesProps>): void {
-    super.setProps(newProps);
+
+  public didUpdate(): void {
+    const props = this.props as IDayMessagesProps;
+    const { messageList } = props;
+    props.messages = getMessageBlocks(messageList);
+  }
+
+  protected renderInterceptor(
+    shouldRender: boolean,
+    causeProps: Map<string, unknown>
+  ): boolean {
+    if (causeProps.has('messages')) {
+      shouldRender = false;
+    }
+    return shouldRender;
   }
 }

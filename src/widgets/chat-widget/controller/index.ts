@@ -1,5 +1,4 @@
 import { Avatar } from 'shared/ui/avatar';
-import { Bubble, BubbleOwn } from 'shared/ui/bubble';
 import { ChatHeader } from 'entites/chat';
 import { DayMessages } from 'entites/message';
 import { messageSender as sender } from 'features/send-message';
@@ -17,18 +16,8 @@ const avatar = new Avatar({
 const header = new ChatHeader({ avatar, username: NAME });
 
 const messages = data.map(day => {
-  const { date, messages } = day;
-
-  const bubbleList = messages.map(message => {
-    const { text, time, status } = message;
-    if (status) {
-      return new BubbleOwn({ text, time, status });
-    } else {
-      return new Bubble({ text, time });
-    }
-  });
-
-  return new DayMessages({ date, messages: bubbleList });
+  const { date, messages: messageList } = day;
+  return new DayMessages({ date, messageList });
 });
 
 const chatWidget = new ChatWidget({ header, messages, sender });
