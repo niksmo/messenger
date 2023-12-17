@@ -12,6 +12,7 @@ export default defineConfig({
       app: '/src/app',
       entites: '/src/entities',
       features: '/src/features',
+      widgets: '/src/widgets',
       pages: '/src/pages',
       shared: '/src/shared',
     },

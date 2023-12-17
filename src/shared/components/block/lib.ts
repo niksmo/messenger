@@ -21,15 +21,15 @@ type TBlockId = string;
 type TEventType = string;
 
 export function pickBlocksAndEvents(props: IBlockProps): {
-  blocks: Map<TBlockId, Block>;
+  blocks: Map<TBlockId, Block<IBlockProps>>;
   events: Map<TEventType, EventListenerOrEventListenerObject>;
 } {
-  const blocks = new Map<TBlockId, Block>();
+  const blocks = new Map<TBlockId, Block<IBlockProps>>();
   const events = new Map<TEventType, EventListenerOrEventListenerObject>();
 
-  function setBlock(o: unknown) {
-    if (o instanceof Block) {
-      blocks.set(o.id, o);
+  function setBlock(block: unknown) {
+    if (block instanceof Block) {
+      blocks.set(block.stubId, block);
     }
   }
 

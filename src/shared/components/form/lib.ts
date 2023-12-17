@@ -26,9 +26,9 @@ export type TOnInputBlurCb<FieldUnion extends string> = (
 type TNextFn = () => void;
 
 export type TOnStartSubmitCb<FieldUnion extends string> = (
+  next: TNextFn,
   formData: TFormData<FieldUnion>,
-  setHints: TSetHintsFn<FieldUnion>,
-  next: TNextFn
+  setHints: TSetHintsFn<FieldUnion>
 ) => void;
 
 export type TRequestCb<FieldUnion extends string> = (

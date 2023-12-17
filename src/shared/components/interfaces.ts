@@ -4,6 +4,8 @@ export interface IBlock {
   dispatchDidMount(): void;
   getContent(): void;
   setProps(arg: Record<string, unknown>): void;
+  setVisible(): void;
+  setHidden(): void;
 }
 
 export interface IBlockInput extends IBlock {

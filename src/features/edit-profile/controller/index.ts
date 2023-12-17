@@ -89,7 +89,7 @@ editProfileForm.onInputBlur((formData, setHints) => {
   setHints(fieldHits);
 });
 
-editProfileForm.onStartSubmit((formData, setHints, next) => {
+editProfileForm.onStartSubmit((next, formData, setHints) => {
   const fieldHits = verifyService.verify(formData);
   if (isSomeValues(fieldHits)) {
     setHints(fieldHits);
