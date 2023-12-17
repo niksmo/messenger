@@ -31,7 +31,7 @@
   height: var(--icon-size);
   background-color: currentColor;
   mask-size: 100%;
-  mask-image: url(../../../svg/icon-16-search.svg);
+  mask-image: url(/svg/icon-16-search.svg);
   cursor: text;
 
   transition: color 450ms ease-in-out;
@@ -52,7 +52,7 @@
   color: var(--color-element-primary);
   background-color: currentColor;
   mask-size: 100%;
-  mask-image: url(../../../svg/icon-16-close.svg);
+  mask-image: url(/svg/icon-16-close.svg);
 }
 
 .search::-webkit-search-cancel-button:hover {
