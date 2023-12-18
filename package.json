@@ -12,7 +12,7 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "stylelint": "stylelint \"**/*.css\"",
-    "eslint": "node_modules/.bin/eslint \"src/**/*.{ts,js}\"",
+    "eslint": "node_modules/.bin/eslint \"/**/*.{ts,js}\"",
     "lint-check": "npm run typecheck && prettier . --check && npm run stylelint && npm run eslint",
     "lint-fix": "stylelint \"**/*.css\" --fix && prettier . --write && npx eslint \"src/**/*.ts\" --fix"
   },
