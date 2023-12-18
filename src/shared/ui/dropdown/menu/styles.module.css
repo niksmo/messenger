@@ -10,7 +10,9 @@
   z-index: var(--z-menu);
   scale: 0;
   opacity: 0;
-  transition: scale 150ms ease-out, opacity 100ms ease-out;
+  transition:
+    scale 150ms ease-out,
+    opacity 100ms ease-out;
 }
 
 .menu_visible {

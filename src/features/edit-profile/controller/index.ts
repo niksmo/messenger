@@ -98,7 +98,7 @@ editProfileForm.onStartSubmit((next, formData, setHints) => {
   }
 });
 
-editProfileForm.onRequest(reqState => {
+editProfileForm.onRequest((reqState) => {
   const { fetching } = reqState;
   submitButton.setProps({ load: fetching, disabled: fetching });
 });
@@ -107,11 +107,11 @@ editProfileForm.request((formData, update) => {
   console.log(formData);
   update({ error: '', fetching: true, success: false });
   API.editProfile(formData)
-    .then(data => {
+    .then((data) => {
       console.log(data);
       update({ error: '', fetching: false, success: true });
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error);
       update({ error: '[debugg error]', fetching: false, success: false });
     });

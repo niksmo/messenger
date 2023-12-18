@@ -8,11 +8,11 @@
 }
 
 .delivered {
-  mask-image: url("/svg/icon-16-delivered.svg");
+  mask-image: url('/svg/icon-16-delivered.svg');
 }
 
 .readed {
-  mask-image: url("/svg/icon-16-readed.svg");
+  mask-image: url('/svg/icon-16-readed.svg');
 }
 
 .none {

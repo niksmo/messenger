@@ -67,7 +67,7 @@ export function renderHits(
   fieldHints: Record<string, string>,
   inputBlocks: Record<string, IBlockInput>
 ) {
-  Object.values(inputBlocks).forEach(inputBlock => {
+  Object.values(inputBlocks).forEach((inputBlock) => {
     const support = fieldHints[inputBlock.getName()];
     inputBlock.setProps({ support, error: Boolean(support) });
   });

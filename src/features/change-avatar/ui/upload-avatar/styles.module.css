@@ -32,7 +32,7 @@
   height: 100%;
   color: transparent;
   background-color: currentcolor;
-  mask-image: url("/svg/cam.svg");
+  mask-image: url('/svg/cam.svg');
   mask-repeat: no-repeat;
   mask-position: center;
   transition: all 100ms linear;
@@ -42,7 +42,7 @@
   visibility: visible;
   color: var(--color-element-special);
   background-color: currentcolor;
-  mask-image: url("/svg/cam.svg");
+  mask-image: url('/svg/cam.svg');
   mask-repeat: no-repeat;
   mask-position: center;
 }

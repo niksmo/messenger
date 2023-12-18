@@ -16,7 +16,7 @@ const avatar = new Avatar({
 
 const header = new ChatHeader({ avatar, username: NAME, menu: deleteChatMenu });
 
-const messages = data.map(day => {
+const messages = data.map((day) => {
   const { date, messages: messageList } = day;
   return new DayMessages({ date, messageList });
 });

@@ -38,7 +38,7 @@ class FormController<FieldUnion extends string>
     const onBlur = this.onBlur.bind(this);
     const onSubmit = this.onSubmit.bind(this);
 
-    Object.values(inputMap).forEach(inputBlock => {
+    Object.values(inputMap).forEach((inputBlock) => {
       inputBlock.setProps({
         onInput,
         onBlur,

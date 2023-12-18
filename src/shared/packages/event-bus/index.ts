@@ -21,7 +21,7 @@ class EventBus {
     }
 
     if (curListeners.length > 0) {
-      curListeners = curListeners.filter(cb => cb === targetCb);
+      curListeners = curListeners.filter((cb) => cb === targetCb);
     }
 
     if (curListeners.length === 0) {
@@ -36,7 +36,7 @@ class EventBus {
       return;
     }
 
-    this._listeners[event]?.forEach(cb => {
+    this._listeners[event]?.forEach((cb) => {
       cb(...args);
     });
   }

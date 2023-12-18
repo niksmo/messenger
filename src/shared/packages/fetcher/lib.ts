@@ -11,7 +11,7 @@ const enum METHOD {
 const SCHEMES = [HTTP, HTTPS];
 
 function isSupportScheme(scheme: string): boolean {
-  return SCHEMES.some(supScheme => supScheme === scheme);
+  return SCHEMES.some((supScheme) => supScheme === scheme);
 }
 
 function normalizeURL(origin: string): string | null {
@@ -61,7 +61,7 @@ function serializeToSearch(body: Record<string, string>): string {
     return '';
   }
 
-  const searchEntries = entries.map(entry => entry.join('='));
+  const searchEntries = entries.map((entry) => entry.join('='));
   const searchString = ['?', ...searchEntries.join('&')].join('');
   return searchString;
 }

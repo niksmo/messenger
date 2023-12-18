@@ -14,8 +14,12 @@
   position: absolute;
   translate: 13px -40px;
   scale: 1;
-  transition: translate 100ms linear, background-color 50ms linear 30ms,
-    visibility 100ms linear, opacity 100ms linear, scale 100ms linear;
+  transition:
+    translate 100ms linear,
+    background-color 50ms linear 30ms,
+    visibility 100ms linear,
+    opacity 100ms linear,
+    scale 100ms linear;
 }
 
 .form-input__inner {

@@ -66,7 +66,7 @@ formController
       next();
     }
   })
-  .request(formData => {
+  .request((formData) => {
     console.log(formData);
     const formEl = form.getContent() as HTMLFormElement;
     formEl.reset();
