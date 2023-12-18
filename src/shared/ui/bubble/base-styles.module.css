@@ -5,12 +5,10 @@
   min-width: 84px;
   width: fit-content;
   max-width: 450px;
-
   font-size: var(--font-body-medium-size);
   line-height: var(--font-body-medium-height);
   font-weight: var(--font-body-medium-weight);
   letter-spacing: var(--font-body-medium-spacing);
-
   color: var(--color-text-primary);
   background-color: var(--color-background-basic);
   border-radius: 12px 12px 12px 0;

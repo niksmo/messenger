@@ -33,7 +33,7 @@ export class ChatList extends Block {
 
     const { chatList } = blockProps;
 
-    blockProps.list = chatList.map(itemData => {
+    blockProps.list = chatList.map((itemData) => {
       const { src: imageSrc, ...rest } = itemData;
       return new ChatItem({
         imageSrc,

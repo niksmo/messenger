@@ -13,7 +13,6 @@
   border: none;
   border-radius: 8px;
   background: var(--background-basic, #f4f4f4);
-
   color: var(--color-text-primary);
   font-size: var(--font-body-medium-size);
   font-weight: var(--font-body-medium-weight);
@@ -29,11 +28,10 @@
   padding: 2px;
   width: var(--icon-size);
   height: var(--icon-size);
-  background-color: currentColor;
+  background-color: currentcolor;
   mask-size: 100%;
-  mask-image: url(/svg/icon-16-search.svg);
+  mask-image: url('/svg/icon-16-search.svg');
   cursor: text;
-
   transition: color 450ms ease-in-out;
 }
 
@@ -50,9 +48,9 @@
   width: var(--icon-size);
   height: var(--icon-size);
   color: var(--color-element-primary);
-  background-color: currentColor;
+  background-color: currentcolor;
   mask-size: 100%;
-  mask-image: url(/svg/icon-16-close.svg);
+  mask-image: url('/svg/icon-16-close.svg');
 }
 
 .search::-webkit-search-cancel-button:hover {

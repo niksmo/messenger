@@ -6,6 +6,7 @@ export class ChangeAvatarButton extends BlockInput {
   protected _getTemplateSpec(): TemplateSpecification {
     return templateSpec;
   }
+
   protected _getStylesModule(): CSSModuleClasses {
     return styles;
   }

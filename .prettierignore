@@ -1,0 +1,7 @@
+node_modules
+dist
+.prettierrc
+*.hbs
+*.html
+*.json
+*.yml

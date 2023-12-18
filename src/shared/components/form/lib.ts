@@ -1,4 +1,4 @@
-import { IBlock, IBlockForm, IBlockInput } from '../interfaces';
+import { IBlock, IBlockInput } from '../interfaces';
 
 export const enum EVENT {
   inputBlur = 'inputBlur',
@@ -45,7 +45,7 @@ export interface IFormController<FieldUnion extends string> {
 }
 
 export type TFormElements = {
-  form: IBlockForm;
+  form: IBlock;
   inputMap: Record<string, IBlockInput>;
   buttonMap: Record<string, IBlock>;
 };
@@ -67,7 +67,7 @@ export function renderHits(
   fieldHints: Record<string, string>,
   inputBlocks: Record<string, IBlockInput>
 ) {
-  Object.values(inputBlocks).forEach(inputBlock => {
+  Object.values(inputBlocks).forEach((inputBlock) => {
     const support = fieldHints[inputBlock.getName()];
     inputBlock.setProps({ support, error: Boolean(support) });
   });

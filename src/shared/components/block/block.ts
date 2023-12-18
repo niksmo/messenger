@@ -101,7 +101,7 @@ abstract class Block<TProps extends IBlockProps = {}> implements IBlock {
 
     const stubs = Array.from(block.getElementsByTagName(TMP_TAG));
 
-    stubs.forEach(stub => {
+    stubs.forEach((stub) => {
       if (stub instanceof HTMLUnknownElement && stub.dataset.id) {
         const childBlock = childBlocks.get(stub.dataset.id);
 

@@ -9,13 +9,11 @@
   cursor: pointer;
   appearance: none;
   background-color: unset;
-
   font-family: inherit;
   font-size: var(--font-label-large-size);
   font-weight: var(--font-label-large-weight);
   line-height: var(--font-label-large-height);
   letter-spacing: var(--font-label-large-spacing);
-
   transition: all 50ms linear;
 }
 

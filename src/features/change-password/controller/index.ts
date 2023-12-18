@@ -68,7 +68,7 @@ changePasswordForm.onStartSubmit((next, formData, setHints) => {
   }
 });
 
-changePasswordForm.onRequest(reqState => {
+changePasswordForm.onRequest((reqState) => {
   const { fetching } = reqState;
   submitButton.setProps({ load: fetching, disabled: fetching });
 });
@@ -77,11 +77,11 @@ changePasswordForm.request((formData, update) => {
   console.log(formData);
   update({ error: '', fetching: true, success: false });
   API.changePassword(formData)
-    .then(data => {
+    .then((data) => {
       console.log(data);
       update({ error: '', fetching: false, success: true });
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error);
       update({ error: '[debugg error]', fetching: false, success: false });
     });

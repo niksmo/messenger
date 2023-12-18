@@ -1,6 +1,7 @@
 .nav-item {
   --gap: 8px;
   --icon-size: 24px;
+
   padding: 8px;
   display: flex;
   column-gap: var(--gap);
