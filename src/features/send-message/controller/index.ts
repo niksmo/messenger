@@ -53,15 +53,18 @@ const submitButton = new IconButton({
 
 const form = new MessageForm({ input: message, submitButton });
 
-const formController = new FormController({
+const formController = new FormController<'message'>({
   form,
   inputMap: { message },
   buttonMap: { submitButton },
 });
 
 formController
-  .onStartSubmit(next => {
-    next();
+  .onStartSubmit((next, formData) => {
+    const { message } = formData;
+    if (message !== '') {
+      next();
+    }
   })
   .request(formData => {
     console.log(formData);

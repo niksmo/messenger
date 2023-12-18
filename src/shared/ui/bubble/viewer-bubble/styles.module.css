@@ -2,7 +2,7 @@
   margin-left: auto;
   color: var(--color-text-white);
   background-color: var(--color-background-accent);
-  border-radius: 12px 12px 0 12px;
+  border-radius: 12px 12px 0;
 }
 
 .bubble_own .bubble__time {
@@ -14,14 +14,14 @@
   height: 14px;
   width: 14px;
   color: var(--color-element-white);
-  background-color: currentColor;
+  background-color: currentcolor;
   mask-size: 100%;
 }
 
 .status_style_readed {
-  mask-image: url(/svg/icon-16-readed.svg);
+  mask-image: url("/svg/icon-16-readed.svg");
 }
 
 .status_style_delivered {
-  mask-image: url(/svg/icon-16-delivered.svg);
+  mask-image: url("/svg/icon-16-delivered.svg");
 }

@@ -7,8 +7,8 @@
   --badge-background-color: var(--color-element-special);
   --badge-text-color: var(--color-text-white);
   --status-icon-color: var(--color-element-accent);
-  --text-fader-color-start: hsla(var(--color-base-white) / 0.3);
-  --text-fader-color-end: hsla(var(--color-base-white) / 1);
+  --text-fader-color-start: hsla(var(--color-base-white) / 30%);
+  --text-fader-color-end: hsla(var(--color-base-white) / 100%);
 
   box-sizing: border-box;
   position: relative;
@@ -29,8 +29,18 @@
   --badge-background-color: var(--color-element-white);
   --badge-text-color: var(--color-element-special);
   --status-icon-color: var(--color-element-white);
-  --text-fader-color-start: hsla(var(--color-base-blue-0) / 0.3);
-  --text-fader-color-end: hsla(var(--color-base-blue-0) / 1);
+  --text-fader-color-start: hsla(var(--color-base-blue-0) / 30%);
+  --text-fader-color-end: hsla(var(--color-base-blue-0) / 100%);
+}
+
+.chat-info::after {
+  content: '';
+  background-color: var(--color-element-tertiary);
+  bottom: calc(0px - var(--item-padding));
+  height: 1px;
+  position: absolute;
+  right: calc(0px - var(--item-padding));
+  width: calc(100% + var(--item-padding));
 }
 
 .chat-item_active .chat-info::after {
@@ -55,15 +65,7 @@
   height: 100%;
 }
 
-.chat-info::after {
-  content: '';
-  background-color: var(--color-element-tertiary);
-  bottom: calc(0px - var(--item-padding));
-  height: 1px;
-  position: absolute;
-  right: calc(0px - var(--item-padding));
-  width: calc(100% + var(--item-padding));
-}
+
 
 .chat-info__heading {
   display: flex;
@@ -80,6 +82,7 @@
   font-weight: var(--font-label-large-weight);
   letter-spacing: var(--font-label-large-spacing);
   --max-lines: 1;
+
   max-height: calc(var(--font-label-large-height) * var(--max-lines));
   overflow: hidden;
 }
@@ -124,6 +127,7 @@
   letter-spacing: var(--font-body-medium-spacing);
 
   --max-lines: 2;
+
   max-height: calc(var(--font-body-medium-height) * var(--max-lines));
   overflow: hidden;
 }

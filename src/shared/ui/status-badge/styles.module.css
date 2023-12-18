@@ -3,16 +3,16 @@
   flex-shrink: 0;
   aspect-ratio: 1/1;
   color: var(--status-icon-color, var(--color-element-accent));
-  background-color: currentColor;
+  background-color: currentcolor;
   mask-size: 100%;
 }
 
 .delivered {
-  mask-image: url(/svg/icon-16-delivered.svg);
+  mask-image: url("/svg/icon-16-delivered.svg");
 }
 
 .readed {
-  mask-image: url(/svg/icon-16-readed.svg);
+  mask-image: url("/svg/icon-16-readed.svg");
 }
 
 .none {

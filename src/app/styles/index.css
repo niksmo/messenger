@@ -1,19 +1,17 @@
 @charset "utf-8";
 
-@import './fonts.css';
-@import './colors.css';
-
-@import './blocks/font-theme.css';
-@import './blocks/base.css';
-@import './blocks/base-list.css';
-@import './blocks/base-link.css';
-@import './blocks/base-button.css';
-@import './blocks/form.css';
-@import './blocks/page.css';
-@import './blocks/animate.css';
-@import './blocks/top-bar.css';
-@import './blocks/no-select.css';
-@import './blocks/visually-hidden.css';
-
-@import './elevation.css';
-@import './decoration.css';
+@import url('./fonts.css');
+@import url('./colors.css');
+@import url('./blocks/font-theme.css');
+@import url('./blocks/base.css');
+@import url('./blocks/base-list.css');
+@import url('./blocks/base-link.css');
+@import url('./blocks/base-button.css');
+@import url('./blocks/form.css');
+@import url('./blocks/page.css');
+@import url('./blocks/animate.css');
+@import url('./blocks/top-bar.css');
+@import url('./blocks/no-select.css');
+@import url('./blocks/visually-hidden.css');
+@import url('./elevation.css');
+@import url('./decoration.css');
