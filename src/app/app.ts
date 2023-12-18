@@ -8,4 +8,4 @@ export class App extends Block {
   }
 }
 
-export default new App();
+export default new App({});

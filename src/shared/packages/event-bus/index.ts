@@ -1,19 +1,22 @@
+// eslint-disable-next-line @typescript-eslint/ban-types
+type TFn = Function;
+
 class EventBus {
-  private _listeners: Record<string, Function[]>;
+  private _listeners: Record<string, TFn[]>;
   constructor() {
     this._listeners = Object.create(null);
   }
 
-  public on(event: string, cb: Function) {
+  public on(event: string, fn: TFn): void {
     if (!this._listeners[event]) {
-      this._listeners[event] = [cb];
+      this._listeners[event] = [fn];
       return;
     }
 
-    this._listeners?.[event]?.push(cb);
+    this._listeners?.[event]?.push(fn);
   }
 
-  public off(event: string, targetCb: Function) {
+  public off(event: string, targetCb: TFn): void {
     let curListeners = this._listeners[event];
 
     if (!curListeners) {
@@ -21,33 +24,21 @@ class EventBus {
     }
 
     if (curListeners.length > 0) {
-      curListeners = curListeners.filter((cb) => cb === targetCb);
+      curListeners = curListeners.filter((fn) => fn === targetCb);
     }
 
-    if (curListeners.length === 0) {
-      delete this._listeners[event];
-    } else {
-      this._listeners[event] = curListeners;
-    }
+    this._listeners[event] = curListeners;
   }
 
-  public emit(event: string, ...args: unknown[]) {
+  public emit(event: string, ...args: unknown[]): void {
     if (!this._listeners[event]) {
       return;
     }
 
-    this._listeners[event]?.forEach((cb) => {
-      cb(...args);
+    this._listeners[event]?.forEach((fn) => {
+      fn(...args);
     });
   }
 }
 
-abstract class EventsMember<T> {
-  protected eventMap = new Map<T, Function>();
-
-  public addEventCb(eventType: T, cb: Function) {
-    this.eventMap.set(eventType, cb);
-  }
-}
-
-export { EventBus, EventsMember };
+export { EventBus };

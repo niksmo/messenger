@@ -4,9 +4,7 @@ import { editProfileLink } from 'features/edit-profile';
 import { changePasswordLink } from 'features/change-password';
 import { logoutLink } from 'features/logout';
 import { addContactMenu } from 'features/add-contact';
-import { Settings } from '../ui';
-import { ChatList, IChatListItem } from '../ui';
-import { SideWidget } from '../ui';
+import { Settings, ChatList, type IChatListItem, SideWidget } from '../ui';
 
 import mockData from 'shared/mock-data/chat-list.json';
 

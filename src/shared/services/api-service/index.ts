@@ -1,10 +1,10 @@
 import Fetcher from 'shared/packages/fetcher';
 import TokenService from '../token-service';
 import {
-  TChangePasswordFormData,
-  TEditProfileFormData,
-  TSigninFormData,
-  TSignupFormData,
+  type TChangePasswordFormData,
+  type TEditProfileFormData,
+  type TSigninFormData,
+  type TSignupFormData,
 } from './model';
 
 export type TAPIRequest = (
@@ -22,24 +22,25 @@ interface IAPIFetcher {
 }
 
 interface IAPITokenService {
-  setToken(token: string): void;
-  getToken(): string;
+  setToken: (token: string) => void;
+  getToken: () => string;
 }
 
 interface IAPIService {
-  registerFetcher(fetcher: IAPIFetcher): this;
-  registerTokenService(tokenSevice: IAPITokenService): this;
+  registerFetcher: (fetcher: IAPIFetcher) => this;
+  registerTokenService: (tokenSevice: IAPITokenService) => this;
 }
 
 class APIService implements IAPIService {
   private _fetcher: IAPIFetcher | null = null;
   private _tokenService: IAPITokenService | null = null;
 
-  public registerFetcher(fetcher: IAPIFetcher) {
+  public registerFetcher(fetcher: IAPIFetcher): this {
     this._fetcher = fetcher;
     return this;
   }
-  public registerTokenService(tokenSevice: IAPITokenService) {
+
+  public registerTokenService(tokenSevice: IAPITokenService): this {
     this._tokenService = tokenSevice;
     return this;
   }
@@ -51,41 +52,43 @@ class APIService implements IAPIService {
     return [this._fetcher, this._tokenService];
   }
 
-  public signin(formData: TSigninFormData) {
+  public async signin(formData: TSigninFormData): Promise<unknown> {
     const [fetcher] = this.checkSourses();
-    return fetcher.post(
+    return await fetcher.post(
       '/signin',
-      formData,
+      formData as unknown as Record<string, string>,
       { 'X-Debugg': 'mode/debugg' },
       2000
     );
   }
 
-  public signup(formData: TSignupFormData) {
+  public async signup(formData: TSignupFormData): Promise<unknown> {
     const [fetcher] = this.checkSourses();
-    return fetcher.post(
+    return await fetcher.post(
       '/signup',
-      formData,
+      formData as unknown as Record<string, string>,
       { 'X-Debugg': 'mode/debugg' },
       2000
     );
   }
 
-  public editProfile(formData: TEditProfileFormData) {
+  public async editProfile(formData: TEditProfileFormData): Promise<unknown> {
     const [fetcher] = this.checkSourses();
-    return fetcher.post(
+    return await fetcher.post(
       '/profile/edit-profile',
-      formData,
+      formData as unknown as Record<string, string>,
       { 'X-Debugg': 'mode/debugg' },
       2000
     );
   }
 
-  public changePassword(formData: TChangePasswordFormData) {
+  public async changePassword(
+    formData: TChangePasswordFormData
+  ): Promise<unknown> {
     const [fetcher] = this.checkSourses();
-    return fetcher.post(
+    return await fetcher.post(
       '/profile/change-password',
-      formData,
+      formData as unknown as Record<string, string>,
       { 'X-Debugg': 'mode/debugg' },
       2000
     );

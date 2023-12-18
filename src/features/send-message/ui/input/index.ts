@@ -1,4 +1,4 @@
-import { BlockInput, IBlockInputProps } from 'shared/components/block';
+import { BlockInput, type IBlockInputProps } from 'shared/components/block';
 import templateSpec from './input.template.hbs';
 import styles from './styles.module.css';
 
@@ -17,7 +17,7 @@ export class MessageInput extends BlockInput {
       keyof IBlockInputProps,
       IBlockInputProps[keyof IBlockInputProps]
     >
-  ) {
+  ): boolean {
     if (shouldRender && causeProps.has('value')) {
       shouldRender = false;
     }

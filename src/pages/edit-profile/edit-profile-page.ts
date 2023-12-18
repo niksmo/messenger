@@ -1,26 +1,18 @@
-import { Block, IBlockProps } from 'shared/components/block';
+import { Block, type IBlockProps } from 'shared/components/block';
 import templateSpec from './edit-profile-page.template.hbs';
 import styles from './styles.module.css';
 
-interface IPageEditProfile {
+interface IPageEditProfile extends IBlockProps {
   form: Block;
   transitionButton: Block;
 }
 
-export class PageEditProfile extends Block {
-  constructor(props: IPageEditProfile & IBlockProps) {
-    super(props);
-  }
-
-  protected _getTemplateSpec() {
+export class PageEditProfile extends Block<IPageEditProfile> {
+  protected _getTemplateSpec(): TemplateSpecification {
     return templateSpec;
   }
 
-  protected _getStylesModule() {
+  protected _getStylesModule(): CSSModuleClasses {
     return styles;
-  }
-
-  public setProps(newProps: Partial<IPageEditProfile>) {
-    super.setProps(newProps);
   }
 }

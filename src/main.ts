@@ -2,7 +2,7 @@ import app from 'app';
 
 const root = document.getElementById('app');
 
-if (!root) {
+if (root === null) {
   throw Error('add HTMLElement with id: #app');
 }
 

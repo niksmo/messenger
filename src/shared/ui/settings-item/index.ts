@@ -1,4 +1,4 @@
-import { Block } from 'shared/components/block';
+import { Block, type IBlockProps } from 'shared/components/block';
 import templateSpec from './settings-item.template.hbs';
 import stylesModule from './styles.module.css';
 
@@ -13,7 +13,7 @@ type TIcon24 =
 
 type TStyle = 'accent' | 'adverse';
 
-interface ISettingsItemProps {
+interface ISettingsItemProps extends IBlockProps {
   style: TStyle;
   icon: TIcon24;
   label: string;
@@ -30,7 +30,7 @@ const STYLE_MAP = {
 
 let curStyle: TStyle = 'accent';
 
-export class SettingsItem extends Block {
+export class SettingsItem extends Block<ISettingsItemProps> {
   constructor(props: ISettingsItemProps) {
     const { style } = props;
     curStyle = style;

@@ -1,4 +1,4 @@
-import { Block, IBlockProps } from 'shared/components/block';
+import { Block, type IBlockProps } from 'shared/components/block';
 import templateSpec from './bubble.template.hbs';
 import baseStyles from '../base-styles.module.css';
 import viewerStyles from './styles.module.css';
@@ -35,14 +35,14 @@ export class BubbleOwn extends Block {
     const statusStyle =
       curStatus === 'readed' ? styles[STATUS.READED] : styles[STATUS.DELIVERED];
 
-    styles[STYLE_KEY] = statusStyle || '';
+    styles[STYLE_KEY] = statusStyle ?? '';
 
     return styles;
   }
 
   public setProps(newProps: Partial<IOwnBubbleProps>): void {
     const { status } = newProps;
-    curStatus = status || curStatus;
+    curStatus = status ?? curStatus;
     super.setProps(newProps);
   }
 }

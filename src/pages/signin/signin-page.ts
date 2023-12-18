@@ -1,27 +1,19 @@
-import { Block, IBlockProps } from 'shared/components/block';
+import { Block, type IBlockProps } from 'shared/components/block';
 import templateSpec from './signin-page.template.hbs';
 import styles from './styles.module.css';
 
-interface IPageSigninProps {
+interface IPageSigninProps extends IBlockProps {
   message: Block;
   form: Block;
   transitionButton: Block;
 }
 
-export class PageSignin extends Block {
-  constructor(props: IPageSigninProps & IBlockProps) {
-    super(props);
-  }
-
-  protected _getTemplateSpec() {
+export class PageSignin extends Block<IPageSigninProps> {
+  protected _getTemplateSpec(): TemplateSpecification {
     return templateSpec;
   }
 
-  protected _getStylesModule() {
+  protected _getStylesModule(): CSSModuleClasses {
     return styles;
-  }
-
-  public setProps(newProps: Partial<IPageSigninProps>) {
-    super.setProps(newProps);
   }
 }

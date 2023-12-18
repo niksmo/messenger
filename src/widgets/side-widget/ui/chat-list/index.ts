@@ -1,4 +1,4 @@
-import { Block, IBlockProps } from 'shared/components/block';
+import { Block, type IBlockProps } from 'shared/components/block';
 import templateSpec from './chat-list.template.hbs';
 import styles from './styles.module.css';
 import { ChatItem } from 'entites/chat';
@@ -47,6 +47,7 @@ export class ChatList extends Block {
   protected _getTemplateSpec(): TemplateSpecification {
     return templateSpec;
   }
+
   protected _getStylesModule(): CSSModuleClasses {
     return styles;
   }

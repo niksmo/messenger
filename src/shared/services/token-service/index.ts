@@ -1,14 +1,14 @@
 interface ITokenService {
-  setToken(token: string): void;
-  getToken(): string;
+  setToken: (token: string) => void;
+  getToken: () => string;
 }
 
 class TokenService implements ITokenService {
-  public getToken() {
+  public getToken(): string {
     return '[token]';
   }
 
-  public setToken(_token: string) {}
+  public setToken(_token: string): void {}
 }
 
 export default TokenService;

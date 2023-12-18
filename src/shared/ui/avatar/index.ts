@@ -1,4 +1,4 @@
-import { Block, IBlockProps } from 'shared/components/block';
+import { Block, type IBlockProps } from 'shared/components/block';
 import imageTemplateSpec from './image.template.hbs';
 import stubTemplateSpec from './stub.template.hbs';
 import styles from './styles.module.css';
@@ -10,7 +10,7 @@ interface IAvatarProps {
 
 let curSrc = '';
 
-function setNamePrefix(props: IBlockProps) {
+function setNamePrefix(props: IBlockProps): IBlockProps {
   const { src, name } = props;
   const avatarImage = src as string;
   if (!avatarImage && typeof name === 'string') {
@@ -29,6 +29,7 @@ export class Avatar extends Block {
 
     super(props);
   }
+
   protected _getTemplateSpec(): TemplateSpecification {
     return curSrc ? imageTemplateSpec : stubTemplateSpec;
   }

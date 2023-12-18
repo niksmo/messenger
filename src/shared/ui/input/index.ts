@@ -1,11 +1,11 @@
-import { BlockInput } from 'shared/components/block';
-import { Block, IBlockProps } from 'shared/components/block/block';
+import type { Block, IBlockProps } from 'shared/components/block/block';
+import { BlockInput, type IBlockInputProps } from 'shared/components/block';
 import templateSpec from './input.template.hbs';
 import styles from './styles.module.css';
 
 type TInputTypes = 'text' | 'email' | 'password' | 'tel' | 'number';
 
-interface IInputProps {
+interface IInputProps extends IBlockInputProps {
   id: string;
   type: TInputTypes;
   name: string;
@@ -18,21 +18,13 @@ interface IInputProps {
   onFocus?: (e: Event) => void;
 }
 
-export class Input extends BlockInput {
-  constructor(props: IInputProps & IBlockProps) {
-    super(props);
-  }
-
-  protected _getTemplateSpec() {
+export class Input extends BlockInput<IInputProps> {
+  protected _getTemplateSpec(): TemplateSpecification {
     return templateSpec;
   }
 
-  protected _getStylesModule() {
+  protected _getStylesModule(): CSSModuleClasses {
     return styles;
-  }
-
-  public setProps(newProps: Partial<IInputProps>) {
-    super.setProps(newProps);
   }
 
   protected _getListenersSelector(): string {
@@ -44,7 +36,11 @@ export class Input extends BlockInput {
     causeProps: Map<keyof IInputProps, IInputProps[keyof IInputProps]>,
     oldProps: IBlockProps,
     block: Block
-  ) {
+  ): boolean {
+    if (!block.getContent()) {
+      return shouldRender;
+    }
+
     const htmlInput = block.getContent().querySelector('input');
     const errorStyle = this._getStylesModule()['form-input__inner_error'];
 

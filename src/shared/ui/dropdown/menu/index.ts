@@ -1,4 +1,4 @@
-import { Block, IBlockProps } from 'shared/components/block';
+import { Block, type IBlockProps } from 'shared/components/block';
 import templateSpec from './menu.template.hbs';
 import stylesModule from './styles.module.css';
 
@@ -38,6 +38,7 @@ export class DropdownMenu extends Block {
   protected _getTemplateSpec(): TemplateSpecification {
     return templateSpec;
   }
+
   protected _getStylesModule(): CSSModuleClasses {
     const stPosX = styles[POS[curPosX]];
     const stPosY = styles[POS[curPosY]];
@@ -53,14 +54,14 @@ export class DropdownMenu extends Block {
     return 'ul';
   }
 
-  public toggle() {
+  public toggle(): void {
     const menuEl = this.getContent().firstElementChild;
     if (menuEl instanceof HTMLElement && visibleClass) {
       menuEl.classList.toggle(visibleClass);
     }
   }
 
-  public close() {
+  public close(): void {
     const menuEl = this.getContent().firstElementChild;
     if (menuEl instanceof HTMLElement && visibleClass) {
       menuEl.classList.remove(visibleClass);

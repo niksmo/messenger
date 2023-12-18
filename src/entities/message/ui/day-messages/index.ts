@@ -1,4 +1,4 @@
-import { Block, IBlockProps } from 'shared/components/block';
+import { Block, type IBlockProps } from 'shared/components/block';
 import templateSpec from './day-messages.template.hbs';
 import styles from './styles.module.css';
 import { getMessageBlocks } from './lib';

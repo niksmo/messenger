@@ -1,9 +1,9 @@
-import { Block, IBlockProps } from 'shared/components/block';
+import { Block, type IBlockProps } from 'shared/components/block';
+import { StatusBadge, type TStatus } from 'shared/ui/status-badge';
+import { Avatar } from 'shared/ui/avatar';
+import { Counter } from 'shared/ui/counter';
 import templateSpec from './chat-item.template.hbs';
 import styles from './styles.module.css';
-import { Avatar } from 'shared/ui/avatar';
-import { StatusBadge, TStatus } from 'shared/ui/status-badge';
-import { Counter } from 'shared/ui/counter';
 
 interface IChatItemProps extends IBlockProps {
   active: boolean;
@@ -26,7 +26,7 @@ export class ChatItem extends Block {
     const { name, imageSrc: src, status, unread: count } = props;
 
     const avatar = new Avatar({ name, src });
-    const statusBadge = new StatusBadge({ status: status || 'none' });
+    const statusBadge = new StatusBadge({ status: status ?? 'none' });
     const unreadCounter = new Counter({ count });
 
     Object.assign(props, { avatar, statusBadge, unreadCounter });
@@ -37,6 +37,7 @@ export class ChatItem extends Block {
   protected _getTemplateSpec(): TemplateSpecification {
     return templateSpec;
   }
+
   protected _getStylesModule(): CSSModuleClasses {
     return styles;
   }

@@ -1,17 +1,13 @@
-import { Block, IBlockProps } from 'shared/components/block';
+import { Block, type IBlockProps } from 'shared/components/block';
 import { SettingsItem } from 'shared/ui/settings-item';
 import templateSpec from './logout-button.template.hbs';
 
-interface ILogoutButtonProps {
-  onClick?(e: Event): void;
+interface ILogoutButtonProps extends IBlockProps {
+  onClick?: (e: Event) => void;
   children?: Block;
 }
 
-class LogoutButton extends Block {
-  constructor(props: ILogoutButtonProps & IBlockProps) {
-    super(props);
-  }
-
+class LogoutButton extends Block<ILogoutButtonProps> {
   protected _getTemplateSpec(): TemplateSpecification {
     return templateSpec;
   }

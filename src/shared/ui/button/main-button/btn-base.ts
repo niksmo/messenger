@@ -1,8 +1,8 @@
 import { BlockInput } from 'shared/components/block';
-import { Block, IBlockProps } from 'shared/components/block/block';
+import { type Block, type IBlockProps } from 'shared/components/block/block';
 import templateSpec from './button.template.hbs';
 
-interface IButtonProps {
+interface IButtonProps extends IBlockProps {
   label: string;
   type: 'button' | 'submit';
   name: string;
@@ -12,16 +12,8 @@ interface IButtonProps {
   onClick?: (e: Event) => void;
 }
 
-export class Button extends BlockInput {
-  constructor(props: IButtonProps & IBlockProps) {
-    super(props);
-  }
-
-  protected _getTemplateSpec() {
+export class Button extends BlockInput<IButtonProps> {
+  protected _getTemplateSpec(): TemplateSpecification {
     return templateSpec;
-  }
-
-  public setProps(newProps: Partial<IButtonProps>) {
-    super.setProps(newProps);
   }
 }

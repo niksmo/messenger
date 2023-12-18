@@ -1,4 +1,4 @@
-import { PluginOption } from 'vite';
+import { type PluginOption } from 'vite';
 import Handlebars from 'handlebars';
 
 export default function handlebarsPrecompilePlugin(): PluginOption {
@@ -7,6 +7,7 @@ export default function handlebarsPrecompilePlugin(): PluginOption {
     transform(code, path) {
       if (path.endsWith('template.hbs')) {
         const templateSpec = Handlebars.precompile(code, { noEscape: true });
+        // eslint-disable-next-line
         code = `export default ${templateSpec};\n`;
 
         return { code };
