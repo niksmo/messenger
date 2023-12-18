@@ -1,4 +1,4 @@
-import { IBlock, IBlockForm, IBlockInput } from '../interfaces';
+import { IBlock, IBlockInput } from '../interfaces';
 
 export const enum EVENT {
   inputBlur = 'inputBlur',
@@ -45,7 +45,7 @@ export interface IFormController<FieldUnion extends string> {
 }
 
 export type TFormElements = {
-  form: IBlockForm;
+  form: IBlock;
   inputMap: Record<string, IBlockInput>;
   buttonMap: Record<string, IBlock>;
 };

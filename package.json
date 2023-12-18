@@ -10,7 +10,7 @@
     "build": "tsc && vite build",
     "start": "npm run build && node server/app.js",
     "preview": "vite preview",
-    "lint": "stylelint \"**/*.css\"",
+    "lint": "tsc --noEmit && stylelint \"**/*.css\"",
     "lint-fix": "stylelint \"**/*.css\" --fix"
 
   },
