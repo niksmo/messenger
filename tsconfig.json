@@ -5,7 +5,6 @@
     "module": "ESNext",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
-
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
@@ -27,7 +26,7 @@
       "widgets/*": ["widgets/*"],
       "pages/*": ["pages/*"],
       "shared/*": ["shared/*"],
-    },
+    }
   },
   "include": ["src"]
 }
