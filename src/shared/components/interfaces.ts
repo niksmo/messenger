@@ -20,7 +20,3 @@ export interface IBlockInput extends IBlock {
     onBlur?: (e: Event) => void;
   }): void;
 }
-
-export interface IBlockForm extends IBlock {
-  setProps(props: { onSubmit?: (e: Event) => void }): void;
-}
