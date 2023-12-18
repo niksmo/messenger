@@ -13,6 +13,13 @@
     "noEmit": true,
     "sourceMap": true,
     "baseUrl": "src",
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noUncheckedIndexedAccess": true,
+    "noFallthroughCasesInSwitch": true,
     "paths": {
       "app/*": ["app/*"],
       "entites/*": ["entities/*"],
@@ -21,14 +28,6 @@
       "pages/*": ["pages/*"],
       "shared/*": ["shared/*"],
     },
-    
-    "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noUncheckedIndexedAccess": true,
-    "noFallthroughCasesInSwitch": true,
   },
   "include": ["src"]
 }
