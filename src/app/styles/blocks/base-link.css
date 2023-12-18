@@ -1,0 +1,7 @@
+.base-link {
+  display: block;
+  text-decoration: unset;
+  max-width: 100%;
+  width: fit-content;
+  color: unset;
+}

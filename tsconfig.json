@@ -12,12 +12,24 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-
+    "sourceMap": true,
+    "baseUrl": "src",
+    "paths": {
+      "app/*": ["app/*"],
+      "entites/*": ["entities/*"],
+      "features/*": ["features/*"],
+      "widgets/*": ["widgets/*"],
+      "pages/*": ["pages/*"],
+      "shared/*": ["shared/*"],
+    },
     /* Linting */
     "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noUncheckedIndexedAccess": true,
+    "noFallthroughCasesInSwitch": true,
   },
   "include": ["src"]
 }

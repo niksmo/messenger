@@ -1,0 +1,40 @@
+export const enum EVENT {
+  INIT = 'init',
+  MOUNT = 'componentDidMount',
+  UPDATE = 'componentDidUpdate',
+  RENDER = 'render',
+}
+
+export const TMP_TAG = 'tmp';
+
+export const DOMEvent: Record<string, string> = {
+  onSubmit: 'onSubmit',
+  onFormdata: 'onFormdata',
+  onClick: 'onClick',
+  onBlur: 'onBlur',
+  onBeforeinput: 'onBeforeinput',
+  onInput: 'onInput',
+  onKeydown: 'onKeydown',
+  onKeypress: 'onKeypress',
+  onKeyup: 'onKeyup',
+  onFocus: 'onFocus',
+  onFocusin: 'onFocusin',
+  onFocusout: 'onFocusout',
+  onLoad: 'onLoad',
+  onMousedown: 'onMousedown',
+  onMouseenter: 'onMouseenter',
+  onMouseleave: 'onMouseleave',
+  onMousemove: 'onMousemove',
+  onMouseout: 'onMouseout',
+  onMouseover: 'onMouseover',
+  onMouseup: 'onMouseup',
+  onPointercancel: 'onPointercancel',
+  onPointerdown: 'onPointerdown',
+  onPointerenter: 'onPointerenter',
+  onPointerleave: 'onPointerleave',
+  onPointermove: 'onPointermove',
+  onPointerout: 'onPointerout',
+  onPointerover: 'onPointerover',
+  onPointerup: 'onPointerup',
+  onAbort: 'onAbort',
+};

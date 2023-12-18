@@ -1,37 +1,20 @@
-import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
 import autoprefixer from 'autoprefixer';
 import cssnano from 'cssnano';
-import { handlebarsPlugin } from './hbs.config';
-
-function getPagePath(prefix: string) {
-  const suffix = 'index.html';
-
-  return prefix !== 'main' ? resolve(prefix + '/' + suffix) : resolve(suffix);
-}
-
-const pageList = [
-  'main',
-  'signin',
-  'signup',
-  'edit-profile',
-  'change-password',
-  '404',
-  '500',
-];
+import handlebarsPrecompilePlugin from './src/shared/config/vite-plugin-hbs-precompile';
 
 export default defineConfig({
-  server: {
-    open: true,
-  },
   css: { postcss: { plugins: [autoprefixer, cssnano] } },
-  plugins: [handlebarsPlugin],
-  build: {
-    rollupOptions: {
-      input: pageList.reduce((path, page) => {
-        path[page] = getPagePath(page);
-        return path;
-      }, {}),
+  plugins: [handlebarsPrecompilePlugin()],
+  publicDir: 'src/app/assets/public',
+  resolve: {
+    alias: {
+      app: '/src/app',
+      entites: '/src/entities',
+      features: '/src/features',
+      widgets: '/src/widgets',
+      pages: '/src/pages',
+      shared: '/src/shared',
     },
   },
 });

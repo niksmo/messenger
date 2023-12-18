@@ -1,0 +1,58 @@
+.menu {
+  --menu-offset: calc(100% + 4px);
+
+  padding: 4px;
+  border-radius: 8px;
+  background-color: var(--color-background-white);
+  position: absolute;
+  visibility: hidden;
+  box-shadow: var(--shadow-elevation-2);
+  z-index: var(--z-menu);
+  scale: 0;
+  opacity: 0;
+  transition:
+    scale 150ms ease-out,
+    opacity 100ms ease-out;
+}
+
+.menu_visible {
+  visibility: visible;
+  scale: 1;
+  opacity: 1;
+}
+
+.menu_top {
+  bottom: var(--menu-offset);
+}
+
+.menu_bottom {
+  top: var(--menu-offset);
+}
+
+.menu_left {
+  left: 0;
+}
+
+.menu_right {
+  right: 0;
+}
+
+.menu_left.menu_bottom {
+  transform-origin: left top;
+}
+
+.menu_left.menu_top {
+  transform-origin: left bottom;
+}
+
+.menu_right.menu_bottom {
+  transform-origin: right top;
+}
+
+.menu_right.menu_top {
+  transform-origin: right bottom;
+}
+
+.menu-overlay {
+  z-index: var(--z-menu-overlay);
+}

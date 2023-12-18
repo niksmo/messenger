@@ -1,0 +1,6 @@
+.message-sender__form {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  column-gap: var(--column-gap);
+}

@@ -1,0 +1,8 @@
+.button_style {
+  padding-inline: 12px;
+  color: var(--color-element-accent);
+}
+
+.button_style:hover {
+  background-color: var(--color-element-tertiary);
+}

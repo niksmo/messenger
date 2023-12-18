@@ -1,0 +1,21 @@
+{{#>page title="Messenger" scriptSrc="./src/scripts/main.ts"}}
+
+  <div class="main">
+
+    <aside class="main__side">
+      {{> components/sidebar/sidebar }}
+    </aside>
+
+    <main class="main__chat">
+
+      {{#unless main.chat.user}}
+        {{> components/chat-plug/chat-plug}}
+      {{else}}
+        {{> components/chat/chat username=main.chat.user.name }}
+      {{/unless}}
+
+    </main>
+
+  </div>
+
+{{/page}}

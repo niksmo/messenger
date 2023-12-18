@@ -1,0 +1,63 @@
+.sidebar__settings {
+  position: absolute;
+  translate: -100%;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.sidebar__settings_visible {
+  translate: 0%;
+}
+
+.sidebar-content {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--color-element-tertiary);
+  background-color: var(--color-background-white);
+  transition: translate 300ms ease-out;
+}
+
+.settings__top-bar {
+  height: 56px;
+  flex-shrink: 0;
+}
+
+.settings__button {
+  width: 40px;
+  height: 40px;
+}
+
+.settings__title {
+  margin: 0;
+  padding: 0;
+  font-size: var(--font-title-large-size);
+  line-height: var(--font-title-large-height);
+  font-weight: var(--font-title-large-weight);
+  letter-spacing: var(--font-title-large-spacing);
+}
+
+.settings-content {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.nav-list > :nth-child(n) {
+  margin-top: 16px;
+}
+
+.nav-list > :last-child {
+  position: relative;
+  margin-top: 44px;
+}
+
+.nav-list > :last-child::before {
+  content: '';
+  width: 100%;
+  top: -18px;
+  position: absolute;
+  border-top: solid 1px var(--color-element-tertiary);
+}

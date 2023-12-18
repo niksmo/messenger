@@ -1,0 +1,19 @@
+.counter {
+  margin: 0;
+  padding: 4px;
+  align-items: center;
+  background-color: var(--badge-background-color, var(--color-element-special));
+  border-radius: var(--border-radius-circle);
+  color: var(--badge-text-color);
+  display: flex;
+  flex: 0 0 20px;
+  font-size: var(--font-label-large-size);
+  font-weight: var(--font-label-large-weight);
+  justify-content: center;
+  letter-spacing: var(--font-label-large-spacing);
+  line-height: var(--font-label-large-height);
+}
+
+.hidden {
+  display: none;
+}
