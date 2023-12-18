@@ -25,7 +25,7 @@
       "features/*": ["features/*"],
       "widgets/*": ["widgets/*"],
       "pages/*": ["pages/*"],
-      "shared/*": ["shared/*"],
+      "shared/*": ["shared/*"]
     }
   },
   "include": ["src"]
