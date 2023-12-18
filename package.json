@@ -8,13 +8,13 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "start": "npm run build && node server/app.js",
+    "start": "npm run build && node src/server/app.js",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "stylelint": "stylelint \"**/*.css\"",
-    "eslint": "node_modules/.bin/eslint --ext .js,.ts \"src/\"",
+    "eslint": "node_modules/.bin/eslint --ext .js,.ts \"./\"",
     "lint": "npm run typecheck && prettier . --check && npm run stylelint && npm run eslint",
-    "lint-fix": "stylelint \"**/*.css\" --fix && prettier . --write && node_modules/.bin/eslint --ext .js,.ts \"src/\" --fix"
+    "lint-fix": "stylelint \"**/*.css\" --fix && prettier . --write && node_modules/.bin/eslint --ext .js,.ts \"./\" --fix"
   },
   "devDependencies": {
     "@types/node": "^20.8.9",
