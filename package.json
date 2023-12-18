@@ -10,8 +10,11 @@
     "build": "tsc && vite build",
     "start": "npm run build && node server/app.js",
     "preview": "vite preview",
-    "lint": "tsc --noEmit && stylelint \"**/*.css\" && prettier . --check && eslint src/**/*.ts",
-    "lint-fix": "stylelint \"**/*.css\" --fix && prettier . --write && eslint src/**/*.ts --fix"
+    "typecheck": "tsc --noEmit",
+    "stylelint": "stylelint \"**/*.css\"",
+    "eslint": "node_modules/.bin/eslint \"src/**/*.ts\"",
+    "lint-check": "npm run typecheck && prettier . --check && npm run stylelint && npm run eslint",
+    "lint-fix": "stylelint \"**/*.css\" --fix && prettier . --write && npx eslint \"src/**/*.ts\" --fix"
   },
   "devDependencies": {
     "@types/node": "^20.8.9",

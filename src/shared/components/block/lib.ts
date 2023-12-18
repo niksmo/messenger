@@ -1,4 +1,4 @@
-import { Block, IBlockProps } from './block';
+import { Block, type IBlockProps } from './block';
 import { DOMEvent } from './consts';
 
 export function shallowEqual(
@@ -27,9 +27,9 @@ export function pickBlocksAndEvents(props: IBlockProps): {
   const blocks = new Map<TBlockId, Block<IBlockProps>>();
   const events = new Map<TEventType, EventListenerOrEventListenerObject>();
 
-  function setBlock(block: unknown) {
+  function setBlock(block: unknown): void {
     if (block instanceof Block) {
-      blocks.set(block.stubId, block);
+      blocks.set(block.stubId, block as Block<IBlockProps>);
     }
   }
 

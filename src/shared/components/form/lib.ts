@@ -1,4 +1,4 @@
-import { IBlock, IBlockInput } from '../interfaces';
+import { type IBlock, type IBlockInput } from '../interfaces';
 
 export const enum EVENT {
   inputBlur = 'inputBlur',
@@ -10,11 +10,11 @@ export const enum EVENT {
 type TFormData<FieldUnion extends string> = Record<FieldUnion, string>;
 export type TFormHints<FieldUnion extends string> = Record<FieldUnion, string>;
 
-export type TFetchState = {
+export interface TFetchState {
   fetching: boolean;
   success: boolean;
   error: string;
-};
+}
 
 type TSetHintsFn<FieldUnion extends string> = (
   hints: TFormHints<FieldUnion>
@@ -38,19 +38,21 @@ export type TRequestCb<FieldUnion extends string> = (
 ) => void;
 
 export interface IFormController<FieldUnion extends string> {
-  onInputBlur(cb: TOnInputBlurCb<FieldUnion>): void;
-  onStartSubmit(cb: TOnStartSubmitCb<FieldUnion>): void;
-  onRequest(cb: (reqState: TFetchState) => void): void;
-  request(cb: TRequestCb<FieldUnion>): void;
+  onInputBlur: (cb: TOnInputBlurCb<FieldUnion>) => void;
+  onStartSubmit: (cb: TOnStartSubmitCb<FieldUnion>) => void;
+  onRequest: (cb: (reqState: TFetchState) => void) => void;
+  request: (cb: TRequestCb<FieldUnion>) => void;
 }
 
-export type TFormElements = {
+export interface TFormElements {
   form: IBlock;
   inputMap: Record<string, IBlockInput>;
   buttonMap: Record<string, IBlock>;
-};
+}
 
-export function getFormData(formElements: TFormElements) {
+export function getFormData(
+  formElements: TFormElements
+): Record<string, string> {
   const { inputMap } = formElements;
 
   const formData: Record<string, string> = {};
@@ -66,7 +68,7 @@ export function getFormData(formElements: TFormElements) {
 export function renderHits(
   fieldHints: Record<string, string>,
   inputBlocks: Record<string, IBlockInput>
-) {
+): void {
   Object.values(inputBlocks).forEach((inputBlock) => {
     const support = fieldHints[inputBlock.getName()];
     inputBlock.setProps({ support, error: Boolean(support) });

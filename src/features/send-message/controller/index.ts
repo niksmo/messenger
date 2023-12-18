@@ -37,7 +37,7 @@ const menu = new IconButton({
 
 menu.setProps({
   onClick() {
-    dropdown.toggle.call(dropdown);
+    dropdown.toggle();
     overlay.toggle();
   },
 });

@@ -15,10 +15,10 @@ if (!XMLHttpRequest) {
 type TMode = 'prod' | 'dev';
 
 interface IFetcherConfig {
-  setBaseURL(baseURL: string): IFetcherConfig;
-  setTimeout(intMs: number): IFetcherConfig;
-  setHeader(header: Record<string, string>): IFetcherConfig;
-  setMode(mode: TMode): void;
+  setBaseURL: (baseURL: string) => IFetcherConfig;
+  setTimeout: (intMs: number) => IFetcherConfig;
+  setHeader: (header: Record<string, string>) => IFetcherConfig;
+  setMode: (mode: TMode) => void;
 }
 
 type TRequest = (
@@ -40,48 +40,41 @@ class Fetcher implements IFetcherConfig, IFetcherRequest {
   private _timeout = 1000;
   private _header: Record<string, string> = {};
   private _mode: TMode = 'dev';
-  constructor() {}
 
-  setMode(newMode: TMode) {
+  setMode(newMode: TMode): this {
     this._mode = newMode;
     return this;
   }
 
-  public setBaseURL(baseURL: string): Fetcher {
+  public setBaseURL(baseURL: string): this {
     this._baseURL = normalizeURL(baseURL);
     return this;
   }
 
-  public setTimeout(intInMs: number): Fetcher {
+  public setTimeout(intInMs: number): this {
     this._timeout = intInMs;
     return this;
   }
 
-  public setHeader(header: Record<string, string>): Fetcher {
+  public setHeader(header: Record<string, string>): this {
     this._header = header;
     return this;
   }
 
-  private _debugg(
+  private async _debugg(
     method: METHOD,
     pathOrURL: string,
     body: Record<string, string> = {},
     rHeader: Record<string, string> = this._header,
     rTimeout: number = this._timeout
-  ) {
-    return new Promise((resolve, reject) => {
+  ): Promise<unknown> {
+    return await new Promise((resolve, reject) => {
       setTimeout(() => {
-        function rollTheDice(
-          resolve: (v: unknown) => void,
-          reject: () => void
-        ) {
-          if (Math.floor(Math.random() * 100) < 40) {
-            return reject;
-          }
-          return resolve;
+        function rollTheDice2(): boolean {
+          return Math.floor(Math.random() * 100) < 40;
         }
 
-        const resolveOrReject = rollTheDice(resolve, reject);
+        const resolveOrReject = rollTheDice2() ? resolve : reject;
 
         resolveOrReject({
           request: body,
@@ -96,17 +89,17 @@ class Fetcher implements IFetcherConfig, IFetcherRequest {
     });
   }
 
-  private _request(
+  private async _request(
     method: METHOD,
     pathOrURL: string,
     body: Record<string, string> = {},
     rHeader: Record<string, string> = this._header,
     rTimeout: number = this._timeout
-  ) {
+  ): Promise<unknown> {
     if (this._mode === 'dev') {
-      return this._debugg(method, pathOrURL, body, rHeader, rTimeout);
+      return await this._debugg(method, pathOrURL, body, rHeader, rTimeout);
     }
-    return new Promise<XMLHttpRequest>((resolve, reject) => {
+    return await new Promise<XMLHttpRequest>((resolve, reject) => {
       const url = getHref(this._baseURL, pathOrURL);
       const rURL = METHOD.GET ? url + serializeToSearch(body) : url;
       const rBody = METHOD.GET ? null : serializeToJSON(body);
@@ -122,11 +115,17 @@ class Fetcher implements IFetcherConfig, IFetcherRequest {
 
       xhr.send(rBody);
 
-      const xhrResolve = (_e: ProgressEvent<XMLHttpRequestEventTarget>) =>
+      const xhrResolve = (
+        _e: ProgressEvent<XMLHttpRequestEventTarget>
+      ): void => {
         resolve(xhr);
+      };
 
-      const xhrReject = (_e: ProgressEvent<XMLHttpRequestEventTarget>) =>
+      const xhrReject = (
+        _e: ProgressEvent<XMLHttpRequestEventTarget>
+      ): void => {
         reject(xhr);
+      };
 
       xhr.addEventListener('load', xhrResolve);
       xhr.addEventListener('abort', xhrReject);
@@ -134,38 +133,40 @@ class Fetcher implements IFetcherConfig, IFetcherRequest {
     });
   }
 
-  public get(
+  public async get(
     pathOrURL: string,
     body?: Record<string, string>,
     header?: Record<string, string>,
     timeout?: number
-  ) {
-    return this._request(METHOD.GET, pathOrURL, body, header, timeout);
+  ): Promise<unknown> {
+    return await this._request(METHOD.GET, pathOrURL, body, header, timeout);
   }
 
-  public post(
+  public async post(
     pathOrURL: string,
     body?: Record<string, string>,
     header?: Record<string, string>,
     timeout?: number
-  ) {
-    return this._request(METHOD.POST, pathOrURL, body, header, timeout);
+  ): Promise<unknown> {
+    return await this._request(METHOD.POST, pathOrURL, body, header, timeout);
   }
-  public put(
+
+  public async put(
     pathOrURL: string,
     body?: Record<string, string>,
     header?: Record<string, string>,
     timeout?: number
-  ) {
-    return this._request(METHOD.PUT, pathOrURL, body, header, timeout);
+  ): Promise<unknown> {
+    return await this._request(METHOD.PUT, pathOrURL, body, header, timeout);
   }
-  public delete(
+
+  public async delete(
     pathOrURL: string,
     body?: Record<string, string>,
     header?: Record<string, string>,
     timeout?: number
-  ) {
-    return this._request(METHOD.DELETE, pathOrURL, body, header, timeout);
+  ): Promise<unknown> {
+    return await this._request(METHOD.DELETE, pathOrURL, body, header, timeout);
   }
 }
 

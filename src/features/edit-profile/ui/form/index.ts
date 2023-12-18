@@ -1,7 +1,11 @@
-import { Block, BlockInput, IBlockProps } from 'shared/components/block';
+import {
+  Block,
+  type BlockInput,
+  type IBlockProps,
+} from 'shared/components/block';
 import templateSpec from './form.template.hbs';
 
-interface IEditProfileFormProps {
+interface IEditProfileFormProps extends IBlockProps {
   first_name: BlockInput;
   second_name: BlockInput;
   email: BlockInput;
@@ -13,16 +17,8 @@ interface IEditProfileFormProps {
   onInput?: (e: Event) => void;
 }
 
-export class EditProfileForm extends Block {
-  constructor(props: IEditProfileFormProps & IBlockProps) {
-    super(props);
-  }
-
-  protected _getTemplateSpec() {
+export class EditProfileForm extends Block<IEditProfileFormProps> {
+  protected _getTemplateSpec(): TemplateSpecification {
     return templateSpec;
-  }
-
-  public setProps(newProps: Partial<IEditProfileFormProps>) {
-    super.setProps(newProps);
   }
 }

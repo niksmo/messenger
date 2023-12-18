@@ -1,7 +1,11 @@
-import { Block, BlockInput, IBlockProps } from 'shared/components/block';
+import {
+  Block,
+  type BlockInput,
+  type IBlockProps,
+} from 'shared/components/block';
 import templateSpec from './form.template.hbs';
 
-interface ISignupFormProps {
+interface ISignupFormProps extends IBlockProps {
   first_name: BlockInput;
   second_name: BlockInput;
   email: BlockInput;
@@ -14,16 +18,8 @@ interface ISignupFormProps {
   onInput?: (e: Event) => void;
 }
 
-export class SignupForm extends Block {
-  constructor(props: ISignupFormProps & IBlockProps) {
-    super(props);
-  }
-
-  protected _getTemplateSpec() {
+export class SignupForm extends Block<ISignupFormProps> {
+  protected _getTemplateSpec(): TemplateSpecification {
     return templateSpec;
-  }
-
-  public setProps(newProps: Partial<ISignupFormProps>) {
-    super.setProps(newProps);
   }
 }

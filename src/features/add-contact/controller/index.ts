@@ -12,7 +12,7 @@ const overlay = new Overlay();
 
 const dropdownMenu = new DropdownMenu({
   menuList: [addContactButton],
-  overlay: overlay,
+  overlay,
   posX: 'left',
   posY: 'bottom',
 });
@@ -28,7 +28,7 @@ const addContactMenu = new IconButton({
 
 addContactMenu.setProps({
   onClick() {
-    dropdownMenu.toggle.call(dropdownMenu);
+    dropdownMenu.toggle();
     overlay.toggle();
   },
 });

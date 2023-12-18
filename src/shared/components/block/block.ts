@@ -1,7 +1,7 @@
 import { template as templator } from 'handlebars/runtime';
 import { EventBus } from 'shared/packages/event-bus';
 import { uuid } from 'shared/packages/uuid';
-import { IBlock } from '../interfaces';
+import { type IBlock } from '../interfaces';
 import { pickBlocksAndEvents, shallowEqual } from './lib';
 import { EVENT, TMP_TAG } from './consts';
 
@@ -10,17 +10,19 @@ interface IBlockProps {
   id?: string | number;
 }
 
-abstract class Block<TProps extends IBlockProps = {}> implements IBlock {
-  private _stubId = uuid();
-  protected id?: string | number;
+abstract class Block<TProps extends IBlockProps = Record<string, unknown>>
+  implements IBlock
+{
+  private readonly _stubId = uuid();
+  protected id: string | number | undefined;
   protected props;
-  private _eventBus = new EventBus();
-  private _templator = templator;
-  private _shallowEqual = shallowEqual;
+  private readonly _eventBus = new EventBus();
+  private readonly _templator = templator;
+  private readonly _shallowEqual = shallowEqual;
   private _element: Node | null = null;
   private _updatingPropsNum = 0;
 
-  constructor(props: TProps = {} as TProps) {
+  constructor(props: TProps | IBlockProps = {}) {
     const { id } = props;
     this.id = id;
     this.props = this._proxyProps(props);
@@ -28,11 +30,11 @@ abstract class Block<TProps extends IBlockProps = {}> implements IBlock {
     this._eventBus.emit(EVENT.INIT, props);
   }
 
-  public get stubId() {
+  public get stubId(): string {
     return this._stubId;
   }
 
-  [Symbol.toPrimitive](a: 'string' | 'default' | 'number') {
+  [Symbol.toPrimitive](a: 'string' | 'default' | 'number'): string | undefined {
     if (a === 'string' || a === 'default') {
       return `<${TMP_TAG} data-id=${this._stubId}></${TMP_TAG}>`;
     }
@@ -41,11 +43,11 @@ abstract class Block<TProps extends IBlockProps = {}> implements IBlock {
   protected abstract _getTemplateSpec(): TemplateSpecification;
   protected _getStylesModule?(): CSSModuleClasses;
 
-  private _proxyProps(props: IBlockProps) {
+  private _proxyProps(props: IBlockProps): IBlockProps {
     const self = this;
     let propsCounter = 0;
     let oldProps: IBlockProps = {};
-    let newProps: IBlockProps = {};
+    const newProps: IBlockProps = {};
 
     return new Proxy(props, {
       set(props, p, newValue) {
@@ -70,18 +72,18 @@ abstract class Block<TProps extends IBlockProps = {}> implements IBlock {
     });
   }
 
-  private _subscribe() {
+  private _subscribe(): void {
     this._eventBus.on(EVENT.INIT, this._init.bind(this));
     this._eventBus.on(EVENT.MOUNT, this._didMount.bind(this));
     this._eventBus.on(EVENT.UPDATE, this._didUpdate.bind(this));
     this._eventBus.on(EVENT.RENDER, this._render.bind(this));
   }
 
-  private _init() {
+  private _init(): void {
     this._eventBus.emit(EVENT.RENDER);
   }
 
-  private _render() {
+  private _render(): void {
     const compileTemplate = this._templator(this._getTemplateSpec());
     const styles = this._getStylesModule ? this._getStylesModule() : {};
     const htmlCode = compileTemplate({
@@ -136,15 +138,15 @@ abstract class Block<TProps extends IBlockProps = {}> implements IBlock {
     return shouldRender;
   }
 
-  protected _getListenersSelector() {
+  protected _getListenersSelector(): string {
     return '';
   }
 
-  private _didMount() {
+  private _didMount(): void {
     this.didMount();
   }
 
-  private _didUpdate(oldProps: TProps, newProps: TProps) {
+  private _didUpdate(oldProps: TProps, newProps: TProps): void {
     const [isEqual, causeProps] = this._shallowEqual(oldProps, newProps);
 
     const shouldRender = this.renderInterceptor(
@@ -161,29 +163,29 @@ abstract class Block<TProps extends IBlockProps = {}> implements IBlock {
     this.didUpdate();
   }
 
-  public didMount() {}
+  public didMount(): void {}
 
-  public didUpdate() {}
+  public didUpdate(): void {}
 
-  public dispatchDidMount() {
+  public dispatchDidMount(): void {
     this._eventBus.emit(EVENT.MOUNT);
   }
 
-  public getContent() {
+  public getContent(): HTMLElement {
     return this._element as HTMLElement;
   }
 
-  public setProps(newProps: Partial<TProps>) {
+  public setProps(newProps: Partial<TProps | IBlockProps>): void {
     this._updatingPropsNum = Object.keys(newProps).length;
 
     Object.assign(this.props, newProps);
   }
 
-  public setVisible() {
+  public setVisible(): void {
     this.getContent().style.display = 'block';
   }
 
-  public setHidden() {
+  public setHidden(): void {
     this.getContent().style.display = 'none';
   }
 }

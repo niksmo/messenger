@@ -1,4 +1,4 @@
-import { BlockInput, IBlockProps } from 'shared/components/block';
+import { BlockInput, type IBlockProps } from 'shared/components/block';
 import templateSpec from './search-input.template.hbs';
 import styles from './styles.module.css';
 
@@ -6,13 +6,10 @@ interface ISearchBarProps extends IBlockProps {
   id: string;
   name: string;
   placeholder: string;
-  onInput?(e: Event): void;
+  onInput?: (e: Event) => void;
 }
 
-export class SearchBar extends BlockInput {
-  constructor(props: ISearchBarProps) {
-    super(props);
-  }
+export class SearchBar extends BlockInput<ISearchBarProps> {
   protected _getTemplateSpec(): TemplateSpecification {
     return templateSpec;
   }

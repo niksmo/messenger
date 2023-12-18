@@ -1,21 +1,13 @@
-import { Block, IBlockProps } from 'shared/components/block';
+import { Block, type IBlockProps } from 'shared/components/block';
 import templateSpec from './500.template.hbs';
 
-interface IInternalErrorPageProps {
+interface IInternalErrorPageProps extends IBlockProps {
   warnStub: Block;
   transitionButton: Block;
 }
 
-export class InternalErrorPage extends Block {
-  constructor(props: IInternalErrorPageProps & IBlockProps) {
-    super(props);
-  }
-
+export class InternalErrorPage extends Block<IInternalErrorPageProps> {
   protected _getTemplateSpec(): TemplateSpecification {
     return templateSpec;
-  }
-
-  public setProps(newProps: Partial<IInternalErrorPageProps>): void {
-    super.setProps(newProps);
   }
 }

@@ -12,7 +12,7 @@ const overlay = new Overlay();
 
 const dropdownMenu = new DropdownMenu({
   menuList: [deleteChatButton],
-  overlay: overlay,
+  overlay,
   posX: 'right',
   posY: 'bottom',
 });
@@ -28,7 +28,7 @@ const deleteChatMenu = new IconButton({
 
 deleteChatMenu.setProps({
   onClick() {
-    dropdownMenu.toggle.call(dropdownMenu);
+    dropdownMenu.toggle();
     overlay.toggle();
   },
 });

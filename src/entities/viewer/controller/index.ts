@@ -1,5 +1,5 @@
 import { Avatar } from 'shared/ui/avatar';
-import { ProfileInfo } from '../ui/profile-info';
+import { ProfileInfo } from '../ui';
 
 const MOCK_DATA = {
   firstName: 'Dmitry',

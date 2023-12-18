@@ -1,17 +1,17 @@
-import { Block } from 'shared/components/block';
+import { Block, type IBlockProps } from 'shared/components/block';
 import { IconButton } from 'shared/ui/button';
 import { profileInfo } from 'entites/viewer/controller';
 import { ChangeAvatarButton } from 'features/change-avatar';
 import templateSpec from './settings.template.hbs';
 import styles from './styles.module.css';
 
-interface ISettingsProps {
+interface ISettingsProps extends IBlockProps {
   navList?: Block[];
 }
 
-const VISIBLE_STYLE = styles['sidebar__settings_visible'];
+const VISIBLE_STYLE = styles.sidebar__settings_visible;
 
-export class Settings extends Block {
+export class Settings extends Block<ISettingsProps> {
   constructor(props: ISettingsProps = {}) {
     const closeButton = new IconButton({
       type: 'button',
@@ -35,11 +35,12 @@ export class Settings extends Block {
   protected _getTemplateSpec(): TemplateSpecification {
     return templateSpec;
   }
+
   protected _getStylesModule(): CSSModuleClasses {
     return styles;
   }
 
-  public openSettings() {
+  public openSettings(): void {
     if (VISIBLE_STYLE) {
       const settingsEl = this.getContent();
       if (settingsEl instanceof HTMLDivElement && VISIBLE_STYLE) {
@@ -47,7 +48,8 @@ export class Settings extends Block {
       }
     }
   }
-  public closeSettings() {
+
+  public closeSettings(): void {
     if (VISIBLE_STYLE) {
       const settingsEl = this.getContent();
       if (settingsEl instanceof HTMLDivElement && VISIBLE_STYLE) {

@@ -1,7 +1,11 @@
-import { Block, BlockInput, IBlockProps } from 'shared/components/block';
+import {
+  Block,
+  type BlockInput,
+  type IBlockProps,
+} from 'shared/components/block';
 import templateSpec from './form.template.hbs';
 
-interface IChangePasswordFormProps {
+interface IChangePasswordFormProps extends IBlockProps {
   current_password: BlockInput;
   new_password: BlockInput;
   confirm: BlockInput;
@@ -10,16 +14,8 @@ interface IChangePasswordFormProps {
   onInput?: (e: Event) => void;
 }
 
-export class ChangePasswordForm extends Block {
-  constructor(props: IChangePasswordFormProps & IBlockProps) {
-    super(props);
-  }
-
-  protected _getTemplateSpec() {
+export class ChangePasswordForm extends Block<IChangePasswordFormProps> {
+  protected _getTemplateSpec(): TemplateSpecification {
     return templateSpec;
-  }
-
-  public setProps(newProps: Partial<IChangePasswordFormProps>) {
-    super.setProps(newProps);
   }
 }

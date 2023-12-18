@@ -1,14 +1,14 @@
 import { HINT, TEMPLATE } from './lib';
 
 interface IVerifier {
-  verify(
+  verify: (
     map: Record<string, string>,
     cb: (result: Record<string, string>) => void
-  ): Record<string, string>;
+  ) => Record<string, string>;
 }
 
 class Verifier implements IVerifier {
-  private templateMap: Record<string, RegExp> = {
+  private readonly templateMap: Record<string, RegExp> = {
     first_name: TEMPLATE.name,
     second_name: TEMPLATE.name,
     login: TEMPLATE.login,
@@ -18,7 +18,7 @@ class Verifier implements IVerifier {
     phone: TEMPLATE.phone,
   };
 
-  private supportMap: Record<string, string> = {
+  private readonly supportMap: Record<string, string> = {
     first_name: HINT.name,
     second_name: HINT.name,
     login: HINT.login,
@@ -31,22 +31,24 @@ class Verifier implements IVerifier {
   public verify<FieldName extends string>(
     map: Record<FieldName, string>,
     cb?: (result: Record<FieldName, string>) => void
-  ) {
-    const entries = Object.entries(map) as [FieldName, string][];
+  ): Record<FieldName, string> {
+    const entries = Object.entries(map) as Array<[FieldName, string]>;
 
-    const resultEntries: [FieldName, string][] = entries.map(([key, value]) => {
-      const templateName = key;
-      const template = this.templateMap[templateName];
-      const support = this.supportMap[templateName];
+    const resultEntries: Array<[FieldName, string]> = entries.map(
+      ([key, value]) => {
+        const templateName = key;
+        const template = this.templateMap[templateName];
+        const support = this.supportMap[templateName];
 
-      if (!template || !support) {
-        return [key, ''];
+        if (!template || !support) {
+          return [key, ''];
+        }
+
+        const supportText = value.match(template) ? '' : support;
+
+        return [key, supportText];
       }
-
-      const supportText = value.match(template) ? '' : support;
-
-      return [key, supportText];
-    });
+    );
 
     const resultMap = Object.fromEntries(resultEntries) as Record<
       FieldName,

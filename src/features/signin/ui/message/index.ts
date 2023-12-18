@@ -1,17 +1,13 @@
-import { Block, IBlockProps } from 'shared/components/block/block';
+import { Block, type IBlockProps } from 'shared/components/block/block';
 import templateSpec from './message.template.hbs';
 import styles from './styles.module.css';
 
-interface ISigninMessageProps {
+interface ISigninMessageProps extends IBlockProps {
   visible: boolean;
 }
 
-export class SigninMessage extends Block {
-  constructor(props: ISigninMessageProps & IBlockProps) {
-    super(props);
-  }
-
-  protected _getTemplateSpec() {
+export class SigninMessage extends Block<ISigninMessageProps> {
+  protected _getTemplateSpec(): TemplateSpecification {
     return templateSpec;
   }
 
