@@ -19,17 +19,27 @@ export function shallowEqual(
 
 type TBlockId = string;
 type TEventType = string;
+export type TBlockEventsMap = Map<
+  TEventType,
+  EventListenerOrEventListenerObject
+>;
+export type TBlocksMap = Map<TBlockId, Block>;
+
+function isBlock(probBlock: unknown | Block): probBlock is Block<IBlockProps> {
+  return probBlock instanceof Block;
+}
 
 export function pickBlocksAndEvents(props: IBlockProps): {
-  blocks: Map<TBlockId, Block<IBlockProps>>;
-  events: Map<TEventType, EventListenerOrEventListenerObject>;
+  blocks: TBlocksMap;
+  events: TBlockEventsMap;
 } {
-  const blocks = new Map<TBlockId, Block<IBlockProps>>();
-  const events = new Map<TEventType, EventListenerOrEventListenerObject>();
+  const blocks: TBlocksMap = new Map();
+  const events: TBlockEventsMap = new Map();
 
-  function setBlock(block: unknown): void {
-    if (block instanceof Block) {
-      blocks.set(block.stubId, block as Block<IBlockProps>);
+  function setBlock(probBlock: unknown | Block): void {
+    if (isBlock(probBlock)) {
+      const block = probBlock;
+      blocks.set(block.stubId, block);
     }
   }
 
