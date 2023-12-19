@@ -2,7 +2,7 @@ import { template as templator } from 'handlebars/runtime';
 import { EventBus } from 'shared/packages/event-bus';
 import { uuid } from 'shared/packages/uuid';
 import { type IBlock } from '../interfaces';
-import { pickBlocksAndEvents, shallowEqual } from './lib';
+import { type TBlockEventsMap, pickBlocksAndEvents, shallowEqual } from './lib';
 import { EVENT, TMP_TAG } from './consts';
 
 interface IBlockProps {
@@ -14,13 +14,14 @@ abstract class Block<TProps extends IBlockProps = Record<string, unknown>>
   implements IBlock
 {
   private readonly _stubId = uuid();
-  protected id: string | number | undefined;
-  protected props;
   private readonly _eventBus = new EventBus();
   private readonly _templator = templator;
   private readonly _shallowEqual = shallowEqual;
   private _element: Node | null = null;
   private _updatingPropsNum = 0;
+  private _events: TBlockEventsMap | null = null;
+  protected id: string | number | undefined;
+  protected props;
 
   constructor(props: TProps | IBlockProps = {}) {
     const { id } = props;
@@ -83,6 +84,14 @@ abstract class Block<TProps extends IBlockProps = Record<string, unknown>>
     this._eventBus.emit(EVENT.RENDER);
   }
 
+  private _removeEvents(): void {
+    if (this._events !== null) {
+      this._events.forEach((cb, type) => {
+        this._element?.removeEventListener(type, cb);
+      });
+    }
+  }
+
   private _render(): void {
     const compileTemplate = this._templator(this._getTemplateSpec());
     const styles = this._getStylesModule ? this._getStylesModule() : {};
@@ -96,10 +105,12 @@ abstract class Block<TProps extends IBlockProps = Record<string, unknown>>
     const block = tmpElement.content.firstChild;
 
     if (!(block instanceof HTMLElement)) {
-      return;
+      throw TypeError('Block is not HTMLElement');
     }
 
-    const { blocks: childBlocks, events } = pickBlocksAndEvents(this.props);
+    const { blocks: childBlocks, events: propsEvents } = pickBlocksAndEvents(
+      this.props
+    );
 
     const stubs = Array.from(block.getElementsByTagName(TMP_TAG));
 
@@ -116,16 +127,20 @@ abstract class Block<TProps extends IBlockProps = Record<string, unknown>>
       }
     });
 
+    this._removeEvents();
+
     const selector = this._getListenersSelector();
     const listenersTarget = selector ? block.querySelector(selector) : block;
 
-    events.forEach((cb, eventType) => {
+    propsEvents.forEach((cb, eventType) => {
       listenersTarget?.addEventListener(eventType, cb);
     });
 
     if (this._element instanceof HTMLElement) {
       this._element.replaceWith(block);
     }
+
+    this._events = propsEvents;
     this._element = block;
   }
 
