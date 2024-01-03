@@ -1,23 +1,42 @@
-import { form } from 'features/signup';
-import { ButtonLight } from 'shared/ui/button';
-import { PageSignup } from './signup-page';
+import { Block, type IBlockProps } from 'shared/components/block';
 import { Link } from 'shared/components/router';
+import { ButtonLight } from 'shared/ui/button';
+import { form } from 'features/signup';
+import templateSpec from './signup-page.template.hbs';
+import styles from './styles.module.css';
+import { PATH } from 'shared/constants';
 
-const button = new ButtonLight({
-  label: 'Sign in',
-  name: 'transitionButton',
-  type: 'button',
-});
+interface IPageSignupProps extends IBlockProps {
+  form: Block;
+  transitionButton: Block;
+}
 
-const transitionButton = new Link({
-  href: '/signin/',
-  ariaHidden: true,
-  children: button,
-});
+export class PageSignup extends Block<IPageSignupProps> {
+  constructor() {
+    const button = new ButtonLight({
+      label: 'Sign in',
+      name: 'transitionButton',
+      type: 'button',
+    });
 
-const signupPage = new PageSignup({
-  form,
-  transitionButton,
-});
+    const transitionButton = new Link({
+      href: PATH.SIGNIN,
+      ariaHidden: true,
+      children: button,
+    });
 
-export { signupPage };
+    super({ form, transitionButton });
+  }
+
+  protected _getTemplateSpec(): TemplateSpecification {
+    return templateSpec;
+  }
+
+  protected _getStylesModule(): CSSModuleClasses {
+    return styles;
+  }
+
+  public setVisible(): void {
+    this.getContent().style.display = 'flex';
+  }
+}

@@ -1,5 +1,6 @@
-import { Link } from 'shared/components/router';
 import { SettingsItem } from 'shared/ui/settings-item';
+import { Link } from 'shared/components/router';
+import { PATH } from 'shared/constants';
 
 const settingsItem = new SettingsItem({
   label: 'Change Password',
@@ -8,7 +9,7 @@ const settingsItem = new SettingsItem({
 });
 
 const changePasswordLink = new Link({
-  href: '/change-password/',
+  href: PATH.CHANGE_PASSWORD,
   children: settingsItem,
 });
 

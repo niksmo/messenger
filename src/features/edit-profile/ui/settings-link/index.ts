@@ -1,5 +1,6 @@
-import { Link } from 'shared/components/router';
 import { SettingsItem } from 'shared/ui/settings-item';
+import { Link } from 'shared/components/router';
+import { PATH } from 'shared/constants';
 
 const settingsItem = new SettingsItem({
   label: 'Edit Profile',
@@ -8,7 +9,7 @@ const settingsItem = new SettingsItem({
 });
 
 const editProfileLink = new Link({
-  href: '/edit-profile/',
+  href: PATH.EDIT_PROFILE,
   children: settingsItem,
 });
 

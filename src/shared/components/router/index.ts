@@ -1,2 +1,2 @@
-export * from './lib';
-export * from './link';
+export { AppRouter } from './router';
+export { Link } from './link';

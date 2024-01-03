@@ -1,25 +1,37 @@
+import { Block, type IBlockProps } from 'shared/components/block';
 import { Link } from 'shared/components/router';
 import { ButtonLight } from 'shared/ui/button';
 import { WarnStub } from 'features/warn-stub';
-import { InternalErrorPage } from './500-page';
+import templateSpec from './500.template.hbs';
 
-const warnStub = new WarnStub({
-  errCode: 500,
-  message: 'Something went wrong. But we\xA0are already fixing\xA0it.',
-});
+interface IInternalErrorPageProps extends IBlockProps {
+  warnStub: Block;
+  transitionButton: Block;
+}
 
-const button = new ButtonLight({
-  label: 'Back to chats',
-  name: 'transitionButton',
-  type: 'button',
-});
+export class InternalErrorPage extends Block<IInternalErrorPageProps> {
+  constructor() {
+    const warnStub = new WarnStub({
+      errCode: 500,
+      message: 'Something went wrong. But we\xA0are already fixing\xA0it.',
+    });
 
-const transitionButton = new Link({
-  href: '/',
-  ariaHidden: true,
-  children: button,
-});
+    const button = new ButtonLight({
+      label: 'Back to chats',
+      name: 'transitionButton',
+      type: 'button',
+    });
 
-const internalErrorPage = new InternalErrorPage({ warnStub, transitionButton });
+    const transitionButton = new Link({
+      href: '/',
+      ariaHidden: true,
+      children: button,
+    });
 
-export { internalErrorPage };
+    super({ warnStub, transitionButton });
+  }
+
+  protected _getTemplateSpec(): TemplateSpecification {
+    return templateSpec;
+  }
+}
