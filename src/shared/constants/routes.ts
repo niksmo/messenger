@@ -2,6 +2,7 @@ export const PATH = {
   MAIN: '/main',
   SIGNIN: '/signin',
   SIGNUP: '/signup',
+  SETTINGS: '/settings',
   CHANGE_PASSWORD: '/change-password',
   EDIT_PROFILE: '/edit-profile',
   404: '/404',

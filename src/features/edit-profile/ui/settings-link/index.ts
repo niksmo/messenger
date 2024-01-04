@@ -1,16 +1,29 @@
+import { Block, type IBlockProps } from 'shared/components/block';
 import { SettingsItem } from 'shared/ui/settings-item';
 import { Link } from 'shared/components/router';
 import { PATH } from 'shared/constants';
+import templateSpec from './edit-profile-link.template.hbs';
 
-const settingsItem = new SettingsItem({
-  label: 'Edit Profile',
-  icon: 'profile',
-  style: 'accent',
-});
+interface IProps extends IBlockProps {
+  link: Block;
+}
 
-const editProfileLink = new Link({
-  href: PATH.EDIT_PROFILE,
-  children: settingsItem,
-});
+export class EditProfileLink extends Block<IProps> {
+  constructor() {
+    const settingsItem = new SettingsItem({
+      label: 'Edit Profile',
+      icon: 'profile',
+      style: 'accent',
+    });
 
-export { editProfileLink };
+    const link = new Link({
+      href: PATH.EDIT_PROFILE,
+      children: settingsItem,
+    });
+    super({ link });
+  }
+
+  protected _getTemplateSpec(): TemplateSpecification {
+    return templateSpec;
+  }
+}

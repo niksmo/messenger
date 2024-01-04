@@ -2,16 +2,18 @@
   padding-top: 16px;
   padding-bottom: 16px;
   display: flex;
-  column-gap: 12px;
+  flex-direction: column;
+  width: 100%;
 }
 
 .profile__avatar {
+  margin: 0 auto;
   position: relative;
-  font-size: 30px;
-  flex: 0 0 60px;
+  font-size: 52px;
+  width: 140px;
 }
 
-.profile__name-container {
+.profile-info {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -19,17 +21,13 @@
   overflow: hidden;
 }
 
-.profile__name-header {
-  display: flex;
-  flex-wrap: wrap;
-  column-gap: 4px;
-}
-
-.profile__text {
+.text {
   margin: 0;
 }
 
-.profile__text_style_name {
+.username {
+  margin: 10px 0;
+  text-align: center;
   color: var(--color-text-primary);
   font-size: var(--font-body-large-size);
   line-height: var(--font-body-large-height);
@@ -37,16 +35,19 @@
   letter-spacing: var(--font-body-large-spacing);
 }
 
-.profile__text_style_username {
-  color: var(--color-text-secondary);
+.rows {
+  color: var(--color-text-primary);
   font-size: var(--font-body-medium-size);
   line-height: var(--font-body-medium-height);
   font-weight: var(--font-body-medium-weight);
   letter-spacing: var(--font-body-medium-spacing);
 }
 
-.profile__name-footer {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-wrap: nowrap;
+.two-columns {
+  margin-top: 12px;
+  padding: 0 4px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  column-gap: 4px;
 }

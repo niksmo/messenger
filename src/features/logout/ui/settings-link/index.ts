@@ -1,24 +1,27 @@
 import { Block, type IBlockProps } from 'shared/components/block';
 import { SettingsItem } from 'shared/ui/settings-item';
-import templateSpec from './logout-button.template.hbs';
+import templateSpec from './logout-link.template.hbs';
 
-interface ILogoutButtonProps extends IBlockProps {
-  onClick?: (e: Event) => void;
-  children?: Block;
+interface IProps extends IBlockProps {
+  link: Block;
 }
 
-class LogoutButton extends Block<ILogoutButtonProps> {
+export class LogoutLink extends Block<IProps> {
+  constructor() {
+    const link = new SettingsItem({
+      label: 'Log out',
+      icon: 'close',
+      style: 'adverse',
+    });
+
+    const onClick = (): void => {
+      alert('logout');
+    };
+
+    super({ link, onClick });
+  }
+
   protected _getTemplateSpec(): TemplateSpecification {
     return templateSpec;
   }
 }
-
-const settingsItem = new SettingsItem({
-  label: 'Log out',
-  icon: 'close',
-  style: 'adverse',
-});
-
-const logoutLink = new LogoutButton({ children: settingsItem });
-
-export { logoutLink };

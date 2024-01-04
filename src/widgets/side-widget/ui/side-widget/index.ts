@@ -4,7 +4,6 @@ import styles from './styles.module.css';
 
 interface ISideWidget extends IBlockProps {
   chatList: Block;
-  settings?: Block;
 }
 
 export class SideWidget extends Block<ISideWidget> {

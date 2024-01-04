@@ -5,19 +5,37 @@
     {{changeAvatar}}
   </div>
 
-  <div class="{{styles.profile__name-container}} no-select">
-    <div class="{{styles.profile__name-header}}">
-      <p class="{{styles.profile__text}} {{styles.profile__text_style_name}}">
-        {{firstName}}
-      </p>
-      <p class="{{styles.profile__text}} {{styles.profile__text_style_name}}">
-        {{lastName}}
-      </p>
-    </div>
-    <p
-      class="{{styles.profile__name-footer}} {{styles.profile__text}} {{styles.profile__text_style_username}}">
+  <div class="{{styles.profile-info}} no-select">
+    <p class="{{styles.text}} {{styles.username}}">
       {{userName}}
     </p>
+
+    <ul class="base-list {{styles.rows}}">
+      <li class="{{styles.two-columns}}">
+        <p class="{{styles.text}} {{styles.column__left}}">Name:</p>
+        <p class="{{styles.text}} {{styles.column__right}}">
+          {{firstName}} {{lastName}}
+        </p>
+      </li>
+      <li class="{{styles.two-columns}}">
+        <p class="{{styles.text}} {{styles.column__left}}">Email:</p>
+        <p class="{{styles.text}} {{styles.column__right}}">
+          {{email}}
+        </p>
+      </li>
+      <li class="{{styles.two-columns}}">
+        <p class="{{styles.text}} {{styles.column__left}}">Login:</p>
+        <p class="{{styles.text}} {{styles.column__right}}">
+          {{login}}
+        </p>
+      </li>
+      <li class="{{styles.two-columns}}">
+        <p class="{{styles.text}} {{styles.column__left}}">Phone:</p>
+        <p class="{{styles.text}} {{styles.column__right}}">
+          {{phone}}
+        </p>
+      </li>
+    </ul>
   </div>
 
 </div>

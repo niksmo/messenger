@@ -1,1 +1,1 @@
-export * from './upload-avatar';
+export * from './invisible-input';
