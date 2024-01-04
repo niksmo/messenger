@@ -48,20 +48,15 @@ export class Route implements IRoute {
   }
 
   leave(): void {
-    this._block?.setHidden();
+    this._block?.getContent().remove();
+    this._block = null;
   }
 
   render(path: string): void {
     const props = this._getProps(path);
-
-    if (this._block) {
-      this._block.setProps(props);
-      this._block.setVisible();
-    } else {
-      this._block = new this._view(props);
-      this._appRoot.append(this._block.getContent());
-      this._block.dispatchDidMount();
-    }
+    this._block = new this._view(props);
+    this._appRoot.append(this._block.getContent());
+    this._block.dispatchDidMount();
   }
 
   update(path: string): void {
