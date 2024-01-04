@@ -4,12 +4,12 @@ import { sideWidget } from 'widgets/side-widget';
 import templateSpec from './main-page.template.hbs';
 import styles from './styles.module.css';
 
-interface IMainPageProps extends IBlockProps {
+interface IPageMainProps extends IBlockProps {
   sideWidget: Block;
   chatWidget: Block;
 }
 
-export class MainPage extends Block<IMainPageProps> {
+export class PageMain extends Block<IPageMainProps> {
   constructor() {
     super({ sideWidget, chatWidget });
   }
