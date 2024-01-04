@@ -2,7 +2,7 @@ import { BlockInput } from 'shared/components/block';
 import templateSpec from './upload-avatar.template.hbs';
 import styles from './styles.module.css';
 
-export class ChangeAvatarButton extends BlockInput {
+export class InvisibleFileInput extends BlockInput {
   protected _getTemplateSpec(): TemplateSpecification {
     return templateSpec;
   }

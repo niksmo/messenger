@@ -2,28 +2,41 @@ import { Block, type IBlockProps } from 'shared/components/block';
 import { Link } from 'shared/components/router';
 import { ButtonLight } from 'shared/ui/button';
 import { PATH } from 'shared/constants';
+import { profileInfo } from 'entites/viewer';
+import { InvisibleFileInput } from 'features/change-avatar';
+import { EditProfileLink } from 'features/edit-profile';
+import { ChangePasswordLink } from 'features/change-password';
+import { LogoutLink } from 'features/logout';
 import templateSpec from './profile-settings-page.template.hbs';
 import styles from './styles.module.css';
 
-interface IPageSettingsProps extends IBlockProps {
+interface IProps extends IBlockProps {
+  profileInfo: Block;
   transitionButton: Block;
+  navList: Block[];
 }
 
-export class PageSettings extends Block<IPageSettingsProps> {
+export class PageSettings extends Block<IProps> {
   constructor() {
-    const button = new ButtonLight({
-      label: 'Back to chats',
-      name: 'transitionButton',
-      type: 'button',
-    });
-
     const transitionButton = new Link({
       href: PATH.MAIN,
       ariaHidden: true,
-      children: button,
+      children: new ButtonLight({
+        label: 'Back to chats',
+        name: 'transitionButton',
+        type: 'button',
+      }),
     });
 
-    super({ transitionButton });
+    profileInfo.setProps({ changeAvatar: new InvisibleFileInput() });
+
+    const navList = [
+      new EditProfileLink(),
+      new ChangePasswordLink(),
+      new LogoutLink(),
+    ];
+
+    super({ transitionButton, profileInfo, navList });
   }
 
   protected _getTemplateSpec(): TemplateSpecification {

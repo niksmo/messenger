@@ -7,6 +7,9 @@ interface IProfileInfoProps extends IBlockProps {
   firstName: string;
   lastName: string;
   userName: string;
+  email: string;
+  login: string;
+  phone: string;
   changeAvatar?: Block;
 }
 

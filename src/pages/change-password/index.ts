@@ -20,7 +20,7 @@ export class PageChangePassword extends Block<IPageChangePasswordProps> {
     });
 
     const transitionButton = new Link({
-      href: PATH.MAIN,
+      href: PATH.SETTINGS,
       ariaHidden: true,
       children: button,
     });

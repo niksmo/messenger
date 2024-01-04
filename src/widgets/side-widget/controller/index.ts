@@ -2,11 +2,8 @@ import { IconButton } from 'shared/ui/button';
 import { Link } from 'shared/components/router';
 import { PATH } from 'shared/constants';
 import { SearchBar } from 'features/search-contact';
-import { editProfileLink } from 'features/edit-profile';
-import { changePasswordLink } from 'features/change-password';
-import { logoutLink } from 'features/logout';
 import { addContactMenu } from 'features/add-contact';
-import { Settings, ChatList, type IChatListItem, SideWidget } from '../ui';
+import { ChatList, type IChatListItem, SideWidget } from '../ui';
 
 import mockData from 'shared/mock-data/chat-list.json';
 
@@ -39,9 +36,5 @@ const chatList = new ChatList({
   addContact: addContactMenu,
 });
 
-const settings = new Settings({
-  navList: [editProfileLink, changePasswordLink, logoutLink],
-});
-
-const sideWidget = new SideWidget({ chatList, settings });
+const sideWidget = new SideWidget({ chatList });
 export { sideWidget };
