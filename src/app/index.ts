@@ -26,7 +26,6 @@ class App {
     router.use(PATH.SIGNUP, PAGE.Signup);
     router.use(PATH[404], PAGE.NotFound);
     router.use(PATH[500], PAGE.InternalError);
-    router.base(PATH.MAIN);
     router.noMatch(PATH[404]);
     router.start();
   }

@@ -1,7 +1,7 @@
 export const PATH = {
-  MAIN: '/main',
-  SIGNIN: '/signin',
-  SIGNUP: '/signup',
+  SIGNIN: '/',
+  SIGNUP: '/sign-up',
+  MAIN: '/messenger',
   SETTINGS: '/settings',
   CHANGE_PASSWORD: '/change-password',
   EDIT_PROFILE: '/edit-profile',
