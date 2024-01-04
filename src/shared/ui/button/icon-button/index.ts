@@ -11,6 +11,7 @@ const STYLE = {
 type TIcon =
   | 'add-chat'
   | 'menu'
+  | 'gear'
   | 'backward'
   | 'dots'
   | 'paperclip'

@@ -13,7 +13,7 @@ const chatListData = mockData as unknown as IChatListItem[];
 const menuButton = new IconButton({
   type: 'button',
   style: 'primary',
-  icon: 'menu',
+  icon: 'gear',
   role: 'menu',
   ariaLabel: 'Show settings',
 });
