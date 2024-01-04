@@ -1,0 +1,24 @@
+<div class="{{styles.sidebar-content}} {{styles.sidebar__settings}}">
+
+  <header class="top-bar {{styles.settings__top-bar}}">
+    <div class="{{styles.settings__button}}">
+      {{closeButton}}
+    </div>
+    <h2 class="{{styles.settings__title}} no-select">Settings</h2>
+  </header>
+
+  <div class="{{styles.settings-content}}">
+    {{profile}}
+  </div>
+
+  <nav class="{{styles.settings__nav}} {{styles.settings-content}}">
+    <ul class="base-list {{styles.nav-list}}">
+      {{#each navList}}
+        <li>
+          {{this}}
+        </li>
+      {{/each}}
+    </ul>
+  </nav>
+
+</div>

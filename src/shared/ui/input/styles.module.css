@@ -1,0 +1,101 @@
+.form-input {
+  position: relative;
+  height: 76px;
+}
+
+.form-input__label {
+  display: block;
+  visibility: hidden;
+  padding: 0 4px;
+  font-size: var(--font-body-large-size);
+  line-height: var(--font-body-large-height);
+  font-weight: var(--font-body-large-weight);
+  letter-spacing: var(--font-body-large-spacing);
+  position: absolute;
+  translate: 13px -40px;
+  scale: 1;
+  transition:
+    translate 100ms linear,
+    background-color 50ms linear 30ms,
+    visibility 100ms linear,
+    opacity 100ms linear,
+    scale 100ms linear;
+}
+
+.form-input__inner {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 2px 0 16px;
+  border: solid 1px var(--color-element-secondary);
+  border-radius: 4px;
+  height: 56px;
+  font-size: var(--font-body-large-size);
+  line-height: var(--font-body-large-height);
+  font-weight: var(--font-body-large-weight);
+  letter-spacing: var(--font-body-large-spacing);
+}
+
+.form-input__inner:hover {
+  border-color: var(--color-element-primary);
+}
+
+.form-input__inner:focus {
+  outline: var(--color-element-accent);
+  border-color: var(--color-element-accent);
+}
+
+.form-input__inner::placeholder {
+  font-size: var(--font-body-large-size);
+  line-height: var(--font-body-large-height);
+  font-weight: var(--font-body-large-weight);
+  letter-spacing: var(--font-body-large-spacing);
+  color: var(--color-text-primary);
+  transition: visibility 50ms linear 100ms;
+}
+
+.form-input__inner:focus::placeholder {
+  visibility: hidden;
+  opacity: 0;
+  transition: all 50ms linear;
+}
+
+.form-input__inner:focus + .form-input__label {
+  visibility: visible;
+  opacity: 1;
+  background-color: var(--color-background-white);
+  scale: 0.7;
+  translate: 16px -68px;
+}
+
+.form-input__inner:not(:placeholder-shown) + .form-input__label {
+  visibility: visible;
+  opacity: 1;
+  background-color: var(--color-background-white);
+  scale: 0.7;
+  translate: 16px -68px;
+}
+
+.form-input__inner_error,
+.form-input__inner_error:not(:placeholder-shown),
+.form-input__inner_error:focus,
+.form-input__inner_error:hover {
+  border-color: var(--color-element-error);
+}
+
+.form-input__support {
+  display: none;
+  margin: 0;
+  padding: 4px 16px 0;
+  font-size: var(--font-body-small-size);
+  line-height: var(--font-body-small-height);
+  font-weight: var(--font-body-small-weight);
+  letter-spacing: var(--font-body-small-spacing);
+}
+
+.form-input__support_error {
+  color: var(--color-text-error);
+}
+
+.form-input__support_visible {
+  display: block;
+}

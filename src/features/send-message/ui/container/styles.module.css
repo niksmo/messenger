@@ -1,0 +1,29 @@
+.message-sender {
+  --column-gap: 12px;
+
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  flex: 0 1 714px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  column-gap: var(--column-gap);
+}
+
+.message-sender::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-element-tertiary);
+  top: 0;
+}
+
+.message-sender__menu {
+  font-size: 0;
+}
+
+.message-sender__menu:has(.menu_visible) #attach {
+  color: var(--color-element-accent);
+}

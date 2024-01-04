@@ -5,19 +5,28 @@
     "module": "ESNext",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
-
-    /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-
-    /* Linting */
+    "baseUrl": "src",
     "strict": true,
+    "noImplicitAny": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "sourceMap": true,
+    "strictNullChecks": true,
+    "noUncheckedIndexedAccess": true,
+    "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "app/*": ["app/*"],
+      "entites/*": ["entities/*"],
+      "features/*": ["features/*"],
+      "widgets/*": ["widgets/*"],
+      "pages/*": ["pages/*"],
+      "shared/*": ["shared/*"]
+    }
   },
   "include": ["src"]
 }
