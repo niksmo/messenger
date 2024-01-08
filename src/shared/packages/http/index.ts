@@ -8,16 +8,16 @@ import {
 
 if (!XMLHttpRequest) {
   throw ReferenceError(
-    'Fetcher work only in browsers and includes XMLHttRequest under hood'
+    'HttpTransport work only in browsers and includes XMLHttpRequest under hood'
   );
 }
 
 type TMode = 'prod' | 'dev';
 
-interface IFetcherConfig {
-  setBaseURL: (baseURL: string) => IFetcherConfig;
-  setTimeout: (intMs: number) => IFetcherConfig;
-  setHeader: (header: Record<string, string>) => IFetcherConfig;
+interface IHttpTransportConfig {
+  setBaseURL: (baseURL: string) => IHttpTransportConfig;
+  setTimeout: (intMs: number) => IHttpTransportConfig;
+  setHeader: (header: Record<string, string>) => IHttpTransportConfig;
   setMode: (mode: TMode) => void;
 }
 
@@ -28,14 +28,14 @@ type TRequest = (
   timeout?: number
 ) => Promise<XMLHttpRequest> | Promise<unknown>;
 
-interface IFetcherRequest {
+interface IHttpTransportAgent {
   get: TRequest;
   post: TRequest;
   put: TRequest;
   delete: TRequest;
 }
 
-class Fetcher implements IFetcherConfig, IFetcherRequest {
+class HttpTransport implements IHttpTransportConfig, IHttpTransportAgent {
   private _baseURL: null | string = null;
   private _timeout = 1000;
   private _header: Record<string, string> = {};
@@ -170,4 +170,4 @@ class Fetcher implements IFetcherConfig, IFetcherRequest {
   }
 }
 
-export default Fetcher;
+export default HttpTransport;

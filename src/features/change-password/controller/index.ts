@@ -1,5 +1,4 @@
-import { verifyService } from 'shared/services/verify-service';
-import { API } from 'shared/services/api-service';
+import { verifyService } from 'shared/components/verifier';
 import { FormController } from 'shared/components/form';
 import { isSomeValues } from 'shared/helpers';
 import { ButtonFilled } from 'shared/ui/button';
