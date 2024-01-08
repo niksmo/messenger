@@ -1,6 +1,6 @@
 interface IBaseAPI {
   create: () => Promise<unknown>;
-  read: () => Promise<unknown>;
+  request: () => Promise<unknown>;
   update: () => Promise<unknown>;
   delete: () => Promise<unknown>;
 }
@@ -14,15 +14,15 @@ export class BaseAPI implements IBaseAPI {
     throwError();
   }
 
-  async read(): Promise<unknown> {
+  async request(..._args: unknown[]): Promise<unknown> {
     throwError();
   }
 
-  async update(): Promise<unknown> {
+  async update(..._args: unknown[]): Promise<unknown> {
     throwError();
   }
 
-  async delete(): Promise<unknown> {
+  async delete(..._args: unknown[]): Promise<unknown> {
     throwError();
   }
 }

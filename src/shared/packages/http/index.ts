@@ -12,21 +12,18 @@ if (!XMLHttpRequest) {
   );
 }
 
-type TMode = 'prod' | 'dev';
-
 interface IHttpTransportConfig {
   setBaseURL: (baseURL: string) => IHttpTransportConfig;
   setTimeout: (intMs: number) => IHttpTransportConfig;
   setHeader: (header: Record<string, string>) => IHttpTransportConfig;
-  setMode: (mode: TMode) => void;
 }
 
-type TRequest = (
+type TRequest<T = undefined> = (
   pathOrURL: string,
-  body?: Record<string, string>,
+  body: T,
   header?: Record<string, string>,
   timeout?: number
-) => Promise<XMLHttpRequest> | Promise<unknown>;
+) => Promise<XMLHttpRequest>;
 
 interface IHttpTransportAgent {
   get: TRequest;
@@ -39,12 +36,6 @@ class HttpTransport implements IHttpTransportConfig, IHttpTransportAgent {
   private _baseURL: null | string = null;
   private _timeout = 1000;
   private _header: Record<string, string> = {};
-  private _mode: TMode = 'dev';
-
-  setMode(newMode: TMode): this {
-    this._mode = newMode;
-    return this;
-  }
 
   public setBaseURL(baseURL: string): this {
     this._baseURL = normalizeURL(baseURL);
@@ -61,44 +52,13 @@ class HttpTransport implements IHttpTransportConfig, IHttpTransportAgent {
     return this;
   }
 
-  private async _debugg(
+  private async _request<T>(
     method: METHOD,
     pathOrURL: string,
-    body: Record<string, string> = {},
+    body?: T,
     rHeader: Record<string, string> = this._header,
     rTimeout: number = this._timeout
-  ): Promise<unknown> {
-    return await new Promise((resolve, reject) => {
-      setTimeout(() => {
-        function rollTheDice2(): boolean {
-          return Math.floor(Math.random() * 100) < 40;
-        }
-
-        const resolveOrReject = rollTheDice2() ? resolve : reject;
-
-        resolveOrReject({
-          request: body,
-          response:
-            method === METHOD.GET
-              ? serializeToSearch(body)
-              : serializeToJSON(body),
-          href: pathOrURL,
-          options: { header: rHeader, timeout: rTimeout },
-        });
-      }, 1000);
-    });
-  }
-
-  private async _request(
-    method: METHOD,
-    pathOrURL: string,
-    body: Record<string, string> = {},
-    rHeader: Record<string, string> = this._header,
-    rTimeout: number = this._timeout
-  ): Promise<unknown> {
-    if (this._mode === 'dev') {
-      return await this._debugg(method, pathOrURL, body, rHeader, rTimeout);
-    }
+  ): Promise<XMLHttpRequest> {
     return await new Promise<XMLHttpRequest>((resolve, reject) => {
       const url = getHref(this._baseURL, pathOrURL);
       const rURL = METHOD.GET ? url + serializeToSearch(body) : url;
@@ -133,40 +93,52 @@ class HttpTransport implements IHttpTransportConfig, IHttpTransportAgent {
     });
   }
 
-  public async get(
+  public async get<T>(
     pathOrURL: string,
-    body?: Record<string, string>,
+    body?: T,
     header?: Record<string, string>,
     timeout?: number
-  ): Promise<unknown> {
-    return await this._request(METHOD.GET, pathOrURL, body, header, timeout);
+  ): Promise<XMLHttpRequest> {
+    return await this._request<T>(METHOD.GET, pathOrURL, body, header, timeout);
   }
 
-  public async post(
+  public async post<T>(
     pathOrURL: string,
-    body?: Record<string, string>,
+    body?: T,
     header?: Record<string, string>,
     timeout?: number
-  ): Promise<unknown> {
-    return await this._request(METHOD.POST, pathOrURL, body, header, timeout);
+  ): Promise<XMLHttpRequest> {
+    return await this._request<T>(
+      METHOD.POST,
+      pathOrURL,
+      body,
+      header,
+      timeout
+    );
   }
 
-  public async put(
+  public async put<T>(
     pathOrURL: string,
-    body?: Record<string, string>,
+    body?: T,
     header?: Record<string, string>,
     timeout?: number
-  ): Promise<unknown> {
-    return await this._request(METHOD.PUT, pathOrURL, body, header, timeout);
+  ): Promise<XMLHttpRequest> {
+    return await this._request<T>(METHOD.PUT, pathOrURL, body, header, timeout);
   }
 
-  public async delete(
+  public async delete<T>(
     pathOrURL: string,
-    body?: Record<string, string>,
+    body?: T,
     header?: Record<string, string>,
     timeout?: number
-  ): Promise<unknown> {
-    return await this._request(METHOD.DELETE, pathOrURL, body, header, timeout);
+  ): Promise<XMLHttpRequest> {
+    return await this._request<T>(
+      METHOD.DELETE,
+      pathOrURL,
+      body,
+      header,
+      timeout
+    );
   }
 }
 

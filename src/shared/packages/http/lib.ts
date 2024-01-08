@@ -1,3 +1,5 @@
+import { isObject } from 'shared/helpers';
+
 const HTTP = 'http';
 const HTTPS = 'https';
 
@@ -54,7 +56,20 @@ function getHref(baseURL: string | null, path: string): string {
   return href;
 }
 
-function serializeToSearch(body: Record<string, string>): string {
+function inspectBody(body: unknown): never | object {
+  if (!isObject(body)) {
+    throw new Error('The "body" must be an object');
+  }
+  return body;
+}
+
+function serializeToSearch(body: unknown): string | undefined {
+  if (!body) {
+    return '';
+  }
+
+  inspectBody(body);
+
   const entries = Object.entries(body);
 
   if (entries.length === 0) {
@@ -66,7 +81,13 @@ function serializeToSearch(body: Record<string, string>): string {
   return searchString;
 }
 
-function serializeToJSON(body: Record<string, string>): string {
+function serializeToJSON(body: unknown): string {
+  if (body === undefined) {
+    return JSON.stringify({});
+  }
+
+  inspectBody(body);
+
   return JSON.stringify(body);
 }
 
