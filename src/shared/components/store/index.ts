@@ -32,7 +32,7 @@ export class Store implements IStore {
     return this;
   }
 
-  on<State extends Indexed>(fn: (state: State) => void): this {
+  on<State = Indexed>(fn: (state: State) => void): this {
     this._eventBus.on(this._updateEvent, fn);
 
     return this;
