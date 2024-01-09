@@ -2,6 +2,7 @@ import { AppRouter } from 'shared/components/router';
 import { PATH, SLUG } from 'shared/constants';
 import PAGE from 'pages';
 import './styles/index.css';
+import { Store } from 'shared/components/store';
 
 class App {
   private _root: null | HTMLElement = null;
@@ -15,6 +16,9 @@ class App {
     if (this._root === null) {
       return;
     }
+
+    const store = new Store();
+    store.init();
 
     const router = new AppRouter();
     router.root(this._root);

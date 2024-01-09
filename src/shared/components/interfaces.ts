@@ -39,3 +39,9 @@ export interface IRoute {
   update: (path: string) => void;
   leave: () => void;
 }
+
+export interface IStore {
+  init: (state: Record<string, unknown>) => IStore;
+  on: (fn: (state: Record<string, unknown>) => void) => IStore;
+  set: (path: string, value: unknown) => IStore;
+}
