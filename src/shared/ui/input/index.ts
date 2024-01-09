@@ -46,14 +46,24 @@ export class Input extends BlockInput<IInputProps> {
 
     if (shouldRender && causeProps.has('value')) {
       shouldRender = false;
+    }
+    if (shouldRender && causeProps.has('error')) {
+      shouldRender = false;
       if (htmlInput && errorStyle) {
-        htmlInput.classList.remove(errorStyle);
-      }
-    } else if (!shouldRender && oldProps.error) {
-      if (htmlInput && errorStyle) {
-        htmlInput.classList.add(errorStyle);
+        if (causeProps.get('error')) {
+          htmlInput.classList.add(errorStyle);
+        } else {
+          htmlInput.classList.remove(errorStyle);
+        }
+        // htmlInput.classList.remove(errorStyle);
       }
     }
+
+    // else if (!shouldRender && oldProps.error) {
+    //   if (htmlInput && errorStyle) {
+    //     htmlInput.classList.add(errorStyle);
+    //   }
+    // }
 
     return shouldRender;
   }

@@ -61,8 +61,8 @@ class HttpTransport implements IHttpTransportConfig, IHttpTransportAgent {
   ): Promise<XMLHttpRequest> {
     return await new Promise<XMLHttpRequest>((resolve, reject) => {
       const url = getHref(this._baseURL, pathOrURL);
-      const rURL = METHOD.GET ? url + serializeToSearch(body) : url;
-      const rBody = METHOD.GET ? null : serializeToJSON(body);
+      const rURL = method === METHOD.GET ? url + serializeToSearch(body) : url;
+      const rBody = method === METHOD.GET ? null : serializeToJSON(body);
 
       const xhr = new XMLHttpRequest();
       xhr.timeout = rTimeout;

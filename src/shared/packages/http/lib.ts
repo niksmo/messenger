@@ -1,7 +1,7 @@
 import { isObject } from 'shared/helpers';
 
-const HTTP = 'http';
-const HTTPS = 'https';
+const HTTP = 'http:';
+const HTTPS = 'https:';
 
 const enum METHOD {
   GET = 'GET',
@@ -40,7 +40,7 @@ function normalizeURL(origin: string): string | null {
 
 function getHref(baseURL: string | null, path: string): string {
   if (baseURL) {
-    const { href } = new URL(path, baseURL);
+    const { href } = new URL(baseURL + path);
 
     return href;
   }

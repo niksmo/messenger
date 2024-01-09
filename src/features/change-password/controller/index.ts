@@ -75,15 +75,6 @@ changePasswordForm.onRequest((reqState) => {
 changePasswordForm.request((formData, update) => {
   console.log(formData);
   update({ error: '', fetching: true, success: false });
-  API.changePassword(formData)
-    .then((data) => {
-      console.log(data);
-      update({ error: '', fetching: false, success: true });
-    })
-    .catch((error) => {
-      console.log(error);
-      update({ error: '[debugg error]', fetching: false, success: false });
-    });
 });
 
 export { form };

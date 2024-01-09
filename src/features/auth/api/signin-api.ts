@@ -2,10 +2,12 @@ import { BaseAPI } from 'shared/components/base-api';
 import { BASE_URL } from 'shared/constants/api';
 import HttpTransport from 'shared/packages/http';
 
-interface IRequestProps {
-  login: string;
-  password: string;
-}
+// interface IRequestProps {
+//   login: string;
+//   password: string;
+// }
+
+type IRequestProps = Record<string, string>;
 
 export class SigninAPI extends BaseAPI {
   private readonly _http;

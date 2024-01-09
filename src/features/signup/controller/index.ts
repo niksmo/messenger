@@ -1,5 +1,4 @@
 import { verifyService } from 'shared/components/verifier';
-import { API } from 'shared/services/api-service';
 import { FormController } from 'shared/components/form';
 import { isSomeValues } from 'shared/helpers';
 import { ButtonFilled } from 'shared/ui/button';
@@ -115,15 +114,6 @@ signupForm.onRequest((reqState) => {
 signupForm.request((formData, update) => {
   console.log(formData);
   update({ error: '', fetching: true, success: false });
-  API.signup(formData)
-    .then((data) => {
-      console.log(data);
-      update({ error: '', fetching: false, success: true });
-    })
-    .catch((error) => {
-      console.log(error);
-      update({ error: '[debugg error]', fetching: false, success: false });
-    });
 });
 
 export { form };

@@ -27,7 +27,7 @@ export class Store implements IStore {
     return Store._instance;
   }
 
-  init(state: Record<string, unknown> = {}): this {
+  init(state: Indexed = {}): this {
     this._state = state;
     return this;
   }

@@ -7,13 +7,14 @@ import templateSpec from './form.template.hbs';
 import { Input } from 'shared/ui/input';
 import { ButtonFilled } from 'shared/ui/button';
 import { Store } from 'shared/components/store';
+import { SigninController } from 'features/auth/controller';
+import { SigninAPI } from 'features/auth/api';
 
 interface ISigninFormProps extends IBlockProps {
   login: BlockInput;
   password: BlockInput;
   submitButton: Block;
-  onSubmit?: (e: Event) => void;
-  onInput?: (e: Event) => void;
+  onSubmit: (e: Event) => void;
 }
 
 interface InputState {
@@ -26,8 +27,20 @@ interface FormState {
   signin: {
     login: InputState;
     password: InputState;
+    error: string;
   };
 }
+
+const verifier = {
+  checkOnValidity(formData: Record<string, string>) {
+    return {
+      hintData: { login: '', password: '' },
+      isValid: true,
+    };
+  },
+};
+
+const signinController = new SigninController(verifier, new SigninAPI());
 
 export class SigninForm extends Block<ISigninFormProps> {
   constructor() {
@@ -39,7 +52,21 @@ export class SigninForm extends Block<ISigninFormProps> {
       support: '',
       value: '',
       name: 'login',
+      id: 'login',
       type: 'text',
+      onInput: (e) => {
+        const { currentTarget } = e;
+        if (currentTarget instanceof HTMLInputElement) {
+          const { name, value } = currentTarget;
+          signinController.input(name, value);
+        }
+      },
+      onBlur: () => {
+        signinController.verify({
+          login: login.getValue(),
+          password: password.getValue(),
+        });
+      },
     });
 
     const password = new Input({
@@ -48,16 +75,46 @@ export class SigninForm extends Block<ISigninFormProps> {
       support: '',
       value: '',
       name: 'password',
+      id: 'password',
       type: 'password',
+      onInput: (e) => {
+        const { currentTarget } = e;
+        if (currentTarget instanceof HTMLInputElement) {
+          const { name, value } = currentTarget;
+          signinController.input(name, value);
+        }
+      },
+      onBlur: () => {
+        signinController.verify({
+          login: login.getValue(),
+          password: password.getValue(),
+        });
+      },
     });
 
-    const submitButton = new ButtonFilled({ label: 'Signin' });
+    const submitButton = new ButtonFilled({
+      label: 'Sign in',
+      type: 'submit',
+      id: 'submitButton',
+    });
 
     store.on<FormState>((state) => {
       login.setProps({ ...state.signin.login });
+      password.setProps({ ...state.signin.password });
     });
 
-    super({ login, password, submitButton });
+    super({
+      login,
+      password,
+      submitButton,
+      onSubmit: (e) => {
+        e.preventDefault();
+        void signinController.submit({
+          login: login.getValue(),
+          password: password.getValue(),
+        });
+      },
+    });
   }
 
   protected _getTemplateSpec(): TemplateSpecification {

@@ -2,9 +2,10 @@ import { Block, type IBlockProps } from 'shared/components/block';
 import { Link } from 'shared/components/router';
 import { ButtonLight } from 'shared/ui/button';
 import { PATH } from 'shared/constants';
-import { form, informMsg as message } from 'features/signin';
+import { informMsg as message } from 'features/signin';
 import templateSpec from './signin-page.template.hbs';
 import styles from './styles.module.css';
+import { SigninForm } from 'features/auth/ui';
 
 interface IPageSigninProps extends IBlockProps {
   message: Block;
@@ -25,6 +26,8 @@ export class PageSignin extends Block<IPageSigninProps> {
       ariaHidden: true,
       children: button,
     });
+
+    const form = new SigninForm();
 
     super({ message, form, transitionButton });
   }
