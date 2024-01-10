@@ -5,12 +5,9 @@ import { type IBlock } from '../interfaces';
 import { type TBlockEventsMap, pickBlocksAndEvents, shallowEqual } from './lib';
 import { EVENT, TMP_TAG } from './consts';
 
-interface IBlockProps {
-  [key: string]: unknown;
-  id?: string | number;
-}
+type IBlockProps = Record<string, unknown>;
 
-abstract class Block<TProps extends IBlockProps = Record<string, unknown>>
+abstract class Block<TProps extends IBlockProps = IBlockProps>
   implements IBlock
 {
   private readonly _stubId = uuid();
@@ -20,12 +17,9 @@ abstract class Block<TProps extends IBlockProps = Record<string, unknown>>
   private _element: Node | null = null;
   private _updatingPropsNum = 0;
   private _events: TBlockEventsMap | null = null;
-  protected id: string | number | undefined;
   protected props;
 
   constructor(props: TProps | IBlockProps = {}) {
-    const { id } = props;
-    this.id = id;
     this.props = this._proxyProps(props);
     this._subscribe();
     this._eventBus.emit(EVENT.INIT, props);

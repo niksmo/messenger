@@ -33,8 +33,7 @@ export class SigninController implements ISigninController {
   }
 
   input(field: string, value: string): void {
-    this._store.set(`signin.${field}.value`, value);
-    this._store.set(`signin.${field}.error`, false);
+    this._store.set(`signin.${field}`, { value, error: false });
     this._store.set('signin.error', '');
   }
 
@@ -44,9 +43,11 @@ export class SigninController implements ISigninController {
     if (!isValid) {
       for (const field of Object.keys(hintData)) {
         const hintText = hintData[field];
-        if (typeof hintText === 'string') {
-          this._store.set(`signin.${field}.support`, hintText);
-          this._store.set(`signin.${field}.error`, true);
+        if (hintText) {
+          this._store.set(`signin.${field}`, {
+            support: hintText,
+            error: true,
+          });
         }
       }
     }

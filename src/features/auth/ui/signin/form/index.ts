@@ -14,13 +14,15 @@ interface ISigninFormProps extends IBlockProps {
   login: BlockInput;
   password: BlockInput;
   submitButton: Block;
+  onInput: (e: Event) => void;
+  onFocusout: (e: Event) => void;
   onSubmit: (e: Event) => void;
 }
 
 interface InputState {
   error: boolean;
   value: string;
-  support: string;
+  hint: string;
 }
 
 interface FormState {
@@ -30,6 +32,12 @@ interface FormState {
     error: string;
   };
 }
+
+const initInputState: InputState = {
+  error: false,
+  hint: '',
+  value: '',
+};
 
 const verifier = {
   checkOnValidity(formData: Record<string, string>) {

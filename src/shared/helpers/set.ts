@@ -1,4 +1,5 @@
-import { isObject } from '.';
+import { isObject } from './is';
+import { merge } from './merge';
 
 export function set(
   object: Record<string, unknown> | unknown,
@@ -23,21 +24,25 @@ export function set(
   let cur = -1;
   const end = length - 1;
 
-  while (true) {
+  while (cur < end) {
     const p = pathList[++cur];
     if (!p) break;
 
-    if (cur === end) {
-      curObj[p] = value;
-      break;
-    }
-
     const posObj = curObj[p];
 
-    if (isObject(posObj)) {
-      curObj = posObj;
+    if (cur !== end) {
+      if (isObject(posObj)) {
+        curObj = posObj;
+      } else {
+        curObj = curObj[p] = {};
+      }
+      continue;
+    }
+
+    if (isObject(posObj) && isObject(value)) {
+      merge(posObj, value);
     } else {
-      curObj = curObj[p] = {};
+      curObj[p] = value;
     }
   }
 
