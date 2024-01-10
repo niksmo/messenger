@@ -5,7 +5,7 @@ import styles from './styles.module.css';
 type TInputTypes = 'text' | 'email' | 'password' | 'tel' | 'number';
 
 interface IInputProps extends IBlockProps {
-  id?: string | number;
+  id: string | number;
   type: TInputTypes;
   name: string;
   value?: string;

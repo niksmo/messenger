@@ -1,8 +1,8 @@
-import { BlockInput, type IBlockInputProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import templateSpec from './input.template.hbs';
 import styles from './styles.module.css';
 
-export class MessageInput extends BlockInput {
+export class MessageInput extends Block {
   protected _getTemplateSpec(): TemplateSpecification {
     return templateSpec;
   }
@@ -13,10 +13,7 @@ export class MessageInput extends BlockInput {
 
   protected renderInterceptor(
     shouldRender: boolean,
-    causeProps: Map<
-      keyof IBlockInputProps,
-      IBlockInputProps[keyof IBlockInputProps]
-    >
+    causeProps: Map<string, string>
   ): boolean {
     if (shouldRender && causeProps.has('value')) {
       shouldRender = false;

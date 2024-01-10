@@ -1,23 +1,11 @@
-import {
-  Block,
-  type BlockInput,
-  type IBlockProps,
-} from 'shared/components/block';
-import templateSpec from './form.template.hbs';
+import { Block, type IBlockProps } from 'shared/components/block';
 import { Input } from 'shared/ui/input';
 import { ButtonFilled } from 'shared/ui/button';
-import { Store } from 'shared/components/store';
+import { getFieldsValues, getInputValue } from 'shared/helpers';
 import { SigninController } from 'features/auth/controller';
+import { Store } from 'shared/components/store';
 import { SigninAPI } from 'features/auth/api';
-
-interface ISigninFormProps extends IBlockProps {
-  login: BlockInput;
-  password: BlockInput;
-  submitButton: Block;
-  onInput: (e: Event) => void;
-  onFocusout: (e: Event) => void;
-  onSubmit: (e: Event) => void;
-}
+import templateSpec from './form.template.hbs';
 
 interface InputState {
   error: boolean;
@@ -39,11 +27,20 @@ const initInputState: InputState = {
   value: '',
 };
 
+interface ISigninFormProps extends IBlockProps {
+  login: Block;
+  password: Block;
+  submitButton: Block;
+  onInput: (e: Event) => void;
+  onFocusout: (e: Event) => void;
+  onSubmit: (e: Event) => void;
+}
+
 const verifier = {
   checkOnValidity(formData: Record<string, string>) {
     return {
-      hintData: { login: '', password: '' },
-      isValid: true,
+      hintData: { login: 'asdfsf', password: 'adsfasdf' },
+      isValid: false,
     };
   },
 };
@@ -55,55 +52,26 @@ export class SigninForm extends Block<ISigninFormProps> {
     const store = Store.instance();
 
     const login = new Input({
-      placeholder: 'Login',
-      error: false,
-      support: '',
-      value: '',
-      name: 'login',
       id: 'login',
+      name: 'login',
       type: 'text',
-      onInput: (e) => {
-        const { currentTarget } = e;
-        if (currentTarget instanceof HTMLInputElement) {
-          const { name, value } = currentTarget;
-          signinController.input(name, value);
-        }
-      },
-      onBlur: () => {
-        signinController.verify({
-          login: login.getValue(),
-          password: password.getValue(),
-        });
-      },
+      placeholder: 'Login',
+      ...initInputState,
     });
 
     const password = new Input({
-      placeholder: 'Password',
-      error: false,
-      support: '',
-      value: '',
-      name: 'password',
       id: 'password',
+      name: 'password',
       type: 'password',
-      onInput: (e) => {
-        const { currentTarget } = e;
-        if (currentTarget instanceof HTMLInputElement) {
-          const { name, value } = currentTarget;
-          signinController.input(name, value);
-        }
-      },
-      onBlur: () => {
-        signinController.verify({
-          login: login.getValue(),
-          password: password.getValue(),
-        });
-      },
+      placeholder: 'Password',
+      ...initInputState,
     });
 
     const submitButton = new ButtonFilled({
+      id: 'submitButton',
+      name: 'submitButton',
       label: 'Sign in',
       type: 'submit',
-      id: 'submitButton',
     });
 
     store.on<FormState>((state) => {
@@ -115,12 +83,15 @@ export class SigninForm extends Block<ISigninFormProps> {
       login,
       password,
       submitButton,
+      onInput: (e) => {
+        signinController.input(getInputValue(e));
+      },
+      onFocusout: (e) => {
+        signinController.verify(getFieldsValues(e));
+      },
       onSubmit: (e) => {
         e.preventDefault();
-        void signinController.submit({
-          login: login.getValue(),
-          password: password.getValue(),
-        });
+        void signinController.submit(getFieldsValues(e));
       },
     });
   }

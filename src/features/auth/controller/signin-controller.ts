@@ -4,8 +4,13 @@ import { PATH } from 'shared/constants';
 
 type TFormData = Record<string, string>;
 
+interface IInputData {
+  field: string;
+  value: string;
+}
+
 interface ISigninController {
-  input: (field: string, value: string) => void;
+  input: (inputData: IInputData) => void;
   submit: (formData: TFormData) => void;
   verify: (formData: TFormData) => boolean;
 }
@@ -32,7 +37,7 @@ export class SigninController implements ISigninController {
     this._store = Store.instance();
   }
 
-  input(field: string, value: string): void {
+  input({ field, value }: IInputData): void {
     this._store.set(`signin.${field}`, { value, error: false });
     this._store.set('signin.error', '');
   }
@@ -42,10 +47,10 @@ export class SigninController implements ISigninController {
 
     if (!isValid) {
       for (const field of Object.keys(hintData)) {
-        const hintText = hintData[field];
-        if (hintText) {
+        const hint = hintData[field];
+        if (hint) {
           this._store.set(`signin.${field}`, {
-            support: hintText,
+            hint,
             error: true,
           });
         }
