@@ -56,7 +56,7 @@ class HttpTransport implements IHttpTransportConfig, IHttpTransportAgent {
     method: METHOD,
     pathOrURL: string,
     body?: T,
-    rHeader: Record<string, string> = this._header,
+    rHeader: Record<string, string> = {},
     rTimeout: number = this._timeout
   ): Promise<XMLHttpRequest> {
     return await new Promise<XMLHttpRequest>((resolve, reject) => {
@@ -68,7 +68,9 @@ class HttpTransport implements IHttpTransportConfig, IHttpTransportAgent {
       xhr.timeout = rTimeout;
       xhr.open(method, rURL);
 
-      const headerEntries = Object.entries(rHeader);
+      const headerEntries = Object.entries(
+        Object.assign(this._header, rHeader)
+      );
       headerEntries.forEach(([p, v]) => {
         xhr.setRequestHeader(p, v);
       });

@@ -1,6 +1,6 @@
 import { template as templator } from 'handlebars/runtime';
-import { EventBus } from 'shared/packages/event-bus';
-import { uuid } from 'shared/packages/uuid';
+import EventBus from 'shared/packages/event-bus';
+import uuid from 'shared/packages/uuid';
 import { type IBlock } from '../interfaces';
 import { type TBlockEventsMap, pickBlocksAndEvents, shallowEqual } from './lib';
 import { EVENT, TMP_TAG } from './consts';

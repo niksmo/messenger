@@ -1,10 +1,9 @@
 import { Block, type IBlockProps } from 'shared/components/block';
+import { Store } from 'shared/components/store';
 import { Input } from 'shared/ui/input';
 import { ButtonFilled } from 'shared/ui/button';
 import { getFieldsValues, getInputValue } from 'shared/helpers';
 import { SigninController } from 'features/auth/controller';
-import { Store } from 'shared/components/store';
-import { SigninAPI } from 'features/auth/api';
 import templateSpec from './form.template.hbs';
 
 interface InputState {
@@ -36,16 +35,7 @@ interface ISigninFormProps extends IBlockProps {
   onSubmit: (e: Event) => void;
 }
 
-const verifier = {
-  checkOnValidity(formData: Record<string, string>) {
-    return {
-      hintData: { login: 'asdfsf', password: 'adsfasdf' },
-      isValid: false,
-    };
-  },
-};
-
-const signinController = new SigninController(verifier, new SigninAPI());
+const signinController = new SigninController();
 
 export class SigninForm extends Block<ISigninFormProps> {
   constructor() {
@@ -68,8 +58,6 @@ export class SigninForm extends Block<ISigninFormProps> {
     });
 
     const submitButton = new ButtonFilled({
-      id: 'submitButton',
-      name: 'submitButton',
       label: 'Sign in',
       type: 'submit',
     });

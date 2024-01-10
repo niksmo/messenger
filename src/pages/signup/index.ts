@@ -4,7 +4,7 @@ import { ButtonLight } from 'shared/ui/button';
 import { form } from 'features/signup';
 import templateSpec from './signup-page.template.hbs';
 import styles from './styles.module.css';
-import { PATH } from 'shared/constants';
+import { ROUT_PATH } from 'shared/constants';
 
 interface IPageSignupProps extends IBlockProps {
   form: Block;
@@ -20,7 +20,7 @@ export class PageSignup extends Block<IPageSignupProps> {
     });
 
     const transitionButton = new Link({
-      href: PATH.SIGNIN,
+      href: ROUT_PATH.SIGNIN,
       ariaHidden: true,
       children: button,
     });

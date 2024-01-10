@@ -2,7 +2,10 @@ export function getFieldsValues(evt: Event): Record<string, string> {
   const { target } = evt;
   let form: HTMLFormElement | null = null;
 
-  if (target instanceof HTMLInputElement) {
+  if (
+    target instanceof HTMLInputElement ||
+    target instanceof HTMLButtonElement
+  ) {
     form = target.form;
     if (!form) {
       throw Error('Input must have parents form');

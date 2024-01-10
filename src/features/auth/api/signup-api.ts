@@ -17,7 +17,9 @@ export class SignupAPI extends BaseAPI {
   constructor() {
     super();
 
-    this._http = new HttpTransport().setBaseURL(BASE_URL + '/auth');
+    this._http = new HttpTransport().setBaseURL(BASE_URL + '/auth').setHeader({
+      'Content-type': 'application/json',
+    });
   }
 
   async request(props: IRequestProps): Promise<XMLHttpRequest> {

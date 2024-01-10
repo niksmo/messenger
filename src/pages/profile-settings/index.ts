@@ -1,7 +1,7 @@
 import { Block, type IBlockProps } from 'shared/components/block';
 import { Link } from 'shared/components/router';
 import { ButtonLight } from 'shared/ui/button';
-import { PATH } from 'shared/constants';
+import { ROUT_PATH } from 'shared/constants';
 import { profileInfo } from 'entites/viewer';
 import { InvisibleFileInput } from 'features/change-avatar';
 import { EditProfileLink } from 'features/edit-profile';
@@ -19,7 +19,7 @@ interface IProps extends IBlockProps {
 export class PageSettings extends Block<IProps> {
   constructor() {
     const transitionButton = new Link({
-      href: PATH.MAIN,
+      href: ROUT_PATH.MAIN,
       ariaHidden: true,
       children: new ButtonLight({
         label: 'Back to chats',

@@ -1,6 +1,6 @@
 import { IconButton } from 'shared/ui/button';
 import { Link } from 'shared/components/router';
-import { PATH } from 'shared/constants';
+import { ROUT_PATH } from 'shared/constants';
 import { SearchBar } from 'features/search-contact';
 import { addContactMenu } from 'features/add-contact';
 import { ChatList, type IChatListItem, SideWidget } from '../ui';
@@ -18,7 +18,7 @@ const topBarButton = new IconButton({
 });
 
 const settingsButton = new Link({
-  href: PATH.SETTINGS,
+  href: ROUT_PATH.SETTINGS,
   ariaHidden: true,
   children: topBarButton,
 });

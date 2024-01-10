@@ -1,11 +1,10 @@
 import { Block, type IBlockProps } from 'shared/components/block';
 import { Link } from 'shared/components/router';
 import { ButtonLight } from 'shared/ui/button';
-import { PATH } from 'shared/constants';
-import { informMsg as message } from 'features/signin';
+import { ROUT_PATH } from 'shared/constants';
+import { SigninForm, SigninMessage } from 'features/auth/ui';
 import templateSpec from './signin-page.template.hbs';
 import styles from './styles.module.css';
-import { SigninForm } from 'features/auth/ui';
 
 interface IPageSigninProps extends IBlockProps {
   message: Block;
@@ -17,17 +16,18 @@ export class PageSignin extends Block<IPageSigninProps> {
   constructor() {
     const button = new ButtonLight({
       label: 'Sign up',
-      name: 'transitionButton',
       type: 'button',
     });
 
     const transitionButton = new Link({
-      href: PATH.SIGNUP,
+      href: ROUT_PATH.SIGNUP,
       ariaHidden: true,
       children: button,
     });
 
     const form = new SigninForm();
+
+    const message = new SigninMessage();
 
     super({ message, form, transitionButton });
   }
@@ -38,9 +38,5 @@ export class PageSignin extends Block<IPageSigninProps> {
 
   protected _getStylesModule(): CSSModuleClasses {
     return styles;
-  }
-
-  public setVisible(): void {
-    this.getContent().style.display = 'flex';
   }
 }

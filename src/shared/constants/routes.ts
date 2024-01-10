@@ -1,4 +1,4 @@
-export const PATH = {
+export const ROUT_PATH = {
   SIGNIN: '/',
   SIGNUP: '/sign-up',
   MAIN: '/messenger',
@@ -9,6 +9,6 @@ export const PATH = {
   500: '/500',
 };
 
-export const SLUG = {
+export const ROUT_SLUG = {
   CHAT_ID: '/:chatId',
 };

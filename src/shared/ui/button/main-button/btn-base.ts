@@ -1,4 +1,4 @@
-import { Block, type IBlockProps } from 'shared/components/block/block';
+import { Block, type IBlockProps } from 'shared/components/block';
 import templateSpec from './button.template.hbs';
 
 interface IButtonProps extends IBlockProps {

@@ -1,5 +1,5 @@
 import { set } from 'shared/helpers';
-import { EventBus } from 'shared/packages/event-bus';
+import EventBus from 'shared/packages/event-bus';
 import { type IStore } from '../interfaces';
 
 type Indexed = Record<string, unknown>;
