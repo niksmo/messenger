@@ -31,6 +31,7 @@ class SigninController implements ISigninController {
   private readonly _verifier;
   private readonly _api;
   private readonly _store;
+  private readonly _router;
 
   constructor() {
     this._verifier = verifierCreator.makeStringVerifier({
@@ -39,6 +40,7 @@ class SigninController implements ISigninController {
     });
     this._api = new SigninAPI();
     this._store = Store.instance();
+    this._router = AppRouter.instance();
   }
 
   initBlock(): void {
@@ -89,9 +91,8 @@ class SigninController implements ISigninController {
       const { status, response } = await this._api.request(formData);
 
       if (status === 200) {
-        const router = AppRouter.instance();
         this._resetState();
-        router.go(ROUT_PATH.MAIN, true);
+        this._router.go(ROUT_PATH.MAIN, true);
       }
 
       if (status === 401) {

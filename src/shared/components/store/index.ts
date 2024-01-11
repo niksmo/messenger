@@ -45,4 +45,8 @@ export class Store implements IStore {
 
     return this;
   }
+
+  getState(): Indexed {
+    return this._state;
+  }
 }
