@@ -17,6 +17,7 @@ abstract class Block<TProps extends IBlockProps = IBlockProps>
   private _element: Node | null = null;
   private _updatingPropsNum = 0;
   private _events: TBlockEventsMap | null = null;
+  private _childBlocks: Map<string, Block> | null = null;
   protected props;
 
   constructor(props: TProps | IBlockProps = {}) {
@@ -58,7 +59,7 @@ abstract class Block<TProps extends IBlockProps = IBlockProps>
         propsCounter += 1;
 
         if (propsCounter === self._updatingPropsNum) {
-          self._eventBus.emit(EVENT.UPDATE, oldProps, newProps);
+          self._eventBus.emit(EVENT.COMPARE, oldProps, newProps);
           propsCounter = 0;
         }
 
@@ -71,6 +72,8 @@ abstract class Block<TProps extends IBlockProps = IBlockProps>
     this._eventBus.on(EVENT.INIT, this._init.bind(this));
     this._eventBus.on(EVENT.MOUNT, this._didMount.bind(this));
     this._eventBus.on(EVENT.UPDATE, this._didUpdate.bind(this));
+    this._eventBus.on(EVENT.UNMOUNT, this._willUnmount.bind(this));
+    this._eventBus.on(EVENT.COMPARE, this._compareProps.bind(this));
     this._eventBus.on(EVENT.RENDER, this._render.bind(this));
   }
 
@@ -106,6 +109,8 @@ abstract class Block<TProps extends IBlockProps = IBlockProps>
       this.props
     );
 
+    this._childBlocks = childBlocks;
+
     const stubs = Array.from(block.getElementsByTagName(TMP_TAG));
 
     stubs.forEach((stub) => {
@@ -116,7 +121,10 @@ abstract class Block<TProps extends IBlockProps = IBlockProps>
 
         if (node) {
           stub.replaceWith(node);
-          childBlock?.dispatchDidMount();
+
+          if (this._element === null) {
+            childBlock?.dispatchDidMount();
+          }
         }
       }
     });
@@ -155,7 +163,41 @@ abstract class Block<TProps extends IBlockProps = IBlockProps>
     this.didMount();
   }
 
-  private _didUpdate(oldProps: TProps, newProps: TProps): void {
+  private _didUpdate(): void {
+    this.didUpdate();
+  }
+
+  private _willUnmount(): void {
+    const stack: Block[] = [this];
+    const colors: number[] = [1];
+
+    while (stack.length) {
+      const block = stack.pop();
+      const color = colors.pop();
+
+      if (!block || !color) {
+        break;
+      }
+
+      if (color === 1) {
+        stack.push(block);
+        colors.push(2);
+        const childBlocks = block._childBlocks;
+        if (childBlocks) {
+          for (const block of childBlocks.values()) {
+            stack.push(block);
+            colors.push(1);
+          }
+        }
+      }
+
+      if (color === 2) {
+        block.willUnmount();
+      }
+    }
+  }
+
+  private _compareProps(oldProps: TProps, newProps: TProps): void {
     const [isEqual, causeProps] = this._shallowEqual(oldProps, newProps);
 
     const shouldRender = this.renderInterceptor(
@@ -169,15 +211,21 @@ abstract class Block<TProps extends IBlockProps = IBlockProps>
       this._eventBus.emit(EVENT.RENDER);
     }
 
-    this.didUpdate();
+    this._eventBus.emit(EVENT.UPDATE);
   }
 
   public didMount(): void {}
 
   public didUpdate(): void {}
 
+  public willUnmount(): void {}
+
   public dispatchDidMount(): void {
     this._eventBus.emit(EVENT.MOUNT);
+  }
+
+  public dispatchWillUnmount(): void {
+    this._eventBus.emit(EVENT.UNMOUNT);
   }
 
   public getContent(): HTMLElement {

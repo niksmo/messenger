@@ -21,10 +21,12 @@ interface ISignupFormProps extends IBlockProps {
   onFocusout: (e: Event) => void;
 }
 
-export class SignupForm extends Block<ISignupFormProps> {
-  constructor() {
-    const store = Store.instance();
+const store = Store.instance();
 
+export class SignupForm extends Block<ISignupFormProps> {
+  private readonly _onStoreUpdate;
+
+  constructor() {
     const inputMap: Record<string, Block> = {
       first_name: new Input({
         id: 'first_name',
@@ -75,20 +77,6 @@ export class SignupForm extends Block<ISignupFormProps> {
       type: 'submit',
     });
 
-    store.on<ISignupState>((state) => {
-      const { load, ...fields } = state.signup;
-      Object.entries(fields).forEach(([field, props]) => {
-        const block = inputMap[field];
-        if (block) {
-          block.setProps({ ...props });
-        }
-      });
-
-      submitButton.setProps({ disabled: load });
-    });
-
-    signupController.initBlock();
-
     super({
       ...inputMap,
       submitButton,
@@ -103,9 +91,29 @@ export class SignupForm extends Block<ISignupFormProps> {
         void signupController.submit(getFieldsValues(e));
       },
     });
+
+    this._onStoreUpdate = (state: ISignupState) => {
+      const { load, ...fields } = state.signup;
+      Object.entries(fields).forEach(([field, props]) => {
+        const block = inputMap[field];
+        if (block) {
+          block.setProps({ ...props });
+        }
+      });
+
+      submitButton.setProps({ disabled: load });
+    };
+
+    store.on<ISignupState>(this._onStoreUpdate);
+
+    signupController.initBlock();
   }
 
   protected _getTemplateSpec(): TemplateSpecification {
     return templateSpec;
+  }
+
+  public willUnmount(): void {
+    store.off(this._onStoreUpdate);
   }
 }

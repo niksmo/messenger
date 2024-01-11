@@ -8,6 +8,8 @@ export interface IBlock {
   setProps: (arg: Record<string, unknown>) => void;
   setVisible: () => void;
   setHidden: () => void;
+  willUnmount: () => void;
+  dispatchWillUnmount: () => void;
 }
 
 export interface IAppRouter {

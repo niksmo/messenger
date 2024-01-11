@@ -15,16 +15,20 @@ interface ISigninState {
   };
 }
 
+const store = Store.instance();
+
 export class SigninMessage extends Block<ISigninMessageProps> {
+  private readonly _onStoreUpdate;
+
   constructor() {
     super();
 
-    const store = Store.instance();
-
-    store.on<ISigninState>((state) => {
+    this._onStoreUpdate = (state: ISigninState) => {
       const { error: message } = state.signin;
       this.setProps({ message: message, visible: Boolean(message) });
-    });
+    };
+
+    store.on<ISigninState>(this._onStoreUpdate);
 
     signinController.initBlock();
   }
@@ -39,5 +43,9 @@ export class SigninMessage extends Block<ISigninMessageProps> {
 
   public setProps(newProps: Partial<ISigninMessageProps>): void {
     super.setProps(newProps);
+  }
+
+  public willUnmount(): void {
+    store.off(this._onStoreUpdate);
   }
 }

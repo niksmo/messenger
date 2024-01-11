@@ -16,10 +16,12 @@ interface ISigninFormProps extends IBlockProps {
   onSubmit: (e: Event) => void;
 }
 
-export class SigninForm extends Block<ISigninFormProps> {
-  constructor() {
-    const store = Store.instance();
+const store = Store.instance();
 
+export class SigninForm extends Block<ISigninFormProps> {
+  private readonly _onStoreUpdate;
+
+  constructor() {
     const login = new Input({
       id: 'login',
       name: 'login',
@@ -39,15 +41,6 @@ export class SigninForm extends Block<ISigninFormProps> {
       type: 'submit',
     });
 
-    store.on<ISigninState>((state) => {
-      const { signin } = state;
-      login.setProps({ ...signin.login });
-      password.setProps({ ...signin.password });
-      submitButton.setProps({ disabled: signin.load });
-    });
-
-    signinController.initBlock();
-
     super({
       login,
       password,
@@ -63,9 +56,24 @@ export class SigninForm extends Block<ISigninFormProps> {
         void signinController.submit(getFieldsValues(e));
       },
     });
+
+    this._onStoreUpdate = (state: ISigninState) => {
+      const { signin } = state;
+      login.setProps({ ...signin.login });
+      password.setProps({ ...signin.password });
+      submitButton.setProps({ disabled: signin.load });
+    };
+
+    store.on<ISigninState>(this._onStoreUpdate);
+
+    signinController.initBlock();
   }
 
   protected _getTemplateSpec(): TemplateSpecification {
     return templateSpec;
+  }
+
+  public willUnmount(): void {
+    store.off(this._onStoreUpdate);
   }
 }

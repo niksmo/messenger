@@ -48,6 +48,7 @@ export class Route implements IRoute {
   }
 
   leave(): void {
+    this._block?.dispatchWillUnmount();
     this._block?.getContent().remove();
     this._block = null;
   }

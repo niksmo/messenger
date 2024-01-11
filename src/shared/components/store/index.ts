@@ -38,6 +38,10 @@ export class Store implements IStore {
     return this;
   }
 
+  off<State = Indexed>(fn: (state: State) => void): void {
+    this._eventBus.off(this._updateEvent, fn);
+  }
+
   set(path: string, value: unknown): this {
     set(this._state, path, value);
 

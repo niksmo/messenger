@@ -2,6 +2,8 @@ export const enum EVENT {
   INIT = 'init',
   MOUNT = 'componentDidMount',
   UPDATE = 'componentDidUpdate',
+  UNMOUNT = 'componentWillUnmount',
+  COMPARE = 'compareProps',
   RENDER = 'render',
 }
 

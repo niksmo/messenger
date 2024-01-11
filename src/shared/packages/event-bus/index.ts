@@ -24,7 +24,7 @@ class EventBus {
     }
 
     if (curListeners.length > 0) {
-      curListeners = curListeners.filter((fn) => fn === targetCb);
+      curListeners = curListeners.filter((fn) => fn !== targetCb);
     }
 
     this._listeners[event] = curListeners;
