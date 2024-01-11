@@ -3,28 +3,9 @@ import { Store } from 'shared/components/store';
 import { Input } from 'shared/ui/input';
 import { ButtonFilled } from 'shared/ui/button';
 import { getFieldsValues, getInputValue } from 'shared/helpers';
-import { SigninController } from 'features/auth/controller';
+import { type SigninState } from 'features/auth/model';
+import { signinController } from 'features/auth/controller';
 import templateSpec from './form.template.hbs';
-
-interface InputState {
-  error: boolean;
-  value: string;
-  hint: string;
-}
-
-interface FormState {
-  signin: {
-    login: InputState;
-    password: InputState;
-    error: string;
-  };
-}
-
-const initInputState: InputState = {
-  error: false,
-  hint: '',
-  value: '',
-};
 
 interface ISigninFormProps extends IBlockProps {
   login: Block;
@@ -35,8 +16,6 @@ interface ISigninFormProps extends IBlockProps {
   onSubmit: (e: Event) => void;
 }
 
-const signinController = new SigninController();
-
 export class SigninForm extends Block<ISigninFormProps> {
   constructor() {
     const store = Store.instance();
@@ -46,7 +25,6 @@ export class SigninForm extends Block<ISigninFormProps> {
       name: 'login',
       type: 'text',
       placeholder: 'Login',
-      ...initInputState,
     });
 
     const password = new Input({
@@ -54,7 +32,6 @@ export class SigninForm extends Block<ISigninFormProps> {
       name: 'password',
       type: 'password',
       placeholder: 'Password',
-      ...initInputState,
     });
 
     const submitButton = new ButtonFilled({
@@ -62,10 +39,14 @@ export class SigninForm extends Block<ISigninFormProps> {
       type: 'submit',
     });
 
-    store.on<FormState>((state) => {
-      login.setProps({ ...state.signin.login });
-      password.setProps({ ...state.signin.password });
+    store.on<SigninState>((state) => {
+      const { signin } = state;
+      login.setProps({ ...signin.login });
+      password.setProps({ ...signin.password });
+      submitButton.setProps({ disabled: signin.load });
     });
+
+    signinController.initBlock();
 
     super({
       login,

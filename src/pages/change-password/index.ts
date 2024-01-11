@@ -2,7 +2,6 @@ import { Block, type IBlockProps } from 'shared/components/block';
 import { Link } from 'shared/components/router';
 import { ButtonLight } from 'shared/ui/button';
 import { ROUT_PATH } from 'shared/constants';
-import { form } from 'features/change-password';
 import templateSpec from './change-password-page.template.hbs';
 import styles from './styles.module.css';
 
@@ -25,7 +24,7 @@ export class PageChangePassword extends Block<IPageChangePasswordProps> {
       children: button,
     });
 
-    super({ form, transitionButton });
+    super({ transitionButton });
   }
 
   protected _getTemplateSpec(): TemplateSpecification {

@@ -1,7 +1,6 @@
 import { Block, type IBlockProps } from 'shared/components/block';
 import { Link } from 'shared/components/router';
 import { ButtonLight } from 'shared/ui/button';
-import { form } from 'features/edit-profile';
 import templateSpec from './edit-profile-page.template.hbs';
 import styles from './styles.module.css';
 import { ROUT_PATH } from 'shared/constants';
@@ -25,7 +24,7 @@ export class PageEditProfile extends Block<IPageEditProfile> {
       children: button,
     });
 
-    super({ form, transitionButton });
+    super({ transitionButton });
   }
 
   protected _getTemplateSpec(): TemplateSpecification {

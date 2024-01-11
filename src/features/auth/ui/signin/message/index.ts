@@ -2,6 +2,7 @@ import { Block, type IBlockProps } from 'shared/components/block';
 import { Store } from 'shared/components/store';
 import templateSpec from './message.template.hbs';
 import styles from './styles.module.css';
+import { signinController } from 'features/auth/controller';
 
 interface ISigninMessageProps extends IBlockProps {
   message: string;
@@ -16,17 +17,16 @@ interface ISigninState {
 
 export class SigninMessage extends Block<ISigninMessageProps> {
   constructor() {
+    super();
+
     const store = Store.instance();
 
     store.on<ISigninState>((state) => {
-      const {
-        signin: { error = '' },
-      } = state;
-
-      this.setProps({ message: error, visible: Boolean(error) });
+      const { error: message } = state.signin;
+      this.setProps({ message: message, visible: Boolean(message) });
     });
 
-    super();
+    signinController.initBlock();
   }
 
   protected _getTemplateSpec(): TemplateSpecification {

@@ -25,9 +25,9 @@ export class PageSignin extends Block<IPageSigninProps> {
       children: button,
     });
 
-    const form = new SigninForm();
-
     const message = new SigninMessage();
+
+    const form = new SigninForm();
 
     super({ message, form, transitionButton });
   }

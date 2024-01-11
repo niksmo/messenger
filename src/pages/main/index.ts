@@ -21,8 +21,4 @@ export class PageMain extends Block<IPageMainProps> {
   protected _getStylesModule(): CSSModuleClasses {
     return styles;
   }
-
-  public setVisible(): void {
-    this.getContent().style.display = 'flex';
-  }
 }

@@ -4,8 +4,5 @@
     type={{type}} name={{name}} placeholder="{{placeholder}}" id={{id}}
     value={{value}}>
   <label class="{{styles.form-input__label}}" for={{id}}>{{placeholder}}</label>
-  <p
-    class="{{styles.form-input__support}}{{#if hint}} {{styles.form-input__support_visible}}{{/if}}{{#if error}} {{styles.form-input__support_error}}{{/if}} no-select">
-    {{hint}}
-  </p>
+  <p class="{{styles.form-input__support}} no-select">{{hint}}</p>
 </div>

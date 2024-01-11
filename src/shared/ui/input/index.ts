@@ -29,7 +29,7 @@ export class Input extends Block<IInputProps> {
 
   protected renderInterceptor(
     shouldRender: boolean,
-    causeProps: Map<keyof IInputProps, IInputProps[keyof IInputProps]>,
+    causeProps: Map<string, unknown>,
     _oldProps: IBlockProps,
     block: Block
   ): boolean {
@@ -38,6 +38,7 @@ export class Input extends Block<IInputProps> {
     }
 
     const htmlInput = block.getContent().querySelector('input');
+    const htmlHint = block.getContent().querySelector('p');
     const errorStyle = this._getStylesModule()['form-input__inner_error'];
 
     if (causeProps.has('value')) {
@@ -57,7 +58,13 @@ export class Input extends Block<IInputProps> {
     }
 
     if (causeProps.has('hint')) {
-      shouldRender = true;
+      shouldRender = false;
+      if (htmlHint) {
+        const hintText = causeProps.get('hint');
+        if (typeof hintText === 'string') {
+          htmlHint.textContent = hintText;
+        }
+      }
     }
 
     return shouldRender;
