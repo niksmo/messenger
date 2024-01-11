@@ -2,8 +2,6 @@ import { BaseAPI } from 'shared/components/base-api';
 import { BASE_URL } from 'shared/constants/api';
 import HttpTransport from 'shared/packages/http';
 
-type IRequestProps = Record<string, string>;
-
 export class SigninAPI extends BaseAPI {
   private readonly _http;
 
@@ -14,7 +12,7 @@ export class SigninAPI extends BaseAPI {
     });
   }
 
-  async request(props: IRequestProps): Promise<XMLHttpRequest> {
+  async request(props: Record<string, string>): Promise<XMLHttpRequest> {
     return await this._http.post('/signin', props);
   }
 }

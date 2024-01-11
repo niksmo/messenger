@@ -3,7 +3,7 @@ import { Store } from 'shared/components/store';
 import { Input } from 'shared/ui/input';
 import { ButtonFilled } from 'shared/ui/button';
 import { getFieldsValues, getInputValue } from 'shared/helpers';
-import { type SigninState } from 'features/auth/model';
+import { type ISigninState } from 'features/auth/model';
 import { signinController } from 'features/auth/controller';
 import templateSpec from './form.template.hbs';
 
@@ -39,7 +39,7 @@ export class SigninForm extends Block<ISigninFormProps> {
       type: 'submit',
     });
 
-    store.on<SigninState>((state) => {
+    store.on<ISigninState>((state) => {
       const { signin } = state;
       login.setProps({ ...signin.login });
       password.setProps({ ...signin.password });

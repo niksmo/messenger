@@ -1,6 +1,11 @@
 import { Block, type IBlockProps } from 'shared/components/block';
-import templateSpec from './form.template.hbs';
+import { Store } from 'shared/components/store';
 import { Input } from 'shared/ui/input';
+import { ButtonFilled } from 'shared/ui/button';
+import { getFieldsValues, getInputValue } from 'shared/helpers';
+import { signupController } from 'features/auth/controller';
+import { type ISignupState } from 'features/auth/model';
+import templateSpec from './form.template.hbs';
 
 interface ISignupFormProps extends IBlockProps {
   first_name: Block;
@@ -18,7 +23,9 @@ interface ISignupFormProps extends IBlockProps {
 
 export class SignupForm extends Block<ISignupFormProps> {
   constructor() {
-    const inputMap = {
+    const store = Store.instance();
+
+    const inputMap: Record<string, Block> = {
       first_name: new Input({
         id: 'first_name',
         name: 'first_name',
@@ -63,7 +70,39 @@ export class SignupForm extends Block<ISignupFormProps> {
       }),
     };
 
-    super({ ...inputMap });
+    const submitButton = new ButtonFilled({
+      label: 'Sign up',
+      type: 'submit',
+    });
+
+    store.on<ISignupState>((state) => {
+      const { load, ...fields } = state.signup;
+      Object.entries(fields).forEach(([field, props]) => {
+        const block = inputMap[field];
+        if (block) {
+          block.setProps({ ...props });
+        }
+      });
+
+      submitButton.setProps({ disabled: load });
+    });
+
+    signupController.initBlock();
+
+    super({
+      ...inputMap,
+      submitButton,
+      onInput: (e) => {
+        signupController.input(getInputValue(e));
+      },
+      onFocusout: (e) => {
+        signupController.verify(getFieldsValues(e));
+      },
+      onSubmit: (e) => {
+        e.preventDefault();
+        void signupController.submit(getFieldsValues(e));
+      },
+    });
   }
 
   protected _getTemplateSpec(): TemplateSpecification {

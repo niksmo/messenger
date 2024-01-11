@@ -4,6 +4,7 @@ import { ButtonLight } from 'shared/ui/button';
 import { ROUT_PATH } from 'shared/constants';
 import templateSpec from './signup-page.template.hbs';
 import styles from './styles.module.css';
+import { SignupForm } from 'features/auth/ui';
 
 interface IPageSignupProps extends IBlockProps {
   form: Block;
@@ -12,19 +13,19 @@ interface IPageSignupProps extends IBlockProps {
 
 export class PageSignup extends Block<IPageSignupProps> {
   constructor() {
-    const button = new ButtonLight({
-      label: 'Sign in',
-      name: 'transitionButton',
-      type: 'button',
-    });
-
     const transitionButton = new Link({
       href: ROUT_PATH.SIGNIN,
       ariaHidden: true,
-      children: button,
+      children: new ButtonLight({
+        label: 'Sign in',
+        name: 'transitionButton',
+        type: 'button',
+      }),
     });
 
-    super({ transitionButton });
+    const form = new SignupForm();
+
+    super({ form, transitionButton });
   }
 
   protected _getTemplateSpec(): TemplateSpecification {

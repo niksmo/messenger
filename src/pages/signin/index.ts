@@ -14,15 +14,13 @@ interface IPageSigninProps extends IBlockProps {
 
 export class PageSignin extends Block<IPageSigninProps> {
   constructor() {
-    const button = new ButtonLight({
-      label: 'Sign up',
-      type: 'button',
-    });
-
     const transitionButton = new Link({
       href: ROUT_PATH.SIGNUP,
       ariaHidden: true,
-      children: button,
+      children: new ButtonLight({
+        label: 'Sign up',
+        type: 'button',
+      }),
     });
 
     const message = new SigninMessage();

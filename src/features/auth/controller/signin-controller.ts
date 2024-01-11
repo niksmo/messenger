@@ -6,7 +6,7 @@ import {
   verifierCreator,
 } from 'shared/components/form-verifier';
 import { ROUT_PATH } from 'shared/constants';
-import { type SigninState } from '../model';
+import { type ISigninState } from '../model';
 import { SigninAPI } from '../api';
 
 type TFormData = Record<string, string>;
@@ -44,7 +44,7 @@ class SigninController implements ISigninController {
   initBlock(): void {
     const initInputState = { value: '', hint: '', error: false };
 
-    const initState: SigninState['signin'] = {
+    const initState: ISigninState['signin'] = {
       login: { ...initInputState },
       password: { ...initInputState },
       error: '',
