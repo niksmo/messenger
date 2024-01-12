@@ -4,6 +4,7 @@ import { ButtonLight } from 'shared/ui/button';
 import { ROUT_PATH } from 'shared/constants';
 import templateSpec from './change-password-page.template.hbs';
 import styles from './styles.module.css';
+import { ChangePasswordForm } from 'features/change-password';
 
 interface IPageChangePasswordProps extends IBlockProps {
   form: Block;
@@ -24,7 +25,9 @@ export class PageChangePassword extends Block<IPageChangePasswordProps> {
       children: button,
     });
 
-    super({ transitionButton });
+    const form = new ChangePasswordForm();
+
+    super({ form, transitionButton });
   }
 
   protected _getTemplateSpec(): TemplateSpecification {
@@ -33,9 +36,5 @@ export class PageChangePassword extends Block<IPageChangePasswordProps> {
 
   protected _getStylesModule(): CSSModuleClasses {
     return styles;
-  }
-
-  public setVisible(): void {
-    this.getContent().style.display = 'flex';
   }
 }

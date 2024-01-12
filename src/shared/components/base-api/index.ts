@@ -10,7 +10,7 @@ function throwError(): never {
 }
 
 export class BaseAPI implements IBaseAPI {
-  async create(): Promise<unknown> {
+  async create(..._args: unknown[]): Promise<unknown> {
     throwError();
   }
 

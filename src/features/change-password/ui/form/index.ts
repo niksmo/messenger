@@ -1,57 +1,65 @@
-import { Block, type IBlockProps } from 'shared/components/block';
-import { Input } from 'shared/ui/input';
+import { Block } from 'shared/components/block';
+import { Store } from 'shared/components/store';
 import { ButtonFilled } from 'shared/ui/button';
+import { getFieldsValues, getInputMap, getInputValue } from 'shared/helpers';
+import { type IChangePasswordState } from '../../model';
+import { changePasswordController } from '../../controller';
 import templateSpec from './form.template.hbs';
+import { fieldsParams } from './lib';
 
-interface IChangePasswordFormProps extends IBlockProps {
-  current_password: Block;
-  new_password: Block;
-  confirm: Block;
-  submitButton: Block;
-  onInput: (e: Event) => void;
-  onFocusout: (e: Event) => void;
-  onSubmit: (e: Event) => void;
-}
+const store = Store.instance();
 
-export class ChangePasswordForm extends Block<IChangePasswordFormProps> {
+export class ChangePasswordForm extends Block {
+  private readonly _onStoreUpdate;
+
   constructor() {
-    const inputMap = {
-      current_password: new Input({
-        id: 'current_password',
-        name: 'current_password',
-        placeholder: 'Current password',
-        type: 'password',
-        error: false,
-        value: '',
-      }),
-      new_password: new Input({
-        id: 'new_password',
-        name: 'new_password',
-        placeholder: 'New password',
-        type: 'password',
-        error: false,
-        value: '',
-      }),
-      confirm: new Input({
-        id: 'confirm',
-        name: 'confirm',
-        placeholder: 'Confirm password',
-        type: 'password',
-        error: false,
-        value: '',
-      }),
-    };
+    changePasswordController.start();
+
+    const state = store.getState<IChangePasswordState>();
+    const { load, ...fields } = state.changePassword;
+
+    const inputMap = getInputMap(fieldsParams, fields);
 
     const submitButton = new ButtonFilled({
       type: 'submit',
       label: 'Change',
-      name: 'changeButton',
     });
 
-    super({ ...inputMap, submitButton });
+    super({
+      ...inputMap,
+      submitButton,
+      onInput: (e: Event) => {
+        changePasswordController.input(getInputValue(e));
+      },
+      onFocusout: (e: Event) => {
+        changePasswordController.verify(getFieldsValues(e));
+      },
+      onSubmit: (e: Event) => {
+        e.preventDefault();
+        void changePasswordController.submit(getFieldsValues(e));
+      },
+    });
+
+    this._onStoreUpdate = (state: IChangePasswordState) => {
+      const { load, ...fields } = state.changePassword;
+      Object.entries(fields).forEach(([field, props]) => {
+        const block = inputMap[field];
+        if (block) {
+          block.setProps({ ...props });
+        }
+      });
+
+      submitButton.setProps({ disabled: load });
+    };
+
+    store.on<IChangePasswordState>(this._onStoreUpdate);
   }
 
   protected _getTemplateSpec(): TemplateSpecification {
     return templateSpec;
+  }
+
+  public willUnmount(): void {
+    store.off(this._onStoreUpdate);
   }
 }

@@ -1,5 +1,5 @@
 import { BaseAPI } from 'shared/components/base-api';
-import { BASE_URL } from 'shared/constants/api';
+import { BASE_URL, HEADER } from 'shared/constants/api';
 import HttpTransport from 'shared/packages/http';
 
 export class SignupAPI extends BaseAPI {
@@ -8,12 +8,12 @@ export class SignupAPI extends BaseAPI {
   constructor() {
     super();
 
-    this._http = new HttpTransport().setBaseURL(BASE_URL + '/auth').setHeader({
-      'Content-type': 'application/json',
-    });
+    this._http = new HttpTransport()
+      .setBaseURL(BASE_URL + '/auth')
+      .setHeader(HEADER.JSON);
   }
 
-  async request(props: Record<string, string>): Promise<XMLHttpRequest> {
+  async create(props: Record<string, string>): Promise<XMLHttpRequest> {
     return await this._http.post('/signup', props);
   }
 }

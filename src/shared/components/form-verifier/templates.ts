@@ -14,4 +14,5 @@ export const HINT = {
   password:
     'One uppercase letter and one digit are required, from 8 to 40 characters',
   phone: 'From 10 to 15 digit, may start with plus symbol',
+  confirmPassword: 'Passwords don"t match',
 };

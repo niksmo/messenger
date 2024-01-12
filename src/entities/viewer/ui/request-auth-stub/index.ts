@@ -1,8 +1,8 @@
 import { Block } from 'shared/components/block';
 import { AppRouter } from 'shared/components/router';
 import { Store } from 'shared/components/store';
-import { viewerController } from 'entites/viewer/controller';
-import { type IViewerState } from 'entites/viewer/model';
+import { viewerController } from '../../controller';
+import { type IViewerState } from '../../model';
 import templateSpec from './request-auth-stub.template.hbs';
 
 const store = Store.instance();

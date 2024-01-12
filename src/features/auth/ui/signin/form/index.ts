@@ -2,8 +2,8 @@ import { Block } from 'shared/components/block';
 import { Store } from 'shared/components/store';
 import { ButtonFilled } from 'shared/ui/button';
 import { getFieldsValues, getInputMap, getInputValue } from 'shared/helpers';
-import { type ISigninState } from 'features/auth/model';
-import { signinController } from 'features/auth/controller';
+import { type ISigninState } from '../../../model';
+import { signinController } from '../../../controller';
 import templateSpec from './form.template.hbs';
 import { fieldsParams } from './lib';
 

@@ -1,9 +1,9 @@
-import { signupController } from 'features/auth/controller';
 import { Block } from 'shared/components/block';
 import { Store } from 'shared/components/store';
 import { ButtonFilled } from 'shared/ui/button';
 import { getFieldsValues, getInputMap, getInputValue } from 'shared/helpers';
-import { type ISignupState } from 'features/auth/model';
+import { type ISignupState } from '../../../model';
+import { signupController } from '../../../controller';
 import templateSpec from './form.template.hbs';
 import { fieldsParams } from './lib';
 

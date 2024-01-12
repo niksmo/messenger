@@ -6,8 +6,9 @@ import {
   verifierCreator,
 } from 'shared/components/form-verifier';
 import { ROUT_PATH } from 'shared/constants';
-import { type ISignupState } from '../model';
-import { SignupAPI } from '../api';
+import { type IChangePasswordState } from '../model';
+import { ChangePasswordAPI } from '../api';
+import { extractRequestBody } from './lib';
 
 type TFormData = Record<string, string>;
 
@@ -16,10 +17,10 @@ interface IInputData {
   value: string;
 }
 
-const STORE_SLICE = 'signup';
+const STORE_SLICE = 'changePassword';
 const STORE_LOAD = STORE_SLICE + '.load';
 
-class SignupController {
+class ChangePasswordController {
   private readonly _verifier;
   private readonly _api;
   private readonly _store;
@@ -27,15 +28,11 @@ class SignupController {
 
   constructor() {
     this._verifier = verifierCreator.makeStringVerifier({
-      first_name: { template: TEMPLATE.name, hint: HINT.name },
-      second_name: { template: TEMPLATE.name, hint: HINT.name },
-      email: { template: TEMPLATE.email, hint: HINT.email },
-      phone: { template: TEMPLATE.phone, hint: HINT.phone },
-      login: { template: TEMPLATE.login, hint: HINT.login },
-      password: { template: TEMPLATE.password, hint: HINT.password },
+      current_password: { template: TEMPLATE.password, hint: HINT.password },
+      new_password: { template: TEMPLATE.password, hint: HINT.password },
     });
 
-    this._api = new SignupAPI();
+    this._api = new ChangePasswordAPI();
     this._store = Store.instance();
     this._router = AppRouter.instance();
   }
@@ -43,13 +40,9 @@ class SignupController {
   start(): void {
     const initInputState = { value: '', hint: '', error: false };
 
-    const initState: ISignupState['signup'] = {
-      first_name: { ...initInputState },
-      second_name: { ...initInputState },
-      email: { ...initInputState },
-      phone: { ...initInputState },
-      login: { ...initInputState },
-      password: { ...initInputState },
+    const initState: IChangePasswordState['changePassword'] = {
+      current_password: { ...initInputState },
+      new_password: { ...initInputState },
       confirm: { ...initInputState },
       load: false,
     };
@@ -78,10 +71,10 @@ class SignupController {
       }
     }
 
-    const { password, confirm } = formData;
+    const { new_password: newPassword, confirm } = formData;
 
-    if (password !== undefined && confirm !== undefined) {
-      const hint = password !== confirm ? HINT.confirmPassword : '';
+    if (newPassword !== undefined && confirm !== undefined) {
+      const hint = newPassword !== confirm ? HINT.confirmPassword : '';
       const error = Boolean(hint);
 
       this._store.set(`${STORE_SLICE}.confirm`, {
@@ -94,28 +87,27 @@ class SignupController {
     return isValid;
   }
 
-  async submit(formData: TFormData): Promise<void> {
+  async submit(formData: Record<string, string>): Promise<void> {
     if (!this.verify(formData)) {
       return;
     }
 
     try {
       this._store.set(STORE_LOAD, true);
-      const { status, response } = await this._api.create(formData);
+      const reqBody = extractRequestBody(formData);
+      const { status, response } = await this._api.request(reqBody);
 
       if (status === 200) {
         this._resetState();
-        this._router.go(ROUT_PATH.MAIN, true);
+        this._router.go(ROUT_PATH.SETTINGS, true);
       }
 
-      if (status === 409) {
+      if (status === 400) {
         if (typeof response === 'string') {
           const { reason } = JSON.parse(response);
 
-          if (typeof reason === 'string') {
-            const field = reason.startsWith('Email') ? 'email' : 'login';
-
-            this._store.set(`${STORE_SLICE}.${field}`, {
+          if (typeof reason === 'string' && reason.startsWith('Password')) {
+            this._store.set(`${STORE_SLICE}.current_password`, {
               hint: reason,
               error: true,
             });
@@ -134,6 +126,6 @@ class SignupController {
   }
 }
 
-const signupController = new SignupController();
+const changePasswordController = new ChangePasswordController();
 
-export { signupController };
+export { changePasswordController };
