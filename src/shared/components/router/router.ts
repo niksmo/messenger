@@ -3,7 +3,7 @@ import {
   type BlockConstructor,
   type IRoute,
 } from '../interfaces';
-import { Route } from './route';
+import { AuthRoute, NotAuthRoute, Route } from './route';
 
 const INIT_BASE_PATH = '/';
 
@@ -54,7 +54,7 @@ export class AppRouter implements IAppRouter {
       );
     }
 
-    this._history.pushState({}, '', this._noMatchRoute);
+    this._history.replaceState({}, '', this._noMatchRoute);
 
     this._render(this._noMatchRoute, route);
   }
@@ -90,6 +90,13 @@ export class AppRouter implements IAppRouter {
     this._render(path, route);
   }
 
+  private _isRoot(appRoot: HTMLElement | null): appRoot is HTMLElement {
+    if (appRoot === null) {
+      throw Error('"appRoot" is not exist, define router.root(HTMLElement)');
+    }
+    return true;
+  }
+
   root(appRoot: HTMLElement): void {
     this._appRoot = appRoot;
   }
@@ -100,15 +107,6 @@ export class AppRouter implements IAppRouter {
 
   noMatch(path: string): void {
     this._noMatchRoute = path;
-  }
-
-  use(path: string, view: BlockConstructor): void {
-    if (this._appRoot === null) {
-      throw Error('"appRoot" is not exist, define router.root(HTMLElement)');
-    }
-
-    const route = new Route(path, view, this._appRoot);
-    this._routes.push(route);
   }
 
   go(path: string, replace: boolean = false): void {
@@ -140,5 +138,42 @@ export class AppRouter implements IAppRouter {
 
     const { pathname } = window.location;
     this._onRoute(pathname);
+  }
+
+  use(path: string, view: BlockConstructor): void {
+    if (this._isRoot(this._appRoot)) {
+      const route = new Route(path, view, this._appRoot);
+      this._routes.push(route);
+    }
+  }
+
+  authUse(
+    path: string,
+    view: BlockConstructor,
+    stub: BlockConstructor,
+    redirectCb: () => void
+  ): void {
+    if (this._isRoot(this._appRoot)) {
+      const route = new AuthRoute(path, view, stub, redirectCb, this._appRoot);
+      this._routes.push(route);
+    }
+  }
+
+  notAuthUse(
+    path: string,
+    view: BlockConstructor,
+    stub: BlockConstructor,
+    redirectCb: () => void
+  ): void {
+    if (this._isRoot(this._appRoot)) {
+      const route = new NotAuthRoute(
+        path,
+        view,
+        stub,
+        redirectCb,
+        this._appRoot
+      );
+      this._routes.push(route);
+    }
   }
 }

@@ -88,10 +88,13 @@ class SigninController implements ISigninController {
 
     try {
       this._store.set(STORE_LOAD, true);
-      const { status, response } = await this._api.request(formData);
+
+      const xhr = await this._api.request(formData);
+      const { status, response } = xhr;
 
       if (status === 200) {
         this._resetState();
+        this._store.set('viewer', { auth: true });
         this._router.go(ROUT_PATH.MAIN, true);
       }
 

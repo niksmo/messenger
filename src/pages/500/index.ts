@@ -24,6 +24,7 @@ export class InternalErrorPage extends Block<IInternalErrorPageProps> {
 
     const transitionButton = new Link({
       href: '/',
+      replace: true,
       ariaHidden: true,
       children: button,
     });

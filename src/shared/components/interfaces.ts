@@ -13,13 +13,25 @@ export interface IBlock {
 }
 
 export interface IAppRouter {
-  use: (path: string, view: BlockConstructor) => void;
   base: (path: string) => void;
   noMatch: (path: string) => void;
   go: (path: string, replace: boolean) => void;
   back: () => void;
   forward: () => void;
   start: () => void;
+  use: (path: string, view: BlockConstructor) => void;
+  authUse: (
+    path: string,
+    view: BlockConstructor,
+    stub: BlockConstructor,
+    redirectCb: () => void
+  ) => void;
+  notAuthUse: (
+    path: string,
+    view: BlockConstructor,
+    stub: BlockConstructor,
+    redirectCb: () => void
+  ) => void;
 }
 
 export interface IRoute {

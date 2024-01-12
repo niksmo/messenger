@@ -67,6 +67,7 @@ class HttpTransport implements IHttpTransportConfig, IHttpTransportAgent {
       const xhr = new XMLHttpRequest();
       xhr.timeout = rTimeout;
       xhr.open(method, rURL);
+      xhr.withCredentials = true;
 
       const headerEntries = Object.entries(
         Object.assign(this._header, rHeader)

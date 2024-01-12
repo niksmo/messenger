@@ -24,6 +24,7 @@ export class NotFoundPage extends Block<INotFoundPageProps> {
 
     const transitionButton = new Link({
       href: '/',
+      replace: true,
       ariaHidden: true,
       children: button,
     });
