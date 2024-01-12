@@ -1,37 +1,28 @@
 import { Block, type IBlockProps } from 'shared/components/block';
+import { setNamePrefixToProps } from './lib';
 import imageTemplateSpec from './image.template.hbs';
 import stubTemplateSpec from './stub.template.hbs';
 import styles from './styles.module.css';
 
-interface IAvatarProps {
-  src?: string;
+interface IAvatarProps extends IBlockProps {
+  src: null | string;
   name: string;
 }
 
-let curSrc = '';
+export class Avatar extends Block<IAvatarProps> {
+  private readonly _imageSrc: string | null;
 
-function setNamePrefix(props: IBlockProps): IBlockProps {
-  const { src, name } = props;
-  const avatarImage = src as string;
-  if (!avatarImage && typeof name === 'string') {
-    props.namePrefix = name[0]?.toUpperCase();
-    curSrc = '';
-  } else {
-    curSrc = avatarImage;
-  }
-
-  return props;
-}
-
-export class Avatar extends Block {
-  constructor(props: IAvatarProps & IBlockProps) {
-    setNamePrefix(props);
+  constructor(props: IAvatarProps) {
+    const { src } = props;
+    setNamePrefixToProps(props);
 
     super(props);
+
+    this._imageSrc = src;
   }
 
   protected _getTemplateSpec(): TemplateSpecification {
-    return curSrc ? imageTemplateSpec : stubTemplateSpec;
+    return this._imageSrc ? imageTemplateSpec : stubTemplateSpec;
   }
 
   protected _getStylesModule(): CSSModuleClasses {
@@ -39,8 +30,9 @@ export class Avatar extends Block {
   }
 
   public setProps(newProps: Partial<IAvatarProps>): void {
-    setNamePrefix(newProps);
-
+    if (newProps.name) {
+      setNamePrefixToProps(newProps);
+    }
     super.setProps(newProps);
   }
 }

@@ -14,5 +14,5 @@ app.get('*', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`express server listen ${PORT}`);
+  console.warn(`express server listen ${PORT}`);
 });

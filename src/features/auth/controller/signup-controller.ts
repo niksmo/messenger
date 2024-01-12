@@ -114,7 +114,7 @@ class SignupController implements ISignupController {
 
       if (status === 200) {
         this._resetState();
-        this._router.go(ROUT_PATH.SIGNIN, false);
+        this._router.go(ROUT_PATH.MAIN, true);
       }
 
       if (status === 409) {
@@ -131,8 +131,12 @@ class SignupController implements ISignupController {
           }
         }
       }
+
+      if (status === 500) {
+        this._router.go(ROUT_PATH[500]);
+      }
     } catch (err) {
-      console.log(err);
+      console.warn(err);
     } finally {
       this._store.set(STORE_LOAD, false);
     }

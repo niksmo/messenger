@@ -2,13 +2,12 @@ import { Block, type IBlockProps } from 'shared/components/block';
 import { Link } from 'shared/components/router';
 import { ButtonLight } from 'shared/ui/button';
 import { ROUT_PATH } from 'shared/constants';
-import { profileInfo } from 'entites/viewer';
-import { InvisibleFileInput } from 'features/change-avatar';
 import { EditProfileLink } from 'features/edit-profile';
 import { ChangePasswordLink } from 'features/change-password';
 import { LogoutLink } from 'features/logout';
 import templateSpec from './profile-settings-page.template.hbs';
 import styles from './styles.module.css';
+import { ProfileInfo } from 'entites/viewer';
 
 interface IProps extends IBlockProps {
   profileInfo: Block;
@@ -28,7 +27,7 @@ export class PageSettings extends Block<IProps> {
       }),
     });
 
-    profileInfo.setProps({ changeAvatar: new InvisibleFileInput() });
+    const profileInfo = new ProfileInfo();
 
     const navList = [
       new EditProfileLink(),

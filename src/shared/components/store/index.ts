@@ -50,7 +50,7 @@ export class Store implements IStore {
     return this;
   }
 
-  getState<State extends Indexed>(): State {
+  getState<State = Indexed>(): State {
     return this._state as State;
   }
 }

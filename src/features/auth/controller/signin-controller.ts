@@ -105,8 +105,12 @@ class SigninController implements ISigninController {
           this._store.set(STORE_ERROR, reason);
         }
       }
+
+      if (status === 500) {
+        this._router.go(ROUT_PATH[500]);
+      }
     } catch (err) {
-      console.log(err);
+      console.warn(err);
     } finally {
       this._store.set(STORE_LOAD, false);
     }

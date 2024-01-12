@@ -1,27 +1,60 @@
-import { Avatar } from 'shared/ui/avatar';
-import { ProfileInfo } from '../ui';
+import { Store } from 'shared/components/store';
+import { AppRouter } from 'shared/components/router';
+import { ROUT_PATH } from 'shared/constants';
+import { ViewerAPI } from '../api';
 
-const MOCK_DATA = {
-  firstName: 'Dmitry',
-  lastName: 'Antonovich',
-  userName: 'dimosky',
-  email: 'my-email@email.com',
-  login: 'my-login',
-  phone: '+79995437632',
-};
+interface ISigninController {
+  requestCredentials: () => Promise<void>;
+}
 
-const { firstName, lastName, userName, email, login, phone } = MOCK_DATA;
+const STORE_SLICE = 'viewer';
 
-const avatar = new Avatar({ name: MOCK_DATA.firstName });
+class ViewerController implements ISigninController {
+  private readonly _api;
+  private readonly _store;
+  private readonly _router;
 
-const profileInfo = new ProfileInfo({
-  avatar,
-  firstName,
-  lastName,
-  userName,
-  email,
-  login,
-  phone,
-});
+  constructor() {
+    this._api = new ViewerAPI();
+    this._store = Store.instance();
+    this._router = AppRouter.instance();
+  }
 
-export { profileInfo };
+  async requestCredentials(): Promise<void> {
+    try {
+      const xhr = await this._api.request();
+      const { status, response } = xhr;
+
+      if (status === 200) {
+        if (typeof response === 'string') {
+          const data = JSON.parse(response);
+          const viewerData = Object.assign({ auth: true }, data);
+          this._store.set(STORE_SLICE, viewerData);
+        }
+      }
+
+      if (status === 401) {
+        if (typeof response === 'string') {
+          this._store.set(STORE_SLICE, { auth: false });
+        }
+      }
+
+      if (status === 400) {
+        if (typeof response === 'string') {
+          const { reason } = JSON.parse(response);
+          console.warn(reason);
+        }
+      }
+
+      if (status === 500) {
+        this._router.go(ROUT_PATH[500]);
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  }
+}
+
+const viewerController = new ViewerController();
+
+export { viewerController };

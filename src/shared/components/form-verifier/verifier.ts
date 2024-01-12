@@ -48,7 +48,7 @@ class FileVerifier implements TFileVerifier {
     hintData: Record<string, string>;
     isValid: boolean;
   } {
-    console.log(this.rules);
+    console.warn(this.rules);
     return {
       hintData: {
         foo: '',
