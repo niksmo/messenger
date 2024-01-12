@@ -2,7 +2,6 @@ import { Block, type IBlockProps } from 'shared/components/block';
 import { Store } from 'shared/components/store';
 import templateSpec from './message.template.hbs';
 import styles from './styles.module.css';
-import { signinController } from 'features/auth/controller';
 
 interface ISigninMessageProps extends IBlockProps {
   message: string;
@@ -29,8 +28,6 @@ export class SigninMessage extends Block<ISigninMessageProps> {
     };
 
     store.on<ISigninState>(this._onStoreUpdate);
-
-    signinController.initBlock();
   }
 
   protected _getTemplateSpec(): TemplateSpecification {

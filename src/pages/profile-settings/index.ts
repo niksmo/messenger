@@ -1,21 +1,15 @@
-import { Block, type IBlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import { Link } from 'shared/components/router';
 import { ButtonLight } from 'shared/ui/button';
 import { ROUT_PATH } from 'shared/constants';
 import { EditProfileLink } from 'features/edit-profile';
 import { ChangePasswordLink } from 'features/change-password';
-import { LogoutLink } from 'features/logout';
+import { ProfileInfo } from 'entites/viewer';
+import { LogoutLink } from 'features/auth';
 import templateSpec from './profile-settings-page.template.hbs';
 import styles from './styles.module.css';
-import { ProfileInfo } from 'entites/viewer';
 
-interface IProps extends IBlockProps {
-  profileInfo: Block;
-  transitionButton: Block;
-  navList: Block[];
-}
-
-export class PageSettings extends Block<IProps> {
+export class PageSettings extends Block {
   constructor() {
     const transitionButton = new Link({
       href: ROUT_PATH.MAIN,
@@ -44,9 +38,5 @@ export class PageSettings extends Block<IProps> {
 
   protected _getStylesModule(): CSSModuleClasses {
     return styles;
-  }
-
-  public setVisible(): void {
-    this.getContent().style.display = 'flex';
   }
 }

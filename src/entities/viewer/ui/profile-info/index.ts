@@ -12,21 +12,18 @@ export class ProfileInfo extends Block {
   private readonly _onStoreUpdate;
 
   constructor() {
-    const {
-      avatar: src,
-      first_name: name,
-      ...rest
-    } = store.getState<IViewerState>().viewer;
+    const { viewer } = store.getState<IViewerState>();
+    const { avatar: src, first_name: name, ...rest } = viewer;
 
     const avatar = new Avatar({ src, name });
-    const changeAvatar = new InvisibleFileInput();
+    const changeAvatar = new InvisibleFileInput({ name: 'avatar_file' });
 
-    super({ avatar, changeAvatar, ...rest });
+    super({ avatar, changeAvatar, first_name: name, ...rest });
 
     this._onStoreUpdate = (state: IViewerState) => {
       const { avatar: src, first_name: name, ...rest } = state.viewer;
       avatar.setProps({ src, name });
-      this.setProps(rest);
+      this.setProps({ first_name: name, ...rest });
     };
 
     store.on<IViewerState>(this._onStoreUpdate);

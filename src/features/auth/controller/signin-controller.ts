@@ -16,18 +16,11 @@ interface IInputData {
   value: string;
 }
 
-interface ISigninController {
-  initBlock: () => void;
-  input: (inputData: IInputData) => void;
-  submit: (formData: TFormData) => void;
-  verify: (formData: TFormData) => boolean;
-}
-
 const STORE_SLICE = 'signin';
 const STORE_ERROR = STORE_SLICE + '.error';
 const STORE_LOAD = STORE_SLICE + '.load';
 
-class SigninController implements ISigninController {
+class SigninController {
   private readonly _verifier;
   private readonly _api;
   private readonly _store;
@@ -43,7 +36,7 @@ class SigninController implements ISigninController {
     this._router = AppRouter.instance();
   }
 
-  initBlock(): void {
+  start(): void {
     const initInputState = { value: '', hint: '', error: false };
 
     const initState: ISigninState['signin'] = {
@@ -57,7 +50,7 @@ class SigninController implements ISigninController {
   }
 
   private _resetState(): void {
-    this.initBlock();
+    this.start();
   }
 
   input({ field, value }: IInputData): void {

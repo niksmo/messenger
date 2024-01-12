@@ -1,40 +1,24 @@
-import { Block, type IBlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import { Store } from 'shared/components/store';
-import { Input } from 'shared/ui/input';
 import { ButtonFilled } from 'shared/ui/button';
-import { getFieldsValues, getInputValue } from 'shared/helpers';
+import { getFieldsValues, getInputMap, getInputValue } from 'shared/helpers';
 import { type ISigninState } from 'features/auth/model';
 import { signinController } from 'features/auth/controller';
 import templateSpec from './form.template.hbs';
-
-interface ISigninFormProps extends IBlockProps {
-  login: Block;
-  password: Block;
-  submitButton: Block;
-  onInput: (e: Event) => void;
-  onFocusout: (e: Event) => void;
-  onSubmit: (e: Event) => void;
-}
+import { fieldsParams } from './lib';
 
 const store = Store.instance();
 
-export class SigninForm extends Block<ISigninFormProps> {
+export class SigninForm extends Block {
   private readonly _onStoreUpdate;
 
   constructor() {
-    const login = new Input({
-      id: 'login',
-      name: 'login',
-      type: 'text',
-      placeholder: 'Login',
-    });
+    signinController.start();
 
-    const password = new Input({
-      id: 'password',
-      name: 'password',
-      type: 'password',
-      placeholder: 'Password',
-    });
+    const state = store.getState<ISigninState>();
+    const { error, load, ...inputs } = state.signin;
+
+    const inputMap = getInputMap(fieldsParams, inputs);
 
     const submitButton = new ButtonFilled({
       label: 'Sign in',
@@ -42,31 +26,34 @@ export class SigninForm extends Block<ISigninFormProps> {
     });
 
     super({
-      login,
-      password,
+      ...inputMap,
       submitButton,
-      onInput: (e) => {
+      onInput: (e: Event) => {
         signinController.input(getInputValue(e));
       },
-      onFocusout: (e) => {
+      onFocusout: (e: Event) => {
         signinController.verify(getFieldsValues(e));
       },
-      onSubmit: (e) => {
+      onSubmit: (e: Event) => {
         e.preventDefault();
         void signinController.submit(getFieldsValues(e));
       },
     });
 
     this._onStoreUpdate = (state: ISigninState) => {
-      const { signin } = state;
-      login.setProps({ ...signin.login });
-      password.setProps({ ...signin.password });
-      submitButton.setProps({ disabled: signin.load });
+      const { load, error, ...fields } = state.signin;
+
+      Object.entries(fields).forEach(([field, props]) => {
+        const block = inputMap[field];
+        if (block) {
+          block.setProps({ ...props });
+        }
+      });
+
+      submitButton.setProps({ disabled: load });
     };
 
     store.on<ISigninState>(this._onStoreUpdate);
-
-    signinController.initBlock();
   }
 
   protected _getTemplateSpec(): TemplateSpecification {

@@ -1,76 +1,24 @@
-import { Block, type IBlockProps } from 'shared/components/block';
-import { Store } from 'shared/components/store';
-import { Input } from 'shared/ui/input';
-import { ButtonFilled } from 'shared/ui/button';
-import { getFieldsValues, getInputValue } from 'shared/helpers';
 import { signupController } from 'features/auth/controller';
+import { Block } from 'shared/components/block';
+import { Store } from 'shared/components/store';
+import { ButtonFilled } from 'shared/ui/button';
+import { getFieldsValues, getInputMap, getInputValue } from 'shared/helpers';
 import { type ISignupState } from 'features/auth/model';
 import templateSpec from './form.template.hbs';
-
-interface ISignupFormProps extends IBlockProps {
-  first_name: Block;
-  second_name: Block;
-  email: Block;
-  phone: Block;
-  login: Block;
-  password: Block;
-  confirm: Block;
-  submitButton: Block;
-  onSubmit: (e: Event) => void;
-  onInput: (e: Event) => void;
-  onFocusout: (e: Event) => void;
-}
+import { fieldsParams } from './lib';
 
 const store = Store.instance();
 
-export class SignupForm extends Block<ISignupFormProps> {
+export class SignupForm extends Block {
   private readonly _onStoreUpdate;
 
   constructor() {
-    const inputMap: Record<string, Block> = {
-      first_name: new Input({
-        id: 'first_name',
-        name: 'first_name',
-        placeholder: 'First name',
-        type: 'text',
-      }),
-      second_name: new Input({
-        id: 'second_name',
-        name: 'second_name',
-        placeholder: 'Last name',
-        type: 'text',
-      }),
-      email: new Input({
-        id: 'email',
-        name: 'email',
-        placeholder: 'Email',
-        type: 'text',
-      }),
-      phone: new Input({
-        id: 'phone',
-        name: 'phone',
-        placeholder: 'Phone',
-        type: 'text',
-      }),
-      login: new Input({
-        id: 'login',
-        name: 'login',
-        placeholder: 'Login',
-        type: 'text',
-      }),
-      password: new Input({
-        id: 'password',
-        name: 'password',
-        placeholder: 'Password',
-        type: 'password',
-      }),
-      confirm: new Input({
-        id: 'confirm',
-        name: 'confirm',
-        placeholder: 'Confirm password',
-        type: 'password',
-      }),
-    };
+    signupController.start();
+
+    const state = store.getState<ISignupState>();
+    const { load, ...fields } = state.signup;
+
+    const inputMap = getInputMap(fieldsParams, fields);
 
     const submitButton = new ButtonFilled({
       label: 'Sign up',
@@ -80,13 +28,13 @@ export class SignupForm extends Block<ISignupFormProps> {
     super({
       ...inputMap,
       submitButton,
-      onInput: (e) => {
+      onInput: (e: Event) => {
         signupController.input(getInputValue(e));
       },
-      onFocusout: (e) => {
+      onFocusout: (e: Event) => {
         signupController.verify(getFieldsValues(e));
       },
-      onSubmit: (e) => {
+      onSubmit: (e: Event) => {
         e.preventDefault();
         void signupController.submit(getFieldsValues(e));
       },
@@ -105,8 +53,6 @@ export class SignupForm extends Block<ISignupFormProps> {
     };
 
     store.on<ISignupState>(this._onStoreUpdate);
-
-    signupController.initBlock();
   }
 
   protected _getTemplateSpec(): TemplateSpecification {

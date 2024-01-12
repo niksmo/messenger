@@ -108,6 +108,7 @@ class RouteWithStub extends Route {
 interface IViewerState {
   viewer: {
     auth?: boolean;
+    login: string;
   };
   [key: string]: unknown;
 }
@@ -118,7 +119,7 @@ export class AuthRoute extends RouteWithStub {
 
     const { viewer } = store.getState<IViewerState>();
 
-    if (viewer?.auth === true) {
+    if (viewer?.auth === true && viewer.login) {
       this.renderView(path);
     } else if (viewer?.auth === false) {
       this._redirectCb();
@@ -136,7 +137,7 @@ export class NotAuthRoute extends RouteWithStub {
 
     if (viewer?.auth === false) {
       this.renderView(path);
-    } else if (viewer?.auth === true) {
+    } else if (viewer?.auth === true && viewer.login) {
       this._redirectCb();
     } else {
       this.renderStub();
