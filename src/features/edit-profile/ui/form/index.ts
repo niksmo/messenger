@@ -1,84 +1,65 @@
-import { Block, type IBlockProps } from 'shared/components/block';
-import { Input } from 'shared/ui/input';
+import { Block } from 'shared/components/block';
+import { Store } from 'shared/components/store';
 import { ButtonFilled } from 'shared/ui/button';
+import { getFieldsValues, getInputMap, getInputValue } from 'shared/helpers';
+import { type IEditProfileState } from '../../model';
+import { editProfileController } from '../../controller';
 import templateSpec from './form.template.hbs';
+import { fieldsParams } from './lib';
 
-interface IEditProfileFormProps extends IBlockProps {
-  first_name: Block;
-  second_name: Block;
-  email: Block;
-  phone: Block;
-  login: Block;
-  display_name: Block;
-  submitButton: Block;
-  onInput: (e: Event) => void;
-  onFocusout: (e: Event) => void;
-  onSubmit: (e: Event) => void;
-}
+const store = Store.instance();
 
-export class EditProfileForm extends Block<IEditProfileFormProps> {
+export class EditProfileForm extends Block {
+  private readonly _onStoreUpdate;
+
   constructor() {
-    const inputMap = {
-      first_name: new Input({
-        id: 'first_name',
-        name: 'first_name',
-        placeholder: 'First name',
-        type: 'text',
-        error: false,
-        value: '',
-      }),
-      second_name: new Input({
-        id: 'second_name',
-        name: 'second_name',
-        placeholder: 'Last name',
-        type: 'text',
-        error: false,
-        value: '',
-      }),
-      email: new Input({
-        id: 'email',
-        name: 'email',
-        placeholder: 'Email',
-        type: 'text',
-        error: false,
-        value: '',
-      }),
-      phone: new Input({
-        id: 'phone',
-        name: 'phone',
-        placeholder: 'Phone',
-        type: 'text',
-        error: false,
-        value: '',
-      }),
-      login: new Input({
-        id: 'login',
-        name: 'login',
-        placeholder: 'Login',
-        type: 'text',
-        error: false,
-        value: '',
-      }),
-      display_name: new Input({
-        id: 'display_name',
-        name: 'display_name',
-        placeholder: 'Username',
-        type: 'text',
-        error: false,
-        value: '',
-      }),
-    };
+    editProfileController.start();
+
+    const state = store.getState<IEditProfileState>();
+    const { load, ...fields } = state.editProfile;
+
+    const inputMap = getInputMap(fieldsParams, fields);
 
     const submitButton = new ButtonFilled({
       type: 'submit',
       label: 'Save',
-      name: 'saveButton',
     });
 
-    super({ ...inputMap, submitButton });
+    super({
+      ...inputMap,
+      submitButton,
+      onInput: (e: Event) => {
+        editProfileController.input(getInputValue(e));
+      },
+      onFocusout: (e: Event) => {
+        editProfileController.verify(getFieldsValues(e));
+      },
+      onSubmit: (e: Event) => {
+        e.preventDefault();
+        void editProfileController.submit(getFieldsValues(e));
+      },
+    });
+
+    this._onStoreUpdate = (state: IEditProfileState) => {
+      const { load, ...fields } = state.editProfile;
+      Object.entries(fields).forEach(([field, props]) => {
+        const block = inputMap[field];
+        if (block) {
+          block.setProps({ ...props });
+        }
+      });
+
+      submitButton.setProps({ disabled: load });
+    };
+
+    store.on<IEditProfileState>(this._onStoreUpdate);
   }
 
   protected _getTemplateSpec(): TemplateSpecification {
     return templateSpec;
+  }
+
+  public willUnmount(): void {
+    store.off(this._onStoreUpdate);
   }
 }

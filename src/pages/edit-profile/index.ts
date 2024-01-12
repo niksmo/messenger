@@ -4,6 +4,7 @@ import { ButtonLight } from 'shared/ui/button';
 import templateSpec from './edit-profile-page.template.hbs';
 import styles from './styles.module.css';
 import { ROUT_PATH } from 'shared/constants';
+import { EditProfileForm } from 'features/edit-profile';
 
 interface IPageEditProfile extends IBlockProps {
   form: Block;
@@ -24,7 +25,9 @@ export class PageEditProfile extends Block<IPageEditProfile> {
       children: button,
     });
 
-    super({ transitionButton });
+    const form = new EditProfileForm();
+
+    super({ form, transitionButton });
   }
 
   protected _getTemplateSpec(): TemplateSpecification {
@@ -33,9 +36,5 @@ export class PageEditProfile extends Block<IPageEditProfile> {
 
   protected _getStylesModule(): CSSModuleClasses {
     return styles;
-  }
-
-  public setVisible(): void {
-    this.getContent().style.display = 'flex';
   }
 }

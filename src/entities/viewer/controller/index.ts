@@ -1,6 +1,7 @@
 import { Store } from 'shared/components/store';
 import { AppRouter } from 'shared/components/router';
 import { ROUT_PATH } from 'shared/constants';
+import { reviveNullToString } from 'shared/helpers';
 import { ViewerAPI } from '../api';
 
 interface ISigninController {
@@ -27,7 +28,7 @@ class ViewerController implements ISigninController {
 
       if (status === 200) {
         if (typeof response === 'string') {
-          const data = JSON.parse(response);
+          const data = JSON.parse(response, reviveNullToString);
           const viewerData = Object.assign({ auth: true }, data);
           this._store.set(STORE_SLICE, viewerData);
         }

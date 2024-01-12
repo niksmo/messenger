@@ -6,21 +6,24 @@ import {
   verifierCreator,
 } from 'shared/components/form-verifier';
 import { ROUT_PATH } from 'shared/constants';
-import { type IChangePasswordState } from '../model';
-import { ChangePasswordAPI } from '../api';
-import { extractRequestBody } from './lib';
+import { reviveNullToString } from 'shared/helpers';
+import { type IViewerState } from 'entites/viewer/model';
+import { EditProfileAPI } from '../api';
+import { type IFieldState, type IEditProfileState } from '../model';
 
 type TFormData = Record<string, string>;
+
+type TInitFieldsState = Omit<IEditProfileState['editProfile'], 'load'>;
 
 interface IInputData {
   field: string;
   value: string;
 }
 
-const STORE_SLICE = 'changePassword';
+const STORE_SLICE = 'editProfile';
 const STORE_LOAD = STORE_SLICE + '.load';
 
-class ChangePasswordController {
+class EditProfileController {
   private readonly _verifier;
   private readonly _api;
   private readonly _store;
@@ -28,22 +31,31 @@ class ChangePasswordController {
 
   constructor() {
     this._verifier = verifierCreator.makeStringVerifier({
-      current_password: { template: TEMPLATE.password, hint: HINT.password },
-      new_password: { template: TEMPLATE.password, hint: HINT.password },
+      first_name: { template: TEMPLATE.name, hint: HINT.name },
+      second_name: { template: TEMPLATE.name, hint: HINT.name },
+      email: { template: TEMPLATE.email, hint: HINT.email },
+      phone: { template: TEMPLATE.phone, hint: HINT.phone },
+      login: { template: TEMPLATE.login, hint: HINT.login },
     });
 
-    this._api = new ChangePasswordAPI();
+    this._api = new EditProfileAPI();
     this._store = Store.instance();
     this._router = AppRouter.instance();
   }
 
   start(): void {
-    const initInputState = { value: '', hint: '', error: false };
+    const { viewer } = this._store.getState<IViewerState>();
+    const { avatar, auth, id, ...initFieldsValues } = viewer;
 
-    const initState: IChangePasswordState['changePassword'] = {
-      current_password: { ...initInputState },
-      new_password: { ...initInputState },
-      confirm: { ...initInputState },
+    const initFieldsState = Object.entries(initFieldsValues).reduce<
+      Record<string, IFieldState>
+    >((map, [field, value]) => {
+      map[field] = { value, error: false, hint: '' };
+      return map;
+    }, {}) as TInitFieldsState;
+
+    const initState: IEditProfileState['editProfile'] = {
+      ...initFieldsState,
       load: false,
     };
 
@@ -71,43 +83,35 @@ class ChangePasswordController {
       }
     }
 
-    const { new_password: newPassword, confirm } = formData;
-
-    if (newPassword !== undefined && confirm !== undefined) {
-      const hint = newPassword !== confirm ? HINT.confirmPassword : '';
-      const error = Boolean(hint);
-
-      this._store.set(`${STORE_SLICE}.confirm`, {
-        hint,
-        error,
-      });
-      return !error;
-    }
-
     return isValid;
   }
 
-  async submit(formData: Record<string, string>): Promise<void> {
+  async submit(formData: TFormData): Promise<void> {
     if (!this.verify(formData)) {
       return;
     }
 
     try {
       this._store.set(STORE_LOAD, true);
-      const reqBody = extractRequestBody(formData);
-      const { status, response } = await this._api.update(reqBody);
+      const { status, response } = await this._api.update(formData);
 
       if (status === 200) {
+        if (typeof response === 'string') {
+          const viewerData = JSON.parse(response, reviveNullToString);
+          this._store.set('viewer', viewerData);
+        }
+
         this._resetState();
-        this._router.go(ROUT_PATH.SETTINGS, true);
+        this._router.go(ROUT_PATH.SETTINGS);
       }
 
       if (status === 400) {
         if (typeof response === 'string') {
           const { reason } = JSON.parse(response);
 
-          if (typeof reason === 'string' && reason.startsWith('Password')) {
-            this._store.set(`${STORE_SLICE}.current_password`, {
+          if (typeof reason === 'string') {
+            const field = reason.startsWith('Email') ? 'email' : 'login';
+            this._store.set(`${STORE_SLICE}.${field}`, {
               hint: reason,
               error: true,
             });
@@ -126,6 +130,6 @@ class ChangePasswordController {
   }
 }
 
-const changePasswordController = new ChangePasswordController();
+const editProfileController = new EditProfileController();
 
-export { changePasswordController };
+export { editProfileController };

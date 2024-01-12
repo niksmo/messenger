@@ -3,10 +3,10 @@ export interface IViewerState {
     id: number;
     first_name: string;
     second_name: string;
-    display_name: null | string;
+    display_name: string;
     phone: string;
     login: string;
-    avatar: null | string;
+    avatar: string;
     email: string;
     auth?: boolean;
   };
