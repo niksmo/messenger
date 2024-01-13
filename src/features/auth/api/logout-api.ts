@@ -8,9 +8,7 @@ export class LogoutAPI extends BaseAPI {
   constructor() {
     super();
 
-    this._http = new HttpTransport().setBaseURL(BASE_URL + '/auth').setHeader({
-      'Content-type': 'application/json',
-    });
+    this._http = new HttpTransport().setBaseURL(BASE_URL + '/auth');
   }
 
   async request(): Promise<XMLHttpRequest> {

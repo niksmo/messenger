@@ -14,6 +14,6 @@ export class SignupAPI extends BaseAPI {
   }
 
   async create(props: Record<string, string>): Promise<XMLHttpRequest> {
-    return await this._http.post('/signup', props);
+    return await this._http.post('/signup', JSON.stringify(props));
   }
 }

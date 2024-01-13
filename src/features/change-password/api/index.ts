@@ -17,6 +17,6 @@ export class ChangePasswordAPI extends BaseAPI {
     oldPassword: string;
     newPassword: string;
   }): Promise<XMLHttpRequest> {
-    return await this._http.put('/password', body);
+    return await this._http.put('/password', JSON.stringify(body));
   }
 }

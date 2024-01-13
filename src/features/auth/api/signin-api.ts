@@ -13,6 +13,6 @@ export class SigninAPI extends BaseAPI {
   }
 
   async request(props: Record<string, string>): Promise<XMLHttpRequest> {
-    return await this._http.post('/signin', props);
+    return await this._http.post('/signin', JSON.stringify(props));
   }
 }

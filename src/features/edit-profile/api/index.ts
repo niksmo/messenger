@@ -14,6 +14,6 @@ export class EditProfileAPI extends BaseAPI {
   }
 
   async update(data: Record<string, string>): Promise<XMLHttpRequest> {
-    return await this._http.put('/profile', data);
+    return await this._http.put('/profile', JSON.stringify(data));
   }
 }

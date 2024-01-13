@@ -63,9 +63,10 @@ function inspectBody(body: unknown): never | object {
   return body;
 }
 
-function serializeToSearch(body: unknown): string | undefined {
+function serializeToSearch(body: unknown): string {
+  const EMPTY_STR = '';
   if (!body) {
-    return '';
+    return EMPTY_STR;
   }
 
   inspectBody(body);
@@ -73,22 +74,22 @@ function serializeToSearch(body: unknown): string | undefined {
   const entries = Object.entries(body);
 
   if (entries.length === 0) {
-    return '';
+    return EMPTY_STR;
   }
 
   const searchEntries = entries.map((entry) => entry.join('='));
-  const searchString = ['?', ...searchEntries.join('&')].join('');
-  return searchString;
+  const searchParams = ['?', ...searchEntries.join('&')].join('');
+  return searchParams;
 }
 
-function serializeToJSON(body: unknown): string {
-  if (body === undefined) {
-    return JSON.stringify({});
-  }
-
-  inspectBody(body);
-
-  return JSON.stringify(body);
+function setRequestHeader(
+  xhr: XMLHttpRequest,
+  header: Record<string, string>
+): XMLHttpRequest {
+  Object.entries(header).forEach(([p, v]) => {
+    xhr.setRequestHeader(p, v);
+  });
+  return xhr;
 }
 
-export { normalizeURL, getHref, serializeToSearch, serializeToJSON, METHOD };
+export { normalizeURL, getHref, serializeToSearch, setRequestHeader, METHOD };

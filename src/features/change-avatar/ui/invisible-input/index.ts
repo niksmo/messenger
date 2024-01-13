@@ -1,6 +1,6 @@
-import templateSpec from './upload-avatar.template.hbs';
-import styles from './styles.module.css';
 import { Block } from 'shared/components/block';
+import templateSpec from './invisible-input.template.hbs';
+import styles from './styles.module.css';
 
 export class InvisibleFileInput extends Block {
   protected _getTemplateSpec(): TemplateSpecification {

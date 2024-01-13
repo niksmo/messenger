@@ -2,8 +2,8 @@ import {
   METHOD,
   getHref,
   normalizeURL,
-  serializeToJSON,
   serializeToSearch,
+  setRequestHeader,
 } from './lib';
 
 if (!XMLHttpRequest) {
@@ -52,31 +52,28 @@ class HttpTransport implements IHttpTransportConfig, IHttpTransportAgent {
     return this;
   }
 
-  private async _request<T>(
+  private async _request(
     method: METHOD,
     pathOrURL: string,
-    body?: T,
+    body: XMLHttpRequestBodyInit | null = null,
     rHeader: Record<string, string> = {},
     rTimeout: number = this._timeout
   ): Promise<XMLHttpRequest> {
     return await new Promise<XMLHttpRequest>((resolve, reject) => {
-      const url = getHref(this._baseURL, pathOrURL);
-      const rURL = method === METHOD.GET ? url + serializeToSearch(body) : url;
-      const rBody = method === METHOD.GET ? null : serializeToJSON(body);
+      let reqURL = getHref(this._baseURL, pathOrURL);
+
+      if (method === METHOD.GET && typeof body === 'string') {
+        reqURL += body;
+      }
 
       const xhr = new XMLHttpRequest();
       xhr.timeout = rTimeout;
-      xhr.open(method, rURL);
+      xhr.open(method, reqURL, true);
       xhr.withCredentials = true;
 
-      const headerEntries = Object.entries(
-        Object.assign(this._header, rHeader)
-      );
-      headerEntries.forEach(([p, v]) => {
-        xhr.setRequestHeader(p, v);
-      });
+      setRequestHeader(xhr, Object.assign(this._header, rHeader));
 
-      xhr.send(rBody);
+      xhr.send(body);
 
       const xhrResolve = (
         _e: ProgressEvent<XMLHttpRequestEventTarget>
@@ -96,52 +93,41 @@ class HttpTransport implements IHttpTransportConfig, IHttpTransportAgent {
     });
   }
 
-  public async get<T>(
+  public async get(
     pathOrURL: string,
-    body?: T,
+    body?: Record<string, string>,
     header?: Record<string, string>,
     timeout?: number
   ): Promise<XMLHttpRequest> {
-    return await this._request<T>(METHOD.GET, pathOrURL, body, header, timeout);
+    const reqBody = serializeToSearch(body);
+    return await this._request(METHOD.GET, pathOrURL, reqBody, header, timeout);
   }
 
-  public async post<T>(
+  public async post(
     pathOrURL: string,
-    body?: T,
+    body?: XMLHttpRequestBodyInit,
     header?: Record<string, string>,
     timeout?: number
   ): Promise<XMLHttpRequest> {
-    return await this._request<T>(
-      METHOD.POST,
-      pathOrURL,
-      body,
-      header,
-      timeout
-    );
+    return await this._request(METHOD.POST, pathOrURL, body, header, timeout);
   }
 
-  public async put<T>(
+  public async put(
     pathOrURL: string,
-    body?: T,
+    body?: XMLHttpRequestBodyInit,
     header?: Record<string, string>,
     timeout?: number
   ): Promise<XMLHttpRequest> {
-    return await this._request<T>(METHOD.PUT, pathOrURL, body, header, timeout);
+    return await this._request(METHOD.PUT, pathOrURL, body, header, timeout);
   }
 
-  public async delete<T>(
+  public async delete(
     pathOrURL: string,
-    body?: T,
+    body?: XMLHttpRequestBodyInit,
     header?: Record<string, string>,
     timeout?: number
   ): Promise<XMLHttpRequest> {
-    return await this._request<T>(
-      METHOD.DELETE,
-      pathOrURL,
-      body,
-      header,
-      timeout
-    );
+    return await this._request(METHOD.DELETE, pathOrURL, body, header, timeout);
   }
 }
 
