@@ -1,6 +1,7 @@
 import { NotFoundPage as NotFound } from './404';
 import { InternalErrorPage as InternalError } from './500';
 import { PageChangePassword as ChangePassword } from './change-password';
+import { PageChangeAvatar as ChangeAvatar } from './change-avatar';
 import { PageEditProfile as EditProfile } from './edit-profile';
 import { PageMain as Main } from './main';
 import { PageSettings as Settings } from './profile-settings';
@@ -11,6 +12,7 @@ const PAGE = {
   NotFound,
   InternalError,
   ChangePassword,
+  ChangeAvatar,
   EditProfile,
   Main,
   Settings,

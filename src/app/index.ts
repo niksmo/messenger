@@ -1,5 +1,5 @@
 import { AppRouter } from 'shared/components/router';
-import { ROUT_PATH, ROUT_SLUG } from 'shared/constants';
+import { ROUTE_PATH, ROUTE_SLUG } from 'shared/constants';
 import PAGE from 'pages';
 import './styles/index.css';
 import { Store } from 'shared/components/store';
@@ -26,38 +26,55 @@ class App {
     router.root(this._root);
 
     router.authUse(
-      ROUT_PATH.MAIN + ROUT_SLUG.CHAT_ID,
+      ROUTE_PATH.MAIN + ROUTE_SLUG.CHAT_ID,
       PAGE.Main,
       RequestAuthStub,
       goToLogin
     );
 
     router.authUse(
-      ROUT_PATH.SETTINGS,
+      ROUTE_PATH.SETTINGS,
       PAGE.Settings,
       RequestAuthStub,
       goToLogin
     );
 
     router.authUse(
-      ROUT_PATH.EDIT_PROFILE,
+      ROUTE_PATH.EDIT_PROFILE,
       PAGE.EditProfile,
       RequestAuthStub,
       goToLogin
     );
 
     router.authUse(
-      ROUT_PATH.CHANGE_PASSWORD,
+      ROUTE_PATH.CHANGE_PASSWORD,
       PAGE.ChangePassword,
       RequestAuthStub,
       goToLogin
     );
 
-    router.notAuthUse(ROUT_PATH.SIGNIN, PAGE.Signin, RequestAuthStub, goToMain);
-    router.notAuthUse(ROUT_PATH.SIGNUP, PAGE.Signup, RequestAuthStub, goToMain);
-    router.use(ROUT_PATH[404], PAGE.NotFound);
-    router.use(ROUT_PATH[500], PAGE.InternalError);
-    router.noMatch(ROUT_PATH[404]);
+    router.authUse(
+      ROUTE_PATH.CHANGE_AVATAR,
+      PAGE.ChangeAvatar,
+      RequestAuthStub,
+      goToLogin
+    );
+
+    router.notAuthUse(
+      ROUTE_PATH.SIGNIN,
+      PAGE.Signin,
+      RequestAuthStub,
+      goToMain
+    );
+    router.notAuthUse(
+      ROUTE_PATH.SIGNUP,
+      PAGE.Signup,
+      RequestAuthStub,
+      goToMain
+    );
+    router.use(ROUTE_PATH[404], PAGE.NotFound);
+    router.use(ROUTE_PATH[500], PAGE.InternalError);
+    router.noMatch(ROUTE_PATH[404]);
     router.start();
   }
 }

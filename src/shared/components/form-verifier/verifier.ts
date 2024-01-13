@@ -1,24 +1,13 @@
 import { isSomeValues } from 'shared/helpers';
 
-interface IVerifier<InputData> {
-  checkOnValidity: (fieldsData: InputData) => {
-    hintData: Record<string, string>;
-    isValid: boolean;
-  };
-}
-
-type TStringVerifier = IVerifier<Record<string, string>>;
-type TFileVerifier = IVerifier<Record<string, File>>;
-
 type TStringRules = Record<string, { template: RegExp; hint: string }>;
-type TFileRules = Record<string, { maxSize: number; hint: string }>;
 
-interface IVerifierCreator {
-  makeStringVerifier: (rules: TStringRules) => TStringVerifier;
-  makeFileVerifier: (rules: TFileRules) => TFileVerifier;
+interface IFileRules {
+  size: { max: number; hint: string };
+  type: { access: string[]; hint: string };
 }
 
-class StringVerifier implements TStringVerifier {
+class StringVerifier {
   constructor(private readonly rules: TStringRules) {}
 
   checkOnValidity(fieldsData: Record<string, string>): {
@@ -41,30 +30,45 @@ class StringVerifier implements TStringVerifier {
   }
 }
 
-class FileVerifier implements TFileVerifier {
-  constructor(private readonly rules: TFileRules) {}
+class FileVerifier {
+  constructor(private readonly rules: IFileRules) {}
 
-  checkOnValidity(_fieldsData: Record<string, File>): {
-    hintData: Record<string, string>;
+  checkOnValidity(file: File): {
+    hint: string;
     isValid: boolean;
   } {
-    console.warn(this.rules);
+    let hint = '';
+    let isValid = true;
+
+    const { size: sizeRule, type: typeRule } = this.rules;
+
+    const { size, type } = file;
+
+    if (size > sizeRule.max) {
+      hint = sizeRule.hint;
+      isValid = false;
+    } else if (!this._isAccessType(type)) {
+      hint = typeRule.hint;
+      isValid = false;
+    }
+
     return {
-      hintData: {
-        foo: '',
-        bar: '',
-      },
-      isValid: true,
+      hint,
+      isValid,
     };
+  }
+
+  private _isAccessType(fileType: string): boolean {
+    return this.rules.type.access.some((accessType) => fileType === accessType);
   }
 }
 
-class VerifierCreator implements IVerifierCreator {
-  makeStringVerifier(rules: TStringRules): TStringVerifier {
+class VerifierCreator {
+  makeStringVerifier(rules: TStringRules): StringVerifier {
     return new StringVerifier(rules);
   }
 
-  makeFileVerifier(rules: TFileRules): TFileVerifier {
+  makeFileVerifier(rules: IFileRules): FileVerifier {
     return new FileVerifier(rules);
   }
 }

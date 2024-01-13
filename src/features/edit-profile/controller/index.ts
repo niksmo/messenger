@@ -5,7 +5,7 @@ import {
   TEMPLATE,
   verifierCreator,
 } from 'shared/components/form-verifier';
-import { ROUT_PATH } from 'shared/constants';
+import { ROUTE_PATH } from 'shared/constants';
 import { reviveNullToString } from 'shared/helpers';
 import { type IViewerState } from 'entites/viewer/model';
 import { EditProfileAPI } from '../api';
@@ -102,7 +102,7 @@ class EditProfileController {
         }
 
         this._resetState();
-        this._router.go(ROUT_PATH.SETTINGS);
+        this._router.go(ROUTE_PATH.SETTINGS);
       }
 
       if (status === 400) {
@@ -120,7 +120,7 @@ class EditProfileController {
       }
 
       if (status === 500) {
-        this._router.go(ROUT_PATH[500]);
+        this._router.go(ROUTE_PATH[500]);
       }
     } catch (err) {
       console.warn(err);

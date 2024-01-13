@@ -1,7 +1,7 @@
 import { Block, type IBlockProps } from 'shared/components/block';
 import { SettingsItem } from 'shared/ui/settings-item';
 import { Link } from 'shared/components/router';
-import { ROUT_PATH } from 'shared/constants';
+import { ROUTE_PATH } from 'shared/constants';
 import templateSpec from './edit-profile-link.template.hbs';
 
 interface IProps extends IBlockProps {
@@ -17,7 +17,7 @@ export class EditProfileLink extends Block<IProps> {
     });
 
     const link = new Link({
-      href: ROUT_PATH.EDIT_PROFILE,
+      href: ROUTE_PATH.EDIT_PROFILE,
       children: settingsItem,
     });
     super({ link });

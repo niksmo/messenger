@@ -13,6 +13,7 @@ export const DOMEvent: Record<string, string> = {
   onSubmit: 'onSubmit',
   onFormdata: 'onFormdata',
   onClick: 'onClick',
+  onChange: 'onChange',
   onBlur: 'onBlur',
   onBeforeinput: 'onBeforeinput',
   onInput: 'onInput',

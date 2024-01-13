@@ -1,7 +1,7 @@
 import { Block, type IBlockProps } from 'shared/components/block';
 import { Link } from 'shared/components/router';
 import { ButtonLight } from 'shared/ui/button';
-import { ROUT_PATH } from 'shared/constants';
+import { ROUTE_PATH } from 'shared/constants';
 import templateSpec from './change-password-page.template.hbs';
 import styles from './styles.module.css';
 import { ChangePasswordForm } from 'features/change-password';
@@ -20,7 +20,7 @@ export class PageChangePassword extends Block<IPageChangePasswordProps> {
     });
 
     const transitionButton = new Link({
-      href: ROUT_PATH.SETTINGS,
+      href: ROUTE_PATH.SETTINGS,
       ariaHidden: true,
       children: button,
     });

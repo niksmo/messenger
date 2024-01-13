@@ -1,7 +1,7 @@
 import { Block, type IBlockProps } from 'shared/components/block';
 import { Link } from 'shared/components/router';
 import { ButtonLight } from 'shared/ui/button';
-import { ROUT_PATH } from 'shared/constants';
+import { ROUTE_PATH } from 'shared/constants';
 import { SigninForm, SigninMessage } from 'features/auth';
 import templateSpec from './signin-page.template.hbs';
 import styles from './styles.module.css';
@@ -15,7 +15,7 @@ interface IPageSigninProps extends IBlockProps {
 export class PageSignin extends Block<IPageSigninProps> {
   constructor() {
     const transitionButton = new Link({
-      href: ROUT_PATH.SIGNUP,
+      href: ROUTE_PATH.SIGNUP,
       ariaHidden: true,
       children: new ButtonLight({
         label: 'Sign up',

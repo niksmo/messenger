@@ -1,6 +1,6 @@
 import { Store } from 'shared/components/store';
 import { AppRouter } from 'shared/components/router';
-import { ROUT_PATH } from 'shared/constants';
+import { ROUTE_PATH } from 'shared/constants';
 import { LogoutAPI } from '../api';
 
 const STORE_SLICE = 'viewer';
@@ -23,11 +23,11 @@ export class LogoutController {
 
       if (status === 200) {
         this._store.set(STORE_SLICE, { auth: false });
-        this._router.go(ROUT_PATH.SIGNIN);
+        this._router.go(ROUTE_PATH.SIGNIN);
       }
 
       if (status === 500) {
-        this._router.go(ROUT_PATH[500]);
+        this._router.go(ROUTE_PATH[500]);
       }
     } catch (error) {}
   }

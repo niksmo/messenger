@@ -5,7 +5,7 @@ import {
   TEMPLATE,
   verifierCreator,
 } from 'shared/components/form-verifier';
-import { ROUT_PATH } from 'shared/constants';
+import { ROUTE_PATH } from 'shared/constants';
 import { type IChangePasswordState } from '../model';
 import { ChangePasswordAPI } from '../api';
 import { extractRequestBody } from './lib';
@@ -99,7 +99,7 @@ class ChangePasswordController {
 
       if (status === 200) {
         this._resetState();
-        this._router.go(ROUT_PATH.SETTINGS, true);
+        this._router.go(ROUTE_PATH.SETTINGS, true);
       }
 
       if (status === 400) {
@@ -116,7 +116,7 @@ class ChangePasswordController {
       }
 
       if (status === 500) {
-        this._router.go(ROUT_PATH[500]);
+        this._router.go(ROUTE_PATH[500]);
       }
     } catch (err) {
       console.warn(err);

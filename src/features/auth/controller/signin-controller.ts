@@ -5,7 +5,7 @@ import {
   TEMPLATE,
   verifierCreator,
 } from 'shared/components/form-verifier';
-import { ROUT_PATH } from 'shared/constants';
+import { ROUTE_PATH } from 'shared/constants';
 import { type ISigninState } from '../model';
 import { SigninAPI } from '../api';
 
@@ -88,7 +88,7 @@ class SigninController {
       if (status === 200) {
         this._resetState();
         this._store.set('viewer', { auth: true });
-        this._router.go(ROUT_PATH.MAIN, true);
+        this._router.go(ROUTE_PATH.MAIN, true);
       }
 
       if (status === 401) {
@@ -100,7 +100,7 @@ class SigninController {
       }
 
       if (status === 500) {
-        this._router.go(ROUT_PATH[500]);
+        this._router.go(ROUTE_PATH[500]);
       }
     } catch (err) {
       console.warn(err);

@@ -3,7 +3,7 @@ import { Link } from 'shared/components/router';
 import { ButtonLight } from 'shared/ui/button';
 import templateSpec from './edit-profile-page.template.hbs';
 import styles from './styles.module.css';
-import { ROUT_PATH } from 'shared/constants';
+import { ROUTE_PATH } from 'shared/constants';
 import { EditProfileForm } from 'features/edit-profile';
 
 interface IPageEditProfile extends IBlockProps {
@@ -20,7 +20,7 @@ export class PageEditProfile extends Block<IPageEditProfile> {
     });
 
     const transitionButton = new Link({
-      href: ROUT_PATH.SETTINGS,
+      href: ROUTE_PATH.SETTINGS,
       ariaHidden: true,
       children: button,
     });

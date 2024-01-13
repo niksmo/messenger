@@ -1,6 +1,6 @@
 import { Store } from 'shared/components/store';
 import { AppRouter } from 'shared/components/router';
-import { ROUT_PATH } from 'shared/constants';
+import { ROUTE_PATH } from 'shared/constants';
 import { reviveNullToString } from 'shared/helpers';
 import { ViewerAPI } from '../api';
 
@@ -48,7 +48,7 @@ class ViewerController implements ISigninController {
       }
 
       if (status === 500) {
-        this._router.go(ROUT_PATH[500]);
+        this._router.go(ROUTE_PATH[500]);
       }
     } catch (err) {
       console.warn(err);
