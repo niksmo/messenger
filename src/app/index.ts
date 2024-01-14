@@ -1,7 +1,10 @@
 import { AppRouter } from 'shared/components/router';
-import { PATH, SLUG } from 'shared/constants';
+import { ROUTE_PATH, ROUTE_SLUG } from 'shared/constants';
 import PAGE from 'pages';
 import './styles/index.css';
+import { Store } from 'shared/components/store';
+import { RequestAuthStub } from 'entites/viewer';
+import { goToLogin, goToMain } from 'shared/helpers';
 
 class App {
   private _root: null | HTMLElement = null;
@@ -16,17 +19,62 @@ class App {
       return;
     }
 
+    const store = new Store();
+    store.init();
+
     const router = new AppRouter();
     router.root(this._root);
-    router.use(PATH.MAIN + SLUG.CHAT_ID, PAGE.Main);
-    router.use(PATH.SETTINGS, PAGE.Settings);
-    router.use(PATH.EDIT_PROFILE, PAGE.EditProfile);
-    router.use(PATH.CHANGE_PASSWORD, PAGE.ChangePassword);
-    router.use(PATH.SIGNIN, PAGE.Signin);
-    router.use(PATH.SIGNUP, PAGE.Signup);
-    router.use(PATH[404], PAGE.NotFound);
-    router.use(PATH[500], PAGE.InternalError);
-    router.noMatch(PATH[404]);
+
+    router.authUse(
+      ROUTE_PATH.MAIN + ROUTE_SLUG.CHAT_ID,
+      PAGE.Main,
+      RequestAuthStub,
+      goToLogin
+    );
+
+    router.authUse(
+      ROUTE_PATH.SETTINGS,
+      PAGE.Settings,
+      RequestAuthStub,
+      goToLogin
+    );
+
+    router.authUse(
+      ROUTE_PATH.EDIT_PROFILE,
+      PAGE.EditProfile,
+      RequestAuthStub,
+      goToLogin
+    );
+
+    router.authUse(
+      ROUTE_PATH.CHANGE_PASSWORD,
+      PAGE.ChangePassword,
+      RequestAuthStub,
+      goToLogin
+    );
+
+    router.authUse(
+      ROUTE_PATH.CHANGE_AVATAR,
+      PAGE.ChangeAvatar,
+      RequestAuthStub,
+      goToLogin
+    );
+
+    router.notAuthUse(
+      ROUTE_PATH.SIGNIN,
+      PAGE.Signin,
+      RequestAuthStub,
+      goToMain
+    );
+    router.notAuthUse(
+      ROUTE_PATH.SIGNUP,
+      PAGE.Signup,
+      RequestAuthStub,
+      goToMain
+    );
+    router.use(ROUTE_PATH[404], PAGE.NotFound);
+    router.use(ROUTE_PATH[500], PAGE.InternalError);
+    router.noMatch(ROUTE_PATH[404]);
     router.start();
   }
 }

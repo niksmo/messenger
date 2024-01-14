@@ -2,6 +2,8 @@ export const enum EVENT {
   INIT = 'init',
   MOUNT = 'componentDidMount',
   UPDATE = 'componentDidUpdate',
+  UNMOUNT = 'componentWillUnmount',
+  COMPARE = 'compareProps',
   RENDER = 'render',
 }
 
@@ -11,6 +13,7 @@ export const DOMEvent: Record<string, string> = {
   onSubmit: 'onSubmit',
   onFormdata: 'onFormdata',
   onClick: 'onClick',
+  onChange: 'onChange',
   onBlur: 'onBlur',
   onBeforeinput: 'onBeforeinput',
   onInput: 'onInput',

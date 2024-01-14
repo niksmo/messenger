@@ -1,25 +1,17 @@
-import { Block, type IBlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import { Link } from 'shared/components/router';
 import { ButtonLight } from 'shared/ui/button';
-import { PATH } from 'shared/constants';
-import { profileInfo } from 'entites/viewer';
-import { InvisibleFileInput } from 'features/change-avatar';
-import { EditProfileLink } from 'features/edit-profile';
-import { ChangePasswordLink } from 'features/change-password';
-import { LogoutLink } from 'features/logout';
+import { ROUTE_PATH } from 'shared/constants';
+import { ProfileInfo } from 'entites/viewer';
+import { LogoutLink } from 'features/auth';
+import { ChangePasswordLink, EditProfileLink } from 'features/profile-settings';
 import templateSpec from './profile-settings-page.template.hbs';
 import styles from './styles.module.css';
 
-interface IProps extends IBlockProps {
-  profileInfo: Block;
-  transitionButton: Block;
-  navList: Block[];
-}
-
-export class PageSettings extends Block<IProps> {
+export class PageSettings extends Block {
   constructor() {
     const transitionButton = new Link({
-      href: PATH.MAIN,
+      href: ROUTE_PATH.MAIN,
       ariaHidden: true,
       children: new ButtonLight({
         label: 'Back to chats',
@@ -28,7 +20,7 @@ export class PageSettings extends Block<IProps> {
       }),
     });
 
-    profileInfo.setProps({ changeAvatar: new InvisibleFileInput() });
+    const profileInfo = new ProfileInfo();
 
     const navList = [
       new EditProfileLink(),
@@ -45,9 +37,5 @@ export class PageSettings extends Block<IProps> {
 
   protected _getStylesModule(): CSSModuleClasses {
     return styles;
-  }
-
-  public setVisible(): void {
-    this.getContent().style.display = 'flex';
   }
 }

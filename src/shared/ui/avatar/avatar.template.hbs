@@ -1,0 +1,12 @@
+<div class="{{styles.avatar}} no-select">
+  {{#if src}}
+    <img class="{{styles.avatar-inner}} {{styles.avatar__image}}"
+      src="https://ya-praktikum.tech/api/v2/resources{{src}}"
+      alt="{{name}} avatar" draggable=" false" decoding="async">
+  {{else}}
+    <div class="{{styles.avatar-inner}} {{styles.avatar__char}}" role="img"
+      aria-label={{name}}>
+      {{namePrefix}}
+    </div>
+  {{/if}}
+</div>

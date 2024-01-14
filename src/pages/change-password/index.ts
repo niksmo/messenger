@@ -1,8 +1,8 @@
 import { Block, type IBlockProps } from 'shared/components/block';
 import { Link } from 'shared/components/router';
 import { ButtonLight } from 'shared/ui/button';
-import { PATH } from 'shared/constants';
-import { form } from 'features/change-password';
+import { ROUTE_PATH } from 'shared/constants';
+import { ChangePasswordForm } from 'features/profile-settings';
 import templateSpec from './change-password-page.template.hbs';
 import styles from './styles.module.css';
 
@@ -13,17 +13,17 @@ interface IPageChangePasswordProps extends IBlockProps {
 
 export class PageChangePassword extends Block<IPageChangePasswordProps> {
   constructor() {
-    const button = new ButtonLight({
-      label: 'Cancel',
-      name: 'transitionButton',
-      type: 'button',
+    const transitionButton = new Link({
+      href: ROUTE_PATH.SETTINGS,
+      ariaHidden: true,
+      children: new ButtonLight({
+        label: 'Cancel',
+        name: 'transitionButton',
+        type: 'button',
+      }),
     });
 
-    const transitionButton = new Link({
-      href: PATH.SETTINGS,
-      ariaHidden: true,
-      children: button,
-    });
+    const form = new ChangePasswordForm();
 
     super({ form, transitionButton });
   }
@@ -34,9 +34,5 @@ export class PageChangePassword extends Block<IPageChangePasswordProps> {
 
   protected _getStylesModule(): CSSModuleClasses {
     return styles;
-  }
-
-  public setVisible(): void {
-    this.getContent().style.display = 'flex';
   }
 }

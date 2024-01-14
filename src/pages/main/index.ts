@@ -1,17 +1,17 @@
 import { Block, type IBlockProps } from 'shared/components/block';
-import { chatWidget } from 'widgets/chat-widget';
-import { sideWidget } from 'widgets/side-widget';
+import { ChatList } from 'widgets/chat-list';
+import { Chat } from 'widgets/chat/ui';
 import templateSpec from './main-page.template.hbs';
 import styles from './styles.module.css';
 
 interface IPageMainProps extends IBlockProps {
-  sideWidget: Block;
+  chatListWidget: Block;
   chatWidget: Block;
 }
 
 export class PageMain extends Block<IPageMainProps> {
   constructor() {
-    super({ sideWidget, chatWidget });
+    super({ chatListWidget: new ChatList(), chatWidget: new Chat() });
   }
 
   protected _getTemplateSpec(): TemplateSpecification {
@@ -20,9 +20,5 @@ export class PageMain extends Block<IPageMainProps> {
 
   protected _getStylesModule(): CSSModuleClasses {
     return styles;
-  }
-
-  public setVisible(): void {
-    this.getContent().style.display = 'flex';
   }
 }

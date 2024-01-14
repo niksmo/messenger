@@ -1,10 +1,10 @@
 import { Block, type IBlockProps } from 'shared/components/block';
 import { Link } from 'shared/components/router';
 import { ButtonLight } from 'shared/ui/button';
-import { form } from 'features/signup';
+import { ROUTE_PATH } from 'shared/constants';
+import { SignupForm } from 'features/auth';
 import templateSpec from './signup-page.template.hbs';
 import styles from './styles.module.css';
-import { PATH } from 'shared/constants';
 
 interface IPageSignupProps extends IBlockProps {
   form: Block;
@@ -13,17 +13,17 @@ interface IPageSignupProps extends IBlockProps {
 
 export class PageSignup extends Block<IPageSignupProps> {
   constructor() {
-    const button = new ButtonLight({
-      label: 'Sign in',
-      name: 'transitionButton',
-      type: 'button',
+    const transitionButton = new Link({
+      href: ROUTE_PATH.SIGNIN,
+      ariaHidden: true,
+      children: new ButtonLight({
+        label: 'Sign in',
+        name: 'transitionButton',
+        type: 'button',
+      }),
     });
 
-    const transitionButton = new Link({
-      href: PATH.SIGNIN,
-      ariaHidden: true,
-      children: button,
-    });
+    const form = new SignupForm();
 
     super({ form, transitionButton });
   }

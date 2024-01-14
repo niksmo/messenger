@@ -7,7 +7,7 @@ import styles from './styles.module.css';
 
 interface IChatItemProps extends IBlockProps {
   active: boolean;
-  imageSrc?: string;
+  imageSrc: string | null;
   name: string;
   time: string;
   message: string;
@@ -51,14 +51,12 @@ export class ChatItem extends Block {
     _block: Block<IChatItemProps>
   ): boolean {
     const props = this.props as unknown as innerProps;
-    const causeProps = _causeProps as unknown as Map<
-      keyof IChatItemProps,
-      IChatItemProps[keyof IChatItemProps]
-    >;
+    const causeProps = _causeProps;
 
     if (causeProps.has('imageSrc')) {
       const { avatar } = props;
-      avatar.setProps({ src: causeProps.get('imageSrc') as string });
+      const src = causeProps.get('imageSrc') as string;
+      avatar.setProps({ src });
     }
 
     if (causeProps.has('status')) {

@@ -1,6 +1,6 @@
 import { Block, type IBlockProps } from 'shared/components/block';
 import templateSpec from './404.template.hbs';
-import { WarnStub } from 'features/warn-stub';
+import { WarnStub } from 'shared/ui/warn-stub-page';
 import { ButtonLight } from 'shared/ui/button';
 import { Link } from 'shared/components/router/link';
 
@@ -16,16 +16,15 @@ export class NotFoundPage extends Block<INotFoundPageProps> {
       message: 'The page no\xA0longer exists or\xA0it\xA0never existed.',
     });
 
-    const button = new ButtonLight({
-      label: 'Back to chats',
-      name: 'transitionButton',
-      type: 'button',
-    });
-
     const transitionButton = new Link({
       href: '/',
+      replace: true,
       ariaHidden: true,
-      children: button,
+      children: new ButtonLight({
+        label: 'Back to chats',
+        name: 'transitionButton',
+        type: 'button',
+      }),
     });
 
     super({ warnStub, transitionButton });

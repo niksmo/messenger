@@ -8,29 +8,30 @@ export interface IBlock {
   setProps: (arg: Record<string, unknown>) => void;
   setVisible: () => void;
   setHidden: () => void;
-}
-
-export interface IBlockInput extends IBlock {
-  getType: () => string;
-  getName: () => string;
-  getValue: () => string;
-  setProps: (props: {
-    support?: string;
-    error?: boolean;
-    value?: string;
-    onInput?: (e: Event) => void;
-    onBlur?: (e: Event) => void;
-  }) => void;
+  willUnmount: () => void;
+  dispatchWillUnmount: () => void;
 }
 
 export interface IAppRouter {
-  use: (path: string, view: BlockConstructor) => void;
   base: (path: string) => void;
   noMatch: (path: string) => void;
   go: (path: string, replace: boolean) => void;
   back: () => void;
   forward: () => void;
   start: () => void;
+  use: (path: string, view: BlockConstructor) => void;
+  authUse: (
+    path: string,
+    view: BlockConstructor,
+    stub: BlockConstructor,
+    redirectCb: () => void
+  ) => void;
+  notAuthUse: (
+    path: string,
+    view: BlockConstructor,
+    stub: BlockConstructor,
+    redirectCb: () => void
+  ) => void;
 }
 
 export interface IRoute {
@@ -38,4 +39,11 @@ export interface IRoute {
   render: (path: string) => void;
   update: (path: string) => void;
   leave: () => void;
+}
+
+export interface IStore {
+  init: (state: Record<string, unknown>) => IStore;
+  on: (fn: (state: Record<string, unknown>) => void) => IStore;
+  set: (path: string, value: unknown) => IStore;
+  getState: () => Record<string, unknown>;
 }

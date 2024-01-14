@@ -1,13 +1,14 @@
 import { type IRoute, type BlockConstructor, type IBlock } from '../interfaces';
+import { Store } from '../store';
 
 const SLUG_PREFIX = '/:';
 
 export class Route implements IRoute {
-  _view: BlockConstructor;
-  _block: IBlock | null = null;
-  _path;
-  _appRoot;
-  _slug: string | null = null;
+  protected _view: BlockConstructor;
+  protected _block: IBlock | null = null;
+  protected _path;
+  protected _appRoot;
+  protected _slug: string | null = null;
 
   constructor(path: string, view: BlockConstructor, appRoot: HTMLElement) {
     this._path = path;
@@ -48,6 +49,7 @@ export class Route implements IRoute {
   }
 
   leave(): void {
+    this._block?.dispatchWillUnmount();
     this._block?.getContent().remove();
     this._block = null;
   }
@@ -64,6 +66,81 @@ export class Route implements IRoute {
 
     if (this._block) {
       this._block.setProps(props);
+    }
+  }
+}
+
+class RouteWithStub extends Route {
+  protected _stubView;
+  protected _redirectCb;
+
+  constructor(
+    path: string,
+    view: BlockConstructor,
+    stub: BlockConstructor,
+    redirectCb: () => void,
+    appRoot: HTMLElement
+  ) {
+    super(path, view, appRoot);
+    this._stubView = stub;
+    this._redirectCb = redirectCb;
+  }
+
+  update(path: string): void {
+    this.leave();
+    this.render(path);
+  }
+
+  protected renderView(path: string): void {
+    const props = this._getProps(path);
+    this._block = new this._view(props);
+    this._appRoot.append(this._block.getContent());
+    this._block.dispatchDidMount();
+  }
+
+  protected renderStub(): void {
+    this._block = new this._stubView();
+    this._appRoot.append(this._block.getContent());
+    this._block.dispatchDidMount();
+  }
+}
+
+interface IViewerState {
+  viewer: {
+    auth?: boolean;
+    login: string;
+  };
+  [key: string]: unknown;
+}
+
+export class AuthRoute extends RouteWithStub {
+  render(path: string): void {
+    const store = Store.instance();
+
+    const { viewer } = store.getState<IViewerState>();
+
+    if (viewer?.auth === true && viewer.login) {
+      this.renderView(path);
+    } else if (viewer?.auth === false) {
+      this._redirectCb();
+    } else {
+      this.renderStub();
+    }
+  }
+}
+
+export class NotAuthRoute extends RouteWithStub {
+  render(path: string): void {
+    const store = Store.instance();
+
+    const { viewer } = store.getState<IViewerState>();
+
+    if (viewer?.auth === false) {
+      this.renderView(path);
+    } else if (viewer?.auth === true && viewer.login) {
+      this._redirectCb();
+    } else {
+      this.renderStub();
     }
   }
 }

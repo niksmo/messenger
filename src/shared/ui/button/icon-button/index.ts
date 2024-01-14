@@ -8,7 +8,7 @@ const STYLE = {
   accent: 'icon-button_style_accent',
 };
 
-type TIcon =
+export type TIcon =
   | 'add-chat'
   | 'menu'
   | 'gear'
@@ -17,7 +17,7 @@ type TIcon =
   | 'paperclip'
   | 'paperplane';
 
-type TStyle = keyof typeof STYLE;
+export type TStyle = 'primary' | 'secondary' | 'accent';
 
 interface IIconButtonProps extends IBlockProps {
   type: 'button' | 'submit';

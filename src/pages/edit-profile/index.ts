@@ -1,10 +1,10 @@
 import { Block, type IBlockProps } from 'shared/components/block';
 import { Link } from 'shared/components/router';
 import { ButtonLight } from 'shared/ui/button';
-import { form } from 'features/edit-profile';
+import { ROUTE_PATH } from 'shared/constants';
+import { EditProfileForm } from 'features/profile-settings';
 import templateSpec from './edit-profile-page.template.hbs';
 import styles from './styles.module.css';
-import { PATH } from 'shared/constants';
 
 interface IPageEditProfile extends IBlockProps {
   form: Block;
@@ -13,17 +13,17 @@ interface IPageEditProfile extends IBlockProps {
 
 export class PageEditProfile extends Block<IPageEditProfile> {
   constructor() {
-    const button = new ButtonLight({
-      label: 'Cancel',
-      name: 'transitionButton',
-      type: 'button',
+    const transitionButton = new Link({
+      href: ROUTE_PATH.SETTINGS,
+      ariaHidden: true,
+      children: new ButtonLight({
+        label: 'Cancel',
+        name: 'transitionButton',
+        type: 'button',
+      }),
     });
 
-    const transitionButton = new Link({
-      href: PATH.SETTINGS,
-      ariaHidden: true,
-      children: button,
-    });
+    const form = new EditProfileForm();
 
     super({ form, transitionButton });
   }
@@ -34,9 +34,5 @@ export class PageEditProfile extends Block<IPageEditProfile> {
 
   protected _getStylesModule(): CSSModuleClasses {
     return styles;
-  }
-
-  public setVisible(): void {
-    this.getContent().style.display = 'flex';
   }
 }
