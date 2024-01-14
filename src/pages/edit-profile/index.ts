@@ -1,10 +1,10 @@
 import { Block, type IBlockProps } from 'shared/components/block';
 import { Link } from 'shared/components/router';
 import { ButtonLight } from 'shared/ui/button';
+import { ROUTE_PATH } from 'shared/constants';
+import { EditProfileForm } from 'features/profile-settings';
 import templateSpec from './edit-profile-page.template.hbs';
 import styles from './styles.module.css';
-import { ROUTE_PATH } from 'shared/constants';
-import { EditProfileForm } from 'features/edit-profile';
 
 interface IPageEditProfile extends IBlockProps {
   form: Block;

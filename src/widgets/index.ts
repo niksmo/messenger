@@ -1,2 +1,2 @@
-export * from './chat-widget';
-export * from './side-widget';
+export * from './chat';
+export * from './chat-list';

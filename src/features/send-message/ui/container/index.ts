@@ -1,8 +1,8 @@
 import { Block, type IBlockProps } from 'shared/components/block';
-import { DropdownMenu, MenuItem } from 'shared/ui/dropdown';
-import { Overlay } from 'shared/ui/overlay';
-import { IconButton } from 'shared/ui/button';
+import { DropdownMenuNew } from 'shared/ui/dropdown';
 import { MessageForm } from '../form';
+import { AttachMediaMenuItem } from '../menu-item/media';
+import { AttachFileMenuItem } from '../menu-item/file';
 import templateSpec from './container.template.hbs';
 import styles from './styles.module.css';
 
@@ -13,37 +13,10 @@ interface IMessageSenderProps extends IBlockProps {
 
 export class MessageSender extends Block<IMessageSenderProps> {
   constructor() {
-    const menuItemMedia = new MenuItem({
-      label: 'Photo Or Video',
-      icon: 'media',
-      style: 'primary',
-    });
-    const menuItemFile = new MenuItem({
-      label: 'File',
-      icon: 'file',
-      style: 'primary',
-    });
-
-    const overlay = new Overlay();
-
-    const dropdown = new DropdownMenu({
-      menuList: [menuItemMedia, menuItemFile],
-      overlay,
-      posX: 'left',
-      posY: 'top',
-    });
-
-    const menu = new IconButton({
-      type: 'button',
-      style: 'primary',
-      icon: 'paperclip',
-      ariaLabel: 'Attach media',
-      role: 'menu',
-      children: dropdown,
-      onClick() {
-        dropdown.toggle();
-        overlay.toggle();
-      },
+    const menu = new DropdownMenuNew({
+      trigger: { icon: 'paperclip', style: 'primary' },
+      menuPos: { posX: 'left', posY: 'top' },
+      menuList: [new AttachMediaMenuItem(), new AttachFileMenuItem()],
     });
 
     const form = new MessageForm();

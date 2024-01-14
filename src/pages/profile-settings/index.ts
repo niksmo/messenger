@@ -2,10 +2,9 @@ import { Block } from 'shared/components/block';
 import { Link } from 'shared/components/router';
 import { ButtonLight } from 'shared/ui/button';
 import { ROUTE_PATH } from 'shared/constants';
-import { EditProfileLink } from 'features/edit-profile';
-import { ChangePasswordLink } from 'features/change-password';
 import { ProfileInfo } from 'entites/viewer';
 import { LogoutLink } from 'features/auth';
+import { ChangePasswordLink, EditProfileLink } from 'features/profile-settings';
 import templateSpec from './profile-settings-page.template.hbs';
 import styles from './styles.module.css';
 
