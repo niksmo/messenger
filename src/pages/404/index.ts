@@ -1,6 +1,6 @@
 import { Block, type IBlockProps } from 'shared/components/block';
 import templateSpec from './404.template.hbs';
-import { WarnStub } from 'features/warn-stub';
+import { WarnStub } from 'shared/ui/warn-stub-page';
 import { ButtonLight } from 'shared/ui/button';
 import { Link } from 'shared/components/router/link';
 

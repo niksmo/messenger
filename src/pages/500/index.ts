@@ -1,7 +1,7 @@
 import { Block, type IBlockProps } from 'shared/components/block';
 import { Link } from 'shared/components/router';
 import { ButtonLight } from 'shared/ui/button';
-import { WarnStub } from 'features/warn-stub';
+import { WarnStub } from 'shared/ui/warn-stub-page';
 import templateSpec from './500.template.hbs';
 
 interface IInternalErrorPageProps extends IBlockProps {
