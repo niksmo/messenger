@@ -16,17 +16,15 @@ export class NotFoundPage extends Block<INotFoundPageProps> {
       message: 'The page no\xA0longer exists or\xA0it\xA0never existed.',
     });
 
-    const button = new ButtonLight({
-      label: 'Back to chats',
-      name: 'transitionButton',
-      type: 'button',
-    });
-
     const transitionButton = new Link({
       href: '/',
       replace: true,
       ariaHidden: true,
-      children: button,
+      children: new ButtonLight({
+        label: 'Back to chats',
+        name: 'transitionButton',
+        type: 'button',
+      }),
     });
 
     super({ warnStub, transitionButton });

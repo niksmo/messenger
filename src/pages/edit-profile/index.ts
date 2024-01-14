@@ -13,16 +13,14 @@ interface IPageEditProfile extends IBlockProps {
 
 export class PageEditProfile extends Block<IPageEditProfile> {
   constructor() {
-    const button = new ButtonLight({
-      label: 'Cancel',
-      name: 'transitionButton',
-      type: 'button',
-    });
-
     const transitionButton = new Link({
       href: ROUTE_PATH.SETTINGS,
       ariaHidden: true,
-      children: button,
+      children: new ButtonLight({
+        label: 'Cancel',
+        name: 'transitionButton',
+        type: 'button',
+      }),
     });
 
     const form = new EditProfileForm();

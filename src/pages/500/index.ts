@@ -16,17 +16,15 @@ export class InternalErrorPage extends Block<IInternalErrorPageProps> {
       message: 'Something went wrong. But we\xA0are already fixing\xA0it.',
     });
 
-    const button = new ButtonLight({
-      label: 'Back to chats',
-      name: 'transitionButton',
-      type: 'button',
-    });
-
     const transitionButton = new Link({
       href: '/',
       replace: true,
       ariaHidden: true,
-      children: button,
+      children: new ButtonLight({
+        label: 'Back to chats',
+        name: 'transitionButton',
+        type: 'button',
+      }),
     });
 
     super({ warnStub, transitionButton });

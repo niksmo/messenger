@@ -15,7 +15,6 @@ export class Avatar extends Block<IAvatarProps> {
   }
 
   protected _getTemplateSpec(): TemplateSpecification {
-    // return this._imageSrc ? imageTemplateSpec : stubTemplateSpec;
     return templateSpec;
   }
 

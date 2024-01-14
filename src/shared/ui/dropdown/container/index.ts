@@ -1,7 +1,8 @@
 import { Block } from 'shared/components/block';
-import { Overlay } from 'shared/ui/overlay';
 import { IconButton, type TIcon, type TStyle } from 'shared/ui/button';
-import { DropdownMenu, type MenuItem } from '..';
+import { Overlay } from '../overlay';
+import { DropdownMenu } from '../menu';
+import type { MenuItem } from '../item';
 import templateSpec from './container.template.hbs';
 
 interface IProps {
