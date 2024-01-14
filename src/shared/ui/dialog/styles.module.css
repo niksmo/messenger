@@ -1,0 +1,23 @@
+.container {
+  width: 360px;
+  padding: 20px;
+  border-radius: 16px;
+  background-color: var(--color-background-white);
+  box-shadow: var(--shadow-elevation-2);
+}
+
+.text {
+  margin: 12px 0 20px;
+  text-align: center;
+  color: var(--color-text-primary);
+  font-size: var(--font-title-medium-size);
+  line-height: var(--font-title-medium-height);
+  font-weight: var(--font-title-medium-weight);
+  letter-spacing: var(--font-title-medium-spacing);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  column-gap: 8px;
+}
