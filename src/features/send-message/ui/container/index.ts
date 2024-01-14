@@ -1,8 +1,7 @@
 import { Block, type IBlockProps } from 'shared/components/block';
 import { DropdownMenuNew } from 'shared/ui/dropdown';
 import { MessageForm } from '../form';
-import { AttachMediaMenuItem } from '../menu-item/media';
-import { AttachFileMenuItem } from '../menu-item/file';
+import { AttachMediaMenuItem, AttachFileMenuItem } from '../menu-item';
 import templateSpec from './container.template.hbs';
 import styles from './styles.module.css';
 

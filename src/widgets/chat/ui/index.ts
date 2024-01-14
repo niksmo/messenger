@@ -1,6 +1,7 @@
 import { Block, type IBlockProps } from 'shared/components/block';
 import { ChatHeader } from 'entites/chat';
 import { DayMessages } from 'entites/message';
+import { MessageSender } from 'features/send-message';
 import templateSpec from './chat-widget.template.hbs';
 import styles from './styles.module.css';
 
@@ -21,7 +22,9 @@ export class Chat extends Block<IChatWidgetProps> {
 
     const header = new ChatHeader();
 
-    super({ header, messages });
+    const sender = new MessageSender();
+
+    super({ header, messages, sender });
   }
 
   protected _getTemplateSpec(): TemplateSpecification {

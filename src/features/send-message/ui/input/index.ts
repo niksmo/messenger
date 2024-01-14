@@ -15,7 +15,7 @@ export class MessageInput extends Block {
     shouldRender: boolean,
     causeProps: Map<string, string>
   ): boolean {
-    if (shouldRender && causeProps.has('value')) {
+    if (causeProps.has('value')) {
       shouldRender = false;
     }
 

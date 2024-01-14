@@ -1,8 +1,8 @@
 import { Block, type IBlockProps } from 'shared/components/block';
+import { IconButton } from 'shared/ui/button';
+import { MessageInput } from '../input';
 import templateSpec from './form.template.hbs';
 import styles from './styles.module.css';
-import { MessageInput } from '../input';
-import { IconButton } from 'shared/ui/button';
 
 interface IMessageFormProps extends IBlockProps {
   input: Block;
