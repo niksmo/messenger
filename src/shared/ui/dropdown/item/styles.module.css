@@ -16,6 +16,10 @@
   color: var(--color-text-primary);
 }
 
+.menu-item_style_accent {
+  color: var(--color-element-special);
+}
+
 .menu-item_style_adverse {
   color: var(--color-text-error);
 }

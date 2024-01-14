@@ -1,11 +1,11 @@
 import { MenuItem } from 'shared/ui/dropdown';
 
-export class AddChatMenuItem extends MenuItem {
+export class AddChatUserMenuItem extends MenuItem {
   constructor() {
     super({
-      icon: 'plus',
-      label: 'New Chat',
-      style: 'accent',
+      icon: 'new-contact',
+      label: 'Add User',
+      style: 'primary',
       onClick: () => {
         alert('open modal window');
       },

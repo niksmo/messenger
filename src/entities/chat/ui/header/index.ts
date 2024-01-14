@@ -4,6 +4,8 @@ import { Avatar } from 'shared/ui/avatar';
 import { DeleteChatMenuItem } from 'features/chat-delete';
 import templateSpec from './header.template.hbs';
 import styles from './styles.module.css';
+import { AddChatUserMenuItem } from 'features/chat-user-add/ui';
+import { RemoveChatUserMenuItem } from 'features/chat-user-delete/ui';
 
 const NAME = 'Bowie';
 
@@ -25,7 +27,11 @@ export class ChatHeader extends Block<IChatHeaderProps> {
     const menu = new DropdownMenuNew({
       trigger: { icon: 'dots', style: 'accent' },
       menuPos: { posX: 'right', posY: 'bottom' },
-      menuList: [new DeleteChatMenuItem()],
+      menuList: [
+        new AddChatUserMenuItem(),
+        new RemoveChatUserMenuItem(),
+        new DeleteChatMenuItem(),
+      ],
     });
 
     super({ avatar, username, menu });

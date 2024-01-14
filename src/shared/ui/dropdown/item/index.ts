@@ -6,11 +6,14 @@ const STYLE_TAG = 'menu-item_style';
 
 const STYLE = {
   primary: 'menu-item_style_primary',
+  accent: 'menu-item_style_accent',
   adverse: 'menu-item_style_adverse',
 };
 
 type TIcon24 =
+  | 'plus'
   | 'new-contact'
+  | 'remove-contact'
   | 'bucket'
   | 'media'
   | 'file'
@@ -18,7 +21,7 @@ type TIcon24 =
   | 'lock'
   | 'close';
 
-type TItemStyle = 'primary' | 'adverse';
+type TItemStyle = 'primary' | 'adverse' | 'accent';
 
 interface IMenuItemProps extends IBlockProps {
   icon: TIcon24;
