@@ -1,12 +1,15 @@
 import { Block } from 'shared/components/block';
+import { changeAvatarController } from 'features/change-avatar/controller';
 import templateSpec from './invisible-input.template.hbs';
 import styles from './styles.module.css';
-import { changeAvatarController } from 'features/change-avatar/controller';
 
 export class InvisibleFileInput extends Block {
   constructor() {
     super();
-    this.setProps({ onChange: this._onChange.bind(this) });
+    this.setProps({
+      name: 'changeAvatar',
+      onChange: this._onChange.bind(this),
+    });
   }
 
   protected _getTemplateSpec(): TemplateSpecification {

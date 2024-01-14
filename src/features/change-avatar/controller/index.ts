@@ -8,19 +8,21 @@ import type { IChangeAvatarSlice, IChangeAvatarState } from '../model';
 import { makeState } from './lib';
 
 const STORE_SLICE = 'changeAvatar';
+const MAX_SIZE_1MB = Math.pow(2, 20) - 1;
 
 export class ChangeAvatarController {
   private readonly _store;
   private readonly _api;
   private readonly _router;
   private readonly _verifier;
+  private _fileImage: File | null = null;
 
   constructor() {
     this._store = Store.instance();
     this._api = new ChangeAvatarAPI();
     this._router = AppRouter.instance();
     this._verifier = verifierCreator.makeFileVerifier({
-      size: { max: 15000000, hint: HINT.fileMaxSize },
+      size: { max: MAX_SIZE_1MB, hint: HINT.fileMaxSize },
       type: {
         access: ['image/png', 'image/jpeg', 'image/gif', 'image/webp'],
         hint: HINT.fileType,
@@ -29,21 +31,24 @@ export class ChangeAvatarController {
   }
 
   preview(file: File): void {
+    this._fileImage = file;
     const state = makeState(file);
-
     this._store.set(STORE_SLICE, state);
 
-    this._verify(file);
+    this._verify();
 
     this._router.go(ROUTE_PATH.CHANGE_AVATAR);
   }
 
   override(file: File): void {
+    this._fileImage = file;
     const { changeAvatar: state } = this._store.getState<IChangeAvatarSlice>();
-    const { objectURL } = state;
+    const { objectURL } = { ...state };
 
     const newState = makeState(file);
     this._store.set(STORE_SLICE, newState);
+
+    this._verify();
 
     URL.revokeObjectURL(objectURL);
   }
@@ -52,27 +57,30 @@ export class ChangeAvatarController {
     const state: IChangeAvatarState = {
       objectURL: '',
       load: false,
-      isImage: false,
       error: '',
     };
     this._store.set(STORE_SLICE, state);
   }
 
-  private _verify(file: File): boolean {
-    const { isValid, hint } = this._verifier.checkOnValidity(file);
+  private _verify(): boolean {
+    if (!this._fileImage) {
+      this._store.set(STORE_SLICE, { error: 'Pick the image file' });
+      return false;
+    }
+    const { isValid, hint } = this._verifier.checkOnValidity(this._fileImage);
     this._store.set(STORE_SLICE, { error: hint });
     return isValid;
   }
 
-  async updoad(file: File): Promise<void> {
-    if (!this._verify(file)) {
+  async upload(): Promise<void> {
+    if (!this._verify() || !this._fileImage) {
       return;
     }
 
     this._store.set(STORE_SLICE, { load: true });
 
     const formData = new FormData();
-    formData.append('avatar', file);
+    formData.append('avatar', this._fileImage);
 
     try {
       const xhr = await this._api.update(formData);
@@ -86,7 +94,7 @@ export class ChangeAvatarController {
 
       if (status === 400 && typeof response === 'string') {
         const { reason } = JSON.parse(response);
-        console.warn(reason);
+        this._store.set(STORE_SLICE, { error: reason });
       }
 
       if (status === 401) {
@@ -99,7 +107,7 @@ export class ChangeAvatarController {
         this.reset();
       }
     } catch (err) {
-      console.warn(err);
+      this._store.set(STORE_SLICE, { error: 'Image is too large' });
     } finally {
       this._store.set(STORE_SLICE, { load: true });
     }

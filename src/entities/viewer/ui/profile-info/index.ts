@@ -16,7 +16,7 @@ export class ProfileInfo extends Block {
     const { avatar: src, first_name: name, ...rest } = viewer;
 
     const avatar = new Avatar({ src, name });
-    const changeAvatar = new InvisibleFileInput({ name: 'avatar_file' });
+    const changeAvatar = new InvisibleFileInput();
 
     super({ avatar, changeAvatar, first_name: name, ...rest });
 

@@ -1,6 +1,5 @@
 export interface IChangeAvatarState {
   objectURL: string;
-  isImage: boolean;
   error: string;
   load: boolean;
 }

@@ -1,0 +1,18 @@
+.message {
+  margin: 0;
+  visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 416px;
+  text-align: center;
+  color: var(--color-text-error);
+  font-size: var(--font-body-medium-size);
+  line-height: var(--font-body-medium-height);
+  font-weight: var(--font-body-medium-weight);
+  letter-spacing: var(--font-body-medium-spacing);
+}
+
+.message_visible {
+  visibility: visible;
+}

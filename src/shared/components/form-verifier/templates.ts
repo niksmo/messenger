@@ -15,6 +15,6 @@ export const HINT = {
     'One uppercase letter and one digit are required, from 8 to 40 characters',
   phone: 'From 10 to 15 digit, may start with plus symbol',
   confirmPassword: 'Passwords don"t match',
-  fileMaxSize: 'The file size exceeds the allowed size',
+  fileMaxSize: 'The file size should be less 1Mb',
   fileType: 'Available image file extensions: png, gif, jpeg, webp',
 };
