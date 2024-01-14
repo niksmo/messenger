@@ -24,7 +24,7 @@ export class SigninMessage extends Block<ISigninMessageProps> {
 
     this._onStoreUpdate = (state: ISigninState) => {
       const { error: message } = state.signin;
-      this.setProps({ message: message, visible: Boolean(message) });
+      this.setProps({ message, visible: Boolean(message) });
     };
 
     store.on<ISigninState>(this._onStoreUpdate);
