@@ -42,15 +42,9 @@ export class Overlay extends Block<IOverlayProps> {
     }
   }
 
-  public didUpdate(): void {
-    if (this._isVisible) {
-      appRoot?.append(this.getContent());
-    } else {
-      this.getContent().remove();
-    }
-  }
-
   public willUnmount(): void {
-    this.getContent().remove();
+    setTimeout(() => {
+      this.getContent().remove();
+    }, 0);
   }
 }

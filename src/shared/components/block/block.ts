@@ -2,7 +2,12 @@ import { template as templator } from 'handlebars/runtime';
 import EventBus from 'shared/packages/event-bus';
 import uuid from 'shared/packages/uuid';
 import { type IBlock } from '../interfaces';
-import { type TBlockEventsMap, pickBlocksAndEvents, shallowEqual } from './lib';
+import {
+  type TBlockEventsMap,
+  pickBlocksAndEvents,
+  shallowEqual,
+  traverseBlocksTreeAndCall,
+} from './lib';
 import { EVENT, TMP_TAG } from './consts';
 
 type IBlockProps = Record<string, unknown>;
@@ -17,7 +22,7 @@ abstract class Block<TProps extends IBlockProps = IBlockProps>
   private _element: Node | null = null;
   private _updatingPropsNum = 0;
   private _events: TBlockEventsMap | null = null;
-  private _childBlocks: Map<string, Block> | null = null;
+  protected _childBlocks: Map<string, Block> | null = null;
   protected props;
 
   constructor(props: TProps | IBlockProps = {}) {
@@ -121,10 +126,6 @@ abstract class Block<TProps extends IBlockProps = IBlockProps>
 
         if (node) {
           stub.replaceWith(node);
-
-          if (this._element === null) {
-            childBlock?.dispatchDidMount();
-          }
         }
       }
     });
@@ -160,41 +161,15 @@ abstract class Block<TProps extends IBlockProps = IBlockProps>
   }
 
   private _didMount(): void {
-    this.didMount();
+    traverseBlocksTreeAndCall.call(this, 'didMount');
   }
 
   private _didUpdate(): void {
-    this.didUpdate();
+    traverseBlocksTreeAndCall.call(this, 'didUpdate');
   }
 
   private _willUnmount(): void {
-    const stack: Block[] = [this];
-    const colors: number[] = [1];
-
-    while (stack.length) {
-      const block = stack.pop();
-      const color = colors.pop();
-
-      if (!block || !color) {
-        break;
-      }
-
-      if (color === 1) {
-        stack.push(block);
-        colors.push(2);
-        const childBlocks = block._childBlocks;
-        if (childBlocks) {
-          for (const block of childBlocks.values()) {
-            stack.push(block);
-            colors.push(1);
-          }
-        }
-      }
-
-      if (color === 2) {
-        block.willUnmount();
-      }
-    }
+    traverseBlocksTreeAndCall.call(this, 'willUnmount');
   }
 
   private _compareProps(oldProps: TProps, newProps: TProps): void {

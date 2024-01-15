@@ -4,6 +4,14 @@
   border-radius: 16px;
   background-color: var(--color-background-white);
   box-shadow: var(--shadow-elevation-2);
+  opacity: 0;
+  scale: 0;
+  transition: all 150ms ease-out;
+}
+
+.container__opened {
+  opacity: 1;
+  scale: 1;
 }
 
 .text {

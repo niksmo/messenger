@@ -7,6 +7,7 @@ import { Overlay } from '../overlay';
 interface IDialogContainerProps extends IBlockProps {
   text: string;
   buttonText: [string, string];
+  animationStyle?: string;
   declineCb?: () => void;
   approveCb: () => void;
 }
@@ -51,7 +52,14 @@ class DialogContainer extends Block<IDialogContainerProps> {
   }
 
   public didMount(): void {
+    setTimeout(() => {
+      this.getContent().classList.toggle(styles['container__opened'] ?? '');
+    }, 0);
     this._declineButtonBlock.getContent().focus();
+  }
+
+  public willUnmount(): void {
+    this.getContent().classList.toggle(styles['container__opened'] ?? '');
   }
 }
 
@@ -60,8 +68,6 @@ type TDialogProps = IDialogContainerProps & {
 };
 
 export class Dialog extends Overlay {
-  private readonly _dialogContainer;
-
   constructor(props: TDialogProps) {
     const { isVisible, ...containerProps } = props;
     const dialogContainer = new DialogContainer(containerProps);
@@ -81,17 +87,16 @@ export class Dialog extends Overlay {
         },
       });
     }
-
-    this._dialogContainer = dialogContainer;
   }
 
   public didMount(): void {
-    this._dialogContainer.dispatchDidMount();
     window.addEventListener('keydown', this._onEscKeypress);
+    super.didMount();
   }
 
   public willUnmount(): void {
     window.removeEventListener('keydown', this._onEscKeypress);
+    super.willUnmount();
   }
 
   private readonly _onOverlayClick = (e: Event): void => {
@@ -99,7 +104,7 @@ export class Dialog extends Overlay {
     if (target && currentTarget) {
       if (target === currentTarget) {
         this.setProps({ isVisible: false });
-        this.dispatchDidMount();
+        this.dispatchWillUnmount();
       }
     }
   };

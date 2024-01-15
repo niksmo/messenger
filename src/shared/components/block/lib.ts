@@ -61,3 +61,36 @@ export function pickBlocksAndEvents(props: IBlockProps): {
 
   return { blocks, events };
 }
+
+export function traverseBlocksTreeAndCall(
+  this: Block,
+  method: Extract<keyof Block, 'willUnmount' | 'didUpdate' | 'didMount'>
+): void {
+  const stack: Block[] = [this];
+  const colors: number[] = [1];
+
+  while (stack.length) {
+    const block = stack.pop();
+    const color = colors.pop();
+
+    if (!block || !color) {
+      break;
+    }
+
+    if (color === 1) {
+      stack.push(block);
+      colors.push(2);
+      const childBlocks = block._childBlocks;
+      if (childBlocks) {
+        for (const block of childBlocks.values()) {
+          stack.push(block);
+          colors.push(1);
+        }
+      }
+    }
+
+    if (color === 2) {
+      block[method]();
+    }
+  }
+}
