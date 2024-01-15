@@ -14,7 +14,7 @@ const POS = {
 const POS_X = 'posX';
 const POS_Y = 'posY';
 
-interface IDropdownMenuProps {
+interface IMenuProps {
   menuList: Block[];
   overlay?: Block;
   posX: 'left' | 'right';
@@ -23,12 +23,12 @@ interface IDropdownMenuProps {
 
 const styles = { ...stylesModule };
 
-let curPosX: IDropdownMenuProps['posX'];
-let curPosY: IDropdownMenuProps['posY'];
+let curPosX: IMenuProps['posX'];
+let curPosY: IMenuProps['posY'];
 const visibleClass = styles[MENU_VISIBLE];
 
-export class DropdownMenu extends Block {
-  constructor(props: IDropdownMenuProps & IBlockProps) {
+export class Menu extends Block {
+  constructor(props: IMenuProps & IBlockProps) {
     const { posX, posY } = props;
     curPosX = posX;
     curPosY = posY;

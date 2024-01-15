@@ -1,5 +1,5 @@
 import { Block, type IBlockProps } from 'shared/components/block';
-import { DropdownMenuNew } from 'shared/ui/dropdown';
+import { DropdownMenu } from 'shared/ui/dropdown';
 import { MessageForm } from '../form';
 import { AttachMediaMenuItem, AttachFileMenuItem } from '../menu-item';
 import templateSpec from './container.template.hbs';
@@ -12,7 +12,7 @@ interface IMessageSenderProps extends IBlockProps {
 
 export class MessageSender extends Block<IMessageSenderProps> {
   constructor() {
-    const menu = new DropdownMenuNew({
+    const menu = new DropdownMenu({
       trigger: { icon: 'paperclip', style: 'primary' },
       menuPos: { posX: 'left', posY: 'top' },
       menuList: [new AttachMediaMenuItem(), new AttachFileMenuItem()],

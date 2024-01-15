@@ -11,7 +11,7 @@ export class ChatListAPI extends BaseAPI {
     this._http = new HttpTransport().setBaseURL(BASE_URL);
   }
 
-  async request(): Promise<unknown> {
+  async request(): Promise<XMLHttpRequest> {
     return await this._http.get('/chats');
   }
 }

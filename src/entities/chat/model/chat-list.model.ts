@@ -18,8 +18,11 @@ export interface IChatParams {
   };
 }
 
-export type TChatListState = IChatParams[];
+export interface IChatListState {
+  selected: null | number;
+  chats: IChatParams[];
+}
 
 export interface IChatListSlice extends Record<string, unknown> {
-  chatList: TChatListState;
+  chatList: IChatListState;
 }

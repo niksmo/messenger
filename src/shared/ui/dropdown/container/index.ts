@@ -1,7 +1,7 @@
 import { Block } from 'shared/components/block';
 import { IconButton, type TIcon, type TStyle } from 'shared/ui/button';
 import { Overlay } from '../overlay';
-import { DropdownMenu } from '../menu';
+import { Menu } from '../menu';
 import type { MenuItem } from '../item';
 import templateSpec from './container.template.hbs';
 
@@ -17,13 +17,13 @@ interface IProps {
   menuList: MenuItem[];
 }
 
-export class DropdownMenuNew extends Block {
+export class DropdownMenu extends Block {
   constructor(props: IProps) {
     const { trigger, menuPos, menuList } = props;
 
     const overlay = new Overlay();
 
-    const menu = new DropdownMenu({
+    const menu = new Menu({
       ...menuPos,
       menuList,
       overlay,

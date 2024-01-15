@@ -2,7 +2,7 @@ import { Store } from 'shared/components/store';
 import { AppRouter } from 'shared/components/router';
 import { HINT, verifierCreator } from 'shared/components/form-verifier';
 import { ROUTE_PATH } from 'shared/constants';
-import { reviveNullToString } from 'shared/helpers';
+import { goToLoginWithUnauth, reviveNullToString } from 'shared/helpers';
 import { ChangeAvatarAPI } from '../api';
 import type { IChangeAvatarSlice, IChangeAvatarState } from '../model';
 
@@ -93,30 +93,30 @@ export class ChangeAvatarController {
       const xhr = await this._api.update(formData);
       const { status, response } = xhr;
 
-      if (status === 200 && typeof response === 'string') {
-        this._store.set('viewer', JSON.parse(response, reviveNullToString));
-        this._router.go(ROUTE_PATH.SETTINGS);
-        this.reset();
-      }
-
       if (status === 400 && typeof response === 'string') {
         const { reason } = JSON.parse(response);
         this._store.set(STORE_SLICE, { error: reason });
+        return;
+      }
+
+      if (status === 200 && typeof response === 'string') {
+        this._store.set('viewer', JSON.parse(response, reviveNullToString));
+        this._router.go(ROUTE_PATH.SETTINGS);
       }
 
       if (status === 401) {
-        this._router.go(ROUTE_PATH.SIGNIN);
-        this.reset();
+        goToLoginWithUnauth();
       }
 
       if (status === 500) {
         this._router.go(ROUTE_PATH[500]);
-        this.reset();
       }
+
+      this.reset();
     } catch (err) {
       this._store.set(STORE_SLICE, { error: 'Image is too large' });
     } finally {
-      this._store.set(STORE_SLICE, { load: true });
+      this._store.set(STORE_SLICE, { load: false });
     }
   }
 }

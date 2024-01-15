@@ -6,7 +6,7 @@ import {
   verifierCreator,
 } from 'shared/components/form-verifier';
 import { ROUTE_PATH } from 'shared/constants';
-import { reviveNullToString } from 'shared/helpers';
+import { goToLoginWithUnauth, reviveNullToString } from 'shared/helpers';
 import { type IViewerState } from 'entites/viewer/model';
 import { EditProfileAPI } from '../api';
 import { type IFieldState, type IEditProfileState } from '../model';
@@ -95,16 +95,6 @@ class EditProfileController {
       this._store.set(STORE_LOAD, true);
       const { status, response } = await this._api.update(formData);
 
-      if (status === 200) {
-        if (typeof response === 'string') {
-          const viewerData = JSON.parse(response, reviveNullToString);
-          this._store.set('viewer', viewerData);
-        }
-
-        this._resetState();
-        this._router.go(ROUTE_PATH.SETTINGS);
-      }
-
       if (status === 400) {
         if (typeof response === 'string') {
           const { reason } = JSON.parse(response);
@@ -117,11 +107,26 @@ class EditProfileController {
             });
           }
         }
+        return;
+      }
+
+      if (status === 200) {
+        if (typeof response === 'string') {
+          const viewerData = JSON.parse(response, reviveNullToString);
+          this._store.set('viewer', viewerData);
+        }
+
+        this._router.go(ROUTE_PATH.SETTINGS);
+      }
+
+      if (status === 401) {
+        goToLoginWithUnauth();
       }
 
       if (status === 500) {
         this._router.go(ROUTE_PATH[500]);
       }
+      this._resetState();
     } catch (err) {
       console.warn(err);
     } finally {

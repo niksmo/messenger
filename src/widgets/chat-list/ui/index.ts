@@ -1,5 +1,5 @@
 import { Block, type IBlockProps } from 'shared/components/block';
-import { DropdownMenuNew } from 'shared/ui/dropdown';
+import { DropdownMenu } from 'shared/ui/dropdown';
 import { ChatItem } from 'entites/chat';
 import { SearchBar } from 'features/search-chat';
 import { AddChatMenuItem } from 'features/chat-add';
@@ -8,6 +8,7 @@ import templateSpec from './chat-list.template.hbs';
 import styles from './styles.module.css';
 
 import mockData from 'shared/mock-data/chat-list.json';
+import { chatListController } from 'entites/chat/controller/chat-list.controller';
 
 const chatListData = mockData as unknown as IChatListItem[];
 
@@ -32,11 +33,13 @@ interface IChatListProps extends IBlockProps {
 
 export class ChatList extends Block<IChatListProps> {
   constructor() {
+    chatListController.start();
+
     const settingsButton = new OpenSettingsButton();
 
     const search = new SearchBar();
 
-    const addChat = new DropdownMenuNew({
+    const addChat = new DropdownMenu({
       trigger: { icon: 'add-chat', style: 'accent' },
       menuPos: { posX: 'left', posY: 'bottom' },
       menuList: [new AddChatMenuItem()],

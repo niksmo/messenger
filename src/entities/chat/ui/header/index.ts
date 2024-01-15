@@ -1,5 +1,5 @@
 import { Block, type IBlockProps } from 'shared/components/block';
-import { DropdownMenuNew } from 'shared/ui/dropdown';
+import { DropdownMenu } from 'shared/ui/dropdown';
 import { Avatar } from 'shared/ui/avatar';
 import { DeleteChatMenuItem } from 'features/chat-delete';
 import templateSpec from './header.template.hbs';
@@ -24,7 +24,7 @@ export class ChatHeader extends Block<IChatHeaderProps> {
       src: 'https://avatars.mds.yandex.net/get-yapic/29310/vQv3RfIXGjDwGSUkUSsdqqXzc-1/islands-retina-middle',
     });
 
-    const menu = new DropdownMenuNew({
+    const menu = new DropdownMenu({
       trigger: { icon: 'dots', style: 'accent' },
       menuPos: { posX: 'right', posY: 'bottom' },
       menuList: [

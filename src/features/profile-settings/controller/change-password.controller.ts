@@ -8,6 +8,7 @@ import {
 import { ROUTE_PATH } from 'shared/constants';
 import { type IChangePasswordState } from '../model';
 import { ChangePasswordAPI } from '../api';
+import { goToLoginWithUnauth } from 'shared/helpers';
 
 type TFormData = Record<string, string>;
 
@@ -125,11 +126,6 @@ class ChangePasswordController {
       const reqBody = extractRequestBody(formData);
       const { status, response } = await this._api.update(reqBody);
 
-      if (status === 200) {
-        this._resetState();
-        this._router.go(ROUTE_PATH.SETTINGS, true);
-      }
-
       if (status === 400) {
         if (typeof response === 'string') {
           const { reason } = JSON.parse(response);
@@ -141,11 +137,22 @@ class ChangePasswordController {
             });
           }
         }
+
+        return;
+      }
+
+      if (status === 200) {
+        this._router.go(ROUTE_PATH.SETTINGS, true);
+      }
+
+      if (status === 401) {
+        goToLoginWithUnauth();
       }
 
       if (status === 500) {
         this._router.go(ROUTE_PATH[500]);
       }
+      this._resetState();
     } catch (err) {
       console.warn(err);
     } finally {
