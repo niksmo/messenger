@@ -199,6 +199,10 @@ abstract class Block<TProps extends IBlockProps = IBlockProps>
     this._eventBus.emit(EVENT.MOUNT);
   }
 
+  public dispatchDidUpdate(): void {
+    this._eventBus.emit(EVENT.UPDATE);
+  }
+
   public dispatchWillUnmount(): void {
     this._eventBus.emit(EVENT.UNMOUNT);
   }

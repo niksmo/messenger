@@ -61,7 +61,6 @@ class AddChatController {
 
       const xhr = await this._api.create(formData);
       const { status, response } = xhr;
-      debugger;
 
       if (status === 400) {
         if (typeof response === 'string') {

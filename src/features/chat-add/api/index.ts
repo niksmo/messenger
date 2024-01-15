@@ -14,6 +14,6 @@ export class AddChatAPI extends BaseAPI {
   }
 
   async create(body: { title: string }): Promise<XMLHttpRequest> {
-    return await this._http.put('/chat', JSON.stringify(body));
+    return await this._http.post('/chats', JSON.stringify(body));
   }
 }

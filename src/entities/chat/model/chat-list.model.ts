@@ -19,7 +19,7 @@ export interface IChatParams {
 }
 
 export interface IChatListState {
-  selected: null | number;
+  currentChat: null | number;
   chats: IChatParams[];
 }
 

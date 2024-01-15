@@ -1,8 +1,8 @@
 import { Block } from 'shared/components/block';
-import templateSpec from './plug.template.hbs';
+import templateSpec from './stub.template.hbs';
 import styles from './styles.module.css';
 
-export class ChatPlug extends Block {
+export class ChatStub extends Block {
   protected _getTemplateSpec(): TemplateSpecification {
     return templateSpec;
   }

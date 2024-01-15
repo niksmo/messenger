@@ -3,9 +3,10 @@ import { AppRouter } from 'shared/components/router';
 import { ROUTE_PATH } from 'shared/constants';
 import { goToLoginWithUnauth } from 'shared/helpers';
 import { ChatListAPI } from '../api/chat-list.api';
-import type { IChatListState } from '../model/chat-list.model';
 
 const STORE_SLICE = 'chatList';
+const STORE_CHATS = STORE_SLICE + '.chats';
+const STORE_CURRENT_CHAT = STORE_SLICE + '.currentChat';
 
 export class ChatListController {
   private readonly _api;
@@ -19,11 +20,7 @@ export class ChatListController {
   }
 
   private _initState(): void {
-    const initState: IChatListState = {
-      selected: null,
-      chats: [],
-    };
-    this._store.set(STORE_SLICE, initState);
+    this._store.set(STORE_CHATS, []);
   }
 
   private async _fetchChats(): Promise<void> {
@@ -33,7 +30,8 @@ export class ChatListController {
 
       if (status === 200 && typeof response === 'string') {
         const chats = JSON.parse(response);
-        this._store.set(STORE_SLICE, chats);
+        this._store.set(STORE_CHATS, chats);
+        console.log(this._store.getState());
         return;
       }
 
@@ -54,6 +52,12 @@ export class ChatListController {
   start(): void {
     this._initState();
     void this._fetchChats();
+  }
+
+  openChat(chatId: string): void {
+    const chatIdNum = Number(chatId) || null;
+    this._store.set(STORE_CURRENT_CHAT, chatIdNum);
+    console.log(this._store);
   }
 }
 

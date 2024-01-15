@@ -1,4 +1,4 @@
-.chat-plug {
+.chat-stub {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -6,7 +6,7 @@
   background-color: var(--color-background-basic);
 }
 
-.chat-plug__cta {
+.chat-stub__cta {
   margin: 0;
   padding: 0 8px;
   border-radius: 12px;
