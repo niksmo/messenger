@@ -49,6 +49,10 @@ class DialogContainer extends Block<IDialogContainerProps> {
 
     super.setProps(rest);
   }
+
+  public didMount(): void {
+    this._declineButtonBlock.getContent().focus();
+  }
 }
 
 type TDialogProps = IDialogContainerProps & {
@@ -56,12 +60,19 @@ type TDialogProps = IDialogContainerProps & {
 };
 
 export class Dialog extends Overlay {
+  private readonly _dialogContainer;
+
   constructor(props: TDialogProps) {
     const { isVisible, ...containerProps } = props;
     const dialogContainer = new DialogContainer(containerProps);
 
     super({ isVisible, children: dialogContainer });
     const self = this;
+
+    this.setProps({
+      onPointerdown: this._onOverlayClick.bind(this),
+    });
+
     if (!containerProps.declineCb) {
       dialogContainer.setProps({
         declineCb: () => {
@@ -70,5 +81,34 @@ export class Dialog extends Overlay {
         },
       });
     }
+
+    this._dialogContainer = dialogContainer;
   }
+
+  public didMount(): void {
+    this._dialogContainer.dispatchDidMount();
+    window.addEventListener('keydown', this._onEscKeypress);
+  }
+
+  public willUnmount(): void {
+    window.removeEventListener('keydown', this._onEscKeypress);
+  }
+
+  private readonly _onOverlayClick = (e: Event): void => {
+    const { target, currentTarget } = e;
+    if (target && currentTarget) {
+      if (target === currentTarget) {
+        this.setProps({ isVisible: false });
+        this.dispatchDidMount();
+      }
+    }
+  };
+
+  private readonly _onEscKeypress = (e: KeyboardEvent): void => {
+    const { code } = e;
+    if (code === 'Escape') {
+      this.setProps({ isVisible: false });
+      this.dispatchWillUnmount();
+    }
+  };
 }
