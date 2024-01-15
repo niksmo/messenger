@@ -1,6 +1,6 @@
 import { Block, type IBlockProps } from 'shared/components/block';
 import { DropdownMenu } from 'shared/ui/dropdown';
-import { ChatItem } from 'entites/chat';
+import { ChatListItem } from 'entites/chat';
 import { SearchBar } from 'features/search-chat';
 import { AddChatMenuItem } from 'features/chat-add';
 import { OpenSettingsButton } from 'features/profile-settings';
@@ -47,7 +47,7 @@ export class ChatListWidget extends Block<IChatListProps> {
 
     const list = chatListData.map((itemData) => {
       const { src: imageSrc, ...rest } = itemData;
-      return new ChatItem({
+      return new ChatListItem({
         imageSrc,
         ...rest,
       });

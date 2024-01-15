@@ -5,7 +5,7 @@ import { Counter } from 'shared/ui/counter';
 import templateSpec from './chat-item.template.hbs';
 import styles from './styles.module.css';
 
-interface IChatItemProps extends IBlockProps {
+interface IChatListItemProps extends IBlockProps {
   active: boolean;
   imageSrc: string | null;
   name: string;
@@ -21,8 +21,8 @@ interface innerProps {
   unreadCounter: Counter;
 }
 
-export class ChatItem extends Block {
-  constructor(props: IChatItemProps) {
+export class ChatListItem extends Block {
+  constructor(props: IChatListItemProps) {
     const { name, imageSrc: src, status, unread: count } = props;
 
     const avatar = new Avatar({ name, src });
@@ -48,7 +48,7 @@ export class ChatItem extends Block {
     shouldRender: boolean,
     _causeProps: Map<string, unknown>,
     _oldProps: IBlockProps,
-    _block: Block<IChatItemProps>
+    _block: Block<IChatListItemProps>
   ): boolean {
     const props = this.props as unknown as innerProps;
     const causeProps = _causeProps;

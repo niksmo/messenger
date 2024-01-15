@@ -21,6 +21,7 @@ export interface IChatParams {
 export interface IChatListState {
   currentChat: null | number;
   chats: IChatParams[];
+  load: boolean;
 }
 
 export interface IChatListSlice extends Record<string, unknown> {

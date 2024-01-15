@@ -1,3 +1,3 @@
-export * from './header';
-export * from './list-item';
-export * from './stub';
+export * from './chat-header';
+export * from './chat-list-item';
+export * from './chat-stub';

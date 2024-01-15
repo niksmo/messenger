@@ -7,6 +7,7 @@ import { ChatListAPI } from '../api/chat-list.api';
 const STORE_SLICE = 'chatList';
 const STORE_CHATS = STORE_SLICE + '.chats';
 const STORE_CURRENT_CHAT = STORE_SLICE + '.currentChat';
+const STORE_LOAD = STORE_SLICE + '.load';
 
 export class ChatListController {
   private readonly _api;
@@ -25,13 +26,14 @@ export class ChatListController {
 
   private async _fetchChats(): Promise<void> {
     try {
+      this._store.set(STORE_LOAD, true);
+
       const xhr = await this._api.request();
       const { status, response } = xhr;
 
       if (status === 200 && typeof response === 'string') {
         const chats = JSON.parse(response);
         this._store.set(STORE_CHATS, chats);
-        console.log(this._store.getState());
         return;
       }
 
@@ -46,6 +48,8 @@ export class ChatListController {
       this._initState();
     } catch (err) {
       console.warn(err);
+    } finally {
+      this._store.set(STORE_LOAD, false);
     }
   }
 
@@ -57,7 +61,6 @@ export class ChatListController {
   openChat(chatId: string): void {
     const chatIdNum = Number(chatId) || null;
     this._store.set(STORE_CURRENT_CHAT, chatIdNum);
-    console.log(this._store);
   }
 }
 
