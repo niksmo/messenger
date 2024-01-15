@@ -1,8 +1,9 @@
 import { Store } from 'shared/components/store';
 import { AppRouter } from 'shared/components/router';
 import { ROUTE_PATH } from 'shared/constants';
-import { goToLoginWithUnauth } from 'shared/helpers';
-import { ChatListAPI } from '../api/chat-list.api';
+import { goToLoginWithUnauth, reviveNullToString } from 'shared/helpers';
+import type { IChatListSlice } from '../model';
+import { ChatListAPI } from '../api';
 
 const STORE_SLICE = 'chatList';
 const STORE_CHATS = STORE_SLICE + '.chats';
@@ -20,11 +21,30 @@ export class ChatListController {
     this._router = AppRouter.instance();
   }
 
-  private _initState(): void {
-    this._store.set(STORE_CHATS, []);
+  private _initState(chatId: string | null | number): void {
+    const { chatList } = this._store.getState<IChatListSlice>();
+    const { chats, currentChat } = { ...chatList };
+
+    if (!chats) {
+      this._store.set(STORE_CHATS, []);
+    }
+
+    if (currentChat) {
+      this._router.go(ROUTE_PATH.MAIN + '/' + currentChat);
+      return;
+    }
+
+    chatId = Number(chatId) || null;
+
+    if (chatId) {
+      this._router.go(ROUTE_PATH.MAIN + '/' + chatId);
+      return;
+    }
+
+    this._store.set(STORE_CURRENT_CHAT, null);
   }
 
-  private async _fetchChats(): Promise<void> {
+  async requestChats(): Promise<void> {
     try {
       this._store.set(STORE_LOAD, true);
 
@@ -32,8 +52,10 @@ export class ChatListController {
       const { status, response } = xhr;
 
       if (status === 200 && typeof response === 'string') {
-        const chats = JSON.parse(response);
+        const chats = JSON.parse(response, reviveNullToString);
         this._store.set(STORE_CHATS, chats);
+        //console.log
+        console.log(this._store);
         return;
       }
 
@@ -44,8 +66,6 @@ export class ChatListController {
       if (status === 500) {
         this._router.go(ROUTE_PATH[500]);
       }
-
-      this._initState();
     } catch (err) {
       console.warn(err);
     } finally {
@@ -53,9 +73,8 @@ export class ChatListController {
     }
   }
 
-  start(): void {
-    this._initState();
-    void this._fetchChats();
+  start(chatId: string): void {
+    this._initState(chatId);
   }
 
   openChat(chatId: string): void {

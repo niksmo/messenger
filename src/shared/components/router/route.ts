@@ -73,6 +73,7 @@ export class Route implements IRoute {
 class RouteWithStub extends Route {
   protected _stubView;
   protected _redirectCb;
+  protected _curBlockType: 'stub' | 'block' = 'block';
 
   constructor(
     path: string,
@@ -87,8 +88,12 @@ class RouteWithStub extends Route {
   }
 
   update(path: string): void {
-    this.leave();
-    this.render(path);
+    if (this._curBlockType === 'stub') {
+      this.leave();
+      this.render(path);
+    } else {
+      super.update(path);
+    }
   }
 
   protected renderView(path: string): void {
@@ -120,10 +125,12 @@ export class AuthRoute extends RouteWithStub {
     const { viewer } = store.getState<IViewerState>();
 
     if (viewer?.auth === true && viewer.login) {
+      this._curBlockType = 'block';
       this.renderView(path);
     } else if (viewer?.auth === false) {
       this._redirectCb();
     } else {
+      this._curBlockType = 'stub';
       this.renderStub();
     }
   }
@@ -136,10 +143,12 @@ export class NotAuthRoute extends RouteWithStub {
     const { viewer } = store.getState<IViewerState>();
 
     if (viewer?.auth === false) {
+      this._curBlockType = 'block';
       this.renderView(path);
     } else if (viewer?.auth === true && viewer.login) {
       this._redirectCb();
     } else {
+      this._curBlockType = 'stub';
       this.renderStub();
     }
   }

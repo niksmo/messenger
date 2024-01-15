@@ -21,7 +21,7 @@ export class ChatWidget extends Block<IChatProps> {
 
   constructor() {
     const { chatList } = store.getState<IChatListSlice>();
-    const { currentChat } = chatList;
+    const { currentChat } = { ...chatList };
 
     const messages = data.map((day) => {
       const { date, messages: messageList } = day;

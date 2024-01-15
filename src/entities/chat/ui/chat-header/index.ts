@@ -21,7 +21,7 @@ export class ChatHeader extends Block<IChatHeaderProps> {
 
     const avatar = new Avatar({
       name: NAME,
-      src: 'https://avatars.mds.yandex.net/get-yapic/29310/vQv3RfIXGjDwGSUkUSsdqqXzc-1/islands-retina-middle',
+      src: null,
     });
 
     const menu = new DropdownMenu({

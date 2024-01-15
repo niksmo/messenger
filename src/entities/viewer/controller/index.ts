@@ -31,6 +31,7 @@ class ViewerController implements ISigninController {
           const data = JSON.parse(response, reviveNullToString);
           const viewerData = Object.assign({ auth: true }, data);
           this._store.set(STORE_SLICE, viewerData);
+          this._router.go(window.location.pathname, true);
         }
       }
 

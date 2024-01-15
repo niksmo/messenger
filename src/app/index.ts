@@ -1,10 +1,10 @@
 import { AppRouter } from 'shared/components/router';
 import { ROUTE_PATH, ROUTE_SLUG } from 'shared/constants';
-import PAGE from 'pages';
-import './styles/index.css';
 import { Store } from 'shared/components/store';
 import { RequestAuthStub } from 'entites/viewer';
 import { goToLogin, goToMain } from 'shared/helpers';
+import PAGE from 'pages';
+import './styles/index.css';
 
 class App {
   private _root: null | HTMLElement = null;

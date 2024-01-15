@@ -3,25 +3,22 @@ import templateSpec from './counter.template.hbs';
 import stylesModule from './styles.module.css';
 
 interface ICounterProps extends IBlockProps {
-  count?: number;
+  count: number;
 }
 
-let curCount: number | undefined;
-
-const styles = { ...stylesModule };
+const styles = { ...stylesModule } as unknown as {
+  hidden: string;
+  'is-hidden': string;
+};
 
 export class Counter extends Block<ICounterProps> {
-  constructor(props: ICounterProps) {
-    const { count } = props;
-    curCount = count;
-
-    super(props);
-  }
-
   protected _getTemplateSpec(): TemplateSpecification {
-    if (curCount === undefined) {
-      styles['is-hidden'] = styles.hidden ? styles.hidden : '';
+    if (this.props.count) {
+      styles['is-hidden'] = styles.hidden;
+    } else {
+      styles['is-hidden'] = '';
     }
+
     return templateSpec;
   }
 
@@ -30,10 +27,4 @@ export class Counter extends Block<ICounterProps> {
   }
 
   public didUpdate(): void {}
-
-  public setProps(newProps: Partial<ICounterProps>): void {
-    const { count } = newProps;
-    curCount = count;
-    super.setProps(newProps);
-  }
 }
