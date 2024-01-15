@@ -3,6 +3,7 @@ import templateSpec from './dialog.template.hbs';
 import styles from './styles.module.css';
 import { ButtonOutlined } from '../button';
 import { Overlay } from '../overlay';
+import { withInterrupt } from 'shared/helpers/with';
 
 interface IDialogContainerProps extends IBlockProps {
   text: string;
@@ -51,15 +52,23 @@ class DialogContainer extends Block<IDialogContainerProps> {
     super.setProps(rest);
   }
 
+  private _toggleAnimation(): void {
+    const htmlEl = this.getContent();
+    htmlEl.classList.toggle(styles['container__opened'] ?? '');
+  }
+
   public didMount(): void {
-    setTimeout(() => {
-      this.getContent().classList.toggle(styles['container__opened'] ?? '');
-    }, 0);
+    const toggleAnimationWithInterrupt = withInterrupt(
+      this._toggleAnimation.bind(this)
+    );
+
+    toggleAnimationWithInterrupt();
+
     this._declineButtonBlock.getContent().focus();
   }
 
   public willUnmount(): void {
-    this.getContent().classList.toggle(styles['container__opened'] ?? '');
+    this._toggleAnimation();
   }
 }
 

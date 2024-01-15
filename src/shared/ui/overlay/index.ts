@@ -1,6 +1,7 @@
 import { Block, type IBlockProps } from 'shared/components/block';
 import templateSpec from './overlay.template.hbs';
 import styles from './styles.module.css';
+import { withInterrupt } from 'shared/helpers/with';
 
 interface IOverlayProps extends IBlockProps {
   isVisible: boolean;
@@ -43,8 +44,8 @@ export class Overlay extends Block<IOverlayProps> {
   }
 
   public willUnmount(): void {
-    setTimeout(() => {
-      this.getContent().remove();
-    }, 0);
+    const htmlEl = this.getContent();
+    const removeWithInterrupt = withInterrupt(htmlEl.remove.bind(htmlEl));
+    removeWithInterrupt();
   }
 }

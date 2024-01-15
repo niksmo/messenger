@@ -1,9 +1,6 @@
-export function withInterrupt(fn: (...args: any[]) => void): () => void {
+export function withInterrupt(fn: (...args: unknown[]) => unknown): () => void {
   const fnInstance = fn;
-
-  return () => {
-    setTimeout(() => {
-      fnInstance();
-    }, 0);
+  return (...args) => {
+    setTimeout(fnInstance, 0, ...args);
   };
 }
