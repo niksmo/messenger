@@ -33,6 +33,13 @@ class App {
     );
 
     router.authUse(
+      ROUTE_PATH.ADD_CHAT,
+      PAGE.AddChat,
+      RequestAuthStub,
+      goToLogin
+    );
+
+    router.authUse(
       ROUTE_PATH.SETTINGS,
       PAGE.Settings,
       RequestAuthStub,
@@ -66,12 +73,14 @@ class App {
       RequestAuthStub,
       goToMain
     );
+
     router.notAuthUse(
       ROUTE_PATH.SIGNUP,
       PAGE.Signup,
       RequestAuthStub,
       goToMain
     );
+
     router.use(ROUTE_PATH[404], PAGE.NotFound);
     router.use(ROUTE_PATH[500], PAGE.InternalError);
     router.noMatch(ROUTE_PATH[404]);

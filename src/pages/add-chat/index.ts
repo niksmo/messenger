@@ -2,28 +2,28 @@ import { Block, type IBlockProps } from 'shared/components/block';
 import { Link } from 'shared/components/router';
 import { ButtonLight } from 'shared/ui/button';
 import { ROUTE_PATH } from 'shared/constants';
-import { SignupForm } from 'features/auth';
-import templateSpec from './signup-page.template.hbs';
+import { AddChatForm } from 'features/chat-add/ui/form';
+import templateSpec from './add-chat-page.template.hbs';
 import styles from './styles.module.css';
 
-interface IPageSignupProps extends IBlockProps {
+interface IPageAddChatProps extends IBlockProps {
   form: Block;
   transitionButton: Block;
 }
 
-export class PageSignup extends Block<IPageSignupProps> {
+export class PageAddChat extends Block<IPageAddChatProps> {
   constructor() {
     const transitionButton = new Link({
-      href: ROUTE_PATH.SIGNIN,
+      href: ROUTE_PATH.MAIN,
       ariaHidden: true,
       children: new ButtonLight({
-        label: 'Sign in',
+        label: 'Back',
         name: 'transitionButton',
         type: 'button',
       }),
     });
 
-    const form = new SignupForm();
+    const form = new AddChatForm();
 
     super({ form, transitionButton });
   }

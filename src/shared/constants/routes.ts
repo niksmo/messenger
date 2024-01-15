@@ -2,6 +2,7 @@ export const ROUTE_PATH = {
   SIGNIN: '/',
   SIGNUP: '/sign-up',
   MAIN: '/messenger',
+  ADD_CHAT: '/add-chat',
   SETTINGS: '/settings',
   CHANGE_PASSWORD: '/change-password',
   EDIT_PROFILE: '/edit-profile',
