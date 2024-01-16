@@ -1,12 +1,20 @@
-import { Block } from 'shared/components/block';
+import { Block, type BlockProps } from 'shared/components/block';
 import { Store } from 'shared/components/store';
 import { ButtonFilled } from 'shared/ui/button';
-import { getInputMap } from 'shared/helpers';
+import { type Input } from 'shared/ui/input';
+import { getInputMap, withDelay } from 'shared/helpers';
 import { fieldsParams } from './lib';
-import templateSpec from './form.template.hbs';
 import { type TAddUsersState } from 'features/chat-users/model/chat-users-add.model';
 import { addChatUsersController } from 'features/chat-users/controller/chat-users-add.controller';
-import { withDelay } from 'shared/helpers/with';
+import templateSpec from './form.template.hbs';
+
+type TAddUsersFormProps = BlockProps<{
+  login: Input;
+  foundList: Block;
+  submitButton: Block;
+  onInput: (e: Event) => void;
+  onSubmit: (e: Event) => void;
+}>;
 
 const store = Store.instance();
 
@@ -15,7 +23,7 @@ const searchUsersWithDelay = withDelay(
   400
 );
 
-export class AddUsersForm extends Block {
+export class AddUsersForm extends Block<TAddUsersFormProps> {
   private readonly _inputMap;
   private readonly _submitButton;
 
@@ -28,18 +36,18 @@ export class AddUsersForm extends Block {
     const inputMap = getInputMap(fieldsParams, fields);
 
     const submitButton = new ButtonFilled({
-      label: 'Add users',
+      label: 'Add to chat',
       type: 'submit',
     });
 
     super({
       ...inputMap,
       submitButton,
-      onInput: (e: Event) => {
+      onInput: (e) => {
         addChatUsersController.input(e);
         searchUsersWithDelay();
       },
-      onSubmit: (e: Event) => {
+      onSubmit: (e) => {
         e.preventDefault();
       },
     });
@@ -48,7 +56,7 @@ export class AddUsersForm extends Block {
     this._submitButton = submitButton;
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 

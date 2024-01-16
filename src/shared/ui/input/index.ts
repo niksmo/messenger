@@ -1,10 +1,10 @@
-import { Block, type IBlockProps } from 'shared/components/block';
+import { Block, type BlockProps } from 'shared/components/block';
 import templateSpec from './input.template.hbs';
 import styles from './styles.module.css';
 
 type TInputTypes = 'text' | 'email' | 'password' | 'tel' | 'number';
 
-interface IInputProps extends IBlockProps {
+type InputProps = BlockProps<{
   id: string | number;
   type: TInputTypes;
   name: string;
@@ -12,25 +12,24 @@ interface IInputProps extends IBlockProps {
   placeholder?: string;
   error?: boolean;
   hint?: string;
-}
+}>;
 
-export class Input extends Block<IInputProps> {
-  protected _getTemplateSpec(): TemplateSpecification {
+export class Input extends Block<InputProps> {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 
-  protected _getStylesModule(): CSSModuleClasses {
+  protected getStylesModuleHook(): CSSModuleClasses {
     return styles;
   }
 
-  protected _getListenersSelector(): string {
+  protected getListenersSelectorHook(): string {
     return 'input';
   }
 
   protected renderInterceptor(
     shouldRender: boolean,
     causeProps: Map<string, unknown>,
-    _oldProps: IBlockProps,
     block: Block
   ): boolean {
     if (!block.getContent()) {
@@ -39,7 +38,7 @@ export class Input extends Block<IInputProps> {
 
     const htmlInput = block.getContent().querySelector('input');
     const htmlHint = block.getContent().querySelector('p');
-    const errorStyle = this._getStylesModule()['form-input__inner_error'];
+    const errorStyle = this.getStylesModuleHook()['form-input__inner_error'];
 
     if (causeProps.has('value')) {
       shouldRender = false;

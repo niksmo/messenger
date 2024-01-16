@@ -1,30 +1,30 @@
 import { Block } from 'shared/components/block';
+import { Store } from 'shared/components/store';
+import { type TChatListState } from 'entites/chat/model/chat-list.model';
+import { chatListController } from 'entites/chat/controller/chat-list.controller';
+import { createItems } from './lib';
 import templateSpec from './chat-list.template.hbs';
 import styles from './styles.module.css';
-import { Store } from 'shared/components/store';
-import { createItems } from './lib';
-import { type IChatListSlice } from 'entites/chat/model/chat-list.model';
-import { chatListController } from 'entites/chat/controller/chat-list.controller';
 
 const store = Store.instance();
 
 export class ChatList extends Block {
   constructor() {
-    const state = store.getState<IChatListSlice>();
+    const state = store.getState<TChatListState>();
     const chats = createItems(state);
 
     super({ chats });
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 
-  protected _getStylesModule(): CSSModuleClasses {
+  protected getStylesModuleHook(): CSSModuleClasses {
     return styles;
   }
 
-  protected _onStoreUpdate = (state: IChatListSlice): void => {
+  protected _onStoreUpdate = (state: TChatListState): void => {
     const chats = createItems(state);
     this.setProps({ chats });
   };

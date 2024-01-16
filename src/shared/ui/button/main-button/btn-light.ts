@@ -5,7 +5,7 @@ import lightStyles from './styles-light.module.css';
 const styles = { ...baseStyles, ...lightStyles };
 
 export class ButtonLight extends Button {
-  protected _getStylesModule(): CSSModuleClasses {
+  protected getStylesModuleHook(): CSSModuleClasses {
     return styles;
   }
 }

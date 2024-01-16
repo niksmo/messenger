@@ -20,7 +20,7 @@ export class ChangePasswordLink extends Block {
     super({ link });
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 }

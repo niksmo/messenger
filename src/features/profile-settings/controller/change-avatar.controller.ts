@@ -4,15 +4,15 @@ import { HINT, verifierCreator } from 'shared/components/form-verifier';
 import { ROUTE_PATH } from 'shared/constants';
 import { goToLoginWithUnauth, reviveNullToString } from 'shared/helpers';
 import type {
-  IChangeAvatarSlice,
-  IChangeAvatarState,
+  TChangeAvatarSlice,
+  TChangeAvatarState,
 } from '../model/change-avatar.model';
 import { ChangeAvatarAPI } from '../api/change-avatar.api';
 
 const STORE_SLICE = 'changeAvatar';
 const MAX_SIZE_1MB = Math.pow(2, 20) - 1;
 
-function makeState(file: File): IChangeAvatarState {
+function makeState(file: File): TChangeAvatarState {
   return {
     objectURL: URL.createObjectURL(file),
     load: false,
@@ -52,7 +52,7 @@ export class ChangeAvatarController {
 
   override(file: File): void {
     this._fileImage = file;
-    const { changeAvatar: state } = this._store.getState<IChangeAvatarSlice>();
+    const { changeAvatar: state } = this._store.getState<TChangeAvatarSlice>();
     const { objectURL } = { ...state };
 
     const newState = makeState(file);
@@ -64,7 +64,7 @@ export class ChangeAvatarController {
   }
 
   reset(): void {
-    const state: IChangeAvatarState = {
+    const state: TChangeAvatarState = {
       objectURL: '',
       load: false,
       error: '',

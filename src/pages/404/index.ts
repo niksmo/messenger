@@ -1,15 +1,15 @@
-import { Block, type IBlockProps } from 'shared/components/block';
+import { Block, type BlockProps } from 'shared/components/block';
 import templateSpec from './404.template.hbs';
 import { WarnStub } from 'shared/ui/warn-stub-page';
 import { ButtonLight } from 'shared/ui/button';
 import { Link } from 'shared/components/router/link';
 
-interface INotFoundPageProps extends IBlockProps {
+type NotFoundPageProps = BlockProps<{
   warnStub: Block;
   transitionButton: Block;
-}
+}>;
 
-export class NotFoundPage extends Block<INotFoundPageProps> {
+export class NotFoundPage extends Block<NotFoundPageProps> {
   constructor() {
     const warnStub = new WarnStub({
       errCode: 404,
@@ -30,11 +30,7 @@ export class NotFoundPage extends Block<INotFoundPageProps> {
     super({ warnStub, transitionButton });
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
-  }
-
-  public setVisible(): void {
-    this.getContent().style.display = 'flex';
   }
 }

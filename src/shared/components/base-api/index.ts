@@ -1,9 +1,4 @@
-interface IBaseAPI {
-  create: () => Promise<unknown>;
-  request: () => Promise<unknown>;
-  update: () => Promise<unknown>;
-  delete: () => Promise<unknown>;
-}
+import type { IBaseAPI } from '../interfaces';
 
 function throwError(): never {
   throw new Error('Not implemented');

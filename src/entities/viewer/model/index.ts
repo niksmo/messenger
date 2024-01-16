@@ -1,4 +1,4 @@
-export interface IViewerState {
+export interface TViewerState {
   viewer: {
     id: number;
     first_name: string;

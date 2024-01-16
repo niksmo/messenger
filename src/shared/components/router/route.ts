@@ -1,16 +1,20 @@
-import { type IRoute, type BlockConstructor, type IBlock } from '../interfaces';
+import {
+  type IRoute,
+  type TBlockConstructor,
+  type IBlock,
+} from '../interfaces';
 import { Store } from '../store';
 
 const SLUG_PREFIX = '/:';
 
 export class Route implements IRoute {
-  protected _view: BlockConstructor;
+  protected _view: TBlockConstructor;
   protected _block: IBlock | null = null;
   protected _path;
   protected _appRoot;
   protected _slug: string | null = null;
 
-  constructor(path: string, view: BlockConstructor, appRoot: HTMLElement) {
+  constructor(path: string, view: TBlockConstructor, appRoot: HTMLElement) {
     this._path = path;
     this._view = view;
     this._appRoot = appRoot;
@@ -77,8 +81,8 @@ class RouteWithStub extends Route {
 
   constructor(
     path: string,
-    view: BlockConstructor,
-    stub: BlockConstructor,
+    view: TBlockConstructor,
+    stub: TBlockConstructor,
     redirectCb: () => void,
     appRoot: HTMLElement
   ) {
@@ -104,13 +108,13 @@ class RouteWithStub extends Route {
   }
 
   protected renderStub(): void {
-    this._block = new this._stubView();
+    this._block = new this._stubView({});
     this._appRoot.append(this._block.getContent());
     this._block.dispatchDidMount();
   }
 }
 
-interface IViewerState {
+interface TViewerState {
   viewer: {
     auth?: boolean;
     login: string;
@@ -122,7 +126,7 @@ export class AuthRoute extends RouteWithStub {
   render(path: string): void {
     const store = Store.instance();
 
-    const { viewer } = store.getState<IViewerState>();
+    const { viewer } = store.getState<TViewerState>();
 
     if (viewer?.auth === true && viewer.login) {
       this._curBlockType = 'block';
@@ -140,7 +144,7 @@ export class NotAuthRoute extends RouteWithStub {
   render(path: string): void {
     const store = Store.instance();
 
-    const { viewer } = store.getState<IViewerState>();
+    const { viewer } = store.getState<TViewerState>();
 
     if (viewer?.auth === false) {
       this._curBlockType = 'block';

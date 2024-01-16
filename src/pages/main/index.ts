@@ -1,18 +1,18 @@
-import { Block, type IBlockProps } from 'shared/components/block';
+import { Block, type BlockProps } from 'shared/components/block';
 import { ChatListWidget } from 'widgets/chat-list';
 import { ChatWidget } from 'widgets/chat';
 import { chatListController } from 'entites/chat/controller/chat-list.controller';
 import templateSpec from './main-page.template.hbs';
 import styles from './styles.module.css';
 
-interface IPageMainProps extends IBlockProps {
+type MainPageProps = BlockProps<{
   chatId?: string;
-}
+}>;
 
-export class PageMain extends Block<IPageMainProps> {
+export class MainPage extends Block<MainPageProps> {
   private _curChatId;
 
-  constructor(props?: IPageMainProps) {
+  constructor(props: MainPageProps) {
     const chatWidget = new ChatWidget();
     const chatListWidget = new ChatListWidget();
 
@@ -22,11 +22,11 @@ export class PageMain extends Block<IPageMainProps> {
     this._curChatId = chatId;
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 
-  protected _getStylesModule(): CSSModuleClasses {
+  protected getStylesModuleHook(): CSSModuleClasses {
     return styles;
   }
 
@@ -38,7 +38,7 @@ export class PageMain extends Block<IPageMainProps> {
     chatListController.openChat(this._curChatId);
   }
 
-  public setProps(newProps: Partial<IPageMainProps | IBlockProps>): void {
+  public setProps(newProps: Partial<MainPageProps>): void {
     if (typeof newProps.chatId === 'string') {
       this._curChatId = newProps.chatId;
     }

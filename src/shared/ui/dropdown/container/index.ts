@@ -5,7 +5,7 @@ import { Menu } from '../menu';
 import type { MenuItem } from '../item';
 import templateSpec from './container.template.hbs';
 
-interface IProps {
+interface DropdownMenuProps {
   trigger: {
     icon: TIcon;
     style: TStyle;
@@ -18,7 +18,7 @@ interface IProps {
 }
 
 export class DropdownMenu extends Block {
-  constructor(props: IProps) {
+  constructor(props: DropdownMenuProps) {
     const { trigger, menuPos, menuList } = props;
 
     const overlay = new Overlay();
@@ -47,7 +47,7 @@ export class DropdownMenu extends Block {
     super({ menuTrigger });
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 }

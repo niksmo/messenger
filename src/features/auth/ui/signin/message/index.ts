@@ -1,45 +1,32 @@
-import { Block, type IBlockProps } from 'shared/components/block';
+import { Block, type BlockProps } from 'shared/components/block';
 import { Store } from 'shared/components/store';
+import { type TSigninState } from 'features/auth/model/signin.model';
 import templateSpec from './message.template.hbs';
 import styles from './styles.module.css';
 
-interface ISigninMessageProps extends IBlockProps {
+type SigninMessageProps = BlockProps<{
   message: string;
   visible: boolean;
-}
-
-interface ISigninState {
-  signin: {
-    error: string;
-  };
-}
+}>;
 
 const store = Store.instance();
 
-export class SigninMessage extends Block<ISigninMessageProps> {
-  private readonly _onStoreUpdate;
-
-  constructor() {
-    super();
-
-    this._onStoreUpdate = (state: ISigninState) => {
-      const { error: message } = state.signin;
-      this.setProps({ message, visible: Boolean(message) });
-    };
-
-    store.on<ISigninState>(this._onStoreUpdate);
-  }
-
-  protected _getTemplateSpec(): TemplateSpecification {
+export class SigninMessage extends Block<SigninMessageProps> {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 
-  protected _getStylesModule(): CSSModuleClasses {
+  protected getStylesModuleHook(): CSSModuleClasses {
     return styles;
   }
 
-  public setProps(newProps: Partial<ISigninMessageProps>): void {
-    super.setProps(newProps);
+  private readonly _onStoreUpdate = (state: TSigninState): void => {
+    const { error: message } = state.signin;
+    this.setProps({ message, visible: Boolean(message) });
+  };
+
+  public didMount(): void {
+    store.on(this._onStoreUpdate);
   }
 
   public willUnmount(): void {

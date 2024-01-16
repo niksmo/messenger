@@ -1,7 +1,7 @@
-import type { IChatListSlice } from 'entites/chat/model/chat-list.model';
+import type { TChatListState } from 'entites/chat/model/chat-list.model';
 import { ChatListItem } from './chat-list-item';
 
-export function createItems(store: IChatListSlice): ChatListItem[] {
+export function createItems(store: TChatListState): ChatListItem[] {
   const { chatList } = store;
   const { currentChat = null, chats = [] } = { ...chatList };
 

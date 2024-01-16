@@ -1,9 +1,9 @@
-import { Block, type IBlockProps } from './block';
+import { Block, type BlockProps } from './block';
 import { DOMEvent } from './consts';
 
 export function shallowEqual(
-  oldProps: IBlockProps,
-  newProps: IBlockProps
+  oldProps: BlockProps,
+  newProps: BlockProps
 ): [boolean, Map<string, unknown>] {
   const causeProps = new Map<string, unknown>();
   let isEqual = true;
@@ -25,11 +25,11 @@ export type TBlockEventsMap = Map<
 >;
 export type TBlocksMap = Map<TBlockId, Block>;
 
-function isBlock(probBlock: unknown | Block): probBlock is Block<IBlockProps> {
+function isBlock(probBlock: unknown | Block): probBlock is Block<BlockProps> {
   return probBlock instanceof Block;
 }
 
-export function pickBlocksAndEvents(props: IBlockProps): {
+export function pickBlocksAndEvents(props: BlockProps): {
   blocks: TBlocksMap;
   events: TBlockEventsMap;
 } {
@@ -80,7 +80,7 @@ export function traverseBlocksTreeAndCall(
     if (color === 1) {
       stack.push(block);
       colors.push(2);
-      const childBlocks = block._childBlocks;
+      const childBlocks = block.childBlocks;
       if (childBlocks) {
         for (const block of childBlocks.values()) {
           stack.push(block);

@@ -1,14 +1,14 @@
-import { Block, type IBlockProps } from 'shared/components/block';
+import { Block, type BlockProps } from 'shared/components/block';
 import { SettingsItem } from 'shared/ui/settings-item';
 import { Link } from 'shared/components/router';
 import { ROUTE_PATH } from 'shared/constants';
 import templateSpec from './edit-profile-link.template.hbs';
 
-interface IProps extends IBlockProps {
+type EditProfileLinkProps = BlockProps<{
   link: Block;
-}
+}>;
 
-export class EditProfileLink extends Block<IProps> {
+export class EditProfileLink extends Block<EditProfileLinkProps> {
   constructor() {
     const settingsItem = new SettingsItem({
       label: 'Edit Profile',
@@ -23,7 +23,7 @@ export class EditProfileLink extends Block<IProps> {
     super({ link });
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 }

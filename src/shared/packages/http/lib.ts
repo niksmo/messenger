@@ -3,7 +3,7 @@ import { isObject } from 'shared/helpers';
 const HTTP = 'http:';
 const HTTPS = 'https:';
 
-const enum METHOD {
+export const enum METHOD {
   GET = 'GET',
   POST = 'POST',
   PUT = 'PUT',
@@ -16,7 +16,7 @@ function isSupportScheme(scheme: string): boolean {
   return SCHEMES.some((supScheme) => supScheme === scheme);
 }
 
-function normalizeURL(origin: string): string | null {
+export function normalizeURL(origin: string): string | null {
   let result = null;
 
   try {
@@ -38,7 +38,7 @@ function normalizeURL(origin: string): string | null {
   return result;
 }
 
-function getHref(baseURL: string | null, path: string): string {
+export function getHref(baseURL: string | null, path: string): string {
   if (baseURL) {
     const { href } = new URL(baseURL + path);
 
@@ -63,7 +63,7 @@ function inspectBody(body: unknown): never | object {
   return body;
 }
 
-function serializeToSearch(body: unknown): string {
+export function serializeToSearch(body: unknown): string {
   const EMPTY_STR = '';
   if (!body) {
     return EMPTY_STR;
@@ -82,7 +82,7 @@ function serializeToSearch(body: unknown): string {
   return searchParams;
 }
 
-function setRequestHeader(
+export function setRequestHeader(
   xhr: XMLHttpRequest,
   header: Record<string, string>
 ): XMLHttpRequest {
@@ -91,5 +91,3 @@ function setRequestHeader(
   });
   return xhr;
 }
-
-export { normalizeURL, getHref, serializeToSearch, setRequestHeader, METHOD };

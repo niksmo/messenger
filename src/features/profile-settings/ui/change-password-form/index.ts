@@ -45,7 +45,7 @@ export class ChangePasswordForm extends Block {
     this._submitButton = submitButton;
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 

@@ -1,33 +1,32 @@
-import { Block, type IBlockProps } from 'shared/components/block';
-import { DayMessages } from 'entites/message';
-import data from 'shared/mock-data/messages.json';
+import { Block, type BlockProps } from 'shared/components/block';
+// import { DayMessages } from 'entites/message';
 import { Store } from 'shared/components/store';
-import { type IChatListSlice } from 'entites/chat/model/chat-list.model';
+import { type TChatListState } from 'entites/chat/model/chat-list.model';
 import { ChatHeader } from 'entites/chat/ui/chat-header';
 import { MessageSender } from 'features/send-message/ui/container';
 import { ChatStub } from 'entites/chat/ui/chat-stub';
 import templateSpec from './chat-widget.template.hbs';
 import styles from './styles.module.css';
 
-interface IChatProps extends IBlockProps {
+type ChatWidgetProps = BlockProps<{
   header: Block;
   messages: Block[];
   sender: Block;
-}
+}>;
 
 const store = Store.instance();
 
-export class ChatWidget extends Block<IChatProps> {
+export class ChatWidget extends Block<ChatWidgetProps> {
   private readonly _onStoreUpdate;
 
   constructor() {
-    const { chatList } = store.getState<IChatListSlice>();
+    const { chatList } = store.getState<TChatListState>();
     const { currentChat } = { ...chatList };
 
-    const messages = data.map((day) => {
-      const { date, messages: messageList } = day;
-      return new DayMessages({ date, messageList });
-    });
+    // const messages = data.map((day) => {
+    //   const { date, messages: messageList } = day;
+    //   return new DayMessages({ date, messageList });
+    // });
 
     const header = new ChatHeader();
 
@@ -39,11 +38,11 @@ export class ChatWidget extends Block<IChatProps> {
       isCurrentChat: Boolean(currentChat),
       chatStub,
       header,
-      messages,
+      // messages,
       sender,
     });
 
-    this._onStoreUpdate = (state: IChatListSlice) => {
+    this._onStoreUpdate = (state: TChatListState) => {
       const { chatList } = state;
       const { currentChat } = chatList;
       this.setProps({ isCurrentChat: Boolean(currentChat) });
@@ -52,11 +51,11 @@ export class ChatWidget extends Block<IChatProps> {
     store.on(this._onStoreUpdate);
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 
-  protected _getStylesModule(): CSSModuleClasses {
+  protected getStylesModuleHook(): CSSModuleClasses {
     return styles;
   }
 

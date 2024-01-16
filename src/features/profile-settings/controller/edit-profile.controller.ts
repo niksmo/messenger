@@ -11,7 +11,7 @@ import {
   goToLoginWithUnauth,
   reviveNullToString,
 } from 'shared/helpers';
-import { type IViewerState } from 'entites/viewer/model';
+import { type TViewerState } from 'entites/viewer/model';
 import { EditProfileAPI } from '../api/edit-profile.api';
 import type {
   TEditProfileState,
@@ -43,7 +43,7 @@ class EditProfileController {
   }
 
   start(): void {
-    const { viewer } = this._store.getState<IViewerState>();
+    const { viewer } = this._store.getState<TViewerState>();
     const { avatar, auth, id, ...initFieldsValues } = viewer;
 
     const initFieldsState = Object.entries(initFieldsValues).reduce<

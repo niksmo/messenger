@@ -1,7 +1,9 @@
 import { Bubble, BubbleOwn } from 'shared/ui/bubble';
-import { type IMessage } from '.';
+import { type MessageProps } from '.';
 
-export function getMessageBlocks(list: IMessage[]): Array<BubbleOwn | Bubble> {
+export function getMessageBlocks(
+  list: MessageProps[]
+): Array<BubbleOwn | Bubble> {
   return list.map((msgData, idx) => {
     const { status, time, text } = msgData;
     if (status !== undefined) {

@@ -1,28 +1,28 @@
-import { Block, type IBlockProps } from 'shared/components/block';
+import { Block, type BlockProps } from 'shared/components/block';
 import templateSpec from './status-badge.template.hbs';
 import stylesModule from './styles.module.css';
 
-export type TStatus = 'readed' | 'delivered' | 'none';
+type TStatus = 'readed' | 'delivered' | 'none';
 
-export interface IStatusBadge extends IBlockProps {
+type StatusBadgeProps = BlockProps<{
   status: TStatus;
-}
+}>;
 
-let curStatus: TStatus;
 const styles = { ...stylesModule };
+let curStatus: TStatus;
 
-export class StatusBadge extends Block<IBlockProps> {
-  constructor(props: IStatusBadge) {
+export class StatusBadge extends Block<StatusBadgeProps> {
+  constructor(props: StatusBadgeProps) {
     const { status } = props;
     curStatus = status;
     super(props);
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 
-  protected _getStylesModule(): CSSModuleClasses {
+  protected getStylesModuleHook(): CSSModuleClasses {
     const curStatusStyle = styles[curStatus];
     if (curStatusStyle) {
       styles.status = curStatusStyle;

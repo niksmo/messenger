@@ -5,7 +5,7 @@ import outlinedStyles from './styles-outlined.module.css';
 const styles = { ...baseStyles, ...outlinedStyles };
 
 export class ButtonOutlined extends Button {
-  protected _getStylesModule(): CSSModuleClasses {
+  protected getStylesModuleHook(): CSSModuleClasses {
     return styles;
   }
 }

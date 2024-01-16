@@ -1,4 +1,4 @@
-import { Block, type IBlockProps } from 'shared/components/block';
+import { Block, type BlockProps } from 'shared/components/block';
 import templateSpec from './menu.template.hbs';
 import stylesModule from './styles.module.css';
 
@@ -14,32 +14,32 @@ const POS = {
 const POS_X = 'posX';
 const POS_Y = 'posY';
 
-interface IMenuProps {
+type MenuProps = BlockProps<{
   menuList: Block[];
   overlay?: Block;
   posX: 'left' | 'right';
   posY: 'top' | 'bottom';
-}
+}>;
 
 const styles = { ...stylesModule };
 
-let curPosX: IMenuProps['posX'];
-let curPosY: IMenuProps['posY'];
+let curPosX: MenuProps['posX'];
+let curPosY: MenuProps['posY'];
 const visibleClass = styles[MENU_VISIBLE];
 
-export class Menu extends Block {
-  constructor(props: IMenuProps & IBlockProps) {
+export class Menu extends Block<MenuProps> {
+  constructor(props: MenuProps) {
     const { posX, posY } = props;
     curPosX = posX;
     curPosY = posY;
     super(props);
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 
-  protected _getStylesModule(): CSSModuleClasses {
+  protected getStylesModuleHook(): CSSModuleClasses {
     const stPosX = styles[POS[curPosX]];
     const stPosY = styles[POS[curPosY]];
 

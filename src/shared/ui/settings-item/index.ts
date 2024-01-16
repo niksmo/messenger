@@ -1,8 +1,8 @@
-import { Block, type IBlockProps } from 'shared/components/block';
+import { Block, type BlockProps } from 'shared/components/block';
 import templateSpec from './settings-item.template.hbs';
 import stylesModule from './styles.module.css';
 
-type TIcon24 =
+type TIcon =
   | 'new-contact'
   | 'bucket'
   | 'media'
@@ -13,11 +13,11 @@ type TIcon24 =
 
 type TStyle = 'accent' | 'adverse';
 
-interface ISettingsItemProps extends IBlockProps {
+type SettingsItemProps = BlockProps<{
   style: TStyle;
-  icon: TIcon24;
+  icon: TIcon;
   label: string;
-}
+}>;
 
 const styles = { ...stylesModule };
 
@@ -30,18 +30,18 @@ const STYLE_MAP = {
 
 let curStyle: TStyle = 'accent';
 
-export class SettingsItem extends Block<ISettingsItemProps> {
-  constructor(props: ISettingsItemProps) {
+export class SettingsItem extends Block<SettingsItemProps> {
+  constructor(props: SettingsItemProps) {
     const { style } = props;
     curStyle = style;
     super(props);
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 
-  protected _getStylesModule(): CSSModuleClasses {
+  protected getStylesModuleHook(): CSSModuleClasses {
     const stValue = styles[STYLE_MAP[curStyle]];
     if (stValue) {
       styles[STYLE_TAG] = stValue;

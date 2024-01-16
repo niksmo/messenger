@@ -10,10 +10,10 @@ import {
 } from './lib';
 import { EVENT, TMP_TAG } from './consts';
 
-type IBlockProps = Record<string, unknown>;
-type BlockProps<PropsType> = PropsType & Record<string, unknown>;
+export type BlockProps<PropsType = unknown> = PropsType &
+  Record<string, unknown>;
 
-abstract class Block<TProps extends IBlockProps = IBlockProps>
+export abstract class Block<TProps extends BlockProps = BlockProps>
   implements IBlock
 {
   private readonly _stubId = uuid();
@@ -23,10 +23,10 @@ abstract class Block<TProps extends IBlockProps = IBlockProps>
   private _element: Node | null = null;
   private _updatingPropsNum = 0;
   private _events: TBlockEventsMap | null = null;
-  protected _childBlocks: Map<string, Block> | null = null;
+  protected childBlocks: Map<string, Block> | null = null;
   protected props;
 
-  constructor(props: TProps | IBlockProps = {}) {
+  constructor(props: TProps | BlockProps = {}) {
     this.props = this._proxyProps(props);
     this._subscribe();
     this._eventBus.emit(EVENT.INIT, props);
@@ -42,14 +42,14 @@ abstract class Block<TProps extends IBlockProps = IBlockProps>
     }
   }
 
-  protected abstract _getTemplateSpec(): TemplateSpecification;
-  protected _getStylesModule?(): CSSModuleClasses;
+  protected abstract getTemplateHook(): TemplateSpecification;
+  protected getStylesModuleHook?(): CSSModuleClasses;
 
-  private _proxyProps(props: IBlockProps): IBlockProps {
+  private _proxyProps(props: BlockProps): BlockProps {
     const self = this;
     let propsCounter = 0;
-    let oldProps: IBlockProps = {};
-    const newProps: IBlockProps = {};
+    let oldProps: BlockProps = {};
+    const newProps: BlockProps = {};
 
     return new Proxy(props, {
       set(props, p, newValue) {
@@ -96,8 +96,8 @@ abstract class Block<TProps extends IBlockProps = IBlockProps>
   }
 
   private _render(): void {
-    const compileTemplate = this._templator(this._getTemplateSpec());
-    const styles = this._getStylesModule ? this._getStylesModule() : {};
+    const compileTemplate = this._templator(this.getTemplateHook());
+    const styles = this.getStylesModuleHook ? this.getStylesModuleHook() : {};
     const htmlCode = compileTemplate({
       ...this.props,
       styles,
@@ -115,7 +115,7 @@ abstract class Block<TProps extends IBlockProps = IBlockProps>
       this.props
     );
 
-    this._childBlocks = childBlocks;
+    this.childBlocks = childBlocks;
 
     const stubs = Array.from(block.getElementsByTagName(TMP_TAG));
 
@@ -133,7 +133,7 @@ abstract class Block<TProps extends IBlockProps = IBlockProps>
 
     this._removeEvents();
 
-    const selector = this._getListenersSelector();
+    const selector = this.getListenersSelectorHook();
     const listenersTarget = selector ? block.querySelector(selector) : block;
 
     propsEvents.forEach((cb, eventType) => {
@@ -148,16 +148,16 @@ abstract class Block<TProps extends IBlockProps = IBlockProps>
     this._element = block;
   }
 
-  protected renderInterceptor(
+  protected renderInterceptorHook(
     shouldRender: boolean,
     _causeProps: Map<string, unknown>,
-    _oldProps: IBlockProps,
+    _oldProps: BlockProps,
     _block: Block<TProps>
   ): boolean {
     return shouldRender;
   }
 
-  protected _getListenersSelector(): string {
+  protected getListenersSelectorHook(): string {
     return '';
   }
 
@@ -176,7 +176,7 @@ abstract class Block<TProps extends IBlockProps = IBlockProps>
   private _compareProps(oldProps: TProps, newProps: TProps): void {
     const [isEqual, causeProps] = this._shallowEqual(oldProps, newProps);
 
-    const shouldRender = this.renderInterceptor(
+    const shouldRender = this.renderInterceptorHook(
       !isEqual,
       causeProps,
       oldProps,
@@ -212,20 +212,9 @@ abstract class Block<TProps extends IBlockProps = IBlockProps>
     return this._element as HTMLElement;
   }
 
-  public setProps(newProps: Partial<TProps | IBlockProps>): void {
+  public setProps(newProps: Partial<TProps | BlockProps>): void {
     this._updatingPropsNum = Object.keys(newProps).length;
 
     Object.assign(this.props, newProps);
   }
-
-  public setVisible(): void {
-    this.getContent().style.display = 'block';
-  }
-
-  public setHidden(): void {
-    this.getContent().style.display = 'none';
-  }
 }
-
-export { Block };
-export type { IBlockProps, BlockProps };

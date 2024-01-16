@@ -1,4 +1,4 @@
-import { Block, type IBlockProps } from 'shared/components/block';
+import { Block, type BlockProps } from 'shared/components/block';
 import templateSpec from './item.template.hbs';
 import styleModule from './styles.module.css';
 
@@ -10,7 +10,7 @@ const STYLE = {
   adverse: 'menu-item_style_adverse',
 };
 
-type TIcon24 =
+type TIcon =
   | 'plus'
   | 'new-contact'
   | 'remove-contact'
@@ -21,31 +21,31 @@ type TIcon24 =
   | 'lock'
   | 'close';
 
-type TItemStyle = 'primary' | 'adverse' | 'accent';
+type TStyle = 'primary' | 'adverse' | 'accent';
 
-interface IMenuItemProps extends IBlockProps {
-  icon: TIcon24;
+type MenuItemProps = BlockProps<{
+  icon: TIcon;
   label: string;
-  style: TItemStyle;
+  style: TStyle;
   onClick?: (e: Event) => void;
-}
+}>;
 
 const styles = { ...styleModule };
 
-let curStyle: TItemStyle;
+let curStyle: TStyle;
 
-export class MenuItem extends Block<IMenuItemProps> {
-  constructor(props: IMenuItemProps) {
+export class MenuItem extends Block<MenuItemProps> {
+  constructor(props: MenuItemProps) {
     const { style } = props;
     curStyle = style;
     super(props);
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 
-  protected _getStylesModule(): CSSModuleClasses {
+  protected getStylesModuleHook(): CSSModuleClasses {
     const itemStyle = styles[STYLE[curStyle]];
     if (itemStyle) {
       styles[STYLE_TAG] = itemStyle;

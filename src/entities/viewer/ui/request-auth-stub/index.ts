@@ -7,7 +7,7 @@ export class RequestAuthStub extends Block {
     void viewerController.requestCredentials();
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 }

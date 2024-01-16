@@ -1,16 +1,16 @@
-import { Block, type IBlockProps } from 'shared/components/block';
+import { Block, type BlockProps } from 'shared/components/block';
 import { AppRouter } from '..';
 import templateSpec from './link.template.hbs';
 
-interface ILinkProps extends IBlockProps {
+type LinkProps = BlockProps<{
   href: string;
   ariaHidden?: boolean;
   children?: Block;
   replace?: boolean;
-}
+}>;
 
-export class Link extends Block<ILinkProps> {
-  constructor(props: ILinkProps) {
+export class Link extends Block<LinkProps> {
+  constructor(props: LinkProps) {
     const { href, replace = false } = props;
 
     props.onClick = (e: Event) => {
@@ -21,7 +21,7 @@ export class Link extends Block<ILinkProps> {
     super(props);
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 }

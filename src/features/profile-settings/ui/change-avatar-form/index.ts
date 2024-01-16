@@ -7,7 +7,7 @@ import { ROUTE_PATH } from 'shared/constants';
 import templateSpec from './preview.template.hbs';
 import styles from './styles.module.css';
 import { UploadButton } from './upload-button';
-import { type IChangeAvatarSlice } from 'features/profile-settings/model/change-avatar.model';
+import { type TChangeAvatarSlice } from 'features/profile-settings/model/change-avatar.model';
 import { changeAvatarController } from 'features/profile-settings/controller/change-avatar.controller';
 
 const store = Store.instance();
@@ -18,7 +18,7 @@ export class UploadAvatarForm extends Block {
   private readonly _message;
 
   constructor() {
-    const { changeAvatar } = store.getState<IChangeAvatarSlice>();
+    const { changeAvatar } = store.getState<TChangeAvatarSlice>();
     const { objectURL, error = '' } = { ...changeAvatar };
 
     const src = error || !objectURL ? STUB_IMAGE_SRC : objectURL;
@@ -68,17 +68,17 @@ export class UploadAvatarForm extends Block {
     this._message = message;
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 
-  protected _getStylesModule(): CSSModuleClasses {
+  protected getStylesModuleHook(): CSSModuleClasses {
     return styles;
   }
 
   private readonly _onStoreUpdate = ({
     changeAvatar,
-  }: IChangeAvatarSlice): void => {
+  }: TChangeAvatarSlice): void => {
     const { objectURL, error } = { ...changeAvatar };
 
     this._message.setProps({ message: error, visible: Boolean(error) });

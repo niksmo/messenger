@@ -1,4 +1,4 @@
-import { Block, type IBlockProps } from 'shared/components/block';
+import { Block, type BlockProps } from 'shared/components/block';
 import { Link } from 'shared/components/router';
 import { ButtonLight } from 'shared/ui/button';
 import { ROUTE_PATH } from 'shared/constants';
@@ -6,12 +6,12 @@ import { EditProfileForm } from 'features/profile-settings/ui/edit-profile-form'
 import templateSpec from './edit-profile-page.template.hbs';
 import styles from './styles.module.css';
 
-interface IPageEditProfile extends IBlockProps {
+type EditProfilePageProps = BlockProps<{
   form: Block;
   transitionButton: Block;
-}
+}>;
 
-export class PageEditProfile extends Block<IPageEditProfile> {
+export class EditProfilePage extends Block<EditProfilePageProps> {
   constructor() {
     const transitionButton = new Link({
       href: ROUTE_PATH.SETTINGS,
@@ -28,11 +28,11 @@ export class PageEditProfile extends Block<IPageEditProfile> {
     super({ form, transitionButton });
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 
-  protected _getStylesModule(): CSSModuleClasses {
+  protected getStylesModuleHook(): CSSModuleClasses {
     return styles;
   }
 }

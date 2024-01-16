@@ -18,11 +18,9 @@ class App {
     if (this._root === null) {
       return;
     }
-
     const store = new Store();
-    store.init();
-
     const router = new AppRouter();
+
     router.root(this._root);
 
     router.authUse(
@@ -92,6 +90,8 @@ class App {
     router.use(ROUTE_PATH[500], PAGE.InternalError);
     router.noMatch(ROUTE_PATH[404]);
     router.start();
+
+    store.start();
   }
 }
 

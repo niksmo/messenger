@@ -1,12 +1,12 @@
-import { PageSignin as Signin } from './signin';
-import { PageSignup as Signup } from './signup';
-import { PageMain as Main } from './main';
-import { PageAddChat as AddChat } from './add-chat';
-import { PageAddChatUsers as AddUsers } from './add-chat-users';
-import { PageSettings as Settings } from './profile-settings';
-import { PageChangeAvatar as ChangeAvatar } from './change-avatar';
-import { PageChangePassword as ChangePassword } from './change-password';
-import { PageEditProfile as EditProfile } from './edit-profile';
+import { SigninPage as Signin } from './signin';
+import { SignupPage as Signup } from './signup';
+import { MainPage as Main } from './main';
+import { AddChatPage as AddChat } from './add-chat';
+import { AddChatUsersPage as AddUsers } from './add-chat-users';
+import { SettingsPage as Settings } from './profile-settings';
+import { ChangeAvatarPage as ChangeAvatar } from './change-avatar';
+import { ChangePasswordPage as ChangePassword } from './change-password';
+import { EditProfilePage as EditProfile } from './edit-profile';
 import { NotFoundPage as NotFound } from './404';
 import { InternalErrorPage as InternalError } from './500';
 

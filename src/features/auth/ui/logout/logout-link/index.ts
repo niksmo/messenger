@@ -19,7 +19,7 @@ export class LogoutLink extends Block {
     });
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 }

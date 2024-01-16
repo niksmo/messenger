@@ -2,7 +2,7 @@ import { Block } from 'shared/components/block';
 import { Store } from 'shared/components/store';
 import { Avatar } from 'shared/ui/avatar';
 import { InvisibleFileInput } from 'features/profile-settings/ui/invisible-input';
-import { type IViewerState } from '../../model';
+import { type TViewerState } from '../../model';
 import templateSpec from './profile-info.template.hbs';
 import styles from './styles.module.css';
 
@@ -12,7 +12,7 @@ export class ProfileInfo extends Block {
   private readonly _onStoreUpdate;
 
   constructor() {
-    const { viewer } = store.getState<IViewerState>();
+    const { viewer } = store.getState<TViewerState>();
     const { avatar: src, first_name: name, ...rest } = viewer;
 
     const avatar = new Avatar({ src, name });
@@ -20,20 +20,20 @@ export class ProfileInfo extends Block {
 
     super({ avatar, changeAvatar, first_name: name, ...rest });
 
-    this._onStoreUpdate = (state: IViewerState) => {
+    this._onStoreUpdate = (state: TViewerState) => {
       const { avatar: src, first_name: name, ...rest } = state.viewer;
       avatar.setProps({ src, name });
       this.setProps({ first_name: name, ...rest });
     };
 
-    store.on<IViewerState>(this._onStoreUpdate);
+    store.on<TViewerState>(this._onStoreUpdate);
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 
-  protected _getStylesModule(): CSSModuleClasses {
+  protected getStylesModuleHook(): CSSModuleClasses {
     return styles;
   }
 

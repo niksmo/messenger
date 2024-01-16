@@ -1,7 +1,7 @@
-import { Block, type IBlockProps } from 'shared/components/block';
+import { Block, type BlockProps } from 'shared/components/block';
 import templateSpec from './button.template.hbs';
 
-interface IButtonProps extends IBlockProps {
+type ButtonProps = BlockProps<{
   label: string;
   type: 'button' | 'submit';
   name?: string;
@@ -9,10 +9,10 @@ interface IButtonProps extends IBlockProps {
   disabled?: boolean;
   children?: Block;
   onClick?: (e: Event) => void;
-}
+}>;
 
-export class Button extends Block<IButtonProps> {
-  protected _getTemplateSpec(): TemplateSpecification {
+export class Button extends Block<ButtonProps> {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 }

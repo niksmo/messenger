@@ -1,10 +1,10 @@
-import { type IBlockProps } from 'shared/components/block';
+import { type BlockProps } from 'shared/components/block';
 
-interface IAvatarProps extends IBlockProps {
+type AvatarProps = BlockProps<{
   name?: string;
-}
+}>;
 
-export function setNamePrefixToProps(props: IAvatarProps): IBlockProps {
+export function setNamePrefixToProps(props: AvatarProps): AvatarProps {
   const { name } = props;
   if (name) {
     props.namePrefix = name[0]?.toUpperCase();

@@ -1,4 +1,4 @@
-import { Block } from 'shared/components/block';
+import { Block, type BlockProps } from 'shared/components/block';
 import { Link } from 'shared/components/router';
 import { ButtonLight } from 'shared/ui/button';
 import { ROUTE_PATH } from 'shared/constants';
@@ -9,7 +9,13 @@ import { LogoutLink } from 'features/auth/ui/logout/logout-link';
 import templateSpec from './profile-settings-page.template.hbs';
 import styles from './styles.module.css';
 
-export class PageSettings extends Block {
+type SettingsPageProps = BlockProps<{
+  transitionButton: Block;
+  profileInfo: Block;
+  navList: Block[];
+}>;
+
+export class SettingsPage extends Block<SettingsPageProps> {
   constructor() {
     const transitionButton = new Link({
       href: ROUTE_PATH.MAIN,
@@ -32,11 +38,11 @@ export class PageSettings extends Block {
     super({ transitionButton, profileInfo, navList });
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 
-  protected _getStylesModule(): CSSModuleClasses {
+  protected getStylesModuleHook(): CSSModuleClasses {
     return styles;
   }
 }

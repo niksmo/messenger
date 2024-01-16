@@ -1,28 +1,28 @@
-import { Block, type IBlockProps } from 'shared/components/block';
+import { Block, type BlockProps } from 'shared/components/block';
 import { setNamePrefixToProps } from './lib';
 import templateSpec from './avatar.template.hbs';
 import styles from './styles.module.css';
 
-interface IAvatarProps extends IBlockProps {
+type AvatarProps = BlockProps<{
   src: null | string;
   name: string;
-}
+}>;
 
-export class Avatar extends Block<IAvatarProps> {
-  constructor(props: IAvatarProps) {
+export class Avatar extends Block<AvatarProps> {
+  constructor(props: AvatarProps) {
     setNamePrefixToProps(props);
     super(props);
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 
-  protected _getStylesModule(): CSSModuleClasses {
+  protected getStylesModuleHook(): CSSModuleClasses {
     return styles;
   }
 
-  public setProps(newProps: Partial<IAvatarProps>): void {
+  public setProps(newProps: Partial<AvatarProps>): void {
     if (newProps.name) {
       setNamePrefixToProps(newProps);
     }

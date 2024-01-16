@@ -1,4 +1,4 @@
-import { Block, type IBlockProps } from 'shared/components/block';
+import { Block, type BlockProps } from 'shared/components/block';
 import { Avatar } from 'shared/ui/avatar';
 import { Counter } from 'shared/ui/counter';
 import { AppRouter } from 'shared/components/router';
@@ -7,7 +7,7 @@ import { normalizeTime } from './lib';
 import templateSpec from './chat-list-item.template.hbs';
 import styles from './styles.module.css';
 
-interface IChatListItemProps extends IBlockProps {
+type ChatListItemProps = BlockProps<{
   id: number;
   active: boolean;
   avatar: string | null;
@@ -15,9 +15,9 @@ interface IChatListItemProps extends IBlockProps {
   time: string;
   content: string;
   unread: number;
-}
+}>;
 
-interface IInnerProps extends IBlockProps {
+type InnerProps = BlockProps<{
   active: boolean;
   avatar: Avatar;
   title: string;
@@ -25,12 +25,12 @@ interface IInnerProps extends IBlockProps {
   content: string;
   unread: Counter;
   onClick: (e: Event) => void;
-}
+}>;
 
 const router = AppRouter.instance();
 
-export class ChatListItem extends Block<IInnerProps> {
-  constructor(props: IChatListItemProps) {
+export class ChatListItem extends Block<InnerProps> {
+  constructor(props: ChatListItemProps) {
     const { id, title, avatar, unread, content, time, active } = props;
 
     super({
@@ -46,11 +46,11 @@ export class ChatListItem extends Block<IInnerProps> {
     });
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 
-  protected _getStylesModule(): CSSModuleClasses {
+  protected getStylesModuleHook(): CSSModuleClasses {
     return styles;
   }
 }

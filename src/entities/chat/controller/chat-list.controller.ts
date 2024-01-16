@@ -3,7 +3,7 @@ import { AppRouter } from 'shared/components/router';
 import { ROUTE_PATH } from 'shared/constants';
 import { goToLoginWithUnauth, reviveNullToString } from 'shared/helpers';
 import { ChatListAPI } from '../api/chat-list.api';
-import { type IChatListSlice } from '../model/chat-list.model';
+import { type TChatListState } from '../model/chat-list.model';
 
 const STORE_SLICE = 'chatList';
 const STORE_CHATS = STORE_SLICE + '.chats';
@@ -22,7 +22,7 @@ export class ChatListController {
   }
 
   private _initState(chatId: string | null | number): void {
-    const { chatList } = this._store.getState<IChatListSlice>();
+    const { chatList } = this._store.getState<TChatListState>();
     const { chats, currentChat } = { ...chatList };
 
     if (!chats) {

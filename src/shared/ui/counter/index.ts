@@ -1,18 +1,18 @@
-import { Block, type IBlockProps } from 'shared/components/block';
+import { Block, type BlockProps } from 'shared/components/block';
 import templateSpec from './counter.template.hbs';
 import stylesModule from './styles.module.css';
 
-interface ICounterProps extends IBlockProps {
+type CounterProps = BlockProps<{
   count: number;
-}
+}>;
 
 const styles = { ...stylesModule } as unknown as {
   hidden: string;
   'is-hidden': string;
 };
 
-export class Counter extends Block<ICounterProps> {
-  protected _getTemplateSpec(): TemplateSpecification {
+export class Counter extends Block<CounterProps> {
+  protected getTemplateHook(): TemplateSpecification {
     if (this.props.count) {
       styles['is-hidden'] = styles.hidden;
     } else {
@@ -22,9 +22,7 @@ export class Counter extends Block<ICounterProps> {
     return templateSpec;
   }
 
-  protected _getStylesModule(): CSSModuleClasses {
+  protected getStylesModuleHook(): CSSModuleClasses {
     return styles;
   }
-
-  public didUpdate(): void {}
 }

@@ -1,4 +1,4 @@
-import { Block, type IBlockProps } from 'shared/components/block';
+import { Block, type BlockProps } from 'shared/components/block';
 import { DropdownMenu } from 'shared/ui/dropdown';
 import { Avatar } from 'shared/ui/avatar';
 import { AddChatUserMenuItem } from 'features/chat-users/ui/add-users-menu-item';
@@ -9,13 +9,13 @@ import styles from './styles.module.css';
 
 const NAME = 'Bowie';
 
-interface IChatHeaderProps extends IBlockProps {
+type ChatHeaderProps = BlockProps<{
   username: string;
   avatar: Block;
   menu: Block;
-}
+}>;
 
-export class ChatHeader extends Block<IChatHeaderProps> {
+export class ChatHeader extends Block<ChatHeaderProps> {
   constructor() {
     const username = NAME;
 
@@ -37,11 +37,11 @@ export class ChatHeader extends Block<IChatHeaderProps> {
     super({ avatar, username, menu });
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 
-  protected _getStylesModule(): CSSModuleClasses {
+  protected getStylesModuleHook(): CSSModuleClasses {
     return styles;
   }
 }

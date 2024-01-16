@@ -1,22 +1,22 @@
-import { Block, type IBlockProps } from 'shared/components/block';
+import { Block, type BlockProps } from 'shared/components/block';
 import templateSpec from './dialog.template.hbs';
 import styles from './styles.module.css';
 import { ButtonOutlined } from '../button';
 import { Overlay } from '../overlay';
 import { withInterrupt } from 'shared/helpers/with';
 
-interface IDialogContainerProps extends IBlockProps {
+type DialogContainerProps = BlockProps<{
   text: string;
   buttonText: [string, string];
   animationStyle?: string;
   declineCb?: () => void;
   approveCb: () => void;
-}
+}>;
 
-class DialogContainer extends Block<IDialogContainerProps> {
+class DialogContainer extends Block<DialogContainerProps> {
   private readonly _declineButtonBlock;
 
-  constructor(props: IDialogContainerProps) {
+  constructor(props: DialogContainerProps) {
     const { buttonText, declineCb, approveCb } = props;
 
     const declineButton = new ButtonOutlined({
@@ -36,15 +36,15 @@ class DialogContainer extends Block<IDialogContainerProps> {
     this._declineButtonBlock = declineButton;
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 
-  protected _getStylesModule(): CSSModuleClasses {
+  protected getStylesModuleHook(): CSSModuleClasses {
     return styles;
   }
 
-  public setProps(newProps: Partial<IDialogContainerProps>): void {
+  public setProps(newProps: Partial<DialogContainerProps>): void {
     const { declineCb, ...rest } = newProps;
 
     this._declineButtonBlock.setProps({ onClick: declineCb });
@@ -72,12 +72,12 @@ class DialogContainer extends Block<IDialogContainerProps> {
   }
 }
 
-type TDialogProps = IDialogContainerProps & {
+type DialogProps = DialogContainerProps & {
   isVisible: boolean;
 };
 
 export class Dialog extends Overlay {
-  constructor(props: TDialogProps) {
+  constructor(props: DialogProps) {
     const { isVisible, ...containerProps } = props;
     const dialogContainer = new DialogContainer(containerProps);
 

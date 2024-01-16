@@ -6,13 +6,12 @@ import { AddUsersForm } from 'features/chat-users/ui/add-users-form';
 import templateSpec from './add-chat-users-page.template.hbs';
 import styles from './styles.module.css';
 
-type IPageAddChatUsersProps = BlockProps<{
+type AddChatUsersPageProps = BlockProps<{
   form: Block;
-  usersList: Block;
   transitionButton: Block;
 }>;
 
-export class PageAddChatUsers extends Block<IPageAddChatUsersProps> {
+export class AddChatUsersPage extends Block<AddChatUsersPageProps> {
   constructor() {
     const transitionButton = new Link({
       href: ROUTE_PATH.MAIN,
@@ -25,16 +24,15 @@ export class PageAddChatUsers extends Block<IPageAddChatUsersProps> {
     });
 
     const form = new AddUsersForm();
-    // const usersList = new ChatUsersList();
 
     super({ form, transitionButton });
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 
-  protected _getStylesModule(): CSSModuleClasses {
+  protected getStylesModuleHook(): CSSModuleClasses {
     return styles;
   }
 }
