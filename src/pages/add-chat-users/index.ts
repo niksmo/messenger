@@ -2,7 +2,7 @@ import { Block, type BlockProps } from 'shared/components/block';
 import { Link } from 'shared/components/router';
 import { ButtonLight } from 'shared/ui/button';
 import { ROUTE_PATH } from 'shared/constants';
-// import { AddChatForm } from 'features/chat-add/ui/form';
+import { AddUsersForm } from 'features/chat-users/ui/add-users-form';
 import templateSpec from './add-chat-users-page.template.hbs';
 import styles from './styles.module.css';
 
@@ -24,10 +24,10 @@ export class PageAddChatUsers extends Block<IPageAddChatUsersProps> {
       }),
     });
 
-    // const form = new AddChatForm();
+    const form = new AddUsersForm();
     // const usersList = new ChatUsersList();
 
-    super({ transitionButton });
+    super({ form, transitionButton });
   }
 
   protected _getTemplateSpec(): TemplateSpecification {

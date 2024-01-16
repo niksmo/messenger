@@ -40,6 +40,13 @@ class App {
     );
 
     router.authUse(
+      ROUTE_PATH.ADD_USERS,
+      PAGE.AddUsers,
+      RequestAuthStub,
+      goToLogin
+    );
+
+    router.authUse(
       ROUTE_PATH.SETTINGS,
       PAGE.Settings,
       RequestAuthStub,

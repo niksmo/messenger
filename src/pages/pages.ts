@@ -2,6 +2,7 @@ import { PageSignin as Signin } from './signin';
 import { PageSignup as Signup } from './signup';
 import { PageMain as Main } from './main';
 import { PageAddChat as AddChat } from './add-chat';
+import { PageAddChatUsers as AddUsers } from './add-chat-users';
 import { PageSettings as Settings } from './profile-settings';
 import { PageChangeAvatar as ChangeAvatar } from './change-avatar';
 import { PageChangePassword as ChangePassword } from './change-password';
@@ -14,6 +15,7 @@ const PAGE = {
   Signup,
   Main,
   AddChat,
+  AddUsers,
   Settings,
   ChangeAvatar,
   ChangePassword,

@@ -2,10 +2,6 @@ import { BaseAPI } from 'shared/components/base-api';
 import { BASE_URL, HEADER } from 'shared/constants/api';
 import HttpTransport, { type XHR } from 'shared/packages/http';
 
-interface ISearchUsersBody {
-  login: string;
-}
-
 interface IEditChatUsersBody {
   users: number[];
   chatId: number;
@@ -21,7 +17,7 @@ export class ChatUsersAPI extends BaseAPI {
       .setHeader(HEADER.JSON);
   }
 
-  async request(reqBody: ISearchUsersBody): XHR {
+  async request(reqBody: Record<string, string>): XHR {
     return await this._http.post('/user/search', JSON.stringify(reqBody));
   }
 
