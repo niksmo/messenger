@@ -5,10 +5,18 @@ import styles from './styles.module.css';
 
 export class InvisibleFileInput extends Block {
   constructor() {
-    super();
-    this.setProps({
+    super({
       name: 'changeAvatar',
-      onChange: this._onChange.bind(this),
+      onChange: (e: Event): void => {
+        const { target } = e;
+        if (target instanceof HTMLInputElement) {
+          const { files } = target;
+          if (files?.[0]) {
+            const avatar = files[0];
+            changeAvatarController.preview(avatar);
+          }
+        }
+      },
     });
   }
 
@@ -18,16 +26,5 @@ export class InvisibleFileInput extends Block {
 
   protected _getStylesModule(): CSSModuleClasses {
     return styles;
-  }
-
-  private _onChange(e: Event): void {
-    const { target } = e;
-    if (target instanceof HTMLInputElement) {
-      const { files } = target;
-      if (files?.[0]) {
-        const avatar = files[0];
-        changeAvatarController.preview(avatar);
-      }
-    }
   }
 }

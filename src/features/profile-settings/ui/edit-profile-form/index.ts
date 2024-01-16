@@ -10,15 +10,16 @@ import { fieldsParams } from './lib';
 const store = Store.instance();
 
 export class EditProfileForm extends Block {
-  private readonly _onStoreUpdate;
+  private readonly _inputMap;
+  private readonly _submitButton;
 
   constructor() {
     editProfileController.start();
 
     const state = store.getState<IEditProfileState>();
-    const { load, ...fields } = state.editProfile;
+    const { load, ...fieldsState } = state.editProfile;
 
-    const inputMap = getInputMap(fieldsParams, fields);
+    const inputMap = getInputMap(fieldsParams, fieldsState);
 
     const submitButton = new ButtonFilled({
       type: 'submit',
@@ -40,23 +41,28 @@ export class EditProfileForm extends Block {
       },
     });
 
-    this._onStoreUpdate = (state: IEditProfileState) => {
-      const { load, ...fields } = state.editProfile;
-      Object.entries(fields).forEach(([field, props]) => {
-        const block = inputMap[field];
-        if (block) {
-          block.setProps({ ...props });
-        }
-      });
-
-      submitButton.setProps({ disabled: load });
-    };
-
-    store.on<IEditProfileState>(this._onStoreUpdate);
+    this._inputMap = inputMap;
+    this._submitButton = submitButton;
   }
 
   protected _getTemplateSpec(): TemplateSpecification {
     return templateSpec;
+  }
+
+  private readonly _onStoreUpdate = (state: IEditProfileState): void => {
+    const { load, ...fields } = state.editProfile;
+    Object.entries(fields).forEach(([field, props]) => {
+      const block = this._inputMap[field];
+      if (block) {
+        block.setProps({ ...props });
+      }
+    });
+
+    this._submitButton.setProps({ disabled: load });
+  };
+
+  public didMount(): void {
+    store.on<IEditProfileState>(this._onStoreUpdate);
   }
 
   public willUnmount(): void {

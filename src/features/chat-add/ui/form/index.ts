@@ -10,15 +10,16 @@ import { fieldsParams } from './lib';
 const store = Store.instance();
 
 export class AddChatForm extends Block {
-  private readonly _onStoreUpdate;
+  private readonly _inputMap;
+  private readonly _submitButton;
 
   constructor() {
     addChatController.start();
 
     const { addChat } = store.getState<IAddChatStoreSlice>();
-    const { load, ...inputs } = addChat;
+    const { load, ...fieldsState } = addChat;
 
-    const inputMap = getInputMap(fieldsParams, inputs);
+    const inputMap = getInputMap(fieldsParams, fieldsState);
 
     const submitButton = new ButtonFilled({
       label: 'Create Chat',
@@ -37,24 +38,29 @@ export class AddChatForm extends Block {
       },
     });
 
-    this._onStoreUpdate = ({ addChat }: IAddChatStoreSlice) => {
-      const { load, ...fields } = addChat;
-
-      Object.entries(fields).forEach(([field, props]) => {
-        const block = inputMap[field];
-        if (block) {
-          block.setProps({ ...props });
-        }
-      });
-
-      submitButton.setProps({ disabled: load });
-    };
-
-    store.on<IAddChatStoreSlice>(this._onStoreUpdate);
+    this._inputMap = inputMap;
+    this._submitButton = submitButton;
   }
 
   protected _getTemplateSpec(): TemplateSpecification {
     return templateSpec;
+  }
+
+  private readonly _onStoreUpdate = ({ addChat }: IAddChatStoreSlice): void => {
+    const { load, ...fields } = addChat;
+
+    Object.entries(fields).forEach(([field, props]) => {
+      const block = this._inputMap[field];
+      if (block) {
+        block.setProps({ ...props });
+      }
+    });
+
+    this._submitButton.setProps({ disabled: load });
+  };
+
+  public didMount(): void {
+    store.on<IAddChatStoreSlice>(this._onStoreUpdate);
   }
 
   public willUnmount(): void {

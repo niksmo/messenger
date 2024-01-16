@@ -3,8 +3,7 @@ import { viewerController } from '../../controller';
 import templateSpec from './request-auth-stub.template.hbs';
 
 export class RequestAuthStub extends Block {
-  constructor() {
-    super();
+  public didMount(): void {
     void viewerController.requestCredentials();
   }
 

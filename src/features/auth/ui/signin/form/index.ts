@@ -10,15 +10,16 @@ import { fieldsParams } from './lib';
 const store = Store.instance();
 
 export class SigninForm extends Block {
-  private readonly _onStoreUpdate;
+  private readonly _inputMap;
+  private readonly _submitButton;
 
   constructor() {
     signinController.start();
 
-    const state = store.getState<ISigninState>();
-    const { error, load, ...inputs } = state.signin;
+    const { signin } = store.getState<ISigninState>();
+    const { error, load, ...inputsState } = signin;
 
-    const inputMap = getInputMap(fieldsParams, inputs);
+    const inputMap = getInputMap(fieldsParams, inputsState);
 
     const submitButton = new ButtonFilled({
       label: 'Sign in',
@@ -40,24 +41,29 @@ export class SigninForm extends Block {
       },
     });
 
-    this._onStoreUpdate = (state: ISigninState) => {
-      const { load, error, ...fields } = state.signin;
-
-      Object.entries(fields).forEach(([field, props]) => {
-        const block = inputMap[field];
-        if (block) {
-          block.setProps({ ...props });
-        }
-      });
-
-      submitButton.setProps({ disabled: load });
-    };
-
-    store.on<ISigninState>(this._onStoreUpdate);
+    this._inputMap = inputMap;
+    this._submitButton = submitButton;
   }
 
   protected _getTemplateSpec(): TemplateSpecification {
     return templateSpec;
+  }
+
+  private readonly _onStoreUpdate = (state: ISigninState): void => {
+    const { load, error, ...fields } = state.signin;
+
+    Object.entries(fields).forEach(([field, props]) => {
+      const block = this._inputMap[field];
+      if (block) {
+        block.setProps({ ...props });
+      }
+    });
+
+    this._submitButton.setProps({ disabled: load });
+  };
+
+  public didMount(): void {
+    store.on<ISigninState>(this._onStoreUpdate);
   }
 
   public willUnmount(): void {

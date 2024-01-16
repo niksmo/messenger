@@ -4,13 +4,9 @@ import { ROUTE_PATH } from 'shared/constants';
 import { reviveNullToString } from 'shared/helpers';
 import { ViewerAPI } from '../api';
 
-interface ISigninController {
-  requestCredentials: () => Promise<void>;
-}
-
 const STORE_SLICE = 'viewer';
 
-class ViewerController implements ISigninController {
+class ViewerController {
   private readonly _api;
   private readonly _store;
   private readonly _router;
@@ -19,6 +15,10 @@ class ViewerController implements ISigninController {
     this._api = new ViewerAPI();
     this._store = Store.instance();
     this._router = AppRouter.instance();
+  }
+
+  private _goToLoacation(): void {
+    this._router.go(window.location.pathname, true);
   }
 
   async requestCredentials(): Promise<void> {
@@ -31,13 +31,14 @@ class ViewerController implements ISigninController {
           const data = JSON.parse(response, reviveNullToString);
           const viewerData = Object.assign({ auth: true }, data);
           this._store.set(STORE_SLICE, viewerData);
-          this._router.go(window.location.pathname, true);
+          this._goToLoacation();
         }
       }
 
       if (status === 401) {
         if (typeof response === 'string') {
           this._store.set(STORE_SLICE, { auth: false });
+          this._goToLoacation();
         }
       }
 

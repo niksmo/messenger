@@ -15,11 +15,10 @@ const store = Store.instance();
 const STUB_IMAGE_SRC = '/image/avatar-error-loading-stub.webp';
 
 export class UploadAvatarForm extends Block {
-  private readonly _onStoreUpdate;
+  private readonly _message;
 
   constructor() {
     const { changeAvatar } = store.getState<IChangeAvatarSlice>();
-
     const { objectURL, error = '' } = { ...changeAvatar };
 
     const src = error || !objectURL ? STUB_IMAGE_SRC : objectURL;
@@ -66,15 +65,7 @@ export class UploadAvatarForm extends Block {
       },
     });
 
-    this._onStoreUpdate = (state: IChangeAvatarSlice) => {
-      const { objectURL, error } = state.changeAvatar;
-
-      message.setProps({ message: error, visible: Boolean(error) });
-      const src = error ? STUB_IMAGE_SRC : objectURL;
-      this.setProps({ src });
-    };
-
-    store.on(this._onStoreUpdate);
+    this._message = message;
   }
 
   protected _getTemplateSpec(): TemplateSpecification {
@@ -83,6 +74,20 @@ export class UploadAvatarForm extends Block {
 
   protected _getStylesModule(): CSSModuleClasses {
     return styles;
+  }
+
+  private readonly _onStoreUpdate = ({
+    changeAvatar,
+  }: IChangeAvatarSlice): void => {
+    const { objectURL, error } = { ...changeAvatar };
+
+    this._message.setProps({ message: error, visible: Boolean(error) });
+    const src = error ? STUB_IMAGE_SRC : objectURL;
+    this.setProps({ src });
+  };
+
+  public didMount(): void {
+    store.on(this._onStoreUpdate);
   }
 
   public willUnmount(): void {

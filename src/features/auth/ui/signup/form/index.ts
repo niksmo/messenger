@@ -10,15 +10,16 @@ import { fieldsParams } from './lib';
 const store = Store.instance();
 
 export class SignupForm extends Block {
-  private readonly _onStoreUpdate;
+  private readonly _inputMap;
+  private readonly _submitButton;
 
   constructor() {
     signupController.start();
 
-    const state = store.getState<ISignupState>();
-    const { load, ...fields } = state.signup;
+    const { signup } = store.getState<ISignupState>();
+    const { load, ...fieldsState } = signup;
 
-    const inputMap = getInputMap(fieldsParams, fields);
+    const inputMap = getInputMap(fieldsParams, fieldsState);
 
     const submitButton = new ButtonFilled({
       label: 'Sign up',
@@ -40,23 +41,28 @@ export class SignupForm extends Block {
       },
     });
 
-    this._onStoreUpdate = (state: ISignupState) => {
-      const { load, ...fields } = state.signup;
-      Object.entries(fields).forEach(([field, props]) => {
-        const block = inputMap[field];
-        if (block) {
-          block.setProps({ ...props });
-        }
-      });
-
-      submitButton.setProps({ disabled: load });
-    };
-
-    store.on<ISignupState>(this._onStoreUpdate);
+    this._inputMap = inputMap;
+    this._submitButton = submitButton;
   }
 
   protected _getTemplateSpec(): TemplateSpecification {
     return templateSpec;
+  }
+
+  private readonly _onStoreUpdate = (state: ISignupState): void => {
+    const { load, ...fields } = state.signup;
+    Object.entries(fields).forEach(([field, props]) => {
+      const block = this._inputMap[field];
+      if (block) {
+        block.setProps({ ...props });
+      }
+    });
+
+    this._submitButton.setProps({ disabled: load });
+  };
+
+  public didMount(): void {
+    store.on<ISignupState>(this._onStoreUpdate);
   }
 
   public willUnmount(): void {
