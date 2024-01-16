@@ -1,2 +1,1 @@
-
-export class ChatUsers
+export {};

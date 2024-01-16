@@ -3,11 +3,7 @@ import { Store } from 'shared/components/store';
 import { ROUTE_PATH } from 'shared/constants';
 import { getInputValue, goToLoginWithUnauth } from 'shared/helpers';
 import { AddChatAPI } from '../api/chat-add.api';
-import {
-  type TAddChatState,
-  type TInputState,
-  fieldList,
-} from '../model/chat-add.model';
+import { type TAddChatState, type TInputState, fieldList } from '../model';
 
 const STORE_SLICE = 'addChat';
 const STORE_FIELDS = STORE_SLICE + '.fields';

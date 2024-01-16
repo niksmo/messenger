@@ -15,6 +15,8 @@ import { ChatUsersAddAPI } from '../api/chat-users-add.api';
 
 const STORE_SLICE = 'addUsers';
 const STORE_FIELDS = STORE_SLICE + '.fields';
+const STORE_FOUND = STORE_SLICE + '.found';
+const STORE_SELECT = STORE_SLICE + '.select';
 const STORE_LOAD = STORE_SLICE + '.load';
 
 export class AddChatUsersController {
@@ -39,7 +41,16 @@ export class AddChatUsersController {
       {}
     );
 
-    this._store.set(STORE_SLICE, { fields, load: false });
+    //target delete
+    const cache = localStorage.getItem('found');
+
+    this._store.set(STORE_SLICE, {
+      fields,
+      load: false,
+      //target delete
+      found: cache ? JSON.parse(cache) : [],
+      select: [],
+    });
   }
 
   private _resetState(): void {
@@ -91,7 +102,11 @@ export class AddChatUsersController {
 
       if (status === 200) {
         if (typeof response === 'string') {
-          console.log(JSON.parse(response));
+          localStorage.setItem('found', response);
+          const found = JSON.parse(response);
+          console.log(found);
+          this._store.set(STORE_FOUND, found);
+          return;
         }
       }
 
