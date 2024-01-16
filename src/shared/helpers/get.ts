@@ -70,9 +70,9 @@ function createProps(name: string, placeholder: string, type: string): IProps {
   };
 }
 
-export function getInputMap<T extends Record<string, IInputState>>(
+export function getInputMap(
   inputsParamsList: IInputConfig[],
-  state: T
+  state: Record<string, IInputState>
 ): Record<string, Input> {
   const map = inputsParamsList.reduce<Record<string, Input>>((map, config) => {
     const { name, placeholder, type } = config;

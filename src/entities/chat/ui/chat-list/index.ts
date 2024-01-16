@@ -2,8 +2,9 @@ import { Block } from 'shared/components/block';
 import templateSpec from './chat-list.template.hbs';
 import styles from './styles.module.css';
 import { Store } from 'shared/components/store';
-import { chatListController, type IChatListSlice } from 'entites/chat';
 import { createItems } from './lib';
+import { type IChatListSlice } from 'entites/chat/model/chat-list.model';
+import { chatListController } from 'entites/chat/controller/chat-list.controller';
 
 const store = Store.instance();
 

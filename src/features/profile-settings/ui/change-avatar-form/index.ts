@@ -4,11 +4,11 @@ import { ButtonFilled, ButtonLight } from 'shared/ui/button';
 import { Store } from 'shared/components/store';
 import { AppRouter } from 'shared/components/router';
 import { ROUTE_PATH } from 'shared/constants';
-import type { IChangeAvatarSlice } from '../../model';
-import { changeAvatarController } from '../../controller';
 import templateSpec from './preview.template.hbs';
 import styles from './styles.module.css';
 import { UploadButton } from './upload-button';
+import { type IChangeAvatarSlice } from 'features/profile-settings/model/change-avatar.model';
+import { changeAvatarController } from 'features/profile-settings/controller/change-avatar.controller';
 
 const store = Store.instance();
 

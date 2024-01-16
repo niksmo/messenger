@@ -1,9 +1,9 @@
 import { Block } from 'shared/components/block';
 import { Store } from 'shared/components/store';
 import { ButtonFilled } from 'shared/ui/button';
-import { getFieldsValues, getInputMap, getInputValue } from 'shared/helpers';
-import { type ISigninState } from '../../../model';
-import { signinController } from '../../../controller';
+import { getInputMap } from 'shared/helpers';
+import { type TSigninState } from '../../../model/signin.model';
+import { signinController } from '../../../controller/signin.controller';
 import templateSpec from './form.template.hbs';
 import { fieldsParams } from './lib';
 
@@ -16,10 +16,10 @@ export class SigninForm extends Block {
   constructor() {
     signinController.start();
 
-    const { signin } = store.getState<ISigninState>();
-    const { error, load, ...inputsState } = signin;
+    const { signin } = store.getState<TSigninState>();
+    const { fields: fieldsState } = signin;
 
-    const inputMap = getInputMap(fieldsParams, inputsState);
+    const inputMap = getInputMap(fieldsParams, fieldsState);
 
     const submitButton = new ButtonFilled({
       label: 'Sign in',
@@ -30,14 +30,14 @@ export class SigninForm extends Block {
       ...inputMap,
       submitButton,
       onInput: (e: Event) => {
-        signinController.input(getInputValue(e));
+        signinController.input(e);
       },
-      onFocusout: (e: Event) => {
-        signinController.verify(getFieldsValues(e));
+      onFocusout: () => {
+        signinController.verify();
       },
       onSubmit: (e: Event) => {
         e.preventDefault();
-        void signinController.submit(getFieldsValues(e));
+        signinController.submit();
       },
     });
 
@@ -49,8 +49,8 @@ export class SigninForm extends Block {
     return templateSpec;
   }
 
-  private readonly _onStoreUpdate = (state: ISigninState): void => {
-    const { load, error, ...fields } = state.signin;
+  private readonly _onStoreUpdate = (state: TSigninState): void => {
+    const { load, fields } = state.signin;
 
     Object.entries(fields).forEach(([field, props]) => {
       const block = this._inputMap[field];
@@ -63,7 +63,7 @@ export class SigninForm extends Block {
   };
 
   public didMount(): void {
-    store.on<ISigninState>(this._onStoreUpdate);
+    store.on(this._onStoreUpdate);
   }
 
   public willUnmount(): void {

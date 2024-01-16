@@ -2,7 +2,7 @@ import { Block, type IBlockProps } from 'shared/components/block';
 import { Link } from 'shared/components/router';
 import { ButtonLight } from 'shared/ui/button';
 import { ROUTE_PATH } from 'shared/constants';
-import { EditProfileForm } from 'features/profile-settings';
+import { EditProfileForm } from 'features/profile-settings/ui/edit-profile-form';
 import templateSpec from './edit-profile-page.template.hbs';
 import styles from './styles.module.css';
 

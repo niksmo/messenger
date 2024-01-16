@@ -1,9 +1,9 @@
 import { Block } from 'shared/components/block';
 import { Store } from 'shared/components/store';
 import { ButtonFilled } from 'shared/ui/button';
-import { getFieldsValues, getInputMap, getInputValue } from 'shared/helpers';
-import { type ISignupState } from '../../../model';
-import { signupController } from '../../../controller';
+import { getInputMap } from 'shared/helpers';
+import { type TSignupState } from '../../../model/signup.model';
+import { signupController } from '../../../controller/signup.controller';
 import templateSpec from './form.template.hbs';
 import { fieldsParams } from './lib';
 
@@ -16,8 +16,8 @@ export class SignupForm extends Block {
   constructor() {
     signupController.start();
 
-    const { signup } = store.getState<ISignupState>();
-    const { load, ...fieldsState } = signup;
+    const { signup } = store.getState<TSignupState>();
+    const { fields: fieldsState } = signup;
 
     const inputMap = getInputMap(fieldsParams, fieldsState);
 
@@ -30,14 +30,14 @@ export class SignupForm extends Block {
       ...inputMap,
       submitButton,
       onInput: (e: Event) => {
-        signupController.input(getInputValue(e));
+        signupController.input(e);
       },
-      onFocusout: (e: Event) => {
-        signupController.verify(getFieldsValues(e));
+      onFocusout: () => {
+        signupController.verify();
       },
       onSubmit: (e: Event) => {
         e.preventDefault();
-        void signupController.submit(getFieldsValues(e));
+        signupController.submit();
       },
     });
 
@@ -49,8 +49,8 @@ export class SignupForm extends Block {
     return templateSpec;
   }
 
-  private readonly _onStoreUpdate = (state: ISignupState): void => {
-    const { load, ...fields } = state.signup;
+  private readonly _onStoreUpdate = (state: TSignupState): void => {
+    const { load, fields } = state.signup;
     Object.entries(fields).forEach(([field, props]) => {
       const block = this._inputMap[field];
       if (block) {
@@ -62,7 +62,7 @@ export class SignupForm extends Block {
   };
 
   public didMount(): void {
-    store.on<ISignupState>(this._onStoreUpdate);
+    store.on(this._onStoreUpdate);
   }
 
   public willUnmount(): void {

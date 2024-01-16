@@ -2,8 +2,8 @@ import { Block } from 'shared/components/block';
 import { Store } from 'shared/components/store';
 import { ButtonFilled } from 'shared/ui/button';
 import { getFieldsValues, getInputMap, getInputValue } from 'shared/helpers';
-import { type IEditProfileState } from '../../model';
-import { editProfileController } from '../../controller';
+import { editProfileController } from 'features/profile-settings/controller/edit-profile.controller';
+import type { IEditProfileState } from 'features/profile-settings/model/edit-profile.model';
 import templateSpec from './form.template.hbs';
 import { fieldsParams } from './lib';
 

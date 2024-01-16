@@ -8,8 +8,11 @@ import {
 import { ROUTE_PATH } from 'shared/constants';
 import { goToLoginWithUnauth, reviveNullToString } from 'shared/helpers';
 import { type IViewerState } from 'entites/viewer/model';
-import { EditProfileAPI } from '../api';
-import { type IFieldState, type IEditProfileState } from '../model';
+import {
+  type IEditProfileState,
+  type IFieldState,
+} from '../model/edit-profile.model';
+import { EditProfileAPI } from '../api/edit-profile.api';
 
 type TFormData = Record<string, string>;
 

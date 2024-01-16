@@ -1,9 +1,9 @@
 import { Block } from 'shared/components/block';
 import { DropdownMenu } from 'shared/ui/dropdown';
-import { ChatList } from 'entites/chat';
-import { SearchBar } from 'features/search-chat';
-import { AddChatMenuItem } from 'features/chat-add';
-import { OpenSettingsButton } from 'features/profile-settings';
+import { OpenSettingsButton } from 'features/profile-settings/ui/settings-button';
+import { SearchBar } from 'features/search-chat/ui';
+import { AddChatMenuItem } from 'features/chat-add/ui/menu-item';
+import { ChatList } from 'entites/chat/ui/chat-list';
 import templateSpec from './chat-list.template.hbs';
 import styles from './styles.module.css';
 

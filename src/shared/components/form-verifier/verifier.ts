@@ -16,7 +16,7 @@ class StringVerifier {
   } {
     const hintData: Record<string, string> = {};
 
-    for (const [field, value] of Object.entries(fieldsData)) {
+    for (const [field, value] of Object.entries<string>(fieldsData)) {
       const rule = this.rules[field];
       if (rule) {
         const { template, hint } = rule;

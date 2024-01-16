@@ -2,8 +2,8 @@ import { Store } from 'shared/components/store';
 import { AppRouter } from 'shared/components/router';
 import { ROUTE_PATH } from 'shared/constants';
 import { goToLoginWithUnauth, reviveNullToString } from 'shared/helpers';
-import type { IChatListSlice } from '../model';
-import { ChatListAPI } from '../api';
+import { ChatListAPI } from '../api/chat-list.api';
+import { type IChatListSlice } from '../model/chat-list.model';
 
 const STORE_SLICE = 'chatList';
 const STORE_CHATS = STORE_SLICE + '.chats';

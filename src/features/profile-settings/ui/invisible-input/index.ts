@@ -1,5 +1,5 @@
 import { Block } from 'shared/components/block';
-import { changeAvatarController } from '../../controller';
+import { changeAvatarController } from 'features/profile-settings/controller/change-avatar.controller';
 import templateSpec from './invisible-input.template.hbs';
 import styles from './styles.module.css';
 

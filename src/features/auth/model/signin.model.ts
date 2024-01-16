@@ -1,13 +1,18 @@
-interface InputState {
+export const fieldList = ['login', 'password'];
+
+export type TFieldUnion = 'login' | 'password';
+
+export interface TInputState {
   error: boolean;
   value: string;
   hint: string;
 }
 
-export interface ISigninState {
+type TFieldsState = Record<TFieldUnion, TInputState>;
+
+export interface TSigninState {
   signin: {
-    login: InputState;
-    password: InputState;
+    fields: TFieldsState;
     error: string;
     load: boolean;
   };

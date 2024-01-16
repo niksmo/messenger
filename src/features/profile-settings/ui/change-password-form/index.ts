@@ -2,8 +2,8 @@ import { Block } from 'shared/components/block';
 import { Store } from 'shared/components/store';
 import { ButtonFilled } from 'shared/ui/button';
 import { getFieldsValues, getInputMap, getInputValue } from 'shared/helpers';
-import { type IChangePasswordState } from '../../model';
-import { changePasswordController } from '../../controller';
+import { changePasswordController } from 'features/profile-settings/controller/change-password.controller';
+import type { IChangePasswordState } from 'features/profile-settings/model/change-password.model';
 import templateSpec from './form.template.hbs';
 import { fieldsParams } from './lib';
 

@@ -2,7 +2,8 @@ import { Block, type IBlockProps } from 'shared/components/block';
 import { Link } from 'shared/components/router';
 import { ButtonLight } from 'shared/ui/button';
 import { ROUTE_PATH } from 'shared/constants';
-import { SigninForm, SigninMessage } from 'features/auth';
+import { SigninMessage } from 'features/auth/ui/signin/message';
+import { SigninForm } from 'features/auth/ui/signin/form';
 import templateSpec from './signin-page.template.hbs';
 import styles from './styles.module.css';
 

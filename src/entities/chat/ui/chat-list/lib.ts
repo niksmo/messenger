@@ -1,4 +1,4 @@
-import type { IChatListSlice } from 'entites/chat';
+import type { IChatListSlice } from 'entites/chat/model/chat-list.model';
 import { ChatListItem } from './chat-list-item';
 
 export function createItems(store: IChatListSlice): ChatListItem[] {

@@ -1,7 +1,7 @@
 import { Block, type IBlockProps } from 'shared/components/block';
 import { ChatListWidget } from 'widgets/chat-list';
 import { ChatWidget } from 'widgets/chat';
-import { chatListController } from 'entites/chat';
+import { chatListController } from 'entites/chat/controller/chat-list.controller';
 import templateSpec from './main-page.template.hbs';
 import styles from './styles.module.css';
 

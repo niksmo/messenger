@@ -6,9 +6,9 @@ import {
   verifierCreator,
 } from 'shared/components/form-verifier';
 import { ROUTE_PATH } from 'shared/constants';
-import { type IChangePasswordState } from '../model';
-import { ChangePasswordAPI } from '../api';
 import { goToLoginWithUnauth } from 'shared/helpers';
+import { ChangePasswordAPI } from '../api/change-password.api';
+import { type IChangePasswordState } from '../model/change-password.model';
 
 type TFormData = Record<string, string>;
 

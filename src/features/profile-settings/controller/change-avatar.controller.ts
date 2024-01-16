@@ -3,8 +3,11 @@ import { AppRouter } from 'shared/components/router';
 import { HINT, verifierCreator } from 'shared/components/form-verifier';
 import { ROUTE_PATH } from 'shared/constants';
 import { goToLoginWithUnauth, reviveNullToString } from 'shared/helpers';
-import { ChangeAvatarAPI } from '../api';
-import type { IChangeAvatarSlice, IChangeAvatarState } from '../model';
+import type {
+  IChangeAvatarSlice,
+  IChangeAvatarState,
+} from '../model/change-avatar.model';
+import { ChangeAvatarAPI } from '../api/change-avatar.api';
 
 const STORE_SLICE = 'changeAvatar';
 const MAX_SIZE_1MB = Math.pow(2, 20) - 1;

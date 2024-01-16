@@ -1,12 +1,13 @@
 import { Block, type IBlockProps } from 'shared/components/block';
-import { ChatHeader, ChatStub, type IChatListSlice } from 'entites/chat';
 import { DayMessages } from 'entites/message';
-import { MessageSender } from 'features/send-message';
-import templateSpec from './chat-widget.template.hbs';
-import styles from './styles.module.css';
-
 import data from 'shared/mock-data/messages.json';
 import { Store } from 'shared/components/store';
+import { type IChatListSlice } from 'entites/chat/model/chat-list.model';
+import { ChatHeader } from 'entites/chat/ui/chat-header';
+import { MessageSender } from 'features/send-message/ui/container';
+import { ChatStub } from 'entites/chat/ui/chat-stub';
+import templateSpec from './chat-widget.template.hbs';
+import styles from './styles.module.css';
 
 interface IChatProps extends IBlockProps {
   header: Block;

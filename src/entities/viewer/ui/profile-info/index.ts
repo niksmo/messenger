@@ -1,7 +1,7 @@
 import { Block } from 'shared/components/block';
 import { Store } from 'shared/components/store';
 import { Avatar } from 'shared/ui/avatar';
-import { InvisibleFileInput } from 'features/profile-settings';
+import { InvisibleFileInput } from 'features/profile-settings/ui/invisible-input';
 import { type IViewerState } from '../../model';
 import templateSpec from './profile-info.template.hbs';
 import styles from './styles.module.css';
