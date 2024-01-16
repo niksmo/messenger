@@ -27,17 +27,12 @@ export class Input extends Block<InputProps> {
     return 'input';
   }
 
-  protected renderInterceptor(
+  protected renderInterceptorHook(
     shouldRender: boolean,
-    causeProps: Map<string, unknown>,
-    block: Block
+    causeProps: Map<string, unknown>
   ): boolean {
-    if (!block.getContent()) {
-      return shouldRender;
-    }
-
-    const htmlInput = block.getContent().querySelector('input');
-    const htmlHint = block.getContent().querySelector('p');
+    const htmlInput = this.getContent().querySelector('input');
+    const htmlHint = this.getContent().querySelector('p');
     const errorStyle = this.getStylesModuleHook()['form-input__inner_error'];
 
     if (causeProps.has('value')) {

@@ -1,21 +1,29 @@
-import { AppRouter } from 'shared/components/router';
 import { Store } from 'shared/components/store';
+import { AppRouter } from 'shared/components/router';
+import {
+  getInputValue,
+  goToLoginWithUnauth,
+  isSomeValues,
+} from 'shared/helpers';
 import { ROUTE_PATH } from 'shared/constants';
-import { getInputValue, goToLoginWithUnauth } from 'shared/helpers';
-import { AddChatAPI } from '../api';
-import { type TAddChatState, type TInputState, fieldList } from '../model';
+import {
+  type TAddUsersState,
+  type TInputState,
+  fieldList,
+} from '../model/chat-users-add.model';
+import { ChatUsersAddAPI } from '../api/chat-users-add.api';
 
-const STORE_SLICE = 'addChat';
+const STORE_SLICE = 'addUsers';
 const STORE_FIELDS = STORE_SLICE + '.fields';
 const STORE_LOAD = STORE_SLICE + '.load';
 
-class AddChatController {
+export class AddChatUsersController {
   private readonly _api;
   private readonly _store;
   private readonly _router;
 
   constructor() {
-    this._api = new AddChatAPI();
+    this._api = new ChatUsersAddAPI();
     this._store = Store.instance();
     this._router = AppRouter.instance();
   }
@@ -39,8 +47,8 @@ class AddChatController {
   }
 
   private _extractFormData(): Record<string, string> {
-    const { addChat } = this._store.getState<TAddChatState>();
-    const { fields } = addChat;
+    const { addUsers } = this._store.getState<TAddUsersState>();
+    const { fields } = addUsers;
 
     const entries = Object.entries<TInputState>({ ...fields });
 
@@ -55,21 +63,24 @@ class AddChatController {
     return formData;
   }
 
-  private async _submit(): Promise<void> {
+  private async _searchUsers(): Promise<void> {
     const formData = this._extractFormData();
+    if (!isSomeValues(formData)) {
+      return;
+    }
 
     try {
       this._store.set(STORE_LOAD, true);
 
-      const xhr = await this._api.create(formData);
+      const xhr = await this._api.request(formData);
       const { status, response } = xhr;
 
       if (status === 400) {
         if (typeof response === 'string') {
           const { reason } = JSON.parse(response);
 
-          if (typeof reason === 'string' && reason.startsWith('Title')) {
-            this._store.set(`${STORE_FIELDS}.title`, {
+          if (typeof reason === 'string' && reason.startsWith('Login')) {
+            this._store.set(`${STORE_FIELDS}.login`, {
               hint: reason,
               error: true,
             });
@@ -79,7 +90,9 @@ class AddChatController {
       }
 
       if (status === 200) {
-        this._router.go(ROUTE_PATH.MAIN);
+        if (typeof response === 'string') {
+          console.log(JSON.parse(response));
+        }
       }
 
       if (status === 401) {
@@ -102,11 +115,11 @@ class AddChatController {
     this._store.set(`${STORE_FIELDS}.${field}`, { value, error: false });
   }
 
-  public submit(): void {
-    void this._submit();
+  public searchUsers(): void {
+    void this._searchUsers();
   }
 }
 
-const addChatController = new AddChatController();
+const addChatUsersController = new AddChatUsersController();
 
-export { addChatController };
+export { addChatUsersController };

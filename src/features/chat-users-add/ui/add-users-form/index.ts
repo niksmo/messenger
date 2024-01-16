@@ -4,8 +4,8 @@ import { ButtonFilled } from 'shared/ui/button';
 import { type Input } from 'shared/ui/input';
 import { getInputMap, withDelay } from 'shared/helpers';
 import { fieldsParams } from './lib';
-import { type TAddUsersState } from 'features/chat-users/model/chat-users-add.model';
-import { addChatUsersController } from 'features/chat-users/controller/chat-users-add.controller';
+import { type TAddUsersState } from '../../model/chat-users-add.model';
+import { addChatUsersController } from '../../controller/chat-users-add.controller';
 import templateSpec from './form.template.hbs';
 
 type TAddUsersFormProps = BlockProps<{

@@ -54,8 +54,6 @@ export class ChatListController {
       if (status === 200 && typeof response === 'string') {
         const chats = JSON.parse(response, reviveNullToString);
         this._store.set(STORE_CHATS, chats);
-        //console.log
-        console.log(this._store);
         return;
       }
 

@@ -1,8 +1,8 @@
 import { Block, type BlockProps } from 'shared/components/block';
 import { DropdownMenu } from 'shared/ui/dropdown';
 import { Avatar } from 'shared/ui/avatar';
-import { AddChatUserMenuItem } from 'features/chat-users/ui/add-users-menu-item';
-import { RemoveChatUserMenuItem } from 'features/chat-users/ui/delete-users-menu-item';
+import { AddChatUserMenuItem } from 'features/chat-users-add/ui/add-users-menu-item';
+import { RemoveChatUserMenuItem } from 'features/chat-users-delete/ui/delete-users-menu-item';
 import { DeleteChatMenuItem } from 'features/chat-delete/ui/menu-item';
 import templateSpec from './header.template.hbs';
 import styles from './styles.module.css';
