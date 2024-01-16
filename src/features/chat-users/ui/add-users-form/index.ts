@@ -6,8 +6,14 @@ import { fieldsParams } from './lib';
 import templateSpec from './form.template.hbs';
 import { type TAddUsersState } from 'features/chat-users/model/chat-users-add.model';
 import { addChatUsersController } from 'features/chat-users/controller/chat-users-add.controller';
+import { withDelay } from 'shared/helpers/with';
 
 const store = Store.instance();
+
+const searchUsersWithDelay = withDelay(
+  addChatUsersController.searchUsers.bind(addChatUsersController),
+  400
+);
 
 export class AddUsersForm extends Block {
   private readonly _inputMap;
@@ -22,7 +28,7 @@ export class AddUsersForm extends Block {
     const inputMap = getInputMap(fieldsParams, fields);
 
     const submitButton = new ButtonFilled({
-      label: 'Search users',
+      label: 'Add users',
       type: 'submit',
     });
 
@@ -31,10 +37,10 @@ export class AddUsersForm extends Block {
       submitButton,
       onInput: (e: Event) => {
         addChatUsersController.input(e);
+        searchUsersWithDelay();
       },
       onSubmit: (e: Event) => {
         e.preventDefault();
-        addChatUsersController.searchUsers();
       },
     });
 

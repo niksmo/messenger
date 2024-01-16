@@ -6,7 +6,11 @@ import {
   type TInputState,
   fieldList,
 } from '../model/chat-users-add.model';
-import { getInputValue, goToLoginWithUnauth } from 'shared/helpers';
+import {
+  getInputValue,
+  goToLoginWithUnauth,
+  isSomeValues,
+} from 'shared/helpers';
 import { ROUTE_PATH } from 'shared/constants';
 
 const STORE_SLICE = 'addUsers';
@@ -61,6 +65,9 @@ export class AddChatUsersController {
 
   private async _searchUsers(): Promise<void> {
     const formData = this._extractFormData();
+    if (!isSomeValues(formData)) {
+      return;
+    }
 
     try {
       this._store.set(STORE_LOAD, true);
@@ -83,7 +90,9 @@ export class AddChatUsersController {
       }
 
       if (status === 200) {
-        console.log(JSON.parse(response));
+        if (typeof response === 'string') {
+          console.log(JSON.parse(response));
+        }
       }
 
       if (status === 401) {
