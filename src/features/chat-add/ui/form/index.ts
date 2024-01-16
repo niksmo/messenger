@@ -22,7 +22,7 @@ export class AddChatForm extends Block {
     const inputMap = getInputMap(fieldsParams, fieldsState);
 
     const submitButton = new ButtonFilled({
-      label: 'Create Chat',
+      label: 'Create chat',
       type: 'submit',
     });
 
