@@ -2,10 +2,12 @@ import { Block, type IBlockProps } from 'shared/components/block';
 import { DropdownMenu } from 'shared/ui/dropdown';
 import { Avatar } from 'shared/ui/avatar';
 import { DeleteChatMenuItem } from 'features/chat-delete';
+import {
+  AddChatUserMenuItem,
+  RemoveChatUserMenuItem,
+} from 'features/chat-users';
 import templateSpec from './header.template.hbs';
 import styles from './styles.module.css';
-import { AddChatUserMenuItem } from 'features/chat-user-add/ui';
-import { RemoveChatUserMenuItem } from 'features/chat-user-delete/ui';
 
 const NAME = 'Bowie';
 

@@ -17,7 +17,7 @@ export class PageAddChat extends Block<IPageAddChatProps> {
       href: ROUTE_PATH.MAIN,
       ariaHidden: true,
       children: new ButtonLight({
-        label: 'Back',
+        label: 'Back to chats',
         name: 'transitionButton',
         type: 'button',
       }),
