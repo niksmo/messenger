@@ -11,6 +11,7 @@ import {
 import { EVENT, TMP_TAG } from './consts';
 
 type IBlockProps = Record<string, unknown>;
+type BlockProps<PropsType> = PropsType & Record<string, unknown>;
 
 abstract class Block<TProps extends IBlockProps = IBlockProps>
   implements IBlock
@@ -227,4 +228,4 @@ abstract class Block<TProps extends IBlockProps = IBlockProps>
 }
 
 export { Block };
-export type { IBlockProps };
+export type { IBlockProps, BlockProps };

@@ -32,7 +32,7 @@ interface IHttpTransportAgent {
   delete: TRequest;
 }
 
-export type XHR = XHR;
+export type XHR = Promise<XMLHttpRequest>;
 
 class HttpTransport implements IHttpTransportConfig, IHttpTransportAgent {
   private _baseURL: null | string = null;
@@ -61,7 +61,7 @@ class HttpTransport implements IHttpTransportConfig, IHttpTransportAgent {
     rHeader: Record<string, string> = {},
     rTimeout: number = this._timeout
   ): XHR {
-    return await new XHR((resolve, reject) => {
+    return await new Promise((resolve, reject) => {
       let reqURL = getHref(this._baseURL, pathOrURL);
 
       if (method === METHOD.GET && typeof body === 'string') {
