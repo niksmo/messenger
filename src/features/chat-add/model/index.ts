@@ -1,14 +1,18 @@
-interface IInputState {
-  value: string;
+export const fieldList = ['title'];
+
+export type TFieldUnion = 'title';
+
+export interface TInputState {
   error: boolean;
+  value: string;
   hint: string;
 }
 
-export interface IAddChatFormState {
-  title: IInputState;
-  load: boolean;
-}
+type TFieldsState = Record<TFieldUnion, TInputState>;
 
-export interface IAddChatStoreSlice {
-  addChat: IAddChatFormState;
+export interface TAddChatState {
+  addChat: {
+    fields: TFieldsState;
+    load: boolean;
+  };
 }

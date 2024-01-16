@@ -1,11 +1,11 @@
 import { Block } from 'shared/components/block';
 import { Store } from 'shared/components/store';
 import { ButtonFilled } from 'shared/ui/button';
-import { getFieldsValues, getInputMap, getInputValue } from 'shared/helpers';
-import type { IAddChatStoreSlice } from '../../model';
-import { addChatController } from '../../controller';
-import templateSpec from './form.template.hbs';
+import { getInputMap } from 'shared/helpers';
+import { type TAddChatState } from 'features/chat-add/model';
+import { addChatController } from 'features/chat-add/controller';
 import { fieldsParams } from './lib';
+import templateSpec from './form.template.hbs';
 
 const store = Store.instance();
 
@@ -16,10 +16,10 @@ export class AddChatForm extends Block {
   constructor() {
     addChatController.start();
 
-    const { addChat } = store.getState<IAddChatStoreSlice>();
-    const { load, ...fieldsState } = addChat;
+    const { addChat } = store.getState<TAddChatState>();
+    const { fields } = addChat;
 
-    const inputMap = getInputMap(fieldsParams, fieldsState);
+    const inputMap = getInputMap(fieldsParams, fields);
 
     const submitButton = new ButtonFilled({
       label: 'Create chat',
@@ -30,11 +30,11 @@ export class AddChatForm extends Block {
       ...inputMap,
       submitButton,
       onInput: (e: Event) => {
-        addChatController.input(getInputValue(e));
+        addChatController.input(e);
       },
       onSubmit: (e: Event) => {
         e.preventDefault();
-        void addChatController.submit(getFieldsValues(e));
+        addChatController.submit();
       },
     });
 
@@ -46,8 +46,8 @@ export class AddChatForm extends Block {
     return templateSpec;
   }
 
-  private readonly _onStoreUpdate = ({ addChat }: IAddChatStoreSlice): void => {
-    const { load, ...fields } = addChat;
+  private readonly _onStoreUpdate = ({ addChat }: TAddChatState): void => {
+    const { load, fields } = addChat;
 
     Object.entries(fields).forEach(([field, props]) => {
       const block = this._inputMap[field];
@@ -60,7 +60,7 @@ export class AddChatForm extends Block {
   };
 
   public didMount(): void {
-    store.on<IAddChatStoreSlice>(this._onStoreUpdate);
+    store.on(this._onStoreUpdate);
   }
 
   public willUnmount(): void {

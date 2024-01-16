@@ -13,7 +13,7 @@ export class AddChatAPI extends BaseAPI {
       .setHeader(HEADER.JSON);
   }
 
-  async create(body: { title: string }): XHR {
+  async create(body: Record<string, string>): XHR {
     return await this._http.post('/chats', JSON.stringify(body));
   }
 }

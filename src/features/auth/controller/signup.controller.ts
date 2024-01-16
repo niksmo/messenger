@@ -126,7 +126,7 @@ class SignupController {
           if (typeof reason === 'string') {
             const field = reason.startsWith('Email') ? 'email' : 'login';
 
-            this._store.set(`${STORE_SLICE}.${field}`, {
+            this._store.set(`${STORE_FIELDS}.${field}`, {
               hint: reason,
               error: true,
             });

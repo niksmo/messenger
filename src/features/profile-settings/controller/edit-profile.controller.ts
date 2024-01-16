@@ -6,24 +6,20 @@ import {
   verifierCreator,
 } from 'shared/components/form-verifier';
 import { ROUTE_PATH } from 'shared/constants';
-import { goToLoginWithUnauth, reviveNullToString } from 'shared/helpers';
-import { type IViewerState } from 'entites/viewer/model';
 import {
-  type IEditProfileState,
-  type IFieldState,
-} from '../model/edit-profile.model';
+  getInputValue,
+  goToLoginWithUnauth,
+  reviveNullToString,
+} from 'shared/helpers';
+import { type IViewerState } from 'entites/viewer/model';
 import { EditProfileAPI } from '../api/edit-profile.api';
-
-type TFormData = Record<string, string>;
-
-type TInitFieldsState = Omit<IEditProfileState['editProfile'], 'load'>;
-
-interface IInputData {
-  field: string;
-  value: string;
-}
+import type {
+  TEditProfileState,
+  TInputState,
+} from '../model/edit-profile.model';
 
 const STORE_SLICE = 'editProfile';
+const STORE_FIELDS = STORE_SLICE + '.fields';
 const STORE_LOAD = STORE_SLICE + '.load';
 
 class EditProfileController {
@@ -33,6 +29,10 @@ class EditProfileController {
   private readonly _router;
 
   constructor() {
+    this._api = new EditProfileAPI();
+    this._store = Store.instance();
+    this._router = AppRouter.instance();
+
     this._verifier = verifierCreator.makeStringVerifier({
       first_name: { template: TEMPLATE.name, hint: HINT.name },
       second_name: { template: TEMPLATE.name, hint: HINT.name },
@@ -40,10 +40,6 @@ class EditProfileController {
       phone: { template: TEMPLATE.phone, hint: HINT.phone },
       login: { template: TEMPLATE.login, hint: HINT.login },
     });
-
-    this._api = new EditProfileAPI();
-    this._store = Store.instance();
-    this._router = AppRouter.instance();
   }
 
   start(): void {
@@ -51,35 +47,46 @@ class EditProfileController {
     const { avatar, auth, id, ...initFieldsValues } = viewer;
 
     const initFieldsState = Object.entries(initFieldsValues).reduce<
-      Record<string, IFieldState>
+      Record<string, TInputState>
     >((map, [field, value]) => {
       map[field] = { value, error: false, hint: '' };
       return map;
-    }, {}) as TInitFieldsState;
+    }, {});
 
-    const initState: IEditProfileState['editProfile'] = {
-      ...initFieldsState,
+    this._store.set(STORE_SLICE, {
+      fields: initFieldsState,
       load: false,
-    };
-
-    this._store.set(STORE_SLICE, initState);
+    });
   }
 
   private _resetState(): void {
     this.start();
   }
 
-  input({ field, value }: IInputData): void {
-    this._store.set(`${STORE_SLICE}.${field}`, { value, error: false });
+  private _extractFormData(): Record<string, string> {
+    const { editProfile } = this._store.getState<TEditProfileState>();
+    const { fields } = editProfile;
+
+    const entries = Object.entries<TInputState>({ ...fields });
+
+    const formData = entries.reduce<Record<string, string>>(
+      (map, [fieldName, inputState]) => {
+        map[fieldName] = inputState.value;
+        return map;
+      },
+      {}
+    );
+
+    return formData;
   }
 
-  verify(formData: TFormData): boolean {
+  private _verify(formData: Record<string, string>): boolean {
     const { isValid, hintData } = this._verifier.checkOnValidity(formData);
 
     for (const field of Object.keys(hintData)) {
       const hint = hintData[field];
       if (typeof hint === 'string') {
-        this._store.set(`${STORE_SLICE}.${field}`, {
+        this._store.set(`${STORE_FIELDS}.${field}`, {
           hint,
           error: Boolean(hint),
         });
@@ -89,8 +96,10 @@ class EditProfileController {
     return isValid;
   }
 
-  async submit(formData: TFormData): Promise<void> {
-    if (!this.verify(formData)) {
+  private async _submit(): Promise<void> {
+    const formData = this._extractFormData();
+
+    if (!this._verify(formData)) {
       return;
     }
 
@@ -104,7 +113,7 @@ class EditProfileController {
 
           if (typeof reason === 'string') {
             const field = reason.startsWith('Email') ? 'email' : 'login';
-            this._store.set(`${STORE_SLICE}.${field}`, {
+            this._store.set(`${STORE_FIELDS}.${field}`, {
               hint: reason,
               error: true,
             });
@@ -135,6 +144,19 @@ class EditProfileController {
     } finally {
       this._store.set(STORE_LOAD, false);
     }
+  }
+
+  public input(e: Event): void {
+    const { field, value } = getInputValue(e);
+    this._store.set(`${STORE_FIELDS}.${field}`, { value, error: false });
+  }
+
+  public verify(): void {
+    this._verify(this._extractFormData());
+  }
+
+  public submit(): void {
+    void this._submit();
   }
 }
 

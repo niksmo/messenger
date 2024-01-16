@@ -1,23 +1,13 @@
 import { AppRouter } from 'shared/components/router';
 import { Store } from 'shared/components/store';
 import { ROUTE_PATH } from 'shared/constants';
-import { goToLoginWithUnauth } from 'shared/helpers';
+import { getInputValue, goToLoginWithUnauth } from 'shared/helpers';
 import { AddChatAPI } from '../api';
-import type { IAddChatFormState } from '../model';
-
-interface IInputData {
-  field: string;
-  value: string;
-}
+import { type TAddChatState, type TInputState, fieldList } from '../model';
 
 const STORE_SLICE = 'addChat';
+const STORE_FIELDS = STORE_SLICE + '.fields';
 const STORE_LOAD = STORE_SLICE + '.load';
-
-function isReqBody(
-  formData: Record<string, string>
-): formData is { title: string } {
-  return 'title' in formData && typeof formData['title'] === 'string';
-}
 
 class AddChatController {
   private readonly _api;
@@ -33,28 +23,40 @@ class AddChatController {
   start(): void {
     const initInputState = { value: '', hint: '', error: false };
 
-    const initState: IAddChatFormState = {
-      title: { ...initInputState },
-      load: false,
-    };
+    const fields = fieldList.reduce<Record<string, TInputState>>(
+      (map, fieldName) => {
+        map[fieldName] = { ...initInputState };
+        return map;
+      },
+      {}
+    );
 
-    this._store.set(STORE_SLICE, initState);
+    this._store.set(STORE_SLICE, { fields, load: false });
   }
 
   private _resetState(): void {
     this.start();
   }
 
-  input({ field, value }: IInputData): void {
-    this._store.set(`${STORE_SLICE}.${field}`, { value, error: false });
+  private _extractFormData(): Record<string, string> {
+    const { addChat } = this._store.getState<TAddChatState>();
+    const { fields } = addChat;
+
+    const entries = Object.entries<TInputState>({ ...fields });
+
+    const formData = entries.reduce<Record<string, string>>(
+      (map, [fieldName, inputState]) => {
+        map[fieldName] = inputState.value;
+        return map;
+      },
+      {}
+    );
+
+    return formData;
   }
 
-  //
-
-  async submit(formData: Record<string, string>): Promise<void> {
-    if (!isReqBody(formData)) {
-      return;
-    }
+  private async _submit(): Promise<void> {
+    const formData = this._extractFormData();
 
     try {
       this._store.set(STORE_LOAD, true);
@@ -67,7 +69,7 @@ class AddChatController {
           const { reason } = JSON.parse(response);
 
           if (typeof reason === 'string' && reason.startsWith('Title')) {
-            this._store.set(`${STORE_SLICE}.title`, {
+            this._store.set(`${STORE_FIELDS}.title`, {
               hint: reason,
               error: true,
             });
@@ -93,6 +95,15 @@ class AddChatController {
     } finally {
       this._store.set(STORE_LOAD, false);
     }
+  }
+
+  public input(e: Event): void {
+    const { field, value } = getInputValue(e);
+    this._store.set(`${STORE_FIELDS}.${field}`, { value, error: false });
+  }
+
+  public submit(): void {
+    void this._submit();
   }
 }
 

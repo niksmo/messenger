@@ -3,7 +3,7 @@ import { DropdownMenu } from 'shared/ui/dropdown';
 import { Avatar } from 'shared/ui/avatar';
 import { AddChatUserMenuItem } from 'features/chat-users/ui/add-users-menu-item';
 import { RemoveChatUserMenuItem } from 'features/chat-users/ui/delete-users-menu-item';
-import { DeleteChatMenuItem } from 'features/chat-delete/ui';
+import { DeleteChatMenuItem } from 'features/chat-delete/ui/menu-item';
 import templateSpec from './header.template.hbs';
 import styles from './styles.module.css';
 

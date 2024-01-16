@@ -1,11 +1,11 @@
 import { Block } from 'shared/components/block';
 import { Store } from 'shared/components/store';
 import { ButtonFilled } from 'shared/ui/button';
-import { getFieldsValues, getInputMap, getInputValue } from 'shared/helpers';
+import { getInputMap } from 'shared/helpers';
 import { editProfileController } from 'features/profile-settings/controller/edit-profile.controller';
-import type { IEditProfileState } from 'features/profile-settings/model/edit-profile.model';
 import templateSpec from './form.template.hbs';
 import { fieldsParams } from './lib';
+import { type TEditProfileState } from 'features/profile-settings/model/edit-profile.model';
 
 const store = Store.instance();
 
@@ -16,10 +16,10 @@ export class EditProfileForm extends Block {
   constructor() {
     editProfileController.start();
 
-    const state = store.getState<IEditProfileState>();
-    const { load, ...fieldsState } = state.editProfile;
+    const { editProfile } = store.getState<TEditProfileState>();
+    const { fields } = editProfile;
 
-    const inputMap = getInputMap(fieldsParams, fieldsState);
+    const inputMap = getInputMap(fieldsParams, fields);
 
     const submitButton = new ButtonFilled({
       type: 'submit',
@@ -30,14 +30,14 @@ export class EditProfileForm extends Block {
       ...inputMap,
       submitButton,
       onInput: (e: Event) => {
-        editProfileController.input(getInputValue(e));
+        editProfileController.input(e);
       },
-      onFocusout: (e: Event) => {
-        editProfileController.verify(getFieldsValues(e));
+      onFocusout: () => {
+        editProfileController.verify();
       },
       onSubmit: (e: Event) => {
         e.preventDefault();
-        void editProfileController.submit(getFieldsValues(e));
+        editProfileController.submit();
       },
     });
 
@@ -49,8 +49,8 @@ export class EditProfileForm extends Block {
     return templateSpec;
   }
 
-  private readonly _onStoreUpdate = (state: IEditProfileState): void => {
-    const { load, ...fields } = state.editProfile;
+  private readonly _onStoreUpdate = (state: TEditProfileState): void => {
+    const { load, fields } = state.editProfile;
     Object.entries(fields).forEach(([field, props]) => {
       const block = this._inputMap[field];
       if (block) {
@@ -62,7 +62,7 @@ export class EditProfileForm extends Block {
   };
 
   public didMount(): void {
-    store.on<IEditProfileState>(this._onStoreUpdate);
+    store.on(this._onStoreUpdate);
   }
 
   public willUnmount(): void {

@@ -1,17 +1,22 @@
-export interface IFieldState {
-  value: string;
+export type TFieldUnion =
+  | 'first_name'
+  | 'second_name'
+  | 'display_name'
+  | 'login'
+  | 'email'
+  | 'phone';
+
+export interface TInputState {
   error: boolean;
+  value: string;
   hint: string;
 }
 
-export interface IEditProfileState {
+type TFieldsState = Record<TFieldUnion, TInputState>;
+
+export interface TEditProfileState {
   editProfile: {
-    first_name: IFieldState;
-    second_name: IFieldState;
-    display_name: IFieldState;
-    login: IFieldState;
-    email: IFieldState;
-    phone: IFieldState;
+    fields: TFieldsState;
     load: boolean;
   };
 }

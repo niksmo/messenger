@@ -1,11 +1,11 @@
 import { Block } from 'shared/components/block';
 import { Store } from 'shared/components/store';
 import { ButtonFilled } from 'shared/ui/button';
-import { getFieldsValues, getInputMap, getInputValue } from 'shared/helpers';
+import { getInputMap } from 'shared/helpers';
 import { changePasswordController } from 'features/profile-settings/controller/change-password.controller';
-import type { IChangePasswordState } from 'features/profile-settings/model/change-password.model';
 import templateSpec from './form.template.hbs';
 import { fieldsParams } from './lib';
+import { type TChangePasswordState } from 'features/profile-settings/model/change-password.model';
 
 const store = Store.instance();
 
@@ -16,8 +16,8 @@ export class ChangePasswordForm extends Block {
   constructor() {
     changePasswordController.start();
 
-    const { changePassword } = store.getState<IChangePasswordState>();
-    const { load, ...fields } = changePassword;
+    const { changePassword } = store.getState<TChangePasswordState>();
+    const { fields } = changePassword;
 
     const inputMap = getInputMap(fieldsParams, fields);
 
@@ -30,14 +30,14 @@ export class ChangePasswordForm extends Block {
       ...inputMap,
       submitButton,
       onInput: (e: Event) => {
-        changePasswordController.input(getInputValue(e));
+        changePasswordController.input(e);
       },
-      onFocusout: (e: Event) => {
-        changePasswordController.verify(getFieldsValues(e));
+      onFocusout: () => {
+        changePasswordController.verify();
       },
       onSubmit: (e: Event) => {
         e.preventDefault();
-        void changePasswordController.submit(getFieldsValues(e));
+        changePasswordController.submit();
       },
     });
 
@@ -49,8 +49,8 @@ export class ChangePasswordForm extends Block {
     return templateSpec;
   }
 
-  private readonly _onStoreUpdate = (state: IChangePasswordState): void => {
-    const { load, ...fields } = state.changePassword;
+  private readonly _onStoreUpdate = (state: TChangePasswordState): void => {
+    const { load, fields } = state.changePassword;
     Object.entries(fields).forEach(([field, props]) => {
       const block = this._inputMap[field];
       if (block) {
@@ -62,7 +62,7 @@ export class ChangePasswordForm extends Block {
   };
 
   public didMount(): void {
-    store.on<IChangePasswordState>(this._onStoreUpdate);
+    store.on(this._onStoreUpdate);
   }
 
   public willUnmount(): void {
