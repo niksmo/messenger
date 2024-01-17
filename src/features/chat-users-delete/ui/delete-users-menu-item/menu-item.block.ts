@@ -1,3 +1,5 @@
+import { AppRouter } from 'shared/components/router/router';
+import { ROUTE_PATH } from 'shared/constants/routes';
 import { MenuItem } from 'shared/ui/dropdown/menu-item.block';
 
 export class RemoveChatUserMenuItem extends MenuItem {
@@ -7,7 +9,8 @@ export class RemoveChatUserMenuItem extends MenuItem {
       label: 'Remove User',
       style: 'primary',
       onClick: () => {
-        alert('open modal window');
+        const router = AppRouter.instance();
+        router.go(ROUTE_PATH.DELETE_USERS);
       },
     });
   }

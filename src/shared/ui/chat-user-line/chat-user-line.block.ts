@@ -21,7 +21,7 @@ interface InnerProps {
   status: null | string;
 }
 
-export class ChatUsersItem extends Block<InnerProps> {
+export class ChatUsersLine extends Block<InnerProps> {
   constructor({
     avatar,
     displayName,

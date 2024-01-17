@@ -45,6 +45,13 @@ class App {
     );
 
     router.authUse(
+      ROUTE_PATH.DELETE_USERS,
+      PAGE.DeleteUsers,
+      RequestAuthStub,
+      goToLogin
+    );
+
+    router.authUse(
       ROUTE_PATH.SETTINGS,
       PAGE.Settings,
       RequestAuthStub,

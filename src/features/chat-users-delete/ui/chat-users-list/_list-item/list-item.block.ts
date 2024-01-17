@@ -4,7 +4,7 @@ import { ChatUsersLine } from 'shared/ui/chat-user-line/chat-user-line.block';
 import styles from './styles.module.css';
 import templateSpec from './list-item.template.hbs';
 
-interface FoundUsersItemProps {
+interface ChatUsersItemProps {
   userId: number;
   avatar: string | null;
   firstName: string;
@@ -26,7 +26,7 @@ interface InnerProps {
 function createUserLine({
   isAdded,
   ...rest
-}: FoundUsersItemProps): ChatUsersLine {
+}: ChatUsersItemProps): ChatUsersLine {
   const status = isAdded ? 'Added' : null;
 
   return new ChatUsersLine({
@@ -35,8 +35,8 @@ function createUserLine({
   });
 }
 
-export class FoundUsersItem extends Block<InnerProps> {
-  constructor(props: FoundUsersItemProps) {
+export class ChatUsersItem extends Block<InnerProps> {
+  constructor(props: ChatUsersItemProps) {
     const { isAdded, userId, onInput } = props;
     const userLine = createUserLine(props);
     super({

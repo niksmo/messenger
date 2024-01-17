@@ -3,6 +3,7 @@ import { SignupPage as Signup } from './signup/signup-page.block';
 import { MainPage as Main } from './main/main-page.block';
 import { AddChatPage as AddChat } from './chat-add/add-chat-page.block';
 import { AddChatUsersPage as AddUsers } from './chat-users-add/add-chat-users-page.block';
+import { DeleteChatUsersPage as DeleteUsers } from './chat-users-delete/delete-chat-users-page.block';
 import { SettingsPage as Settings } from './profile-settings/profile-settings-page.block';
 import { ChangeAvatarPage as ChangeAvatar } from './change-avatar/change-avatar-page.block';
 import { ChangePasswordPage as ChangePassword } from './change-password/change-password-page.block';
@@ -16,6 +17,7 @@ const PAGE = {
   Main,
   AddChat,
   AddUsers,
+  DeleteUsers,
   Settings,
   ChangeAvatar,
   ChangePassword,
