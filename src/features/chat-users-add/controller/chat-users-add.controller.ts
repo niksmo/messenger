@@ -2,14 +2,15 @@ import { Store } from 'shared/components/store/store';
 import { AppRouter } from 'shared/components/router';
 import {
   getInputValue,
+  getTypedEntries,
   goToLoginWithUnauth,
-  isSomeValues,
 } from 'shared/helpers';
 import { ROUTE_PATH } from 'shared/constants';
 import {
+  fieldList,
   type TAddUsersState,
   type TInputState,
-  fieldList,
+  type TFieldUnion,
 } from '../model/chat-users-add.model';
 import { ChatUsersAddAPI } from '../api/chat-users-add.api';
 
@@ -41,42 +42,42 @@ export class AddChatUsersController {
       {}
     );
 
-    //target delete
     const cache = localStorage.getItem('found');
 
     this._store.set(STORE_SLICE, {
       fields,
       load: false,
-      //target delete
       found: cache ? JSON.parse(cache) : [],
       select: [],
     });
   }
 
   private _resetState(): void {
+    localStorage.removeItem('found');
     this.start();
   }
 
-  private _extractFormData(): Record<string, string> {
+  private _extractFormData(): Record<TFieldUnion, string> {
     const { addUsers } = this._store.getState<TAddUsersState>();
     const { fields } = addUsers;
 
-    const entries = Object.entries<TInputState>({ ...fields });
+    const entries = getTypedEntries<TFieldUnion, TInputState>({ ...fields });
 
-    const formData = entries.reduce<Record<string, string>>(
-      (map, [fieldName, inputState]) => {
-        map[fieldName] = inputState.value;
-        return map;
-      },
-      {}
-    );
+    const formData: Record<TFieldUnion, string> = Object.create(null);
+
+    entries.reduce((map, [fieldName, inputState]) => {
+      map[fieldName] = inputState.value;
+      return map;
+    }, formData);
 
     return formData;
   }
 
   private async _searchUsers(): Promise<void> {
     const formData = this._extractFormData();
-    if (!isSomeValues(formData)) {
+    formData.login = formData.login.trim();
+    if (!formData.login) {
+      this._resetState();
       return;
     }
 
