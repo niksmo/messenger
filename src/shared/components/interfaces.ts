@@ -1,9 +1,5 @@
 export type TBlockConstructor = new (props: Record<string, unknown>) => IBlock;
 
-type TypedObject<T> = T extends Record<infer K, unknown>
-  ? { [key in K]: unknown }
-  : unknown;
-
 export interface IBlock {
   dispatchDidMount: () => void;
   dispatchDidUpdate: () => void;
@@ -12,7 +8,7 @@ export interface IBlock {
   didUpdate: () => void;
   willUnmount: () => void;
   getContent: () => HTMLElement;
-  setProps: (props: Partial<TypedObject<unknown>>) => void;
+  setProps: (props: Partial<Record<string, unknown>>) => void;
 }
 
 export interface IAppRouter {

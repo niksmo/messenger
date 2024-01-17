@@ -1,5 +1,5 @@
 import { Block } from 'shared/components/block';
-import { Store } from 'shared/components/store';
+import { Store } from 'shared/components/store/store';
 import { type TSigninState } from 'features/auth/model/signin.model';
 import templateSpec from './message.template.hbs';
 import styles from './styles.module.css';

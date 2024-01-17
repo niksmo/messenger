@@ -10,13 +10,9 @@ import {
 } from './lib';
 import { EVENT, TMP_TAG } from './consts';
 
-export type TIndexed<T = unknown> = T extends Record<infer K, infer V>
-  ? { [key in K]: V }
-  : Record<string, unknown>;
+export type TIndexed = Record<string, unknown>;
 
-export abstract class Block<TProps = Record<string, unknown>>
-  implements IBlock
-{
+export abstract class Block<TProps = TIndexed> implements IBlock {
   private readonly _stubId = uuid();
   private readonly _eventBus = new EventBus();
   private readonly _templator = templator;
@@ -27,7 +23,7 @@ export abstract class Block<TProps = Record<string, unknown>>
   protected childBlocks: Map<string, Block> | null = null;
   protected props;
 
-  constructor(props?: TIndexed<TProps>) {
+  constructor(props?: TProps) {
     this.props = this._proxyProps(props ?? {});
     this._subscribe();
     this._eventBus.emit(EVENT.INIT, props);
@@ -152,7 +148,7 @@ export abstract class Block<TProps = Record<string, unknown>>
   protected renderInterceptorHook(
     shouldRender: boolean,
     _causeProps: Map<string, unknown>,
-    _oldProps: TIndexed<TProps>
+    _oldProps: TIndexed
   ): boolean {
     return shouldRender;
   }
@@ -173,10 +169,7 @@ export abstract class Block<TProps = Record<string, unknown>>
     traverseBlocksTreeAndCall.call(this, 'willUnmount');
   }
 
-  private _compareProps(
-    oldProps: TIndexed<TProps>,
-    newProps: TIndexed<TProps>
-  ): void {
+  private _compareProps(oldProps: TIndexed, newProps: TIndexed): void {
     const [isEqual, causeProps] = this._shallowEqual(oldProps, newProps);
 
     const shouldRender = this.renderInterceptorHook(
@@ -214,7 +207,7 @@ export abstract class Block<TProps = Record<string, unknown>>
     return this._element as HTMLElement;
   }
 
-  public setProps(props: Partial<TIndexed<TProps>>): void {
+  public setProps<TProps>(props: Partial<TProps>): void {
     this._updatingPropsNum = Object.keys(props).length;
 
     Object.assign(this.props, props);

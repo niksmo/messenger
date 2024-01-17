@@ -1,6 +1,6 @@
 import { AppRouter } from 'shared/components/router';
 import { ROUTE_PATH, ROUTE_SLUG } from 'shared/constants';
-import { Store } from 'shared/components/store';
+import { Store } from 'shared/components/store/store';
 import { RequestAuthStub } from 'entites/viewer/ui/request-auth-stub';
 import { goToLogin, goToMain } from 'shared/helpers';
 import PAGE from 'pages/pages';

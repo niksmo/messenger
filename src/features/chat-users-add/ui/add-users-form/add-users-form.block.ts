@@ -1,8 +1,6 @@
 import { Block } from 'shared/components/block';
-import { Store } from 'shared/components/store';
+import { Store } from 'shared/components/store/store';
 import { ButtonFilled } from 'shared/ui/button';
-import { type Input } from 'shared/ui/input';
-import { ChatUsersList } from 'entites/chat-user/ui/chat-users-list';
 import { getInputMap, getTypedEntries, withDelay } from 'shared/helpers';
 import {
   type TFieldUnion,
@@ -13,9 +11,10 @@ import { addChatUsersController } from '../../controller/chat-users-add.controll
 import { fieldsParams } from './lib';
 import templateSpec from './form.template.hbs';
 import styles from './styles.module.css';
+import { FoundUsersList } from '../found-list/found-list.block';
 
 interface AddUsersFormProps {
-  login: Input;
+  login: Block;
   foundList: Block;
   submitButton: Block;
   onInput: (e: Event) => void;
@@ -32,17 +31,16 @@ const searchUsersWithDelay = withDelay(
 export class AddUsersForm extends Block<AddUsersFormProps> {
   private readonly _inputMap;
   private readonly _submitButton;
-  private readonly _foundList;
 
   constructor() {
     addChatUsersController.start();
 
     const { addUsers } = store.getState<TAddUsersState>();
-    const { fields, found } = addUsers;
+    const { fields } = addUsers;
 
     const inputMap = getInputMap<TFieldUnion>(fieldsParams, fields);
 
-    const foundList = new ChatUsersList({ users: found });
+    const foundList = new FoundUsersList();
 
     const submitButton = new ButtonFilled({
       label: 'Add to chat',
@@ -66,7 +64,6 @@ export class AddUsersForm extends Block<AddUsersFormProps> {
 
     this._inputMap = inputMap;
     this._submitButton = submitButton;
-    this._foundList = foundList;
   }
 
   protected getTemplateHook(): TemplateSpecification {
@@ -78,7 +75,7 @@ export class AddUsersForm extends Block<AddUsersFormProps> {
   }
 
   private readonly _onStoreUpdate = ({ addUsers }: TAddUsersState): void => {
-    const { load, fields, found } = addUsers;
+    const { load, fields } = addUsers;
 
     getTypedEntries<TFieldUnion, TInputState>(fields).forEach(
       ([field, props]) => {
@@ -88,8 +85,6 @@ export class AddUsersForm extends Block<AddUsersFormProps> {
         }
       }
     );
-
-    this._foundList.setProps({ users: found });
 
     this._submitButton.setProps({ disabled: load });
   };

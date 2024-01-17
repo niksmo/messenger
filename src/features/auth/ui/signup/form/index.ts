@@ -1,5 +1,5 @@
 import { Block } from 'shared/components/block';
-import { Store } from 'shared/components/store';
+import { Store } from 'shared/components/store/store';
 import { ButtonFilled } from 'shared/ui/button';
 import { getInputMap } from 'shared/helpers';
 import { type TSignupState } from '../../../model/signup.model';

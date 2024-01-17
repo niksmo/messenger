@@ -15,4 +15,15 @@ export class Button extends Block<ButtonProps> {
   protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
+
+  protected renderInterceptorHook(
+    shouldRender: boolean,
+    causeProps: Map<keyof ButtonProps, unknown>
+  ): boolean {
+    if (causeProps.has('disabled')) {
+      shouldRender = false;
+    }
+
+    return shouldRender;
+  }
 }

@@ -1,6 +1,6 @@
 import { Block } from 'shared/components/block';
 // import { DayMessages } from 'entites/message';
-import { Store } from 'shared/components/store';
+import { Store } from 'shared/components/store/store';
 import { type TChatListState } from 'entites/chat/model/chat-list.model';
 import { ChatHeader } from 'entites/chat/ui/chat-header';
 import { MessageSender } from 'features/send-message/ui/container';

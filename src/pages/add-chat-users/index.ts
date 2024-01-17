@@ -2,7 +2,7 @@ import { Block } from 'shared/components/block';
 import { Link } from 'shared/components/router';
 import { ButtonLight } from 'shared/ui/button';
 import { ROUTE_PATH } from 'shared/constants';
-import { AddUsersForm } from 'features/chat-users-add/ui/add-users-form';
+import { AddUsersForm } from 'features/chat-users-add/ui/add-users-form/add-users-form.block';
 import templateSpec from './add-chat-users-page.template.hbs';
 import styles from './styles.module.css';
 

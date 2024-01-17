@@ -1,4 +1,4 @@
-import { Store } from 'shared/components/store';
+import { Store } from 'shared/components/store/store';
 import { AppRouter } from 'shared/components/router';
 import {
   getInputValue,

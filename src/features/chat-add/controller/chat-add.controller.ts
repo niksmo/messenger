@@ -1,5 +1,5 @@
 import { AppRouter } from 'shared/components/router';
-import { Store } from 'shared/components/store';
+import { Store } from 'shared/components/store/store';
 import { ROUTE_PATH } from 'shared/constants';
 import { getInputValue, goToLoginWithUnauth } from 'shared/helpers';
 import { AddChatAPI } from '../api/chat-add.api';

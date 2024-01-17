@@ -1,5 +1,5 @@
 import { Block } from 'shared/components/block';
-import { Store } from 'shared/components/store';
+import { Store } from 'shared/components/store/store';
 import { type TChatListState } from 'entites/chat/model/chat-list.model';
 import { chatListController } from 'entites/chat/controller/chat-list.controller';
 import { createItems } from './lib';

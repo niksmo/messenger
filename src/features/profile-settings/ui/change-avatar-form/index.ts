@@ -1,7 +1,7 @@
 import { Block } from 'shared/components/block';
 import { WarningText } from 'shared/ui/warning';
 import { ButtonFilled, ButtonLight } from 'shared/ui/button';
-import { Store } from 'shared/components/store';
+import { Store } from 'shared/components/store/store';
 import { AppRouter } from 'shared/components/router';
 import { ROUTE_PATH } from 'shared/constants';
 import templateSpec from './preview.template.hbs';

@@ -1,5 +1,5 @@
 import { Block } from 'shared/components/block';
-import { Store } from 'shared/components/store';
+import { Store } from 'shared/components/store/store';
 import { Avatar } from 'shared/ui/avatar';
 import { InvisibleFileInput } from 'features/profile-settings/ui/invisible-input';
 import { type TViewerState } from '../../model';

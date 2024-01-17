@@ -1,12 +1,11 @@
 .container {
+  box-sizing: border-box;
   width: 100%;
   overflow: hidden;
   padding: 4px 8px;
   display: flex;
   align-items: center;
   column-gap: 8px;
-  border: 1px solid var(--color-background-secondary);
-  border-radius: 8px;
 }
 
 .avatarContainer {
@@ -20,18 +19,27 @@
 
 .userName {
   margin: 0;
-  /* label large */
-  /* text primary */
+  color: var(--color-text-primary);
+  font-size: var(--font-label-large-size);
+  line-height: var(----font-label-large-height);
+  font-weight: var(--font-label-large-weight);
+  letter-spacing: var(--font-label-large-spacing);
 }
 
 .userLogin {
-  margin: 12px 0 0;
-  /* body medium */
-  /* text secondary */
+  margin: 2px 0 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-body-medium-size);
+  line-height: var(----font-body-medium-height);
+  font-weight: var(--font-body-medium-weight);
+  letter-spacing: var(--font-body-medium-spacing);
 }
 
 .statusText {
   margin: 0;
-  /* body small */
-  /* text primary */
+  color: var(--color-text-primary);
+  font-size: var(--font-body-small-size);
+  line-height: var(----font-body-small-height);
+  font-weight: var(--font-body-small-weight);
+  letter-spacing: var(--font-body-small-spacing);
 }

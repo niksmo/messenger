@@ -3,7 +3,7 @@ import {
   type TBlockConstructor,
   type IBlock,
 } from '../interfaces';
-import { Store } from '../store';
+import { Store } from '../store/store';
 
 const SLUG_PREFIX = '/:';
 
