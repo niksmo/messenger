@@ -13,11 +13,14 @@ interface FoundUsersListProps {
 const store = Store.instance();
 
 export class FoundUsersList extends Block<FoundUsersListProps> {
+  _cache;
   constructor() {
     const { addUsers } = store.getState<TAddUsersState>();
     const { found } = addUsers;
     const users = createItems(found);
     super({ users });
+
+    this._cache = found;
   }
 
   protected getTemplateHook(): TemplateSpecification {
@@ -39,8 +42,11 @@ export class FoundUsersList extends Block<FoundUsersListProps> {
   private readonly _onStoreUpdate = (state: TAddUsersState): void => {
     const { addUsers } = state;
     const { found } = addUsers;
-    const users = createItems(found);
-    this.setProps({ users });
+    if (found !== this._cache) {
+      const users = createItems(found);
+      this.setProps({ users });
+      this._cache = found;
+    }
   };
 }
 
