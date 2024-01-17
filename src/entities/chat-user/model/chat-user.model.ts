@@ -8,6 +8,8 @@ export interface TUser {
   role: string;
 }
 
+export type TChatUsersIndexed = Record<number, TUser>;
+
 export interface TChatUsersSate {
-  chatUsers: TUser[];
+  chatUsers: TChatUsersIndexed | null;
 }

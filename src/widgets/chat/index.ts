@@ -7,6 +7,8 @@ import { MessageSender } from 'features/send-message/ui/container';
 import { ChatStub } from 'entites/chat/ui/chat-stub';
 import templateSpec from './chat-widget.template.hbs';
 import styles from './styles.module.css';
+import { chatUsersController } from 'entites/chat-user/controller/chat-users.controller';
+import { withInterrupt } from 'shared/helpers';
 
 interface ChatWidgetProps {
   header: Block;
@@ -18,9 +20,11 @@ interface ChatWidgetProps {
 
 const store = Store.instance();
 
-export class ChatWidget extends Block<ChatWidgetProps> {
-  private readonly _onStoreUpdate;
+const getChatUsersWithInterrupt = withInterrupt(
+  chatUsersController.getChatUsers.bind(chatUsersController)
+);
 
+export class ChatWidget extends Block<ChatWidgetProps> {
   constructor() {
     const { chatList } = store.getState<TChatListState>();
     const { currentChat } = { ...chatList };
@@ -43,14 +47,6 @@ export class ChatWidget extends Block<ChatWidgetProps> {
       // messages,
       sender,
     });
-
-    this._onStoreUpdate = (state: TChatListState) => {
-      const { chatList } = state;
-      const { currentChat } = chatList;
-      this.setProps({ isCurrentChat: Boolean(currentChat) });
-    };
-
-    store.on(this._onStoreUpdate);
   }
 
   protected getTemplateHook(): TemplateSpecification {
@@ -61,7 +57,18 @@ export class ChatWidget extends Block<ChatWidgetProps> {
     return styles;
   }
 
+  public didMount(): void {
+    getChatUsersWithInterrupt();
+    store.on(this._onStoreUpdate);
+  }
+
   public willUnmount(): void {
     store.off(this._onStoreUpdate);
   }
+
+  private readonly _onStoreUpdate = (state: TChatListState): void => {
+    const { chatList } = state;
+    const { currentChat } = chatList;
+    this.setProps({ isCurrentChat: Boolean(currentChat) });
+  };
 }
