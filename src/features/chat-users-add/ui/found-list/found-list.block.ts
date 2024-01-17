@@ -1,10 +1,13 @@
 import { Block } from 'shared/components/block';
 import { Store } from 'shared/components/store/store.ts';
-import type { TUser } from 'entites/chat-user/model/chat-user.model.ts';
-import type { TAddUsersState } from '../../model/chat-users-add.model.ts';
+import type {
+  TAddUsersState,
+  TFoundUser,
+} from '../../model/chat-users-add.model.ts';
 import { FoundUsersItem } from './list-item/list-item.block.ts';
 import templateSpec from './found-list.template.hbs';
 import styles from './styles.module.css';
+import { addChatUsersController } from 'features/chat-users-add/controller/chat-users-add.controller.ts';
 
 interface FoundUsersListProps {
   users: FoundUsersItem[];
@@ -50,7 +53,7 @@ export class FoundUsersList extends Block<FoundUsersListProps> {
   };
 }
 
-function createItems(foundList: TUser[]): FoundUsersItem[] {
+function createItems(foundList: TFoundUser[]): FoundUsersItem[] {
   return foundList.map((userParams) => {
     const {
       id: userId,
@@ -59,6 +62,7 @@ function createItems(foundList: TUser[]): FoundUsersItem[] {
       second_name: secondName,
       display_name: displayName,
       login,
+      isAdded,
     } = userParams;
     return new FoundUsersItem({
       userId,
@@ -66,18 +70,11 @@ function createItems(foundList: TUser[]): FoundUsersItem[] {
       firstName,
       secondName,
       displayName,
-      isAdded: Math.floor(Math.random() * 100) > 50,
+      isAdded,
       login,
       onInput(e) {
         e.stopPropagation();
-        const { target } = e;
-        if (target instanceof HTMLInputElement) {
-          if (target.checked) {
-            console.log('add to select state: ', target.value);
-          } else {
-            console.log('remove from select state: ', target.value);
-          }
-        }
+        addChatUsersController.select(e);
       },
     });
   });

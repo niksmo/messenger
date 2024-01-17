@@ -4,13 +4,20 @@ import {
   getInputValue,
   getTypedEntries,
   goToLoginWithUnauth,
+  goToMain,
 } from 'shared/helpers';
 import { ROUTE_PATH } from 'shared/constants';
+import type {
+  TChatUsersSate,
+  TUser,
+} from 'entites/chat-user/model/chat-user.model';
+import { type TChatListState } from 'entites/chat/model/chat-list.model';
 import {
   fieldList,
   type TAddUsersState,
   type TInputState,
   type TFieldUnion,
+  type TFoundUser,
 } from '../model/chat-users-add.model';
 import { ChatUsersAddAPI } from '../api/chat-users-add.api';
 
@@ -42,12 +49,10 @@ export class AddChatUsersController {
       {}
     );
 
-    const cache = localStorage.getItem('found');
-
     this._store.set(STORE_SLICE, {
       fields,
       load: false,
-      found: cache ? JSON.parse(cache) : [],
+      found: [],
       select: [],
     });
   }
@@ -73,6 +78,23 @@ export class AddChatUsersController {
     return formData;
   }
 
+  private _makeAddedParam(foundUsers: TUser[]): TFoundUser[] {
+    const { chatUsers } = this._store.getState<TChatUsersSate>();
+
+    if (!chatUsers) {
+      throw Error('ChatUsers not exist in Store');
+    }
+
+    return foundUsers.map((userData) => {
+      const { id } = userData;
+
+      const foundUser: TFoundUser = Object.assign({ isAdded: false }, userData);
+
+      foundUser.isAdded = Boolean(chatUsers[id]);
+      return foundUser;
+    });
+  }
+
   private async _searchUsers(): Promise<void> {
     const formData = this._extractFormData();
     formData.login = formData.login.trim();
@@ -87,6 +109,15 @@ export class AddChatUsersController {
       const xhr = await this._api.request(formData);
       const { status, response } = xhr;
 
+      if (status === 200) {
+        if (typeof response === 'string') {
+          const usersList: TUser[] = JSON.parse(response);
+          const foundList = this._makeAddedParam(usersList);
+          this._store.set(STORE_FOUND, foundList);
+          return;
+        }
+      }
+
       if (status === 400) {
         if (typeof response === 'string') {
           const { reason } = JSON.parse(response);
@@ -99,16 +130,6 @@ export class AddChatUsersController {
           }
         }
         return;
-      }
-
-      if (status === 200) {
-        if (typeof response === 'string') {
-          localStorage.setItem('found', response);
-          const found = JSON.parse(response);
-          console.log(found);
-          this._store.set(STORE_FOUND, found);
-          return;
-        }
       }
 
       if (status === 401) {
@@ -126,6 +147,72 @@ export class AddChatUsersController {
     }
   }
 
+  private async _addToChat(): Promise<void> {
+    const { addUsers, chatList } = this._store.getState<
+      TAddUsersState & TChatListState
+    >();
+
+    const { select: users } = addUsers;
+    const { currentChat: chatId } = chatList;
+
+    if (users.length === 0 || !chatId) {
+      return;
+    }
+
+    this._store.set(STORE_LOAD, true);
+
+    try {
+      const xhr = await this._api.create({ chatId, users });
+      const { status, response } = xhr;
+      if (status === 200) {
+        goToMain();
+      }
+
+      if (status === 400) {
+        if (typeof response === 'string') {
+          const { reason } = JSON.parse(response);
+
+          if (typeof reason === 'string') {
+            this._store.set(`${STORE_FIELDS}.login`, {
+              hint: reason,
+              error: true,
+            });
+          }
+        }
+      }
+
+      if (status === 401) {
+        goToLoginWithUnauth();
+      }
+
+      if (status === 500) {
+        this._router.go(ROUTE_PATH[500]);
+      }
+
+      this._resetState();
+    } catch (err) {
+      console.warn(err);
+    } finally {
+      this._store.set(STORE_LOAD, false);
+    }
+  }
+
+  private _select(userId: number): void {
+    const { addUsers } = this._store.getState<TAddUsersState>();
+    const { select } = addUsers;
+    select.push(userId);
+  }
+
+  private _unselect(userId: number): void {
+    const { addUsers } = this._store.getState<TAddUsersState>();
+    const { select } = addUsers;
+
+    const filteredList = select.filter(
+      (selectedUserId) => selectedUserId !== userId
+    );
+    this._store.set(STORE_SELECT, filteredList);
+  }
+
   public input(e: Event): void {
     const { field, value } = getInputValue(e);
     this._store.set(`${STORE_FIELDS}.${field}`, { value, error: false });
@@ -133,6 +220,22 @@ export class AddChatUsersController {
 
   public searchUsers(): void {
     void this._searchUsers();
+  }
+
+  public select(e: Event): void {
+    const { target } = e;
+    if (target instanceof HTMLInputElement) {
+      const { checked, value } = target;
+      if (checked) {
+        this._select(parseInt(value));
+      } else {
+        this._unselect(parseInt(value));
+      }
+    }
+  }
+
+  public addToChat(): void {
+    void this._addToChat();
   }
 }
 

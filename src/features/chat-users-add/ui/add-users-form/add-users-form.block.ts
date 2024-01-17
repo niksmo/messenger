@@ -59,6 +59,7 @@ export class AddUsersForm extends Block<AddUsersFormProps> {
       },
       onSubmit: (e) => {
         e.preventDefault();
+        addChatUsersController.addToChat();
       },
     });
 

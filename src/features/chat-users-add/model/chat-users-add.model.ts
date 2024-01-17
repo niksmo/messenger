@@ -12,11 +12,15 @@ export interface TInputState {
 
 type TFieldsState = Record<TFieldUnion, TInputState>;
 
+export interface TFoundUser extends TUser {
+  isAdded: boolean;
+}
+
 export interface TAddUsersState {
   addUsers: {
     fields: TFieldsState;
     load: boolean;
-    found: TUser[];
+    found: TFoundUser[];
     select: Array<TUser['id']>;
   };
 }
