@@ -6,6 +6,7 @@ import { withInterrupt } from 'shared/helpers/with';
 interface OverlayProps {
   isVisible: boolean;
   children: Block;
+  onPointerdown?: (e: Event) => void;
 }
 
 const appRoot = document.getElementById('app');

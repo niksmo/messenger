@@ -13,7 +13,12 @@ interface DialogContainerProps {
   approveCb: () => void;
 }
 
-class DialogContainer extends Block<DialogContainerProps> {
+interface InnerProps {
+  declineButton: Block;
+  confirmButton: Block;
+}
+
+class DialogContainer extends Block<InnerProps> {
   private readonly _declineButtonBlock;
 
   constructor(props: DialogContainerProps) {
@@ -31,7 +36,7 @@ class DialogContainer extends Block<DialogContainerProps> {
       onClick: approveCb,
     });
 
-    super({ ...props, declineButton, confirmButton });
+    super({ declineButton, confirmButton });
 
     this._declineButtonBlock = declineButton;
   }

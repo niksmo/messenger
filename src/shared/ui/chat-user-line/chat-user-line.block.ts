@@ -44,6 +44,4 @@ export class ChatUsersItem extends Block<InnerProps> {
   protected getStylesModuleHook(): CSSModuleClasses {
     return styles;
   }
-
-  public setProps(props: Partial<InnerProps>): void {}
 }

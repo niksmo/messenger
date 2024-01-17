@@ -4,6 +4,7 @@ import templateSpec from './search-input.template.hbs';
 import styles from './styles.module.css';
 
 interface SearchBarProps {
+  id: string;
   onInput?: (e: Event) => void;
 }
 

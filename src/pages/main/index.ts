@@ -9,7 +9,12 @@ interface MainPageProps {
   chatId?: string;
 }
 
-export class MainPage extends Block<MainPageProps> {
+interface InnerProps {
+  chatListWidget: Block;
+  chatWidget: Block;
+}
+
+export class MainPage extends Block<InnerProps> {
   private _curChatId;
 
   constructor(props: MainPageProps) {
