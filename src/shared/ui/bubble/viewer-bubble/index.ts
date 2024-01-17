@@ -1,13 +1,13 @@
-import { Block, type BlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import templateSpec from './bubble.template.hbs';
 import baseStyles from '../base-styles.module.css';
 import viewerStyles from './styles.module.css';
 
-type BubbleOwnProps = BlockProps<{
+interface BubbleOwnProps {
   text: string;
   time: string;
   status: string;
-}>;
+}
 
 const styles = { ...baseStyles, ...viewerStyles };
 
@@ -40,9 +40,9 @@ export class BubbleOwn extends Block<BubbleOwnProps> {
     return styles;
   }
 
-  public setProps(newProps: Partial<BubbleOwnProps>): void {
-    const { status } = newProps;
+  public setProps(props: Partial<BubbleOwnProps>): void {
+    const { status } = props;
     curStatus = status ?? curStatus;
-    super.setProps(newProps);
+    super.setProps(props);
   }
 }

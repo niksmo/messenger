@@ -1,4 +1,4 @@
-import { Block, type BlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import { DropdownMenu } from 'shared/ui/dropdown';
 import { OpenSettingsButton } from 'features/profile-settings/ui/settings-button';
 import { SearchBar } from 'features/search-chat/ui/search-input';
@@ -7,12 +7,12 @@ import { ChatList } from 'entites/chat/ui/chat-list';
 import templateSpec from './chat-list.template.hbs';
 import styles from './styles.module.css';
 
-type ChatListWidgetProps = BlockProps<{
+interface ChatListWidgetProps {
   settingsButton: Block;
   search: Block;
   addChat: Block;
   chatList: Block;
-}>;
+}
 
 export class ChatListWidget extends Block<ChatListWidgetProps> {
   constructor() {

@@ -1,13 +1,13 @@
-import { Block, type BlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import templateSpec from './404.template.hbs';
 import { WarnStub } from 'shared/ui/warn-stub-page';
 import { ButtonLight } from 'shared/ui/button';
 import { Link } from 'shared/components/router/link';
 
-type NotFoundPageProps = BlockProps<{
+interface NotFoundPageProps {
   warnStub: Block;
   transitionButton: Block;
-}>;
+}
 
 export class NotFoundPage extends Block<NotFoundPageProps> {
   constructor() {

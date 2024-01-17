@@ -1,4 +1,4 @@
-import { Block, type BlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import { Link } from 'shared/components/router';
 import { ButtonLight } from 'shared/ui/button';
 import { ROUTE_PATH } from 'shared/constants';
@@ -6,10 +6,10 @@ import { ChangePasswordForm } from 'features/profile-settings/ui/change-password
 import templateSpec from './change-password-page.template.hbs';
 import styles from './styles.module.css';
 
-type ChangePasswordPageProps = BlockProps<{
+interface ChangePasswordPageProps {
   form: Block;
   transitionButton: Block;
-}>;
+}
 
 export class ChangePasswordPage extends Block<ChangePasswordPageProps> {
   constructor() {

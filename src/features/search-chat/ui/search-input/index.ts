@@ -1,11 +1,11 @@
 import uuid from 'shared/packages/uuid';
-import { Block, type BlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import templateSpec from './search-input.template.hbs';
 import styles from './styles.module.css';
 
-type SearchBarProps = BlockProps<{
+interface SearchBarProps {
   onInput?: (e: Event) => void;
-}>;
+}
 
 export class SearchBar extends Block<SearchBarProps> {
   constructor() {

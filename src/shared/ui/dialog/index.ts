@@ -1,17 +1,17 @@
-import { Block, type BlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import templateSpec from './dialog.template.hbs';
 import styles from './styles.module.css';
 import { ButtonOutlined } from '../button';
 import { Overlay } from '../overlay';
 import { withInterrupt } from 'shared/helpers/with';
 
-type DialogContainerProps = BlockProps<{
+interface DialogContainerProps {
   text: string;
   buttonText: [string, string];
   animationStyle?: string;
   declineCb?: () => void;
   approveCb: () => void;
-}>;
+}
 
 class DialogContainer extends Block<DialogContainerProps> {
   private readonly _declineButtonBlock;
@@ -44,8 +44,8 @@ class DialogContainer extends Block<DialogContainerProps> {
     return styles;
   }
 
-  public setProps(newProps: Partial<DialogContainerProps>): void {
-    const { declineCb, ...rest } = newProps;
+  public setProps(props: Partial<DialogContainerProps>): void {
+    const { declineCb, ...rest } = props;
 
     this._declineButtonBlock.setProps({ onClick: declineCb });
 

@@ -1,4 +1,4 @@
-import { Block, type BlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import { Avatar } from 'shared/ui/avatar';
 import { Counter } from 'shared/ui/counter';
 import { AppRouter } from 'shared/components/router';
@@ -7,7 +7,7 @@ import { normalizeTime } from './lib';
 import templateSpec from './chat-list-item.template.hbs';
 import styles from './styles.module.css';
 
-type ChatListItemProps = BlockProps<{
+interface ChatListItemProps {
   id: number;
   active: boolean;
   avatar: string | null;
@@ -15,9 +15,9 @@ type ChatListItemProps = BlockProps<{
   time: string;
   content: string;
   unread: number;
-}>;
+}
 
-type InnerProps = BlockProps<{
+interface InnerProps {
   active: boolean;
   avatar: Avatar;
   title: string;
@@ -25,7 +25,7 @@ type InnerProps = BlockProps<{
   content: string;
   unread: Counter;
   onClick: (e: Event) => void;
-}>;
+}
 
 const router = AppRouter.instance();
 

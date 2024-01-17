@@ -10,10 +10,11 @@ import {
 } from './lib';
 import { EVENT, TMP_TAG } from './consts';
 
-export type BlockProps<PropsType = unknown> = PropsType &
-  Record<string, unknown>;
+export type TIndexed<T = unknown> = T extends Record<infer K, infer V>
+  ? { [key in K]: V }
+  : Record<string, unknown>;
 
-export abstract class Block<TProps extends BlockProps = BlockProps>
+export abstract class Block<TProps = Record<string, unknown>>
   implements IBlock
 {
   private readonly _stubId = uuid();
@@ -26,8 +27,8 @@ export abstract class Block<TProps extends BlockProps = BlockProps>
   protected childBlocks: Map<string, Block> | null = null;
   protected props;
 
-  constructor(props: TProps | BlockProps = {}) {
-    this.props = this._proxyProps(props);
+  constructor(props?: TIndexed<TProps>) {
+    this.props = this._proxyProps(props ?? {});
     this._subscribe();
     this._eventBus.emit(EVENT.INIT, props);
   }
@@ -45,11 +46,11 @@ export abstract class Block<TProps extends BlockProps = BlockProps>
   protected abstract getTemplateHook(): TemplateSpecification;
   protected getStylesModuleHook?(): CSSModuleClasses;
 
-  private _proxyProps(props: BlockProps): BlockProps {
+  private _proxyProps(props: TIndexed): TIndexed {
     const self = this;
     let propsCounter = 0;
-    let oldProps: BlockProps = {};
-    const newProps: BlockProps = {};
+    let oldProps: TIndexed = {};
+    const newProps: TIndexed = {};
 
     return new Proxy(props, {
       set(props, p, newValue) {
@@ -151,8 +152,7 @@ export abstract class Block<TProps extends BlockProps = BlockProps>
   protected renderInterceptorHook(
     shouldRender: boolean,
     _causeProps: Map<string, unknown>,
-    _oldProps: BlockProps,
-    _block: Block<TProps>
+    _oldProps: TIndexed<TProps>
   ): boolean {
     return shouldRender;
   }
@@ -173,14 +173,16 @@ export abstract class Block<TProps extends BlockProps = BlockProps>
     traverseBlocksTreeAndCall.call(this, 'willUnmount');
   }
 
-  private _compareProps(oldProps: TProps, newProps: TProps): void {
+  private _compareProps(
+    oldProps: TIndexed<TProps>,
+    newProps: TIndexed<TProps>
+  ): void {
     const [isEqual, causeProps] = this._shallowEqual(oldProps, newProps);
 
     const shouldRender = this.renderInterceptorHook(
       !isEqual,
       causeProps,
-      oldProps,
-      this
+      oldProps
     );
 
     if (shouldRender) {
@@ -212,9 +214,9 @@ export abstract class Block<TProps extends BlockProps = BlockProps>
     return this._element as HTMLElement;
   }
 
-  public setProps(newProps: Partial<TProps | BlockProps>): void {
-    this._updatingPropsNum = Object.keys(newProps).length;
+  public setProps(props: Partial<TIndexed<TProps>>): void {
+    this._updatingPropsNum = Object.keys(props).length;
 
-    Object.assign(this.props, newProps);
+    Object.assign(this.props, props);
   }
 }

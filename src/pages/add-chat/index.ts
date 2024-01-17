@@ -1,4 +1,4 @@
-import { Block, type BlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import { Link } from 'shared/components/router';
 import { ButtonLight } from 'shared/ui/button';
 import { ROUTE_PATH } from 'shared/constants';
@@ -6,10 +6,10 @@ import { AddChatForm } from 'features/chat-add/ui/form';
 import templateSpec from './add-chat-page.template.hbs';
 import styles from './styles.module.css';
 
-type AddChatPageProps = BlockProps<{
+interface AddChatPageProps {
   form: Block;
   transitionButton: Block;
-}>;
+}
 
 export class AddChatPage extends Block<AddChatPageProps> {
   constructor() {

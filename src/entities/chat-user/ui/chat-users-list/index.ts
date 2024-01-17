@@ -1,16 +1,16 @@
-import { Block, type BlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import type { TUser } from '../../model/chat-user.model.ts';
 import templateSpec from './chat-users-list.template.hbs';
 import styles from './styles.module.css';
 import { ChatUsersItem } from './list-item/index.ts';
 
-type ChatUsersListProps = BlockProps<{
+interface ChatUsersListProps {
   users: TUser[];
-}>;
+}
 
-type InnerProps = BlockProps<{
+interface InnerProps {
   items: ChatUsersItem[];
-}>;
+}
 
 function createItems(usersList: TUser[]): ChatUsersItem[] {
   return usersList.map((userParams) => {
@@ -44,7 +44,12 @@ export class ChatUsersList extends Block<InnerProps> {
     return styles;
   }
 
-  public setProps({ users }: ChatUsersListProps): void {
-    super.setProps({ items: createItems(users) });
+  public setProps(
+    props: Partial<{ items: ChatUsersItem[]; users: TUser[] }>
+  ): void {
+    const { users } = props;
+    if (users) {
+      super.setProps({ items: createItems(users) });
+    }
   }
 }

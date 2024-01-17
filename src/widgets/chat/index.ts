@@ -1,4 +1,4 @@
-import { Block, type BlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 // import { DayMessages } from 'entites/message';
 import { Store } from 'shared/components/store';
 import { type TChatListState } from 'entites/chat/model/chat-list.model';
@@ -8,11 +8,13 @@ import { ChatStub } from 'entites/chat/ui/chat-stub';
 import templateSpec from './chat-widget.template.hbs';
 import styles from './styles.module.css';
 
-type ChatWidgetProps = BlockProps<{
+interface ChatWidgetProps {
   header: Block;
-  messages: Block[];
+  // messages: Block[];
   sender: Block;
-}>;
+  isCurrentChat: boolean;
+  chatStub: Block;
+}
 
 const store = Store.instance();
 

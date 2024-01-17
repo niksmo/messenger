@@ -1,4 +1,4 @@
-import { Block, type BlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import templateSpec from './item.template.hbs';
 import styleModule from './styles.module.css';
 
@@ -23,12 +23,12 @@ type TIcon =
 
 type TStyle = 'primary' | 'adverse' | 'accent';
 
-type MenuItemProps = BlockProps<{
+interface MenuItemProps {
   icon: TIcon;
   label: string;
   style: TStyle;
   onClick?: (e: Event) => void;
-}>;
+}
 
 const styles = { ...styleModule };
 
@@ -38,7 +38,7 @@ export class MenuItem extends Block<MenuItemProps> {
   constructor(props: MenuItemProps) {
     const { style } = props;
     curStyle = style;
-    super(props);
+    super({ ...props });
   }
 
   protected getTemplateHook(): TemplateSpecification {

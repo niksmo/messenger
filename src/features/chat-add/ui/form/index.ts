@@ -2,8 +2,8 @@ import { Block } from 'shared/components/block';
 import { Store } from 'shared/components/store';
 import { ButtonFilled } from 'shared/ui/button';
 import { getInputMap } from 'shared/helpers';
-import { type TAddChatState } from 'features/chat-add/model/chat-add.model';
-import { addChatController } from 'features/chat-add/controller/chat-add.controller';
+import type { TAddChatState } from '../../model/chat-add.model';
+import { addChatController } from '../../controller/chat-add.controller';
 import { fieldsParams } from './lib';
 import templateSpec from './form.template.hbs';
 

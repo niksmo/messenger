@@ -1,4 +1,4 @@
-import { Block, type BlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import templateSpec from './day-messages.template.hbs';
 import styles from './styles.module.css';
 import { getMessageBlocks } from './lib';
@@ -9,10 +9,10 @@ export interface MessageProps {
   status?: string;
 }
 
-type DayMessagesProps = BlockProps<{
+interface DayMessagesProps {
   date: string;
   messageList: MessageProps[];
-}>;
+}
 
 export class DayMessages extends Block<DayMessagesProps> {
   constructor(props: DayMessagesProps) {

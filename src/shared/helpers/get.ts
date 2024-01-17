@@ -70,11 +70,13 @@ function createProps(name: string, placeholder: string, type: string): IProps {
   };
 }
 
-export function getInputMap(
+export function getInputMap<TFieldNames extends string>(
   inputsParamsList: IInputConfig[],
   state: Record<string, IInputState>
-): Record<string, Input> {
-  const map = inputsParamsList.reduce<Record<string, Input>>((map, config) => {
+): Record<TFieldNames, Input> {
+  const map = inputsParamsList.reduce<
+    Record<IInputConfig[][number]['name'], Input>
+  >((map, config) => {
     const { name, placeholder, type } = config;
     const inputState = state[name];
 
@@ -89,4 +91,11 @@ export function getInputMap(
   }, {});
 
   return map;
+}
+
+export function getTypedEntries<TParamsUnion extends string, TValue>(
+  obj: Record<TParamsUnion, TValue>
+): Array<[TParamsUnion, TValue]> {
+  const entries = Object.entries(obj) as Array<[TParamsUnion, TValue]>;
+  return entries;
 }

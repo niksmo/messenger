@@ -1,10 +1,10 @@
-import { Block, type BlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import templateSpec from './input.template.hbs';
 import styles from './styles.module.css';
 
 type TInputTypes = 'text' | 'email' | 'password' | 'tel' | 'number';
 
-type InputProps = BlockProps<{
+interface InputProps {
   id: string | number;
   type: TInputTypes;
   name: string;
@@ -12,7 +12,7 @@ type InputProps = BlockProps<{
   placeholder?: string;
   error?: boolean;
   hint?: string;
-}>;
+}
 
 export class Input extends Block<InputProps> {
   protected getTemplateHook(): TemplateSpecification {

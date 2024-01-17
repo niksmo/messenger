@@ -1,4 +1,4 @@
-import { Block, type BlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import { Link } from 'shared/components/router';
 import { ButtonLight } from 'shared/ui/button';
 import { ROUTE_PATH } from 'shared/constants';
@@ -9,11 +9,11 @@ import { LogoutLink } from 'features/auth/ui/logout/logout-link';
 import templateSpec from './profile-settings-page.template.hbs';
 import styles from './styles.module.css';
 
-type SettingsPageProps = BlockProps<{
+interface SettingsPageProps {
   transitionButton: Block;
   profileInfo: Block;
   navList: Block[];
-}>;
+}
 
 export class SettingsPage extends Block<SettingsPageProps> {
   constructor() {

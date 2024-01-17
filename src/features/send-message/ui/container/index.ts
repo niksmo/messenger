@@ -1,14 +1,14 @@
-import { Block, type BlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import { DropdownMenu } from 'shared/ui/dropdown';
 import { MessageForm } from '../form';
 import { AttachMediaMenuItem, AttachFileMenuItem } from '../menu-item';
 import templateSpec from './container.template.hbs';
 import styles from './styles.module.css';
 
-type MessageSenderProps = BlockProps<{
+interface MessageSenderProps {
   menu: Block;
   form: Block;
-}>;
+}
 
 export class MessageSender extends Block<MessageSenderProps> {
   constructor() {

@@ -1,12 +1,12 @@
-import { Block, type BlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import templateSpec from './overlay.template.hbs';
 import styles from './styles.module.css';
 import { withInterrupt } from 'shared/helpers/with';
 
-type OverlayProps = BlockProps<{
+interface OverlayProps {
   isVisible: boolean;
   children: Block;
-}>;
+}
 
 const appRoot = document.getElementById('app');
 
@@ -27,14 +27,14 @@ export class Overlay extends Block<OverlayProps> {
     return styles;
   }
 
-  public setProps(newProps: Partial<OverlayProps>): void {
-    const { isVisible } = newProps;
+  public setProps(props: Partial<OverlayProps>): void {
+    const { isVisible } = props;
 
     if (isVisible !== undefined) {
       this._isVisible = isVisible;
     }
 
-    super.setProps(newProps);
+    super.setProps(props);
   }
 
   public didMount(): void {

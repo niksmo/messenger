@@ -1,13 +1,13 @@
-import { Block, type BlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import { Store } from 'shared/components/store';
 import { type TSigninState } from 'features/auth/model/signin.model';
 import templateSpec from './message.template.hbs';
 import styles from './styles.module.css';
 
-type SigninMessageProps = BlockProps<{
+interface SigninMessageProps {
   message: string;
   visible: boolean;
-}>;
+}
 
 const store = Store.instance();
 

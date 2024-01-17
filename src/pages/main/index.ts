@@ -1,13 +1,13 @@
-import { Block, type BlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import { ChatListWidget } from 'widgets/chat-list';
 import { ChatWidget } from 'widgets/chat';
 import { chatListController } from 'entites/chat/controller/chat-list.controller';
 import templateSpec from './main-page.template.hbs';
 import styles from './styles.module.css';
 
-type MainPageProps = BlockProps<{
+interface MainPageProps {
   chatId?: string;
-}>;
+}
 
 export class MainPage extends Block<MainPageProps> {
   private _curChatId;
@@ -38,11 +38,11 @@ export class MainPage extends Block<MainPageProps> {
     chatListController.openChat(this._curChatId);
   }
 
-  public setProps(newProps: Partial<MainPageProps>): void {
-    if (typeof newProps.chatId === 'string') {
-      this._curChatId = newProps.chatId;
+  public setProps(props: Partial<MainPageProps>): void {
+    if (typeof props.chatId === 'string') {
+      this._curChatId = props.chatId;
     }
 
-    super.setProps(newProps);
+    super.setProps(props);
   }
 }

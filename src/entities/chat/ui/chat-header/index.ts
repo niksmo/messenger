@@ -1,4 +1,4 @@
-import { Block, type BlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import { DropdownMenu } from 'shared/ui/dropdown';
 import { Avatar } from 'shared/ui/avatar';
 import { AddChatUserMenuItem } from 'features/chat-users-add/ui/add-users-menu-item';
@@ -9,11 +9,11 @@ import styles from './styles.module.css';
 
 const NAME = 'Bowie';
 
-type ChatHeaderProps = BlockProps<{
+interface ChatHeaderProps {
   username: string;
   avatar: Block;
   menu: Block;
-}>;
+}
 
 export class ChatHeader extends Block<ChatHeaderProps> {
   constructor() {

@@ -1,10 +1,10 @@
-import { Block, type BlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import templateSpec from './counter.template.hbs';
 import stylesModule from './styles.module.css';
 
-type CounterProps = BlockProps<{
+interface CounterProps {
   count: number;
-}>;
+}
 
 const styles = { ...stylesModule } as unknown as {
   hidden: string;

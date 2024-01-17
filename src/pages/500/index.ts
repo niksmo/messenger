@@ -1,13 +1,13 @@
-import { Block, type BlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import { Link } from 'shared/components/router';
 import { ButtonLight } from 'shared/ui/button';
 import { WarnStub } from 'shared/ui/warn-stub-page';
 import templateSpec from './500.template.hbs';
 
-type InternalErrorPageProps = BlockProps<{
+interface InternalErrorPageProps {
   warnStub: Block;
   transitionButton: Block;
-}>;
+}
 
 export class InternalErrorPage extends Block<InternalErrorPageProps> {
   constructor() {

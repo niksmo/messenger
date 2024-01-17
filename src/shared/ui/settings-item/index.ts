@@ -1,4 +1,4 @@
-import { Block, type BlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import templateSpec from './settings-item.template.hbs';
 import stylesModule from './styles.module.css';
 
@@ -13,11 +13,11 @@ type TIcon =
 
 type TStyle = 'accent' | 'adverse';
 
-type SettingsItemProps = BlockProps<{
+interface SettingsItemProps {
   style: TStyle;
   icon: TIcon;
   label: string;
-}>;
+}
 
 const styles = { ...stylesModule };
 

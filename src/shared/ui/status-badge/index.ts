@@ -1,12 +1,12 @@
-import { Block, type BlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import templateSpec from './status-badge.template.hbs';
 import stylesModule from './styles.module.css';
 
 type TStatus = 'readed' | 'delivered' | 'none';
 
-type StatusBadgeProps = BlockProps<{
+interface StatusBadgeProps {
   status: TStatus;
-}>;
+}
 
 const styles = { ...stylesModule };
 let curStatus: TStatus;

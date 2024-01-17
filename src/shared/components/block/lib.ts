@@ -1,15 +1,19 @@
-import { Block, type BlockProps } from './block';
+import { Block, type TIndexed } from './block';
 import { DOMEvent } from './consts';
 
 export function shallowEqual(
-  oldProps: BlockProps,
-  newProps: BlockProps
+  curProps: unknown,
+  newProps: unknown
 ): [boolean, Map<string, unknown>] {
   const causeProps = new Map<string, unknown>();
   let isEqual = true;
-  for (const key of Object.keys(newProps)) {
-    if (!Object.is(oldProps[key], newProps[key])) {
-      causeProps.set(key, newProps[key]);
+
+  const curP = curProps as Record<string, unknown>;
+  const newP = newProps as Record<string, unknown>;
+
+  for (const key of Object.keys(newProps as Record<string, unknown>)) {
+    if (!Object.is(curP[key], newP[key])) {
+      causeProps.set(key, newP[key]);
       isEqual = false;
     }
   }
@@ -25,11 +29,11 @@ export type TBlockEventsMap = Map<
 >;
 export type TBlocksMap = Map<TBlockId, Block>;
 
-function isBlock(probBlock: unknown | Block): probBlock is Block<BlockProps> {
+function isBlock(probBlock: unknown | Block): probBlock is Block<TIndexed> {
   return probBlock instanceof Block;
 }
 
-export function pickBlocksAndEvents(props: BlockProps): {
+export function pickBlocksAndEvents(props: TIndexed): {
   blocks: TBlocksMap;
   events: TBlockEventsMap;
 } {
@@ -63,7 +67,7 @@ export function pickBlocksAndEvents(props: BlockProps): {
 }
 
 export function traverseBlocksTreeAndCall(
-  this: Block,
+  this: Block<unknown>,
   method: Extract<keyof Block, 'willUnmount' | 'didUpdate' | 'didMount'>
 ): void {
   const stack: Block[] = [this];

@@ -1,47 +1,40 @@
 import { Block } from 'shared/components/block';
-import uuid from 'shared/packages/uuid';
 import { Avatar } from 'shared/ui/avatar';
 import styles from './styles.module.css';
 import templateSpec from './chat-users-item.template.hbs';
 
 interface ChatUsersItemProps {
-  userId: number;
   avatar: string | null;
+  displayName: string | null;
   firstName: string;
   secondName: string;
-  displayName: string | null;
-  added?: boolean;
-  onInput?: (e: Event) => void;
+  login: string;
+  status: null | string;
 }
 
-type InnerProps = Omit<ChatUsersItemProps, 'avatar'> & {
-  id: string;
-  avatarBlock: Block;
-};
+interface InnerProps {
+  blockAvatar: Block;
+  displayName: string | null;
+  firstName: string;
+  secondName: string;
+  login: string;
+  status: null | string;
+}
 
 export class ChatUsersItem extends Block<InnerProps> {
   constructor({
     avatar,
+    displayName,
     firstName,
     secondName,
-    displayName,
-    userId,
-    onInput,
+    ...restProps
   }: ChatUsersItemProps) {
-    const avatarBlock = new Avatar({
+    const blockAvatar = new Avatar({
       // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
       name: displayName || firstName || secondName,
       src: avatar,
     });
-    super({
-      id: uuid(),
-      userId,
-      avatarBlock,
-      firstName,
-      secondName,
-      displayName,
-      onInput,
-    });
+    super({ blockAvatar, displayName, firstName, secondName, ...restProps });
   }
 
   protected getTemplateHook(): TemplateSpecification {
@@ -51,4 +44,6 @@ export class ChatUsersItem extends Block<InnerProps> {
   protected getStylesModuleHook(): CSSModuleClasses {
     return styles;
   }
+
+  public setProps(props: Partial<InnerProps>): void {}
 }

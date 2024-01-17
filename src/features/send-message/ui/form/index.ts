@@ -1,15 +1,15 @@
-import { Block, type BlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import { IconButton } from 'shared/ui/button';
 import { MessageInput } from '../input';
 import templateSpec from './form.template.hbs';
 import styles from './styles.module.css';
 
-type MessageFormProps = BlockProps<{
+interface MessageFormProps {
   input: Block;
   submitButton: Block;
   onInput?: (e: Event) => void;
   onSubmit?: (e: Event) => void;
-}>;
+}
 
 export class MessageForm extends Block<MessageFormProps> {
   constructor() {

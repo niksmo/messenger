@@ -1,12 +1,12 @@
-import { Block, type BlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import { SettingsItem } from 'shared/ui/settings-item';
 import { Link } from 'shared/components/router';
 import { ROUTE_PATH } from 'shared/constants';
 import templateSpec from './edit-profile-link.template.hbs';
 
-type EditProfileLinkProps = BlockProps<{
+interface EditProfileLinkProps {
   link: Block;
-}>;
+}
 
 export class EditProfileLink extends Block<EditProfileLinkProps> {
   constructor() {

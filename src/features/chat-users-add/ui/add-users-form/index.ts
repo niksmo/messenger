@@ -1,22 +1,26 @@
-import { Block, type BlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import { Store } from 'shared/components/store';
 import { ButtonFilled } from 'shared/ui/button';
 import { type Input } from 'shared/ui/input';
 import { ChatUsersList } from 'entites/chat-user/ui/chat-users-list';
-import { getInputMap, withDelay } from 'shared/helpers';
-import { type TAddUsersState } from '../../model/chat-users-add.model';
+import { getInputMap, getTypedEntries, withDelay } from 'shared/helpers';
+import {
+  type TFieldUnion,
+  type TAddUsersState,
+  type TInputState,
+} from '../../model/chat-users-add.model';
 import { addChatUsersController } from '../../controller/chat-users-add.controller';
 import { fieldsParams } from './lib';
 import templateSpec from './form.template.hbs';
 import styles from './styles.module.css';
 
-type TAddUsersFormProps = BlockProps<{
+interface AddUsersFormProps {
   login: Input;
-  found: Block;
+  foundList: Block;
   submitButton: Block;
   onInput: (e: Event) => void;
   onSubmit: (e: Event) => void;
-}>;
+}
 
 const store = Store.instance();
 
@@ -25,7 +29,7 @@ const searchUsersWithDelay = withDelay(
   400
 );
 
-export class AddUsersForm extends Block<TAddUsersFormProps> {
+export class AddUsersForm extends Block<AddUsersFormProps> {
   private readonly _inputMap;
   private readonly _submitButton;
   private readonly _foundList;
@@ -36,7 +40,7 @@ export class AddUsersForm extends Block<TAddUsersFormProps> {
     const { addUsers } = store.getState<TAddUsersState>();
     const { fields, found } = addUsers;
 
-    const inputMap = getInputMap(fieldsParams, fields);
+    const inputMap = getInputMap<TFieldUnion>(fieldsParams, fields);
 
     const foundList = new ChatUsersList({ users: found });
 
@@ -76,12 +80,14 @@ export class AddUsersForm extends Block<TAddUsersFormProps> {
   private readonly _onStoreUpdate = ({ addUsers }: TAddUsersState): void => {
     const { load, fields, found } = addUsers;
 
-    Object.entries(fields).forEach(([field, props]) => {
-      const block = this._inputMap[field];
-      if (block) {
-        block.setProps({ ...props });
+    getTypedEntries<TFieldUnion, TInputState>(fields).forEach(
+      ([field, props]) => {
+        const block = this._inputMap[field];
+        if (block) {
+          block.setProps({ ...props });
+        }
       }
-    });
+    );
 
     this._foundList.setProps({ users: found });
 

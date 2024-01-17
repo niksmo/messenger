@@ -1,15 +1,20 @@
 import uuid from 'shared/packages/uuid';
-import { Block, type BlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import { ButtonOutlined } from 'shared/ui/button';
 import templateSpec from './upload-button.template.hbs';
 import styles from './styles.module.css';
 
-type UploadButtonProps = BlockProps<{
+interface UploadButtonProps {
   onChange: (e: Event) => void;
-}>;
+}
 
-export class UploadButton extends Block<UploadButtonProps> {
-  constructor(props?: UploadButtonProps) {
+interface InnerProps extends UploadButtonProps {
+  id: string;
+  button: Block;
+}
+
+export class UploadButton extends Block<InnerProps> {
+  constructor(props: UploadButtonProps) {
     const button = new ButtonOutlined({
       name: 'pickButton',
       type: 'button',
