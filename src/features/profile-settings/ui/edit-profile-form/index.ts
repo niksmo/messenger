@@ -1,22 +1,23 @@
 import { Block } from 'shared/components/block';
-import { Store } from 'shared/components/store';
+import { Store } from 'shared/components/store/store';
 import { ButtonFilled } from 'shared/ui/button';
-import { getFieldsValues, getInputMap, getInputValue } from 'shared/helpers';
-import { type IEditProfileState } from '../../model';
-import { editProfileController } from '../../controller';
+import { getInputMap } from 'shared/helpers';
+import { editProfileController } from 'features/profile-settings/controller/edit-profile.controller';
 import templateSpec from './form.template.hbs';
 import { fieldsParams } from './lib';
+import { type TEditProfileState } from 'features/profile-settings/model/edit-profile.model';
 
 const store = Store.instance();
 
 export class EditProfileForm extends Block {
-  private readonly _onStoreUpdate;
+  private readonly _inputMap;
+  private readonly _submitButton;
 
   constructor() {
     editProfileController.start();
 
-    const state = store.getState<IEditProfileState>();
-    const { load, ...fields } = state.editProfile;
+    const { editProfile } = store.getState<TEditProfileState>();
+    const { fields } = editProfile;
 
     const inputMap = getInputMap(fieldsParams, fields);
 
@@ -29,34 +30,39 @@ export class EditProfileForm extends Block {
       ...inputMap,
       submitButton,
       onInput: (e: Event) => {
-        editProfileController.input(getInputValue(e));
+        editProfileController.input(e);
       },
-      onFocusout: (e: Event) => {
-        editProfileController.verify(getFieldsValues(e));
+      onFocusout: () => {
+        editProfileController.verify();
       },
       onSubmit: (e: Event) => {
         e.preventDefault();
-        void editProfileController.submit(getFieldsValues(e));
+        editProfileController.submit();
       },
     });
 
-    this._onStoreUpdate = (state: IEditProfileState) => {
-      const { load, ...fields } = state.editProfile;
-      Object.entries(fields).forEach(([field, props]) => {
-        const block = inputMap[field];
-        if (block) {
-          block.setProps({ ...props });
-        }
-      });
-
-      submitButton.setProps({ disabled: load });
-    };
-
-    store.on<IEditProfileState>(this._onStoreUpdate);
+    this._inputMap = inputMap;
+    this._submitButton = submitButton;
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
+  }
+
+  private readonly _onStoreUpdate = (state: TEditProfileState): void => {
+    const { load, fields } = state.editProfile;
+    Object.entries(fields).forEach(([field, props]) => {
+      const block = this._inputMap[field];
+      if (block) {
+        block.setProps({ ...props });
+      }
+    });
+
+    this._submitButton.setProps({ disabled: load });
+  };
+
+  public didMount(): void {
+    store.on(this._onStoreUpdate);
   }
 
   public willUnmount(): void {

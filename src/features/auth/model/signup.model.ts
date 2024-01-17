@@ -1,18 +1,33 @@
-interface InputState {
+export const fieldList = [
+  'first_name',
+  'second_name',
+  'email',
+  'phone',
+  'login',
+  'password',
+  'confirm',
+];
+
+type TFieldUnion =
+  | 'first_name'
+  | 'second_name'
+  | 'email'
+  | 'phone'
+  | 'login'
+  | 'password'
+  | 'confirm';
+
+export interface TInputState {
   error: boolean;
   value: string;
   hint: string;
 }
 
-export interface ISignupState {
+type TFieldsState = Record<TFieldUnion, TInputState>;
+
+export interface TSignupState {
   signup: {
-    first_name: InputState;
-    second_name: InputState;
-    email: InputState;
-    phone: InputState;
-    login: InputState;
-    password: InputState;
-    confirm: InputState;
+    fields: TFieldsState;
     load: boolean;
   };
 }

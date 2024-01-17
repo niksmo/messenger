@@ -1,24 +1,25 @@
 import { Block } from 'shared/components/block';
-import { Store } from 'shared/components/store';
+import { Store } from 'shared/components/store/store';
 import { ButtonFilled } from 'shared/ui/button';
-import { getFieldsValues, getInputMap, getInputValue } from 'shared/helpers';
-import { type ISignupState } from '../../../model';
-import { signupController } from '../../../controller';
+import { getInputMap } from 'shared/helpers';
+import { type TSignupState } from '../../../model/signup.model';
+import { signupController } from '../../../controller/signup.controller';
 import templateSpec from './form.template.hbs';
 import { fieldsParams } from './lib';
 
 const store = Store.instance();
 
 export class SignupForm extends Block {
-  private readonly _onStoreUpdate;
+  private readonly _inputMap;
+  private readonly _submitButton;
 
   constructor() {
     signupController.start();
 
-    const state = store.getState<ISignupState>();
-    const { load, ...fields } = state.signup;
+    const { signup } = store.getState<TSignupState>();
+    const { fields: fieldsState } = signup;
 
-    const inputMap = getInputMap(fieldsParams, fields);
+    const inputMap = getInputMap(fieldsParams, fieldsState);
 
     const submitButton = new ButtonFilled({
       label: 'Sign up',
@@ -29,34 +30,39 @@ export class SignupForm extends Block {
       ...inputMap,
       submitButton,
       onInput: (e: Event) => {
-        signupController.input(getInputValue(e));
+        signupController.input(e);
       },
-      onFocusout: (e: Event) => {
-        signupController.verify(getFieldsValues(e));
+      onFocusout: () => {
+        signupController.verify();
       },
       onSubmit: (e: Event) => {
         e.preventDefault();
-        void signupController.submit(getFieldsValues(e));
+        signupController.submit();
       },
     });
 
-    this._onStoreUpdate = (state: ISignupState) => {
-      const { load, ...fields } = state.signup;
-      Object.entries(fields).forEach(([field, props]) => {
-        const block = inputMap[field];
-        if (block) {
-          block.setProps({ ...props });
-        }
-      });
-
-      submitButton.setProps({ disabled: load });
-    };
-
-    store.on<ISignupState>(this._onStoreUpdate);
+    this._inputMap = inputMap;
+    this._submitButton = submitButton;
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
+  }
+
+  private readonly _onStoreUpdate = (state: TSignupState): void => {
+    const { load, fields } = state.signup;
+    Object.entries(fields).forEach(([field, props]) => {
+      const block = this._inputMap[field];
+      if (block) {
+        block.setProps({ ...props });
+      }
+    });
+
+    this._submitButton.setProps({ disabled: load });
+  };
+
+  public didMount(): void {
+    store.on(this._onStoreUpdate);
   }
 
   public willUnmount(): void {

@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/ban-types
-type TFn = Function;
+type TFn = (...args: any[]) => any;
 
 class EventBus {
   private _listeners: Record<string, TFn[]>;

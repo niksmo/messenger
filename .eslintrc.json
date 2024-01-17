@@ -12,6 +12,7 @@
     },
     "rules": {
         "@typescript-eslint/no-this-alias": 0,
-        "@typescript-eslint/strict-boolean-expressions": 0
+        "@typescript-eslint/strict-boolean-expressions": 0,
+        "@typescript-eslint/dot-notation": 0
     }
 }

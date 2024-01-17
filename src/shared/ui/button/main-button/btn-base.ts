@@ -1,7 +1,7 @@
-import { Block, type IBlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import templateSpec from './button.template.hbs';
 
-interface IButtonProps extends IBlockProps {
+interface ButtonProps {
   label: string;
   type: 'button' | 'submit';
   name?: string;
@@ -11,8 +11,19 @@ interface IButtonProps extends IBlockProps {
   onClick?: (e: Event) => void;
 }
 
-export class Button extends Block<IButtonProps> {
-  protected _getTemplateSpec(): TemplateSpecification {
+export class Button extends Block<ButtonProps> {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
+  }
+
+  protected renderInterceptorHook(
+    shouldRender: boolean,
+    causeProps: Map<keyof ButtonProps, unknown>
+  ): boolean {
+    if (causeProps.has('disabled')) {
+      shouldRender = false;
+    }
+
+    return shouldRender;
   }
 }

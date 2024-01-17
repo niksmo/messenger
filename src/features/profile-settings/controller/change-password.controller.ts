@@ -1,51 +1,31 @@
 import { AppRouter } from 'shared/components/router';
-import { Store } from 'shared/components/store';
+import { Store } from 'shared/components/store/store';
 import {
   HINT,
   TEMPLATE,
   verifierCreator,
 } from 'shared/components/form-verifier';
 import { ROUTE_PATH } from 'shared/constants';
-import { type IChangePasswordState } from '../model';
-import { ChangePasswordAPI } from '../api';
-
-type TFormData = Record<string, string>;
-
-interface IInputData {
-  field: string;
-  value: string;
-}
+import { getInputValue, goToLoginWithUnauth } from 'shared/helpers';
+import { ChangePasswordAPI } from '../api/change-password.api';
+import {
+  type TInputState,
+  type TChangePasswordState,
+  fieldList,
+} from '../model/change-password.model';
 
 const STORE_SLICE = 'changePassword';
+const STORE_FIELDS = STORE_SLICE + '.fields';
 const STORE_LOAD = STORE_SLICE + '.load';
-
-interface IReqBody {
-  oldPassword: string;
-  newPassword: string;
-}
 
 const FIELD = {
   CURRENT: 'current_password',
   NEW: 'new_password',
 };
 
-function extractRequestBody(formData: TFormData): IReqBody {
-  const map = Object.entries(formData).reduce<IReqBody>(
-    (map, [field, value]) => {
-      if (field === FIELD.CURRENT) {
-        map.oldPassword = value;
-      }
-
-      if (field === FIELD.NEW) {
-        map.newPassword = value;
-      }
-
-      return map;
-    },
-    { oldPassword: '', newPassword: '' }
-  );
-
-  return map;
+interface IReqBody {
+  oldPassword: string;
+  newPassword: string;
 }
 
 class ChangePasswordController {
@@ -68,31 +48,64 @@ class ChangePasswordController {
   start(): void {
     const initInputState = { value: '', hint: '', error: false };
 
-    const initState: IChangePasswordState['changePassword'] = {
-      current_password: { ...initInputState },
-      new_password: { ...initInputState },
-      confirm: { ...initInputState },
-      load: false,
-    };
+    const fields = fieldList.reduce<Record<string, TInputState>>(
+      (map, fieldName) => {
+        map[fieldName] = { ...initInputState };
+        return map;
+      },
+      {}
+    );
 
-    this._store.set(STORE_SLICE, initState);
+    this._store.set(STORE_SLICE, { fields, load: false });
   }
 
   private _resetState(): void {
     this.start();
   }
 
-  input({ field, value }: IInputData): void {
-    this._store.set(`${STORE_SLICE}.${field}`, { value, error: false });
+  private _extractFormData(): Record<string, string> {
+    const { changePassword } = this._store.getState<TChangePasswordState>();
+    const { fields } = changePassword;
+
+    const entries = Object.entries<TInputState>({ ...fields });
+
+    const formData = entries.reduce<Record<string, string>>(
+      (map, [fieldName, inputState]) => {
+        map[fieldName] = inputState.value;
+        return map;
+      },
+      {}
+    );
+
+    return formData;
   }
 
-  verify(formData: TFormData): boolean {
+  private _extractRequestBody(formData: Record<string, string>): IReqBody {
+    const map = Object.entries(formData).reduce<IReqBody>(
+      (map, [field, value]) => {
+        if (field === FIELD.CURRENT) {
+          map.oldPassword = value;
+        }
+
+        if (field === FIELD.NEW) {
+          map.newPassword = value;
+        }
+
+        return map;
+      },
+      { oldPassword: '', newPassword: '' }
+    );
+
+    return map;
+  }
+
+  private _verify(formData: Record<string, string>): boolean {
     const { isValid, hintData } = this._verifier.checkOnValidity(formData);
 
     for (const field of Object.keys(hintData)) {
       const hint = hintData[field];
       if (typeof hint === 'string') {
-        this._store.set(`${STORE_SLICE}.${field}`, {
+        this._store.set(`${STORE_FIELDS}.${field}`, {
           hint,
           error: Boolean(hint),
         });
@@ -105,7 +118,7 @@ class ChangePasswordController {
       const hint = newPassword !== confirm ? HINT.confirmPassword : '';
       const error = Boolean(hint);
 
-      this._store.set(`${STORE_SLICE}.confirm`, {
+      this._store.set(`${STORE_FIELDS}.confirm`, {
         hint,
         error,
       });
@@ -115,42 +128,63 @@ class ChangePasswordController {
     return isValid;
   }
 
-  async submit(formData: Record<string, string>): Promise<void> {
-    if (!this.verify(formData)) {
+  private async _submit(): Promise<void> {
+    const formData = this._extractFormData();
+
+    if (!this._verify(formData)) {
       return;
     }
 
     try {
       this._store.set(STORE_LOAD, true);
-      const reqBody = extractRequestBody(formData);
+      const reqBody = this._extractRequestBody(formData);
       const { status, response } = await this._api.update(reqBody);
-
-      if (status === 200) {
-        this._resetState();
-        this._router.go(ROUTE_PATH.SETTINGS, true);
-      }
 
       if (status === 400) {
         if (typeof response === 'string') {
           const { reason } = JSON.parse(response);
 
           if (typeof reason === 'string' && reason.startsWith('Password')) {
-            this._store.set(`${STORE_SLICE}.current_password`, {
+            this._store.set(`${STORE_FIELDS}.current_password`, {
               hint: reason,
               error: true,
             });
           }
         }
+
+        return;
+      }
+
+      if (status === 200) {
+        this._router.go(ROUTE_PATH.SETTINGS, true);
+      }
+
+      if (status === 401) {
+        goToLoginWithUnauth();
       }
 
       if (status === 500) {
         this._router.go(ROUTE_PATH[500]);
       }
+      this._resetState();
     } catch (err) {
       console.warn(err);
     } finally {
       this._store.set(STORE_LOAD, false);
     }
+  }
+
+  public input(e: Event): void {
+    const { field, value } = getInputValue(e);
+    this._store.set(`${STORE_FIELDS}.${field}`, { value, error: false });
+  }
+
+  public verify(): void {
+    this._verify(this._extractFormData());
+  }
+
+  public submit(): void {
+    void this._submit();
   }
 }
 

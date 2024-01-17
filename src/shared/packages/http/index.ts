@@ -23,7 +23,7 @@ type TRequest<T = undefined> = (
   body: T,
   header?: Record<string, string>,
   timeout?: number
-) => Promise<XMLHttpRequest>;
+) => XHR;
 
 interface IHttpTransportAgent {
   get: TRequest;
@@ -31,6 +31,8 @@ interface IHttpTransportAgent {
   put: TRequest;
   delete: TRequest;
 }
+
+export type XHR = Promise<XMLHttpRequest>;
 
 class HttpTransport implements IHttpTransportConfig, IHttpTransportAgent {
   private _baseURL: null | string = null;
@@ -58,8 +60,8 @@ class HttpTransport implements IHttpTransportConfig, IHttpTransportAgent {
     body: XMLHttpRequestBodyInit | null = null,
     rHeader: Record<string, string> = {},
     rTimeout: number = this._timeout
-  ): Promise<XMLHttpRequest> {
-    return await new Promise<XMLHttpRequest>((resolve, reject) => {
+  ): XHR {
+    return await new Promise((resolve, reject) => {
       let reqURL = getHref(this._baseURL, pathOrURL);
 
       if (method === METHOD.GET && typeof body === 'string') {
@@ -98,7 +100,7 @@ class HttpTransport implements IHttpTransportConfig, IHttpTransportAgent {
     body?: Record<string, string>,
     header?: Record<string, string>,
     timeout?: number
-  ): Promise<XMLHttpRequest> {
+  ): XHR {
     const reqBody = serializeToSearch(body);
     return await this._request(METHOD.GET, pathOrURL, reqBody, header, timeout);
   }
@@ -108,7 +110,7 @@ class HttpTransport implements IHttpTransportConfig, IHttpTransportAgent {
     body?: XMLHttpRequestBodyInit,
     header?: Record<string, string>,
     timeout?: number
-  ): Promise<XMLHttpRequest> {
+  ): XHR {
     return await this._request(METHOD.POST, pathOrURL, body, header, timeout);
   }
 
@@ -117,7 +119,7 @@ class HttpTransport implements IHttpTransportConfig, IHttpTransportAgent {
     body?: XMLHttpRequestBodyInit,
     header?: Record<string, string>,
     timeout?: number
-  ): Promise<XMLHttpRequest> {
+  ): XHR {
     return await this._request(METHOD.PUT, pathOrURL, body, header, timeout);
   }
 
@@ -126,7 +128,7 @@ class HttpTransport implements IHttpTransportConfig, IHttpTransportAgent {
     body?: XMLHttpRequestBodyInit,
     header?: Record<string, string>,
     timeout?: number
-  ): Promise<XMLHttpRequest> {
+  ): XHR {
     return await this._request(METHOD.DELETE, pathOrURL, body, header, timeout);
   }
 }

@@ -1,14 +1,18 @@
-interface IInputState {
-  value: string;
+export const fieldList = ['current_password', 'new_password', 'confirm'];
+
+export type TFieldUnion = 'current_password' | 'new_password' | 'confirm';
+
+export interface TInputState {
   error: boolean;
+  value: string;
   hint: string;
 }
 
-export interface IChangePasswordState {
+type TFieldsState = Record<TFieldUnion, TInputState>;
+
+export interface TChangePasswordState {
   changePassword: {
-    current_password: IInputState;
-    new_password: IInputState;
-    confirm: IInputState;
+    fields: TFieldsState;
     load: boolean;
   };
 }

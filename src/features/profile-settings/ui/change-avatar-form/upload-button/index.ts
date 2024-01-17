@@ -1,15 +1,20 @@
 import uuid from 'shared/packages/uuid';
-import { Block, type IBlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import { ButtonOutlined } from 'shared/ui/button';
 import templateSpec from './upload-button.template.hbs';
 import styles from './styles.module.css';
 
-interface IUploadButtonProps extends IBlockProps {
+interface UploadButtonProps {
   onChange: (e: Event) => void;
 }
 
-export class UploadButton extends Block<IUploadButtonProps> {
-  constructor(props?: IUploadButtonProps) {
+interface InnerProps extends UploadButtonProps {
+  id: string;
+  button: Block;
+}
+
+export class UploadButton extends Block<InnerProps> {
+  constructor(props: UploadButtonProps) {
     const button = new ButtonOutlined({
       name: 'pickButton',
       type: 'button',
@@ -26,11 +31,11 @@ export class UploadButton extends Block<IUploadButtonProps> {
     });
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 
-  protected _getStylesModule(): CSSModuleClasses {
+  protected getStylesModuleHook(): CSSModuleClasses {
     return styles;
   }
 }

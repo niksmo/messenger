@@ -1,39 +1,28 @@
-import { Block, type IBlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import templateSpec from './counter.template.hbs';
 import stylesModule from './styles.module.css';
 
-interface ICounterProps extends IBlockProps {
-  count?: number;
+interface CounterProps {
+  count: number;
 }
 
-let curCount: number | undefined;
+const styles = { ...stylesModule } as unknown as {
+  hidden: string;
+  'is-hidden': string;
+};
 
-const styles = { ...stylesModule };
-
-export class Counter extends Block<ICounterProps> {
-  constructor(props: ICounterProps) {
-    const { count } = props;
-    curCount = count;
-
-    super(props);
-  }
-
-  protected _getTemplateSpec(): TemplateSpecification {
-    if (curCount === undefined) {
-      styles['is-hidden'] = styles.hidden ? styles.hidden : '';
+export class Counter extends Block<CounterProps> {
+  protected getTemplateHook(): TemplateSpecification {
+    if (this.props.count) {
+      styles['is-hidden'] = styles.hidden;
+    } else {
+      styles['is-hidden'] = '';
     }
+
     return templateSpec;
   }
 
-  protected _getStylesModule(): CSSModuleClasses {
+  protected getStylesModuleHook(): CSSModuleClasses {
     return styles;
-  }
-
-  public didUpdate(): void {}
-
-  public setProps(newProps: Partial<ICounterProps>): void {
-    const { count } = newProps;
-    curCount = count;
-    super.setProps(newProps);
   }
 }

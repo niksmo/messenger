@@ -1,31 +1,40 @@
-import { Block, type IBlockProps } from 'shared/components/block';
-import { setNamePrefixToProps } from './lib';
+import { Block } from 'shared/components/block';
 import templateSpec from './avatar.template.hbs';
 import styles from './styles.module.css';
 
-interface IAvatarProps extends IBlockProps {
+interface AvatarProps {
   src: null | string;
   name: string;
 }
 
-export class Avatar extends Block<IAvatarProps> {
-  constructor(props: IAvatarProps) {
-    setNamePrefixToProps(props);
-    super(props);
+interface InnerProps extends AvatarProps {
+  namePrefix: string;
+}
+
+function getNamePrefix(name?: string): string {
+  if (name?.[0]) {
+    return name[0].toUpperCase();
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  return '?';
+}
+
+export class Avatar extends Block<InnerProps> {
+  constructor(props: AvatarProps) {
+    const { name } = props;
+    super({ namePrefix: getNamePrefix(name), ...props });
+  }
+
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 
-  protected _getStylesModule(): CSSModuleClasses {
+  protected getStylesModuleHook(): CSSModuleClasses {
     return styles;
   }
 
-  public setProps(newProps: Partial<IAvatarProps>): void {
-    if (newProps.name) {
-      setNamePrefixToProps(newProps);
-    }
-    super.setProps(newProps);
+  public setProps(props: Partial<AvatarProps>): void {
+    const { name } = props;
+    super.setProps({ namePrefix: getNamePrefix(name), ...props });
   }
 }

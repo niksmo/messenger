@@ -1,6 +1,6 @@
 import { BaseAPI } from 'shared/components/base-api';
 import { BASE_URL } from 'shared/constants/api';
-import HttpTransport from 'shared/packages/http';
+import HttpTransport, { type XHR } from 'shared/packages/http';
 
 export class ChangeAvatarAPI extends BaseAPI {
   private readonly _http;
@@ -10,7 +10,7 @@ export class ChangeAvatarAPI extends BaseAPI {
     this._http = new HttpTransport().setBaseURL(BASE_URL + '/user');
   }
 
-  async update(formData: FormData): Promise<XMLHttpRequest> {
+  async update(formData: FormData): XHR {
     return await this._http.put('/profile/avatar', formData);
   }
 }

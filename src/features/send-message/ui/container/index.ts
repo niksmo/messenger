@@ -1,18 +1,18 @@
-import { Block, type IBlockProps } from 'shared/components/block';
-import { DropdownMenuNew } from 'shared/ui/dropdown';
+import { Block } from 'shared/components/block';
+import { DropdownMenu } from 'shared/ui/dropdown';
 import { MessageForm } from '../form';
 import { AttachMediaMenuItem, AttachFileMenuItem } from '../menu-item';
 import templateSpec from './container.template.hbs';
 import styles from './styles.module.css';
 
-interface IMessageSenderProps extends IBlockProps {
+interface MessageSenderProps {
   menu: Block;
   form: Block;
 }
 
-export class MessageSender extends Block<IMessageSenderProps> {
+export class MessageSender extends Block<MessageSenderProps> {
   constructor() {
-    const menu = new DropdownMenuNew({
+    const menu = new DropdownMenu({
       trigger: { icon: 'paperclip', style: 'primary' },
       menuPos: { posX: 'left', posY: 'top' },
       menuList: [new AttachMediaMenuItem(), new AttachFileMenuItem()],
@@ -23,11 +23,11 @@ export class MessageSender extends Block<IMessageSenderProps> {
     super({ menu, form });
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 
-  protected _getStylesModule(): CSSModuleClasses {
+  protected getStylesModuleHook(): CSSModuleClasses {
     return styles;
   }
 }

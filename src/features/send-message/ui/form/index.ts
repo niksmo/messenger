@@ -1,17 +1,17 @@
-import { Block, type IBlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import { IconButton } from 'shared/ui/button';
 import { MessageInput } from '../input';
 import templateSpec from './form.template.hbs';
 import styles from './styles.module.css';
 
-interface IMessageFormProps extends IBlockProps {
+interface MessageFormProps {
   input: Block;
   submitButton: Block;
   onInput?: (e: Event) => void;
   onSubmit?: (e: Event) => void;
 }
 
-export class MessageForm extends Block<IMessageFormProps> {
+export class MessageForm extends Block<MessageFormProps> {
   constructor() {
     const input = new MessageInput({ name: 'message' });
 
@@ -27,11 +27,11 @@ export class MessageForm extends Block<IMessageFormProps> {
     super({ input, submitButton });
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 
-  protected _getStylesModule(): CSSModuleClasses {
+  protected getStylesModuleHook(): CSSModuleClasses {
     return styles;
   }
 }

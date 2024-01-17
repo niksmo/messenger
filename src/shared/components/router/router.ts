@@ -1,6 +1,6 @@
 import {
   type IAppRouter,
-  type BlockConstructor,
+  type TBlockConstructor,
   type IRoute,
 } from '../interfaces';
 import { AuthRoute, NotAuthRoute, Route } from './route';
@@ -140,7 +140,7 @@ export class AppRouter implements IAppRouter {
     this._onRoute(pathname);
   }
 
-  use(path: string, view: BlockConstructor): void {
+  use(path: string, view: TBlockConstructor): void {
     if (this._isRoot(this._appRoot)) {
       const route = new Route(path, view, this._appRoot);
       this._routes.push(route);
@@ -149,8 +149,8 @@ export class AppRouter implements IAppRouter {
 
   authUse(
     path: string,
-    view: BlockConstructor,
-    stub: BlockConstructor,
+    view: TBlockConstructor,
+    stub: TBlockConstructor,
     redirectCb: () => void
   ): void {
     if (this._isRoot(this._appRoot)) {
@@ -161,8 +161,8 @@ export class AppRouter implements IAppRouter {
 
   notAuthUse(
     path: string,
-    view: BlockConstructor,
-    stub: BlockConstructor,
+    view: TBlockConstructor,
+    stub: TBlockConstructor,
     redirectCb: () => void
   ): void {
     if (this._isRoot(this._appRoot)) {

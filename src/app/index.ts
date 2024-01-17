@@ -1,10 +1,10 @@
 import { AppRouter } from 'shared/components/router';
 import { ROUTE_PATH, ROUTE_SLUG } from 'shared/constants';
-import PAGE from 'pages';
-import './styles/index.css';
-import { Store } from 'shared/components/store';
-import { RequestAuthStub } from 'entites/viewer';
+import { Store } from 'shared/components/store/store';
+import { RequestAuthStub } from 'entites/viewer/ui/request-auth-stub';
 import { goToLogin, goToMain } from 'shared/helpers';
+import PAGE from 'pages/pages';
+import './styles/index.css';
 
 class App {
   private _root: null | HTMLElement = null;
@@ -18,16 +18,28 @@ class App {
     if (this._root === null) {
       return;
     }
-
     const store = new Store();
-    store.init();
-
     const router = new AppRouter();
+
     router.root(this._root);
 
     router.authUse(
       ROUTE_PATH.MAIN + ROUTE_SLUG.CHAT_ID,
       PAGE.Main,
+      RequestAuthStub,
+      goToLogin
+    );
+
+    router.authUse(
+      ROUTE_PATH.ADD_CHAT,
+      PAGE.AddChat,
+      RequestAuthStub,
+      goToLogin
+    );
+
+    router.authUse(
+      ROUTE_PATH.ADD_USERS,
+      PAGE.AddUsers,
       RequestAuthStub,
       goToLogin
     );
@@ -66,16 +78,20 @@ class App {
       RequestAuthStub,
       goToMain
     );
+
     router.notAuthUse(
       ROUTE_PATH.SIGNUP,
       PAGE.Signup,
       RequestAuthStub,
       goToMain
     );
+
     router.use(ROUTE_PATH[404], PAGE.NotFound);
     router.use(ROUTE_PATH[500], PAGE.InternalError);
     router.noMatch(ROUTE_PATH[404]);
     router.start();
+
+    store.start();
   }
 }
 

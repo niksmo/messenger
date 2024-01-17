@@ -1,15 +1,15 @@
-import { Block, type IBlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import { Link } from 'shared/components/router';
 import { ButtonLight } from 'shared/ui/button';
 import { WarnStub } from 'shared/ui/warn-stub-page';
 import templateSpec from './500.template.hbs';
 
-interface IInternalErrorPageProps extends IBlockProps {
+interface InternalErrorPageProps {
   warnStub: Block;
   transitionButton: Block;
 }
 
-export class InternalErrorPage extends Block<IInternalErrorPageProps> {
+export class InternalErrorPage extends Block<InternalErrorPageProps> {
   constructor() {
     const warnStub = new WarnStub({
       errCode: 500,
@@ -30,7 +30,7 @@ export class InternalErrorPage extends Block<IInternalErrorPageProps> {
     super({ warnStub, transitionButton });
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 }

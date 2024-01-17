@@ -1,15 +1,19 @@
-import { Block, type IBlockProps } from './block';
+import { Block, type TIndexed } from './block';
 import { DOMEvent } from './consts';
 
 export function shallowEqual(
-  oldProps: IBlockProps,
-  newProps: IBlockProps
+  curProps: unknown,
+  newProps: unknown
 ): [boolean, Map<string, unknown>] {
   const causeProps = new Map<string, unknown>();
   let isEqual = true;
-  for (const key of Object.keys(newProps)) {
-    if (!Object.is(oldProps[key], newProps[key])) {
-      causeProps.set(key, newProps[key]);
+
+  const curP = curProps as Record<string, unknown>;
+  const newP = newProps as Record<string, unknown>;
+
+  for (const key of Object.keys(newProps as Record<string, unknown>)) {
+    if (!Object.is(curP[key], newP[key])) {
+      causeProps.set(key, newP[key]);
       isEqual = false;
     }
   }
@@ -25,11 +29,11 @@ export type TBlockEventsMap = Map<
 >;
 export type TBlocksMap = Map<TBlockId, Block>;
 
-function isBlock(probBlock: unknown | Block): probBlock is Block<IBlockProps> {
+function isBlock(probBlock: unknown | Block): probBlock is Block<TIndexed> {
   return probBlock instanceof Block;
 }
 
-export function pickBlocksAndEvents(props: IBlockProps): {
+export function pickBlocksAndEvents(props: TIndexed): {
   blocks: TBlocksMap;
   events: TBlockEventsMap;
 } {
@@ -60,4 +64,37 @@ export function pickBlocksAndEvents(props: IBlockProps): {
   });
 
   return { blocks, events };
+}
+
+export function traverseBlocksTreeAndCall(
+  this: Block<unknown>,
+  method: Extract<keyof Block, 'willUnmount' | 'didUpdate' | 'didMount'>
+): void {
+  const stack: Block[] = [this];
+  const colors: number[] = [1];
+
+  while (stack.length) {
+    const block = stack.pop();
+    const color = colors.pop();
+
+    if (!block || !color) {
+      break;
+    }
+
+    if (color === 1) {
+      stack.push(block);
+      colors.push(2);
+      const childBlocks = block.childBlocks;
+      if (childBlocks) {
+        for (const block of childBlocks.values()) {
+          stack.push(block);
+          colors.push(1);
+        }
+      }
+    }
+
+    if (color === 2) {
+      block[method]();
+    }
+  }
 }

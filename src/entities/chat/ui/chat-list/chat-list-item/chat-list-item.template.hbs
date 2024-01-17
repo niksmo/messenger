@@ -1,0 +1,24 @@
+<div
+  class="{{styles.chat-item}}{{#if active}} {{styles.chat-item_active}}{{/if}}"
+  tabindex=" 0" role="button" draggable="false">
+  <div class="{{styles.chat-item__avatar}}">
+    {{avatar}}
+  </div>
+  <div class="{{styles.chat-info}}">
+    <div class="{{styles.chat-info__heading}}">
+      <p class="{{styles.chat-item__text}} {{styles.chat-info__title}}">
+        {{title}}
+      </p>
+      <p class="{{styles.chat-item__text}} {{styles.chat-info__time}}">
+        {{time}}
+      </p>
+    </div>
+    <div class="{{styles.chat-info__message}}">
+      <p class="{{styles.chat-item__text}} {{styles.chat-info__last}}">
+        {{content}}
+      </p>
+      {{unreadCounter}}
+    </div>
+
+  </div>
+</div>

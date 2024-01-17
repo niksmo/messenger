@@ -1,0 +1,19 @@
+.chat-stub {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background-color: var(--color-background-basic);
+}
+
+.chat-stub__cta {
+  margin: 0;
+  padding: 0 8px;
+  border-radius: 12px;
+  font-size: var(--font-title-medium-size);
+  line-height: var(--font-title-medium-height);
+  font-weight: var(--font-title-medium-weight);
+  letter-spacing: var(--font-title-medium-spacing);
+  color: var(--color-text-accent);
+  background-color: var(--color-background-secondary);
+}

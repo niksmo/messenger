@@ -1,9 +1,9 @@
-import { Block, type IBlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import templateSpec from './bubble.template.hbs';
 import baseStyles from '../base-styles.module.css';
 import viewerStyles from './styles.module.css';
 
-interface IOwnBubbleProps {
+interface BubbleOwnProps {
   text: string;
   time: string;
   status: string;
@@ -20,18 +20,18 @@ const enum STATUS {
 
 let curStatus: string;
 
-export class BubbleOwn extends Block {
-  constructor(props: IOwnBubbleProps & IBlockProps) {
+export class BubbleOwn extends Block<BubbleOwnProps> {
+  constructor(props: BubbleOwnProps) {
     const { status } = props;
     curStatus = status;
     super(props);
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 
-  protected _getStylesModule(): CSSModuleClasses {
+  protected getStylesModuleHook(): CSSModuleClasses {
     const statusStyle =
       curStatus === 'readed' ? styles[STATUS.READED] : styles[STATUS.DELIVERED];
 
@@ -40,9 +40,9 @@ export class BubbleOwn extends Block {
     return styles;
   }
 
-  public setProps(newProps: Partial<IOwnBubbleProps>): void {
-    const { status } = newProps;
+  public setProps(props: Partial<BubbleOwnProps>): void {
+    const { status } = props;
     curStatus = status ?? curStatus;
-    super.setProps(newProps);
+    super.setProps(props);
   }
 }

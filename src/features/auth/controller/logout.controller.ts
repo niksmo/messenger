@@ -1,7 +1,7 @@
-import { Store } from 'shared/components/store';
+import { Store } from 'shared/components/store/store';
 import { AppRouter } from 'shared/components/router';
 import { ROUTE_PATH } from 'shared/constants';
-import { LogoutAPI } from '../api';
+import { LogoutAPI } from '../api/logout.api';
 
 const STORE_SLICE = 'viewer';
 

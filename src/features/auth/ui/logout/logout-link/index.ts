@@ -1,6 +1,6 @@
 import { Block } from 'shared/components/block';
 import { SettingsItem } from 'shared/ui/settings-item';
-import { logoutController } from '../../../controller';
+import { logoutController } from '../../../controller/logout.controller';
 import templateSpec from './logout-link.template.hbs';
 
 export class LogoutLink extends Block {
@@ -19,7 +19,7 @@ export class LogoutLink extends Block {
     });
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 }

@@ -1,17 +1,17 @@
-import { Block, type IBlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import { Link } from 'shared/components/router';
 import { ButtonLight } from 'shared/ui/button';
 import { ROUTE_PATH } from 'shared/constants';
-import { ChangePasswordForm } from 'features/profile-settings';
+import { ChangePasswordForm } from 'features/profile-settings/ui/change-password-form';
 import templateSpec from './change-password-page.template.hbs';
 import styles from './styles.module.css';
 
-interface IPageChangePasswordProps extends IBlockProps {
+interface ChangePasswordPageProps {
   form: Block;
   transitionButton: Block;
 }
 
-export class PageChangePassword extends Block<IPageChangePasswordProps> {
+export class ChangePasswordPage extends Block<ChangePasswordPageProps> {
   constructor() {
     const transitionButton = new Link({
       href: ROUTE_PATH.SETTINGS,
@@ -28,11 +28,11 @@ export class PageChangePassword extends Block<IPageChangePasswordProps> {
     super({ form, transitionButton });
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 
-  protected _getStylesModule(): CSSModuleClasses {
+  protected getStylesModuleHook(): CSSModuleClasses {
     return styles;
   }
 }

@@ -10,6 +10,7 @@ export class DeleteChatMenuItem extends MenuItem {
       approveCb: () => {
         alert('chat deleted');
         dialog.setProps({ isVisible: false });
+        dialog.dispatchWillUnmount();
       },
     });
 

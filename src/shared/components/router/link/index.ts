@@ -1,27 +1,31 @@
-import { Block, type IBlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import { AppRouter } from '..';
 import templateSpec from './link.template.hbs';
 
-interface ILinkProps extends IBlockProps {
+interface LinkProps {
   href: string;
   ariaHidden?: boolean;
-  children?: Block;
+  children: Block;
   replace?: boolean;
 }
 
-export class Link extends Block<ILinkProps> {
-  constructor(props: ILinkProps) {
-    const { href, replace = false } = props;
+interface InnerProps {
+  ariaHidden?: boolean;
+  children: Block;
+  onClick: (e: Event) => void;
+}
 
-    props.onClick = (e: Event) => {
+export class Link extends Block<InnerProps> {
+  constructor({ href, replace = false, ...rest }: LinkProps) {
+    const onClick = (e: Event): void => {
       e.preventDefault();
       const router = AppRouter.instance();
       router.go(href, replace);
     };
-    super(props);
+    super({ ...rest, onClick });
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 }

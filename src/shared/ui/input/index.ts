@@ -1,10 +1,10 @@
-import { Block, type IBlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import templateSpec from './input.template.hbs';
 import styles from './styles.module.css';
 
 type TInputTypes = 'text' | 'email' | 'password' | 'tel' | 'number';
 
-interface IInputProps extends IBlockProps {
+interface InputProps {
   id: string | number;
   type: TInputTypes;
   name: string;
@@ -14,32 +14,26 @@ interface IInputProps extends IBlockProps {
   hint?: string;
 }
 
-export class Input extends Block<IInputProps> {
-  protected _getTemplateSpec(): TemplateSpecification {
+export class Input extends Block<InputProps> {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 
-  protected _getStylesModule(): CSSModuleClasses {
+  protected getStylesModuleHook(): CSSModuleClasses {
     return styles;
   }
 
-  protected _getListenersSelector(): string {
+  protected getListenersSelectorHook(): string {
     return 'input';
   }
 
-  protected renderInterceptor(
+  protected renderInterceptorHook(
     shouldRender: boolean,
-    causeProps: Map<string, unknown>,
-    _oldProps: IBlockProps,
-    block: Block
+    causeProps: Map<string, unknown>
   ): boolean {
-    if (!block.getContent()) {
-      return shouldRender;
-    }
-
-    const htmlInput = block.getContent().querySelector('input');
-    const htmlHint = block.getContent().querySelector('p');
-    const errorStyle = this._getStylesModule()['form-input__inner_error'];
+    const htmlInput = this.getContent().querySelector('input');
+    const htmlHint = this.getContent().querySelector('p');
+    const errorStyle = this.getStylesModuleHook()['form-input__inner_error'];
 
     if (causeProps.has('value')) {
       shouldRender = false;

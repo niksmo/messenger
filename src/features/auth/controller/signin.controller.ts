@@ -1,22 +1,21 @@
 import { AppRouter } from 'shared/components/router';
-import { Store } from 'shared/components/store';
+import { Store } from 'shared/components/store/store';
 import {
   HINT,
   TEMPLATE,
   verifierCreator,
 } from 'shared/components/form-verifier';
 import { ROUTE_PATH } from 'shared/constants';
-import { type ISigninState } from '../model';
-import { SigninAPI } from '../api';
-
-type TFormData = Record<string, string>;
-
-interface IInputData {
-  field: string;
-  value: string;
-}
+import { getInputValue } from 'shared/helpers';
+import {
+  fieldList,
+  type TInputState,
+  type TSigninState,
+} from '../model/signin.model';
+import { SigninAPI } from '../api/signin.api';
 
 const STORE_SLICE = 'signin';
+const STORE_FIELDS = STORE_SLICE + '.fields';
 const STORE_ERROR = STORE_SLICE + '.error';
 const STORE_LOAD = STORE_SLICE + '.load';
 
@@ -27,44 +26,58 @@ class SigninController {
   private readonly _router;
 
   constructor() {
+    this._api = new SigninAPI();
+    this._store = Store.instance();
+    this._router = AppRouter.instance();
+
     this._verifier = verifierCreator.makeStringVerifier({
       login: { template: TEMPLATE.login, hint: HINT.login },
       password: { template: TEMPLATE.password, hint: HINT.password },
     });
-    this._api = new SigninAPI();
-    this._store = Store.instance();
-    this._router = AppRouter.instance();
   }
 
   start(): void {
     const initInputState = { value: '', hint: '', error: false };
 
-    const initState: ISigninState['signin'] = {
-      login: { ...initInputState },
-      password: { ...initInputState },
-      error: '',
-      load: false,
-    };
+    const fields = fieldList.reduce<Record<string, TInputState>>(
+      (map, fieldName) => {
+        map[fieldName] = { ...initInputState };
+        return map;
+      },
+      {}
+    );
 
-    this._store.set(STORE_SLICE, initState);
+    this._store.set(STORE_SLICE, { fields, error: '', load: false });
   }
 
   private _resetState(): void {
     this.start();
   }
 
-  input({ field, value }: IInputData): void {
-    this._store.set(`${STORE_SLICE}.${field}`, { value, error: false });
-    this._store.set(STORE_ERROR, '');
+  private _extractFormData(): Record<string, string> {
+    const { signin } = this._store.getState<TSigninState>();
+    const { fields } = signin;
+
+    const entries = Object.entries<TInputState>({ ...fields });
+
+    const formData = entries.reduce<Record<string, string>>(
+      (map, [fieldName, inputState]) => {
+        map[fieldName] = inputState.value;
+        return map;
+      },
+      {}
+    );
+
+    return formData;
   }
 
-  verify(formData: TFormData): boolean {
+  private _verify(formData: Record<string, string>): boolean {
     const { isValid, hintData } = this._verifier.checkOnValidity(formData);
 
     for (const field of Object.keys(hintData)) {
       const hint = hintData[field];
       if (typeof hint === 'string') {
-        this._store.set(`${STORE_SLICE}.${field}`, {
+        this._store.set(`${STORE_FIELDS}.${field}`, {
           hint,
           error: Boolean(hint),
         });
@@ -74,8 +87,10 @@ class SigninController {
     return isValid;
   }
 
-  async submit(formData: TFormData): Promise<void> {
-    if (!this.verify(formData)) {
+  private async _submit(): Promise<void> {
+    const formData = this._extractFormData();
+
+    if (!this._verify(formData)) {
       return;
     }
 
@@ -107,6 +122,20 @@ class SigninController {
     } finally {
       this._store.set(STORE_LOAD, false);
     }
+  }
+
+  public input(e: Event): void {
+    const { field, value } = getInputValue(e);
+    this._store.set(`${STORE_FIELDS}.${field}`, { value, error: false });
+    this._store.set(STORE_ERROR, '');
+  }
+
+  public verify(): void {
+    this._verify(this._extractFormData());
+  }
+
+  public submit(): void {
+    void this._submit();
   }
 }
 

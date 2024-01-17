@@ -1,35 +1,33 @@
-export type BlockConstructor = new (props?: Record<string, unknown>) => IBlock;
+export type TBlockConstructor = new (props: Record<string, unknown>) => IBlock;
 
 export interface IBlock {
+  dispatchDidMount: () => void;
+  dispatchDidUpdate: () => void;
+  dispatchWillUnmount: () => void;
   didMount: () => void;
   didUpdate: () => void;
-  dispatchDidMount: () => void;
-  getContent: () => HTMLElement;
-  setProps: (arg: Record<string, unknown>) => void;
-  setVisible: () => void;
-  setHidden: () => void;
   willUnmount: () => void;
-  dispatchWillUnmount: () => void;
+  getContent: () => HTMLElement;
+  setProps: (props: Partial<Record<string, unknown>>) => void;
 }
 
 export interface IAppRouter {
+  start: () => void;
   base: (path: string) => void;
-  noMatch: (path: string) => void;
   go: (path: string, replace: boolean) => void;
   back: () => void;
   forward: () => void;
-  start: () => void;
-  use: (path: string, view: BlockConstructor) => void;
+  use: (path: string, view: TBlockConstructor) => void;
   authUse: (
     path: string,
-    view: BlockConstructor,
-    stub: BlockConstructor,
+    view: TBlockConstructor,
+    stub: TBlockConstructor,
     redirectCb: () => void
   ) => void;
   notAuthUse: (
     path: string,
-    view: BlockConstructor,
-    stub: BlockConstructor,
+    view: TBlockConstructor,
+    stub: TBlockConstructor,
     redirectCb: () => void
   ) => void;
 }
@@ -42,8 +40,15 @@ export interface IRoute {
 }
 
 export interface IStore {
-  init: (state: Record<string, unknown>) => IStore;
+  start: (state: Record<string, unknown>) => IStore;
   on: (fn: (state: Record<string, unknown>) => void) => IStore;
   set: (path: string, value: unknown) => IStore;
   getState: () => Record<string, unknown>;
+}
+
+export interface IBaseAPI {
+  create: () => Promise<unknown>;
+  request: () => Promise<unknown>;
+  update: () => Promise<unknown>;
+  delete: () => Promise<unknown>;
 }

@@ -1,25 +1,24 @@
 import { Block } from 'shared/components/block';
 import { WarningText } from 'shared/ui/warning';
 import { ButtonFilled, ButtonLight } from 'shared/ui/button';
-import { Store } from 'shared/components/store';
+import { Store } from 'shared/components/store/store';
 import { AppRouter } from 'shared/components/router';
 import { ROUTE_PATH } from 'shared/constants';
-import type { IChangeAvatarSlice } from '../../model';
-import { changeAvatarController } from '../../controller';
 import templateSpec from './preview.template.hbs';
 import styles from './styles.module.css';
 import { UploadButton } from './upload-button';
+import { type TChangeAvatarSlice } from 'features/profile-settings/model/change-avatar.model';
+import { changeAvatarController } from 'features/profile-settings/controller/change-avatar.controller';
 
 const store = Store.instance();
 
 const STUB_IMAGE_SRC = '/image/avatar-error-loading-stub.webp';
 
 export class UploadAvatarForm extends Block {
-  private readonly _onStoreUpdate;
+  private readonly _message;
 
   constructor() {
-    const { changeAvatar } = store.getState<IChangeAvatarSlice>();
-
+    const { changeAvatar } = store.getState<TChangeAvatarSlice>();
     const { objectURL, error = '' } = { ...changeAvatar };
 
     const src = error || !objectURL ? STUB_IMAGE_SRC : objectURL;
@@ -66,23 +65,29 @@ export class UploadAvatarForm extends Block {
       },
     });
 
-    this._onStoreUpdate = (state: IChangeAvatarSlice) => {
-      const { objectURL, error } = state.changeAvatar;
-
-      message.setProps({ message: error, visible: Boolean(error) });
-      const src = error ? STUB_IMAGE_SRC : objectURL;
-      this.setProps({ src });
-    };
-
-    store.on(this._onStoreUpdate);
+    this._message = message;
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 
-  protected _getStylesModule(): CSSModuleClasses {
+  protected getStylesModuleHook(): CSSModuleClasses {
     return styles;
+  }
+
+  private readonly _onStoreUpdate = ({
+    changeAvatar,
+  }: TChangeAvatarSlice): void => {
+    const { objectURL, error } = { ...changeAvatar };
+
+    this._message.setProps({ message: error, visible: Boolean(error) });
+    const src = error ? STUB_IMAGE_SRC : objectURL;
+    this.setProps({ src });
+  };
+
+  public didMount(): void {
+    store.on(this._onStoreUpdate);
   }
 
   public willUnmount(): void {

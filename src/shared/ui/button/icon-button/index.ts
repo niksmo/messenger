@@ -1,4 +1,4 @@
-import { Block, type IBlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import templateSpec from './icon-button.template.hbs';
 import initStyles from './styles.module.css';
 
@@ -19,7 +19,7 @@ export type TIcon =
 
 export type TStyle = 'primary' | 'secondary' | 'accent';
 
-interface IIconButtonProps extends IBlockProps {
+interface IconButtonProps {
   type: 'button' | 'submit';
   icon: TIcon;
   style: TStyle;
@@ -33,25 +33,25 @@ let curStyle: TStyle = 'primary';
 
 const styles = { ...initStyles };
 
-export class IconButton extends Block<IIconButtonProps> {
-  constructor(props: IIconButtonProps) {
+export class IconButton extends Block<IconButtonProps> {
+  constructor(props: IconButtonProps) {
     curStyle = props.style;
-    super(props);
+    super({ ...props });
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 
-  protected _getStylesModule(): CSSModuleClasses {
+  protected getStylesModuleHook(): CSSModuleClasses {
     styles['icon-button_style'] = styles[STYLE[curStyle]] ?? '';
     return styles;
   }
 
-  public setProps(newProps: Partial<IIconButtonProps>): void {
-    const { style } = newProps;
+  public setProps(props: Partial<IconButtonProps>): void {
+    const { style } = props;
     curStyle = style ?? curStyle;
 
-    super.setProps(newProps);
+    super.setProps(props);
   }
 }

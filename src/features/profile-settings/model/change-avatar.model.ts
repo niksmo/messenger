@@ -1,9 +1,9 @@
-export interface IChangeAvatarState {
+export interface TChangeAvatarState {
   objectURL: string;
   error: string;
   load: boolean;
 }
 
-export interface IChangeAvatarSlice extends Record<string, unknown> {
-  changeAvatar: IChangeAvatarState;
+export interface TChangeAvatarSlice {
+  changeAvatar: TChangeAvatarState;
 }

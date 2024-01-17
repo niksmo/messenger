@@ -1,22 +1,22 @@
 import uuid from 'shared/packages/uuid';
+import { Block } from 'shared/components/block';
 import templateSpec from './search-input.template.hbs';
 import styles from './styles.module.css';
-import { Block, type IBlockProps } from 'shared/components/block';
 
-interface ISearchBarProps extends IBlockProps {
+interface SearchBarProps {
   onInput?: (e: Event) => void;
 }
 
-export class SearchBar extends Block<ISearchBarProps> {
+export class SearchBar extends Block<SearchBarProps> {
   constructor() {
     super({ id: uuid() });
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 
-  protected _getStylesModule(): CSSModuleClasses {
+  protected getStylesModuleHook(): CSSModuleClasses {
     return styles;
   }
 

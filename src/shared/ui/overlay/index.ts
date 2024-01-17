@@ -1,39 +1,40 @@
-import { Block, type IBlockProps } from 'shared/components/block';
+import { Block } from 'shared/components/block';
 import templateSpec from './overlay.template.hbs';
 import styles from './styles.module.css';
+import { withInterrupt } from 'shared/helpers/with';
 
-interface IOverlayProps extends IBlockProps {
+interface OverlayProps {
   isVisible: boolean;
   children: Block;
 }
 
 const appRoot = document.getElementById('app');
 
-export class Overlay extends Block<IOverlayProps> {
+export class Overlay extends Block<OverlayProps> {
   private _isVisible: boolean = false;
 
-  constructor(props: IOverlayProps) {
+  constructor(props: OverlayProps) {
     super(props);
     const { isVisible } = props;
     this._isVisible = isVisible;
   }
 
-  protected _getTemplateSpec(): TemplateSpecification {
+  protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
   }
 
-  protected _getStylesModule(): CSSModuleClasses {
+  protected getStylesModuleHook(): CSSModuleClasses {
     return styles;
   }
 
-  public setProps(newProps: Partial<IOverlayProps>): void {
-    const { isVisible } = newProps;
+  public setProps(props: Partial<OverlayProps>): void {
+    const { isVisible } = props;
 
     if (isVisible !== undefined) {
       this._isVisible = isVisible;
     }
 
-    super.setProps(newProps);
+    super.setProps(props);
   }
 
   public didMount(): void {
@@ -42,15 +43,9 @@ export class Overlay extends Block<IOverlayProps> {
     }
   }
 
-  public didUpdate(): void {
-    if (this._isVisible) {
-      appRoot?.append(this.getContent());
-    } else {
-      this.getContent().remove();
-    }
-  }
-
   public willUnmount(): void {
-    this.getContent().remove();
+    const htmlEl = this.getContent();
+    const removeWithInterrupt = withInterrupt(htmlEl.remove.bind(htmlEl));
+    removeWithInterrupt();
   }
 }

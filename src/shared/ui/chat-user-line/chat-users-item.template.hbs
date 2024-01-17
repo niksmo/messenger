@@ -1,0 +1,20 @@
+<div class="chat-user-line {{styles.container}} no-select">
+  <div class="{{styles.avatarContainer}}">
+    {{blockAvatar}}
+  </div>
+  <div class="user-meta {{styles.userMeta}}">
+    <p class="{{styles.userName}}">
+      {{#if displayName}}
+        {{displayName}}
+      {{else}}
+        {{firstName}} {{secondName}}
+      {{/if}}
+    </p>
+    <p class="{{styles.userLogin}}">
+      {{login}}
+    </p>
+  </div>
+  {{#if status}}
+    <p class="{{styles.statusText}}">{{status}}</p>
+  {{/if}}
+</div>

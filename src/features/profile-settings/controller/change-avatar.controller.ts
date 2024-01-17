@@ -1,15 +1,18 @@
-import { Store } from 'shared/components/store';
+import { Store } from 'shared/components/store/store';
 import { AppRouter } from 'shared/components/router';
 import { HINT, verifierCreator } from 'shared/components/form-verifier';
 import { ROUTE_PATH } from 'shared/constants';
-import { reviveNullToString } from 'shared/helpers';
-import { ChangeAvatarAPI } from '../api';
-import type { IChangeAvatarSlice, IChangeAvatarState } from '../model';
+import { goToLoginWithUnauth, reviveNullToString } from 'shared/helpers';
+import type {
+  TChangeAvatarSlice,
+  TChangeAvatarState,
+} from '../model/change-avatar.model';
+import { ChangeAvatarAPI } from '../api/change-avatar.api';
 
 const STORE_SLICE = 'changeAvatar';
 const MAX_SIZE_1MB = Math.pow(2, 20) - 1;
 
-function makeState(file: File): IChangeAvatarState {
+function makeState(file: File): TChangeAvatarState {
   return {
     objectURL: URL.createObjectURL(file),
     load: false,
@@ -49,7 +52,7 @@ export class ChangeAvatarController {
 
   override(file: File): void {
     this._fileImage = file;
-    const { changeAvatar: state } = this._store.getState<IChangeAvatarSlice>();
+    const { changeAvatar: state } = this._store.getState<TChangeAvatarSlice>();
     const { objectURL } = { ...state };
 
     const newState = makeState(file);
@@ -61,7 +64,7 @@ export class ChangeAvatarController {
   }
 
   reset(): void {
-    const state: IChangeAvatarState = {
+    const state: TChangeAvatarState = {
       objectURL: '',
       load: false,
       error: '',
@@ -93,30 +96,30 @@ export class ChangeAvatarController {
       const xhr = await this._api.update(formData);
       const { status, response } = xhr;
 
-      if (status === 200 && typeof response === 'string') {
-        this._store.set('viewer', JSON.parse(response, reviveNullToString));
-        this._router.go(ROUTE_PATH.SETTINGS);
-        this.reset();
-      }
-
       if (status === 400 && typeof response === 'string') {
         const { reason } = JSON.parse(response);
         this._store.set(STORE_SLICE, { error: reason });
+        return;
+      }
+
+      if (status === 200 && typeof response === 'string') {
+        this._store.set('viewer', JSON.parse(response, reviveNullToString));
+        this._router.go(ROUTE_PATH.SETTINGS);
       }
 
       if (status === 401) {
-        this._router.go(ROUTE_PATH.SIGNIN);
-        this.reset();
+        goToLoginWithUnauth();
       }
 
       if (status === 500) {
         this._router.go(ROUTE_PATH[500]);
-        this.reset();
       }
+
+      this.reset();
     } catch (err) {
       this._store.set(STORE_SLICE, { error: 'Image is too large' });
     } finally {
-      this._store.set(STORE_SLICE, { load: true });
+      this._store.set(STORE_SLICE, { load: false });
     }
   }
 }

@@ -5,7 +5,7 @@ import filledStyles from './styles-filled.module.css';
 const styles = { ...baseStyles, ...filledStyles };
 
 export class ButtonFilled extends Button {
-  protected _getStylesModule(): CSSModuleClasses {
+  protected getStylesModuleHook(): CSSModuleClasses {
     return styles;
   }
 }
