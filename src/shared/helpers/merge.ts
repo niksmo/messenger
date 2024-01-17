@@ -1,4 +1,4 @@
-import { isObject } from '.';
+import { isObject } from './is';
 
 type Indexed = Record<string, unknown>;
 

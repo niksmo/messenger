@@ -1,10 +1,10 @@
-import { Block } from 'shared/components/block';
+import { Block } from 'shared/components/block/block';
 import { Store } from 'shared/components/store/store.ts';
 import type {
   TAddUsersState,
   TFoundUser,
 } from '../../model/chat-users-add.model.ts';
-import { FoundUsersItem } from './list-item/list-item.block.ts';
+import { FoundUsersItem } from './_list-item/list-item.block.ts';
 import templateSpec from './found-list.template.hbs';
 import styles from './styles.module.css';
 import { addChatUsersController } from 'features/chat-users-add/controller/chat-users-add.controller.ts';

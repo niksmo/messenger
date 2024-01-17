@@ -1,5 +1,5 @@
-import uuid from 'shared/packages/uuid';
-import { Block } from 'shared/components/block';
+import uuid from 'shared/packages/uuid/uuid';
+import { Block } from 'shared/components/block/block';
 import templateSpec from './search-input.template.hbs';
 import styles from './styles.module.css';
 

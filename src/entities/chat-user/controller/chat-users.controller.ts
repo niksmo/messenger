@@ -1,7 +1,7 @@
+import { AppRouter } from 'shared/components/router/router';
 import { Store } from 'shared/components/store/store';
-import { AppRouter } from 'shared/components/router';
-import { goToLoginWithUnauth } from 'shared/helpers';
-import { ROUTE_PATH } from 'shared/constants';
+import { goToLoginWithUnauth } from 'shared/helpers/go';
+import { ROUTE_PATH } from 'shared/constants/routes';
 import type { TChatListState } from 'entites/chat/model/chat-list.model';
 import type { TChatUsersIndexed, TUser } from '../model/chat-user.model';
 import { ChatUsersAPI } from '../api/chat-user.api';

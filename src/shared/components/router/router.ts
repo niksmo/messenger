@@ -3,7 +3,7 @@ import {
   type TBlockConstructor,
   type IRoute,
 } from '../interfaces';
-import { AuthRoute, NotAuthRoute, Route } from './route';
+import { AuthRoute, NotAuthRoute, Route } from './_route';
 
 const INIT_BASE_PATH = '/';
 

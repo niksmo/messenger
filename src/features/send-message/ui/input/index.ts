@@ -1,4 +1,4 @@
-import { Block } from 'shared/components/block';
+import { Block } from 'shared/components/block/block';
 import templateSpec from './input.template.hbs';
 import styles from './styles.module.css';
 

@@ -1,4 +1,4 @@
-import { MenuItem } from 'shared/ui/dropdown';
+import { MenuItem } from 'shared/ui/dropdown/menu-item.block';
 
 export class AttachFileMenuItem extends MenuItem {
   constructor() {

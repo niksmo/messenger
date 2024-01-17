@@ -1,8 +1,10 @@
 import { Store } from 'shared/components/store/store';
-import { AppRouter } from 'shared/components/router';
-import { HINT, verifierCreator } from 'shared/components/form-verifier';
-import { ROUTE_PATH } from 'shared/constants';
-import { goToLoginWithUnauth, reviveNullToString } from 'shared/helpers';
+import { AppRouter } from 'shared/components/router/router';
+import { verifierCreator } from 'shared/components/form-verifier/verifier';
+import { HINT } from 'shared/components/form-verifier/templates';
+import { ROUTE_PATH } from 'shared/constants/routes';
+import { goToLoginWithUnauth } from 'shared/helpers/go';
+import { reviveNullToString } from 'shared/helpers/json';
 import type {
   TChangeAvatarSlice,
   TChangeAvatarState,

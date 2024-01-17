@@ -1,12 +1,8 @@
 import { Store } from 'shared/components/store/store';
-import { AppRouter } from 'shared/components/router';
-import {
-  getInputValue,
-  getTypedEntries,
-  goToLoginWithUnauth,
-  goToMain,
-} from 'shared/helpers';
-import { ROUTE_PATH } from 'shared/constants';
+import { AppRouter } from 'shared/components/router/router';
+import { goToLoginWithUnauth, goToMain } from 'shared/helpers/go';
+import { getInputValue, getTypedEntries } from 'shared/helpers/get';
+import { ROUTE_PATH } from 'shared/constants/routes';
 import type {
   TChatUsersSate,
   TUser,

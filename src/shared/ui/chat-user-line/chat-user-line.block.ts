@@ -1,5 +1,5 @@
-import { Block } from 'shared/components/block';
-import { Avatar } from 'shared/ui/avatar';
+import { Block } from 'shared/components/block/block';
+import { Avatar } from 'shared/ui/avatar/avatar.block';
 import styles from './styles.module.css';
 import templateSpec from './chat-users-item.template.hbs';
 

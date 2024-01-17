@@ -1,18 +1,15 @@
-import { AppRouter } from 'shared/components/router';
 import { Store } from 'shared/components/store/store';
-import {
-  HINT,
-  TEMPLATE,
-  verifierCreator,
-} from 'shared/components/form-verifier';
-import { ROUTE_PATH } from 'shared/constants';
+import { getInputValue } from 'shared/helpers/get';
+import { AppRouter } from 'shared/components/router/router';
+import { verifierCreator } from 'shared/components/form-verifier/verifier';
+import { HINT, TEMPLATE } from 'shared/components/form-verifier/templates';
+import { ROUTE_PATH } from 'shared/constants/routes';
 import { SignupAPI } from '../api/signup.api';
 import {
   type TInputState,
   type TSignupState,
   fieldList,
 } from '../model/signup.model';
-import { getInputValue } from 'shared/helpers';
 
 const STORE_SLICE = 'signup';
 const STORE_FIELDS = STORE_SLICE + '.fields';

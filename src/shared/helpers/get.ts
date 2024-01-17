@@ -1,4 +1,4 @@
-import uuid from 'shared/packages/uuid';
+import uuid from 'shared/packages/uuid/uuid';
 import { Input, type InputProps } from 'shared/ui/input';
 
 export function getInputValue(evt: Event): { field: string; value: string } {
