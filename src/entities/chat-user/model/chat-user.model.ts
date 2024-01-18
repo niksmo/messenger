@@ -5,7 +5,7 @@ export interface TUser {
   display_name: string | null;
   login: string;
   avatar: string | null;
-  role: string;
+  role: 'admin' | 'regular';
 }
 
 export type TChatUsersIndexed = Record<TUser['id'], TUser>;

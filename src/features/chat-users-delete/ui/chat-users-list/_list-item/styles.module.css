@@ -6,6 +6,10 @@
   border-color: var(--color-element-error);
 }
 
+.invisibleInput:disabled + .content {
+  border-color: var(--color-element-accent);
+}
+
 .content {
   flex: 1 1;
   border: 1px solid var(--color-background-secondary);

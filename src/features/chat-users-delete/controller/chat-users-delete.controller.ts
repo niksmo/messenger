@@ -48,6 +48,7 @@ export class DeleteChatUsersController {
       TDeleteUsersState & TChatListState
     >();
 
+    debugger;
     const { select: users } = deleteUsers;
     const { currentChat: chatId } = chatList;
 
@@ -84,7 +85,7 @@ export class DeleteChatUsersController {
     } catch (err) {
       console.warn(err);
     } finally {
-      this._store.set(STORE_LOAD, true);
+      this._store.set(STORE_LOAD, false);
     }
   }
 
@@ -98,10 +99,9 @@ export class DeleteChatUsersController {
     const { deleteUsers } = this._store.getState<TDeleteUsersState>();
     const { select } = deleteUsers;
 
-    const filteredList = select.filter(
+    deleteUsers.select = select.filter(
       (selectedUserId) => selectedUserId !== userId
     );
-    this._store.set(STORE_SELECT, filteredList);
   }
 
   public start(): void {

@@ -61,8 +61,6 @@ export class ChatUsersController {
           const chatUsersIndex = this._makeIndex(chatUsersList);
 
           this._store.set(STORE_SLICE, chatUsersIndex);
-          //target
-          console.log(chatUsersIndex);
           return;
         }
       }

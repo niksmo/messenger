@@ -15,9 +15,6 @@ const store = Store.instance();
 
 export class ChatUsersList extends Block<ChatUsersListProps> {
   constructor() {
-    debugger;
-    deleteChatUsersController.start();
-
     const { deleteUsers } = store.getState<TDeleteUsersState>();
     const { currentUsers } = deleteUsers;
     const users = createItems(currentUsers);
@@ -57,6 +54,7 @@ function createItems(chatUsersList: TUser[]): ChatUsersItem[] {
       second_name: secondName,
       display_name: displayName,
       login,
+      role,
     } = userParams;
     return new ChatUsersItem({
       userId,
@@ -65,6 +63,8 @@ function createItems(chatUsersList: TUser[]): ChatUsersItem[] {
       secondName,
       displayName,
       login,
+      role,
+      disabled: role === 'admin',
       onInput(e) {
         e.stopPropagation();
         deleteChatUsersController.select(e);

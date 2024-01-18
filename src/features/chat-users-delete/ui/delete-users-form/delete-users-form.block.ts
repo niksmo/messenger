@@ -1,15 +1,15 @@
 import { Block } from 'shared/components/block/block';
 import { Store } from 'shared/components/store/store';
 import { ButtonFilled } from 'shared/ui/main-button/button-filled.block';
+import type { TDeleteUsersState } from 'features/chat-users-delete/model/chat-users-delete.model';
 import { ChatUsersList } from '../chat-users-list/chat-users-list.block';
 import templateSpec from './delete-users-form.template.hbs';
 import styles from './styles.module.css';
+import { deleteChatUsersController } from 'features/chat-users-delete/controller/chat-users-delete.controller';
 
 interface DeleteChatUsersFormProps {
-  login: Block;
-  foundList: Block;
+  chatUsersList: Block;
   submitButton: Block;
-  onInput: (e: Event) => void;
   onSubmit: (e: Event) => void;
 }
 
@@ -19,11 +19,9 @@ export class DeleteChatUsersForm extends Block<DeleteChatUsersFormProps> {
   private readonly _submitButton;
 
   constructor() {
-    // addChatUsersController.start();
+    deleteChatUsersController.start();
 
-    // const { addUsers } = store.getState<TAddUsersState>();
-
-    const chatUserList = new ChatUsersList();
+    const chatUsersList = new ChatUsersList();
 
     const submitButton = new ButtonFilled({
       label: 'Exclude',
@@ -31,11 +29,11 @@ export class DeleteChatUsersForm extends Block<DeleteChatUsersFormProps> {
     });
 
     super({
-      chatUserList,
+      chatUsersList,
       submitButton,
       onSubmit: (e) => {
         e.preventDefault();
-        // addChatUsersController.addToChat();
+        deleteChatUsersController.deleteChatUsers();
       },
     });
 
@@ -50,8 +48,10 @@ export class DeleteChatUsersForm extends Block<DeleteChatUsersFormProps> {
     return styles;
   }
 
-  private readonly _onStoreUpdate = ({ addUsers }: TAddUsersState): void => {
-    const { load } = addUsers;
+  private readonly _onStoreUpdate = ({
+    deleteUsers,
+  }: TDeleteUsersState): void => {
+    const { load } = deleteUsers;
     this._submitButton.setProps({ disabled: load });
   };
 

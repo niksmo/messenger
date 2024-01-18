@@ -11,6 +11,8 @@ interface ChatUsersItemProps {
   secondName: string;
   displayName: string | null;
   login: string;
+  role: 'admin' | 'regular';
+  disabled: boolean;
   onInput?: (e: Event) => void;
 }
 
@@ -18,24 +20,26 @@ interface InnerProps {
   id: string;
   userId: number;
   userLine: Block;
+  disabled: boolean;
   onInput?: (e: Event) => void;
 }
 
-function createUserLine({ ...rest }: ChatUsersItemProps): ChatUsersLine {
+function createUserLine({ role, ...rest }: ChatUsersItemProps): ChatUsersLine {
   return new ChatUsersLine({
-    status: null,
+    status: role === 'admin' ? 'Admin' : null,
     ...rest,
   });
 }
 
 export class ChatUsersItem extends Block<InnerProps> {
   constructor(props: ChatUsersItemProps) {
-    const { userId, onInput } = props;
+    const { userId, onInput, disabled } = props;
     const userLine = createUserLine(props);
     super({
       id: uuid(),
       userLine,
       userId,
+      disabled,
       onInput,
     });
   }
