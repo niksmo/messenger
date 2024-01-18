@@ -8,6 +8,15 @@ export interface TViewerState {
     login: string;
     avatar: string;
     email: string;
-    auth?: boolean;
+    auth: boolean;
   };
 }
+
+export const viewer: {
+  viewer: Pick<TViewerState['viewer'], 'auth' | 'login'>;
+} = {
+  viewer: {
+    login: '',
+    auth: false,
+  },
+};

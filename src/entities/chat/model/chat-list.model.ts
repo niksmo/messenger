@@ -24,6 +24,14 @@ export interface TChatListState {
   chatList: {
     currentChat: null | number;
     chats: TChatParams[];
-    load: boolean;
+    loaded: boolean;
   };
 }
+
+export const chatList: TChatListState = {
+  chatList: {
+    chats: [],
+    currentChat: null,
+    loaded: false,
+  },
+};

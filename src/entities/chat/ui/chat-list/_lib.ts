@@ -1,10 +1,10 @@
 import type { TChatListState } from 'entites/chat/model/chat-list.model';
 import { ChatListItem } from './list-item.block';
 
-export function createItems(store: TChatListState): ChatListItem[] {
-  const { chatList } = store;
-  const { currentChat = null, chats = [] } = { ...chatList };
-
+export function createItems({
+  currentChat,
+  chats,
+}: TChatListState['chatList']): ChatListItem[] {
   return chats.map((chatParams) => {
     const {
       id,
@@ -15,11 +15,9 @@ export function createItems(store: TChatListState): ChatListItem[] {
     } = chatParams;
     const { content = '', time = '' } = { ...lastMessage };
 
-    const active = id === currentChat;
-
     return new ChatListItem({
+      active: id === currentChat,
       id,
-      active,
       avatar,
       content,
       time,

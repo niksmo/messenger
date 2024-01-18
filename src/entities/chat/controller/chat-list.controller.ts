@@ -10,6 +10,7 @@ const STORE_SLICE = 'chatList';
 const STORE_CHATS = STORE_SLICE + '.chats';
 const STORE_CURRENT_CHAT = STORE_SLICE + '.currentChat';
 const STORE_LOAD = STORE_SLICE + '.load';
+const STORAGE_CURRENT_CHAT_KEY = 'currentChat';
 
 export class ChatListController {
   private readonly _api;
@@ -22,30 +23,38 @@ export class ChatListController {
     this._router = AppRouter.instance();
   }
 
-  private _initState(chatId: string | null | number): void {
-    const { chatList } = this._store.getState<TChatListState>();
-    const { chats, currentChat } = { ...chatList };
-
-    if (!chats) {
-      this._store.set(STORE_CHATS, []);
+  private _getCurIdInLocal(): number | null {
+    const posibleStringId = localStorage.getItem(STORAGE_CURRENT_CHAT_KEY);
+    if (posibleStringId === null) {
+      return posibleStringId;
     }
-
-    if (currentChat) {
-      this._router.go(ROUTE_PATH.MAIN + '/' + currentChat);
-      return;
+    const posibleChatId = parseInt(posibleStringId);
+    if (isNaN(posibleChatId)) {
+      return null;
     }
-
-    chatId = Number(chatId) || null;
-
-    if (chatId) {
-      this._router.go(ROUTE_PATH.MAIN + '/' + chatId);
-      return;
-    }
-
-    this._store.set(STORE_CURRENT_CHAT, null);
+    const chatId = posibleChatId;
+    return chatId;
   }
 
-  async requestChats(): Promise<void> {
+  private async _start(): Promise<void> {
+    const { loaded } = this._store.getState<TChatListState>().chatList;
+    if (loaded) {
+      return;
+    }
+
+    await this._requestChats();
+
+    const currentChat = this._getCurIdInLocal();
+
+    this._store.set(STORE_SLICE, { currentChat, loaded: true });
+
+    this._store.on<TChatListState>(({ chatList }) => {
+      const { currentChat } = chatList;
+      localStorage.setItem(STORAGE_CURRENT_CHAT_KEY, String(currentChat));
+    });
+  }
+
+  private async _requestChats(): Promise<void> {
     try {
       this._store.set(STORE_LOAD, true);
 
@@ -72,13 +81,16 @@ export class ChatListController {
     }
   }
 
-  start(chatId: string): void {
-    this._initState(chatId);
+  public start(): void {
+    void this._start();
   }
 
-  openChat(chatId: string): void {
-    const chatIdNum = Number(chatId) || null;
-    this._store.set(STORE_CURRENT_CHAT, chatIdNum);
+  public openChat(chatId: number): void {
+    const currentChat = this._getCurIdInLocal();
+
+    if (!currentChat || chatId !== currentChat) {
+      this._store.set(STORE_CURRENT_CHAT, chatId);
+    }
   }
 }
 

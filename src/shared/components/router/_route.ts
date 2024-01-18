@@ -3,53 +3,21 @@ import {
   type TBlockConstructor,
   type IBlock,
 } from '../interfaces';
-import { Store } from '../store/store';
-
-const SLUG_PREFIX = '/:';
 
 export class Route implements IRoute {
   protected _view: TBlockConstructor;
   protected _block: IBlock | null = null;
   protected _path;
   protected _appRoot;
-  protected _slug: string | null = null;
 
   constructor(path: string, view: TBlockConstructor, appRoot: HTMLElement) {
     this._path = path;
     this._view = view;
     this._appRoot = appRoot;
-    this._initSlug();
-  }
-
-  _initSlug(): void {
-    if (this._path.includes(SLUG_PREFIX)) {
-      const [path, param] = this._path.split(SLUG_PREFIX);
-
-      if (param && path) {
-        this._slug = param;
-        this._path = path;
-      }
-    }
-  }
-
-  _getProps(path: string): Record<string, string> {
-    const props: Record<string, string> = {};
-
-    if (this._slug) {
-      props[this._slug] = path.split(this._path + '/')[1] ?? '';
-    }
-    return props;
   }
 
   match(path: string): boolean {
-    if (this._slug) {
-      const pattern = new RegExp(
-        `(^${this._path}$)|(^${this._path}/[a-zA-Z0-9-_]+$)`
-      );
-      return pattern.test(path);
-    } else {
-      return this._path === path;
-    }
+    return this._path === path;
   }
 
   leave(): void {
@@ -58,102 +26,9 @@ export class Route implements IRoute {
     this._block = null;
   }
 
-  render(path: string): void {
-    const props = this._getProps(path);
-    this._block = new this._view(props);
+  render(): void {
+    this._block = new this._view();
     this._appRoot.append(this._block.getContent());
     this._block.dispatchDidMount();
-  }
-
-  update(path: string): void {
-    const props = this._getProps(path);
-
-    if (this._block) {
-      this._block.setProps(props);
-    }
-  }
-}
-
-class RouteWithStub extends Route {
-  protected _stubView;
-  protected _redirectCb;
-  protected _curBlockType: 'stub' | 'block' = 'block';
-
-  constructor(
-    path: string,
-    view: TBlockConstructor,
-    stub: TBlockConstructor,
-    redirectCb: () => void,
-    appRoot: HTMLElement
-  ) {
-    super(path, view, appRoot);
-    this._stubView = stub;
-    this._redirectCb = redirectCb;
-  }
-
-  update(path: string): void {
-    if (this._curBlockType === 'stub') {
-      this.leave();
-      this.render(path);
-    } else {
-      super.update(path);
-    }
-  }
-
-  protected renderView(path: string): void {
-    const props = this._getProps(path);
-    this._block = new this._view(props);
-    this._appRoot.append(this._block.getContent());
-    this._block.dispatchDidMount();
-  }
-
-  protected renderStub(): void {
-    this._block = new this._stubView({});
-    this._appRoot.append(this._block.getContent());
-    this._block.dispatchDidMount();
-  }
-}
-
-interface TViewerState {
-  viewer: {
-    auth?: boolean;
-    login: string;
-  };
-  [key: string]: unknown;
-}
-
-export class AuthRoute extends RouteWithStub {
-  render(path: string): void {
-    const store = Store.instance();
-
-    const { viewer } = store.getState<TViewerState>();
-
-    if (viewer?.auth === true && viewer.login) {
-      this._curBlockType = 'block';
-      this.renderView(path);
-    } else if (viewer?.auth === false) {
-      this._redirectCb();
-    } else {
-      this._curBlockType = 'stub';
-      this.renderStub();
-    }
-  }
-}
-
-export class NotAuthRoute extends RouteWithStub {
-  render(path: string): void {
-    const store = Store.instance();
-
-    const { viewer } = store.getState<TViewerState>();
-
-    if (viewer?.auth === false) {
-      this._curBlockType = 'block';
-      this.renderView(path);
-    } else if (viewer?.auth === true && viewer.login) {
-      this._redirectCb();
-    } else {
-      this._curBlockType = 'stub';
-      this.renderStub();
-    }
   }
 }

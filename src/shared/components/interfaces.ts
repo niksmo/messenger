@@ -1,4 +1,4 @@
-export type TBlockConstructor = new (props: Record<string, unknown>) => IBlock;
+export type TBlockConstructor = new (props?: Record<string, unknown>) => IBlock;
 
 export interface IBlock {
   dispatchDidMount: () => void;
@@ -13,29 +13,15 @@ export interface IBlock {
 
 export interface IAppRouter {
   start: () => void;
-  base: (path: string) => void;
   go: (path: string, replace: boolean) => void;
   back: () => void;
   forward: () => void;
   use: (path: string, view: TBlockConstructor) => void;
-  authUse: (
-    path: string,
-    view: TBlockConstructor,
-    stub: TBlockConstructor,
-    redirectCb: () => void
-  ) => void;
-  notAuthUse: (
-    path: string,
-    view: TBlockConstructor,
-    stub: TBlockConstructor,
-    redirectCb: () => void
-  ) => void;
 }
 
 export interface IRoute {
   match: (path: string) => boolean;
-  render: (path: string) => void;
-  update: (path: string) => void;
+  render: () => void;
   leave: () => void;
 }
 

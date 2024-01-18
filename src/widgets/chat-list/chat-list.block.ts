@@ -6,6 +6,7 @@ import { AddChatMenuItem } from 'features/chat-add/ui/menu-item/menu-item.block'
 import { ChatList } from 'entites/chat/ui/chat-list/chat-list.block';
 import templateSpec from './chat-list.template.hbs';
 import styles from './styles.module.css';
+import { chatListController } from 'entites/chat/controller/chat-list.controller';
 
 interface ChatListWidgetProps {
   settingsButton: Block;
@@ -16,6 +17,8 @@ interface ChatListWidgetProps {
 
 export class ChatListWidget extends Block<ChatListWidgetProps> {
   constructor() {
+    chatListController.start();
+
     const settingsButton = new OpenSettingsButton();
 
     const search = new SearchBar();

@@ -1,11 +1,10 @@
-import { AppRouter } from 'shared/components/router/router';
 import { Block } from 'shared/components/block/block';
 import { Avatar } from 'shared/ui/avatar/avatar.block';
 import { Counter } from 'shared/ui/counter/counter.block';
-import { ROUTE_PATH } from 'shared/constants/routes';
 import { normalizeTime } from './_lib';
 import templateSpec from './list-item.template.hbs';
 import styles from './list-item.styles.module.css';
+import { chatListController } from 'entites/chat/controller/chat-list.controller';
 
 interface ChatListItemProps {
   id: number;
@@ -27,8 +26,6 @@ interface InnerProps {
   onClick: (e: Event) => void;
 }
 
-const router = AppRouter.instance();
-
 export class ChatListItem extends Block<InnerProps> {
   constructor(props: ChatListItemProps) {
     const { id, title, avatar, unread, content, time, active } = props;
@@ -41,7 +38,7 @@ export class ChatListItem extends Block<InnerProps> {
       avatar: new Avatar({ name: title, src: avatar }),
       unread: new Counter({ count: unread }),
       onClick: () => {
-        router.go(ROUTE_PATH.MAIN + '/' + id);
+        chatListController.openChat(id);
       },
     });
   }
