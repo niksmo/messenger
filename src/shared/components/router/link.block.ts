@@ -10,6 +10,7 @@ interface LinkProps {
 }
 
 interface InnerProps {
+  href: string;
   ariaHidden?: boolean;
   children: Block;
   onClick: (e: Event) => void;
@@ -22,7 +23,7 @@ export class Link extends Block<InnerProps> {
       const router = AppRouter.instance();
       router.go(href, replace);
     };
-    super({ ...rest, onClick });
+    super({ href, ...rest, onClick });
   }
 
   protected getTemplateHook(): TemplateSpecification {

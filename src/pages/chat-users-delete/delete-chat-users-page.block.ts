@@ -14,7 +14,7 @@ interface DeleteChatUsersPageProps {
 export class DeleteChatUsersPage extends Block<DeleteChatUsersPageProps> {
   constructor() {
     const transitionButton = new Link({
-      href: ROUTE_PATH.MAIN,
+      href: history.state.prev || ROUTE_PATH.MAIN,
       ariaHidden: true,
       children: new ButtonLight({
         label: 'Back to chats',

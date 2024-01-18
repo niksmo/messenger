@@ -10,7 +10,7 @@ export class RemoveChatUserMenuItem extends MenuItem {
       style: 'primary',
       onClick: () => {
         const router = AppRouter.instance();
-        router.go(ROUTE_PATH.DELETE_USERS);
+        router.go(ROUTE_PATH.DELETE_USERS, false, { prev: location.pathname });
       },
     });
   }

@@ -1,5 +1,8 @@
 import { Block } from 'shared/components/block/block';
 import { Store } from 'shared/components/store/store.ts';
+import type { TUser } from 'entites/chat-user/model/chat-user.model.ts';
+import type { TDeleteUsersState } from 'features/chat-users-delete/model/chat-users-delete.model.ts';
+import { deleteChatUsersController } from 'features/chat-users-delete/controller/chat-users-delete.controller.ts';
 import { ChatUsersItem } from './_list-item/list-item.block.ts';
 import templateSpec from './chat-users-list.template.hbs';
 import styles from './styles.module.css';
@@ -12,10 +15,13 @@ const store = Store.instance();
 
 export class ChatUsersList extends Block<ChatUsersListProps> {
   constructor() {
-    // const { addUsers } = store.getState<TAddUsersState>();
-    // const { found } = addUsers;
-    // const users = createItems(found);
-    super({ users: [] });
+    debugger;
+    deleteChatUsersController.start();
+
+    const { deleteUsers } = store.getState<TDeleteUsersState>();
+    const { currentUsers } = deleteUsers;
+    const users = createItems(currentUsers);
+    super({ users });
   }
 
   protected getTemplateHook(): TemplateSpecification {
@@ -34,9 +40,11 @@ export class ChatUsersList extends Block<ChatUsersListProps> {
     store.off(this._onStoreUpdate);
   }
 
-  private readonly _onStoreUpdate = (state: TAddUsersState): void => {
-    // const { addUsers } = state;
-    // const { found } = addUsers;
+  private readonly _onStoreUpdate = (state: TDeleteUsersState): void => {
+    const { deleteUsers } = state;
+    const { currentUsers } = deleteUsers;
+    const users = createItems(currentUsers);
+    this.setProps({ users });
   };
 }
 
@@ -49,7 +57,6 @@ function createItems(chatUsersList: TUser[]): ChatUsersItem[] {
       second_name: secondName,
       display_name: displayName,
       login,
-      isAdded,
     } = userParams;
     return new ChatUsersItem({
       userId,
@@ -57,11 +64,10 @@ function createItems(chatUsersList: TUser[]): ChatUsersItem[] {
       firstName,
       secondName,
       displayName,
-      isAdded,
       login,
       onInput(e) {
         e.stopPropagation();
-        addChatUsersController.select(e);
+        deleteChatUsersController.select(e);
       },
     });
   });

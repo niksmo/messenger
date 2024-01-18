@@ -54,7 +54,6 @@ export class AddChatUsersController {
   }
 
   private _resetState(): void {
-    localStorage.removeItem('found');
     this.start();
   }
 

@@ -109,11 +109,15 @@ export class AppRouter implements IAppRouter {
     this._noMatchRoute = path;
   }
 
-  go(path: string, replace: boolean = false): void {
+  go(
+    path: string,
+    replace: boolean = false,
+    state: Record<string, unknown> = {}
+  ): void {
     if (replace) {
-      this._history.replaceState({}, '', path);
+      this._history.replaceState(state, '', path);
     } else {
-      this._history.pushState({}, '', path);
+      this._history.pushState(state, '', path);
     }
 
     this._onRoute(path);
@@ -125,6 +129,10 @@ export class AppRouter implements IAppRouter {
 
   forward(): void {
     this._history.forward();
+  }
+
+  getState<TIndexed extends Record<string, unknown>>(): TIndexed {
+    return this._history.state;
   }
 
   start(): void {

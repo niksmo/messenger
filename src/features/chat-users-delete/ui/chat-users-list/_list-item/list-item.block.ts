@@ -11,38 +11,30 @@ interface ChatUsersItemProps {
   secondName: string;
   displayName: string | null;
   login: string;
-  isAdded: boolean;
   onInput?: (e: Event) => void;
 }
 
 interface InnerProps {
   id: string;
   userId: number;
-  isAdded: boolean;
   userLine: Block;
   onInput?: (e: Event) => void;
 }
 
-function createUserLine({
-  isAdded,
-  ...rest
-}: ChatUsersItemProps): ChatUsersLine {
-  const status = isAdded ? 'Added' : null;
-
+function createUserLine({ ...rest }: ChatUsersItemProps): ChatUsersLine {
   return new ChatUsersLine({
-    status,
+    status: null,
     ...rest,
   });
 }
 
 export class ChatUsersItem extends Block<InnerProps> {
   constructor(props: ChatUsersItemProps) {
-    const { isAdded, userId, onInput } = props;
+    const { userId, onInput } = props;
     const userLine = createUserLine(props);
     super({
       id: uuid(),
       userLine,
-      isAdded,
       userId,
       onInput,
     });

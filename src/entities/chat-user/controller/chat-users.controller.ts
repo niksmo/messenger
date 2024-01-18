@@ -23,10 +23,6 @@ export class ChatUsersController {
     this._store.set(STORE_SLICE, {});
   }
 
-  public getChatUsers(): void {
-    void this._getChatUsers();
-  }
-
   private _reset(): void {
     this.start();
   }
@@ -49,7 +45,7 @@ export class ChatUsersController {
     return chatUsersIndex;
   }
 
-  private async _getChatUsers(): Promise<void> {
+  public async getChatUsers(): Promise<void> {
     const currentChat = this._extractChatId();
     if (!currentChat) {
       return;

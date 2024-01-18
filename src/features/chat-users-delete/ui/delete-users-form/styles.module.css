@@ -1,13 +1,14 @@
-.form-container {
+.formContainer {
   width: 100%;
 }
 
-.submit-button {
+.submitButton {
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
 }
 
-.found-container {
-  height: 540px;
+.chatUsersContainer {
+  max-height: 540px;
+  overflow-y: scroll;
 }

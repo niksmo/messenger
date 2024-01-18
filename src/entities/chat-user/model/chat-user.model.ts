@@ -8,7 +8,7 @@ export interface TUser {
   role: string;
 }
 
-export type TChatUsersIndexed = Record<number, TUser>;
+export type TChatUsersIndexed = Record<TUser['id'], TUser>;
 
 export interface TChatUsersSate {
   chatUsers: TChatUsersIndexed | null;

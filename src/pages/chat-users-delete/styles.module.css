@@ -8,9 +8,7 @@
 }
 
 .page__form {
-  display: flex;
-  flex-direction: column;
-  max-width: 360px;
+  width: 360px;
 }
 
 .page__transition {

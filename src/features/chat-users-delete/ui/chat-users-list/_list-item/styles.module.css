@@ -3,11 +3,7 @@
 }
 
 .invisibleInput:checked + .content {
-  border-color: var(--color-element-special);
-}
-
-.invisibleInput:disabled + .content {
-  background-color: var(--color-background-special);
+  border-color: var(--color-element-error);
 }
 
 .content {
