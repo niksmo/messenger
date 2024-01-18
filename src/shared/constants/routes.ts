@@ -4,6 +4,7 @@ export const ROUTE_PATH = {
   MAIN: '/messenger',
   ADD_CHAT: '/add-chat',
   ADD_USERS: '/add-users',
+  DELETE_USERS: '/delete-users',
   SETTINGS: '/settings',
   CHANGE_PASSWORD: '/change-password',
   EDIT_PROFILE: '/edit-profile',

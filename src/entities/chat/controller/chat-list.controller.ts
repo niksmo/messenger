@@ -1,7 +1,8 @@
 import { Store } from 'shared/components/store/store';
-import { AppRouter } from 'shared/components/router';
-import { ROUTE_PATH } from 'shared/constants';
-import { goToLoginWithUnauth, reviveNullToString } from 'shared/helpers';
+import { AppRouter } from 'shared/components/router/router';
+import { ROUTE_PATH } from 'shared/constants/routes';
+import { reviveNullToString } from 'shared/helpers/json';
+import { goToLoginWithUnauth } from 'shared/helpers/go';
 import { ChatListAPI } from '../api/chat-list.api';
 import { type TChatListState } from '../model/chat-list.model';
 

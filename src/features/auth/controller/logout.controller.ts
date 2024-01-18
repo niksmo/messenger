@@ -1,6 +1,6 @@
 import { Store } from 'shared/components/store/store';
-import { AppRouter } from 'shared/components/router';
-import { ROUTE_PATH } from 'shared/constants';
+import { AppRouter } from 'shared/components/router/router';
+import { ROUTE_PATH } from 'shared/constants/routes';
 import { LogoutAPI } from '../api/logout.api';
 
 const STORE_SLICE = 'viewer';

@@ -1,6 +1,6 @@
-import { AppRouter } from 'shared/components/router';
+import { AppRouter } from 'shared/components/router/router';
 import { Store } from 'shared/components/store/store';
-import { ROUTE_PATH } from 'shared/constants';
+import { ROUTE_PATH } from 'shared/constants/routes';
 
 export function goToMain(replace: boolean = true): void {
   const router = AppRouter.instance();

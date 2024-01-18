@@ -1,5 +1,5 @@
-import { Block } from 'shared/components/block';
-import { IconButton } from 'shared/ui/button';
+import { Block } from 'shared/components/block/block';
+import { IconButton } from 'shared/ui/icon-button/icon-button.block';
 import { MessageInput } from '../input';
 import templateSpec from './form.template.hbs';
 import styles from './styles.module.css';

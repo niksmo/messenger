@@ -1,10 +1,10 @@
-import { Block } from 'shared/components/block';
+import { Block } from 'shared/components/block/block';
 import templateSpec from './input.template.hbs';
 import styles from './styles.module.css';
 
 type TInputTypes = 'text' | 'email' | 'password' | 'tel' | 'number';
 
-interface InputProps {
+export interface InputProps {
   id: string | number;
   type: TInputTypes;
   name: string;

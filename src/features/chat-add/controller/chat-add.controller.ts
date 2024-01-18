@@ -1,7 +1,8 @@
-import { AppRouter } from 'shared/components/router';
+import { AppRouter } from 'shared/components/router/router';
 import { Store } from 'shared/components/store/store';
-import { ROUTE_PATH } from 'shared/constants';
-import { getInputValue, goToLoginWithUnauth } from 'shared/helpers';
+import { ROUTE_PATH } from 'shared/constants/routes';
+import { goToLoginWithUnauth } from 'shared/helpers/go';
+import { getInputValue } from 'shared/helpers/get';
 import { AddChatAPI } from '../api/chat-add.api';
 import {
   type TAddChatState,

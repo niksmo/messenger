@@ -1,5 +1,5 @@
-import { set } from 'shared/helpers';
-import EventBus from 'shared/packages/event-bus';
+import { set } from 'shared/helpers/set';
+import EventBus from 'shared/packages/event-bus/event-bus';
 import { type IStore } from '../interfaces';
 
 type Indexed = Record<string, unknown>;
@@ -44,6 +44,8 @@ export class Store implements IStore {
 
   set(path: string, value: unknown): this {
     set(this._state, path, value);
+    //target
+    console.log(path, value);
 
     this._eventBus.emit(this._updateEvent, this._state);
 

@@ -1,5 +1,5 @@
-import { Block } from 'shared/components/block';
-import { Avatar } from 'shared/ui/avatar';
+import { Block } from 'shared/components/block/block';
+import { Avatar } from 'shared/ui/avatar/avatar.block';
 import styles from './styles.module.css';
 import templateSpec from './chat-users-item.template.hbs';
 
@@ -21,7 +21,7 @@ interface InnerProps {
   status: null | string;
 }
 
-export class ChatUsersItem extends Block<InnerProps> {
+export class ChatUsersLine extends Block<InnerProps> {
   constructor({
     avatar,
     displayName,
@@ -44,6 +44,4 @@ export class ChatUsersItem extends Block<InnerProps> {
   protected getStylesModuleHook(): CSSModuleClasses {
     return styles;
   }
-
-  public setProps(props: Partial<InnerProps>): void {}
 }

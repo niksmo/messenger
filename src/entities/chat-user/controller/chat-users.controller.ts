@@ -1,7 +1,7 @@
+import { AppRouter } from 'shared/components/router/router';
 import { Store } from 'shared/components/store/store';
-import { AppRouter } from 'shared/components/router';
-import { goToLoginWithUnauth } from 'shared/helpers';
-import { ROUTE_PATH } from 'shared/constants';
+import { goToLoginWithUnauth } from 'shared/helpers/go';
+import { ROUTE_PATH } from 'shared/constants/routes';
 import type { TChatListState } from 'entites/chat/model/chat-list.model';
 import type { TChatUsersIndexed, TUser } from '../model/chat-user.model';
 import { ChatUsersAPI } from '../api/chat-user.api';
@@ -21,10 +21,6 @@ export class ChatUsersController {
 
   public start(): void {
     this._store.set(STORE_SLICE, {});
-  }
-
-  public getChatUsers(): void {
-    void this._getChatUsers();
   }
 
   private _reset(): void {
@@ -49,7 +45,7 @@ export class ChatUsersController {
     return chatUsersIndex;
   }
 
-  private async _getChatUsers(): Promise<void> {
+  public async getChatUsers(): Promise<void> {
     const currentChat = this._extractChatId();
     if (!currentChat) {
       return;
@@ -65,8 +61,6 @@ export class ChatUsersController {
           const chatUsersIndex = this._makeIndex(chatUsersList);
 
           this._store.set(STORE_SLICE, chatUsersIndex);
-          //target
-          console.log(chatUsersIndex);
           return;
         }
       }

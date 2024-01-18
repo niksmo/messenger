@@ -1,17 +1,12 @@
-import { AppRouter } from 'shared/components/router';
+import { AppRouter } from 'shared/components/router/router';
 import { Store } from 'shared/components/store/store';
-import {
-  HINT,
-  TEMPLATE,
-  verifierCreator,
-} from 'shared/components/form-verifier';
-import { ROUTE_PATH } from 'shared/constants';
-import {
-  getInputValue,
-  goToLoginWithUnauth,
-  reviveNullToString,
-} from 'shared/helpers';
-import { type TViewerState } from 'entites/viewer/model';
+import { verifierCreator } from 'shared/components/form-verifier/verifier';
+import { HINT, TEMPLATE } from 'shared/components/form-verifier/templates';
+import { ROUTE_PATH } from 'shared/constants/routes';
+import { getInputValue } from 'shared/helpers/get';
+import { reviveNullToString } from 'shared/helpers/json';
+import { goToLoginWithUnauth } from 'shared/helpers/go';
+import { type TViewerState } from 'entites/viewer/model/viewer.model';
 import { EditProfileAPI } from '../api/edit-profile.api';
 import type {
   TEditProfileState,

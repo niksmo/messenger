@@ -1,6 +1,6 @@
-import { BaseAPI } from 'shared/components/base-api';
+import { BaseAPI } from 'shared/components/base-api/base-api';
 import { BASE_URL } from 'shared/constants/api';
-import HttpTransport, { type XHR } from 'shared/packages/http';
+import HttpTransport, { type XHR } from 'shared/packages/http/http';
 
 export class ChatListAPI extends BaseAPI {
   private readonly _http;

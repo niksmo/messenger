@@ -1,4 +1,4 @@
-import { isSomeValues } from 'shared/helpers';
+import { isSomeValues } from 'shared/helpers/is';
 
 type TStringRules = Record<string, { template: RegExp; hint: string }>;
 

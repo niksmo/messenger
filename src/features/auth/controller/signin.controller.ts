@@ -1,12 +1,9 @@
-import { AppRouter } from 'shared/components/router';
+import { AppRouter } from 'shared/components/router/router';
+import { verifierCreator } from 'shared/components/form-verifier/verifier';
+import { HINT, TEMPLATE } from 'shared/components/form-verifier/templates';
 import { Store } from 'shared/components/store/store';
-import {
-  HINT,
-  TEMPLATE,
-  verifierCreator,
-} from 'shared/components/form-verifier';
-import { ROUTE_PATH } from 'shared/constants';
-import { getInputValue } from 'shared/helpers';
+import { ROUTE_PATH } from 'shared/constants/routes';
+import { getInputValue } from 'shared/helpers/get';
 import {
   fieldList,
   type TInputState,

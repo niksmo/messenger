@@ -1,35 +1,5 @@
-import uuid from 'shared/packages/uuid';
-import { Input } from 'shared/ui/input';
-
-export function getFieldsValues(evt: Event): Record<string, string> {
-  const { target } = evt;
-  let form: HTMLFormElement | null = null;
-
-  if (
-    target instanceof HTMLInputElement ||
-    target instanceof HTMLButtonElement
-  ) {
-    form = target.form;
-    if (!form) {
-      throw Error('Input must have parents form');
-    }
-  } else if (target instanceof HTMLFormElement) {
-    form = target;
-  } else {
-    throw Error('Unexpected Event target');
-  }
-
-  const map = new Map<string, string>();
-
-  for (const el of form) {
-    if (el instanceof HTMLInputElement) {
-      const { name, value } = el;
-      map.set(name, value);
-    }
-  }
-
-  return Object.fromEntries(map);
-}
+import uuid from 'shared/packages/uuid/uuid';
+import { Input, type InputProps } from 'shared/ui/input';
 
 export function getInputValue(evt: Event): { field: string; value: string } {
   const { target } = evt;
@@ -48,7 +18,7 @@ interface IInputConfig {
   type: string;
 }
 
-interface IProps extends Record<string, unknown> {
+interface IProps {
   name: string;
   placeholder: string;
   type: string;
@@ -85,7 +55,7 @@ export function getInputMap<TFieldNames extends string>(
       inputState
     );
 
-    map[name] = new Input(props);
+    map[name] = new Input(props as InputProps);
 
     return map;
   }, {});

@@ -1,17 +1,18 @@
-import { Block } from 'shared/components/block';
+import { Block } from 'shared/components/block/block';
 import { Store } from 'shared/components/store/store';
-import { ButtonFilled } from 'shared/ui/button';
-import { getInputMap, getTypedEntries, withDelay } from 'shared/helpers';
+import { getInputMap, getTypedEntries } from 'shared/helpers/get';
+import { withDelay } from 'shared/helpers/with';
+import { ButtonFilled } from 'shared/ui/main-button/button-filled.block';
 import {
   type TFieldUnion,
   type TAddUsersState,
   type TInputState,
 } from '../../model/chat-users-add.model';
 import { addChatUsersController } from '../../controller/chat-users-add.controller';
-import { fieldsParams } from './lib';
-import templateSpec from './form.template.hbs';
-import styles from './styles.module.css';
 import { FoundUsersList } from '../found-list/found-list.block';
+import templateSpec from './add-users-form.template.hbs';
+import styles from './styles.module.css';
+import { fieldsParams } from './_lib';
 
 interface AddUsersFormProps {
   login: Block;
