@@ -1,13 +1,19 @@
 import { Block } from 'shared/components/block/block';
 import { Store } from 'shared/components/store/store';
 import { type TChatListState } from 'entites/chat/model/chat-list.model';
-import { createItems } from './_lib';
+import { createItems, createView, propsAdapter } from './_lib';
 import templateSpec from './chat-list.template.hbs';
 import styles from './chat-list.styles.module.css';
 
+interface ChatListProps {
+  chats: Block[];
+}
+
 const store = Store.instance();
 
-export class ChatList extends Block {
+export class ChatList extends Block<ChatListProps> {
+  private readonly _viewMap = new Map<number, Block>();
+
   constructor() {
     const { chatList } = store.getState<TChatListState>();
     const chats = createItems(chatList);
@@ -24,8 +30,49 @@ export class ChatList extends Block {
   }
 
   protected _onStoreUpdate = ({ chatList }: TChatListState): void => {
-    const chats = createItems(chatList);
-    this.setProps({ chats });
+    const { chats, currentChat } = chatList;
+
+    if (chats.length === 0) {
+      this.setProps({ chats });
+      this._viewMap.clear();
+      return;
+    }
+
+    const renderList = new Array<Block>(chats.length);
+    let shouldReindex = chats.length !== this._viewMap.size;
+
+    if (this._viewMap.size === 0) {
+      chats.forEach((chatData, idx) => {
+        const { id } = chatData;
+        const view = createView(chatData, currentChat);
+        renderList[idx] = view;
+        this._viewMap.set(id, view);
+      });
+    } else {
+      chats.forEach((chatData, idx) => {
+        const { id } = chatData;
+        const indexedView = this._viewMap.get(id);
+        if (!indexedView) {
+          shouldReindex = true;
+          renderList[idx] = createView(chatData, currentChat);
+        } else {
+          indexedView.setProps(propsAdapter(chatData, currentChat));
+          renderList[idx] = indexedView;
+        }
+      });
+    }
+
+    if (shouldReindex) {
+      this.setProps({ chats: renderList });
+      this._viewMap.clear();
+      chats.forEach((chatData, idx) => {
+        const { id } = chatData;
+        const view = renderList[idx];
+        if (view) {
+          this._viewMap.set(id, view);
+        }
+      });
+    }
   };
 
   public didMount(): void {
