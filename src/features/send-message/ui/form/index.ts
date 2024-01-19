@@ -24,7 +24,14 @@ export class MessageForm extends Block<MessageFormProps> {
       ariaLabel: 'Send message',
     });
 
-    super({ input, submitButton });
+    super({
+      input,
+      submitButton,
+      onSubmit(e) {
+        e.preventDefault();
+        alert(e.target);
+      },
+    });
   }
 
   protected getTemplateHook(): TemplateSpecification {
