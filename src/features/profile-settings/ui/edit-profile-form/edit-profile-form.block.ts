@@ -1,11 +1,11 @@
 import { Block } from 'shared/components/block/block';
 import { Store } from 'shared/components/store/store';
-import { getInputMap } from 'shared/helpers/get';
 import { ButtonFilled } from 'shared/ui/main-button/button-filled.block';
 import { editProfileController } from 'features/profile-settings/controller/edit-profile.controller';
 import { type TEditProfileState } from 'features/profile-settings/model/edit-profile.model';
 import templateSpec from './edit-profile-form.template.hbs';
 import { fieldsParams } from './_lib';
+import { makeFields } from 'shared/helpers/make';
 
 const store = Store.instance();
 
@@ -14,12 +14,7 @@ export class EditProfileForm extends Block {
   private readonly _submitButton;
 
   constructor() {
-    editProfileController.start();
-
-    const { editProfile } = store.getState<TEditProfileState>();
-    const { fields } = editProfile;
-
-    const inputMap = getInputMap(fieldsParams, fields);
+    const inputMap = makeFields(fieldsParams);
 
     const submitButton = new ButtonFilled({
       type: 'submit',
@@ -63,6 +58,7 @@ export class EditProfileForm extends Block {
 
   public didMount(): void {
     store.on(this._onStoreUpdate);
+    editProfileController.start(this.getContent());
   }
 
   public willUnmount(): void {

@@ -3,6 +3,7 @@ import { Store } from 'shared/components/store/store';
 import { type TChatListState } from 'entites/chat/model/chat-list.model';
 import { createItems } from './_lib';
 import templateSpec from './chat-list.template.hbs';
+import styles from './chat-list.styles.module.css';
 
 const store = Store.instance();
 
@@ -16,6 +17,10 @@ export class ChatList extends Block {
 
   protected getTemplateHook(): TemplateSpecification {
     return templateSpec;
+  }
+
+  protected getStylesModuleHook(): CSSModuleClasses {
+    return styles;
   }
 
   protected _onStoreUpdate = ({ chatList }: TChatListState): void => {

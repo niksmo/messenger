@@ -3,7 +3,7 @@ import templateSpec from './chat-stub.template.hbs';
 import styles from './styles.module.css';
 
 interface ChatStubProps {
-  loaded: boolean;
+  load: boolean;
 }
 
 export class ChatStub extends Block<ChatStubProps> {

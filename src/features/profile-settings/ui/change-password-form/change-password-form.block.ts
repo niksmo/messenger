@@ -1,7 +1,7 @@
 import { Block } from 'shared/components/block/block';
 import { Store } from 'shared/components/store/store';
 import { ButtonFilled } from 'shared/ui/main-button/button-filled.block';
-import { getInputMap } from 'shared/helpers/get';
+import { makeFields } from 'shared/helpers/make';
 import { changePasswordController } from 'features/profile-settings/controller/change-password.controller';
 import { type TChangePasswordState } from 'features/profile-settings/model/change-password.model';
 import templateSpec from './change-password-form.template.hbs';
@@ -14,12 +14,7 @@ export class ChangePasswordForm extends Block {
   private readonly _submitButton;
 
   constructor() {
-    changePasswordController.start();
-
-    const { changePassword } = store.getState<TChangePasswordState>();
-    const { fields } = changePassword;
-
-    const inputMap = getInputMap(fieldsParams, fields);
+    const inputMap = makeFields(fieldsParams);
 
     const submitButton = new ButtonFilled({
       type: 'submit',
@@ -63,6 +58,7 @@ export class ChangePasswordForm extends Block {
 
   public didMount(): void {
     store.on(this._onStoreUpdate);
+    changePasswordController.start();
   }
 
   public willUnmount(): void {

@@ -1,7 +1,6 @@
 import { Block } from 'shared/components/block/block';
 // import { DayMessages } from 'entites/message';
 import { Store } from 'shared/components/store/store';
-import { withInterrupt } from 'shared/helpers/with';
 import { type TChatListState } from 'entites/chat/model/chat-list.model';
 import { ChatHeader } from 'entites/chat/ui/chat-header/chat-header.block';
 import { ChatStub } from 'entites/chat/ui/chat-stub/chat-stub.block';
@@ -20,13 +19,9 @@ interface ChatWidgetProps {
 
 const store = Store.instance();
 
-const getChatUsersWithInterrupt = withInterrupt(
-  chatUsersController.getChatUsers.bind(chatUsersController)
-);
-
 export class ChatWidget extends Block<ChatWidgetProps> {
   constructor() {
-    const { currentChat, loaded } = store.getState<TChatListState>().chatList;
+    const { currentChat, load } = store.getState<TChatListState>().chatList;
 
     // const messages = data.map((day) => {
     //   const { date, messages: messageList } = day;
@@ -37,7 +32,7 @@ export class ChatWidget extends Block<ChatWidgetProps> {
 
     const sender = new MessageSender();
 
-    const chatStub = new ChatStub({ loaded });
+    const chatStub = new ChatStub({ load });
 
     super({
       isCurrentChat: Boolean(currentChat),
@@ -57,8 +52,8 @@ export class ChatWidget extends Block<ChatWidgetProps> {
   }
 
   public didMount(): void {
-    getChatUsersWithInterrupt();
     store.on(this._onStoreUpdate);
+    void chatUsersController.getChatUsers();
   }
 
   public willUnmount(): void {
@@ -67,7 +62,7 @@ export class ChatWidget extends Block<ChatWidgetProps> {
 
   private readonly _onStoreUpdate = (state: TChatListState): void => {
     const { chatList } = state;
-    const { currentChat } = chatList;
-    this.setProps({ isCurrentChat: Boolean(currentChat) });
+    const { currentChat, load } = chatList;
+    this.setProps({ isCurrentChat: !load && Boolean(currentChat) });
   };
 }

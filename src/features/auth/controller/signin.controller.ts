@@ -33,9 +33,8 @@ class SigninController {
     });
   }
 
-  start(): void {
+  public start(): void {
     const initInputState = { value: '', hint: '', error: false };
-
     const fields = fieldList.reduce<Record<string, TInputState>>(
       (map, fieldName) => {
         map[fieldName] = { ...initInputState };
@@ -43,12 +42,7 @@ class SigninController {
       },
       {}
     );
-
     this._store.set(STORE_SLICE, { fields, error: '', load: false });
-  }
-
-  private _resetState(): void {
-    this.start();
   }
 
   private _extractFormData(): Record<string, string> {
@@ -98,9 +92,8 @@ class SigninController {
       const { status, response } = xhr;
 
       if (status === 200) {
-        this._resetState();
         this._store.set('viewer', { auth: true });
-        this._router.go(ROUTE_PATH.MAIN, true);
+        return;
       }
 
       if (status === 401) {
@@ -109,6 +102,7 @@ class SigninController {
 
           this._store.set(STORE_ERROR, reason);
         }
+        return;
       }
 
       if (status === 500) {

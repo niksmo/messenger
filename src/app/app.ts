@@ -1,14 +1,12 @@
 import { AppRouter } from 'shared/components/router/router';
 import { ROUTE_PATH } from 'shared/constants/routes';
 import { Store } from 'shared/components/store/store';
-import PAGE from 'pages/pages';
-import './styles/index.css';
 import { viewer } from 'entites/viewer/model/viewer.model';
 import { chatList } from 'entites/chat/model/chat-list.model';
-import {
-  withAuth,
-  withUnAuth,
-} from 'entites/viewer/ui/auth-guard/auth-guard.hoc';
+import { withAuth } from 'entites/viewer/hoc/with-auth.hoc';
+import { withUnAuth } from 'entites/viewer/hoc/with-unauth.hoc';
+import PAGE from 'pages/pages';
+import './styles/index.css';
 
 class App {
   private _root: null | HTMLElement = null;

@@ -1,7 +1,6 @@
 import { AppRouter } from 'shared/components/router/router';
 import { Store } from 'shared/components/store/store';
 import { ROUTE_PATH } from 'shared/constants/routes';
-import { goToLoginWithUnauth } from 'shared/helpers/go';
 import { getInputValue } from 'shared/helpers/get';
 import { AddChatAPI } from '../api/chat-add.api';
 import {
@@ -25,22 +24,15 @@ class AddChatController {
     this._router = AppRouter.instance();
   }
 
-  start(): void {
-    const initInputState = { value: '', hint: '', error: false };
+  public start(): void {
+    const fields: Record<string, TInputState> = {};
 
-    const fields = fieldList.reduce<Record<string, TInputState>>(
-      (map, fieldName) => {
-        map[fieldName] = { ...initInputState };
-        return map;
-      },
-      {}
-    );
+    fieldList.reduce((map, fieldName) => {
+      map[fieldName] = { value: '', hint: '', error: false };
+      return map;
+    }, fields);
 
     this._store.set(STORE_SLICE, { fields, load: false });
-  }
-
-  private _resetState(): void {
-    this.start();
   }
 
   private _extractFormData(): Record<string, string> {
@@ -69,6 +61,11 @@ class AddChatController {
       const xhr = await this._api.create(formData);
       const { status, response } = xhr;
 
+      if (status === 200) {
+        this._router.go(ROUTE_PATH.MAIN);
+        return;
+      }
+
       if (status === 400) {
         if (typeof response === 'string') {
           const { reason } = JSON.parse(response);
@@ -83,21 +80,18 @@ class AddChatController {
         return;
       }
 
-      if (status === 200) {
-        this._router.go(ROUTE_PATH.MAIN);
-      }
-
       if (status === 401) {
-        goToLoginWithUnauth();
+        this._store.set('viewer', { auth: false });
+        return;
       }
 
       if (status === 500) {
         this._router.go(ROUTE_PATH[500]);
       }
-      this._resetState();
     } catch (err) {
       console.warn(err);
     } finally {
+      this.start();
       this._store.set(STORE_LOAD, false);
     }
   }

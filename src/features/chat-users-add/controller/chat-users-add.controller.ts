@@ -1,6 +1,5 @@
 import { Store } from 'shared/components/store/store';
 import { AppRouter } from 'shared/components/router/router';
-import { goToLoginWithUnauth, goToMain } from 'shared/helpers/go';
 import { getInputValue, getTypedEntries } from 'shared/helpers/get';
 import { ROUTE_PATH } from 'shared/constants/routes';
 import type {
@@ -8,6 +7,7 @@ import type {
   TUser,
 } from 'entites/chat-user/model/chat-user.model';
 import { type TChatListState } from 'entites/chat/model/chat-list.model';
+import { chatUsersController } from 'entites/chat-user/controller/chat-users.controller';
 import {
   fieldList,
   type TAddUsersState,
@@ -35,15 +35,12 @@ export class AddChatUsersController {
   }
 
   start(): void {
-    const initInputState = { value: '', hint: '', error: false };
+    const fields: Record<string, TInputState> = {};
 
-    const fields = fieldList.reduce<Record<string, TInputState>>(
-      (map, fieldName) => {
-        map[fieldName] = { ...initInputState };
-        return map;
-      },
-      {}
-    );
+    fieldList.reduce((map, fieldName) => {
+      map[fieldName] = { value: '', hint: '', error: false };
+      return map;
+    }, fields);
 
     this._store.set(STORE_SLICE, {
       fields,
@@ -128,13 +125,13 @@ export class AddChatUsersController {
       }
 
       if (status === 401) {
-        goToLoginWithUnauth();
+        this._store.set('viewer', { auth: false });
+        return;
       }
 
       if (status === 500) {
         this._router.go(ROUTE_PATH[500]);
       }
-      this._resetState();
     } catch (err) {
       console.warn(err);
     } finally {
@@ -159,8 +156,11 @@ export class AddChatUsersController {
     try {
       const xhr = await this._api.create({ chatId, users });
       const { status, response } = xhr;
+
       if (status === 200) {
-        goToMain();
+        this._resetState();
+        this._router.go(ROUTE_PATH.MAIN);
+        return;
       }
 
       if (status === 400) {
@@ -174,17 +174,20 @@ export class AddChatUsersController {
             });
           }
         }
+
+        return;
       }
 
       if (status === 401) {
-        goToLoginWithUnauth();
+        this._resetState();
+        this._store.set('viewer', { auth: false });
+        return;
       }
 
       if (status === 500) {
+        this._resetState();
         this._router.go(ROUTE_PATH[500]);
       }
-
-      this._resetState();
     } catch (err) {
       console.warn(err);
     } finally {

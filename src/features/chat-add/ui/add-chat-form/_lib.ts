@@ -1,3 +1,5 @@
-export const fieldsParams = [
-  { name: 'title', placeholder: 'Title', type: 'text' },
-];
+import { type InputProps } from 'shared/ui/input';
+
+export const fieldsParams: Array<
+  Pick<InputProps, 'name' | 'placeholder' | 'type'>
+> = [{ name: 'title', placeholder: 'Title', type: 'text' }];

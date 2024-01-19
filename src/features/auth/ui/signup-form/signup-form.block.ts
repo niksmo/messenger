@@ -1,11 +1,11 @@
 import { Block } from 'shared/components/block/block';
 import { Store } from 'shared/components/store/store';
 import { ButtonFilled } from 'shared/ui/main-button/button-filled.block';
-import { getInputMap } from 'shared/helpers/get';
 import { type TSignupState } from '../../model/signup.model';
 import { signupController } from '../../controller/signup.controller';
 import templateSpec from './signup-form.template.hbs';
 import { fieldsParams } from './_lib';
+import { makeFields } from 'shared/helpers/make';
 
 const store = Store.instance();
 
@@ -14,12 +14,7 @@ export class SignupForm extends Block {
   private readonly _submitButton;
 
   constructor() {
-    signupController.start();
-
-    const { signup } = store.getState<TSignupState>();
-    const { fields: fieldsState } = signup;
-
-    const inputMap = getInputMap(fieldsParams, fieldsState);
+    const inputMap = makeFields(fieldsParams);
 
     const submitButton = new ButtonFilled({
       label: 'Sign up',
@@ -63,6 +58,7 @@ export class SignupForm extends Block {
 
   public didMount(): void {
     store.on(this._onStoreUpdate);
+    signupController.start();
   }
 
   public willUnmount(): void {

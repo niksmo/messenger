@@ -1,7 +1,6 @@
 import { Store } from 'shared/components/store/store';
 import { AppRouter } from 'shared/components/router/router';
 import { ROUTE_PATH } from 'shared/constants/routes';
-import { reviveNullToString } from 'shared/helpers/json';
 import { ViewerAPI } from '../api/viewer.api';
 
 const STORE_SLICE = 'viewer';
@@ -37,6 +36,7 @@ class ViewerController {
           const { reason } = JSON.parse(response);
           console.warn(reason);
         }
+        return;
       }
 
       if (status === 500) {

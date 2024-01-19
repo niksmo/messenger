@@ -1,11 +1,11 @@
 import { Block } from 'shared/components/block/block';
 import { Store } from 'shared/components/store/store';
 import { ButtonFilled } from 'shared/ui/main-button/button-filled.block';
-import { getInputMap } from 'shared/helpers/get';
 import type { TAddChatState } from '../../model/chat-add.model';
 import { addChatController } from '../../controller/chat-add.controller';
 import { fieldsParams } from './_lib';
 import templateSpec from './add-chat-form.template.hbs';
+import { makeFields } from 'shared/helpers/make';
 
 const store = Store.instance();
 
@@ -14,12 +14,7 @@ export class AddChatForm extends Block {
   private readonly _submitButton;
 
   constructor() {
-    addChatController.start();
-
-    const { addChat } = store.getState<TAddChatState>();
-    const { fields } = addChat;
-
-    const inputMap = getInputMap(fieldsParams, fields);
+    const inputMap = makeFields(fieldsParams);
 
     const submitButton = new ButtonFilled({
       label: 'Create chat',
@@ -61,6 +56,7 @@ export class AddChatForm extends Block {
 
   public didMount(): void {
     store.on(this._onStoreUpdate);
+    addChatController.start();
   }
 
   public willUnmount(): void {

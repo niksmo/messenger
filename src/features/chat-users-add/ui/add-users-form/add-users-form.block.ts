@@ -1,8 +1,9 @@
 import { Block } from 'shared/components/block/block';
 import { Store } from 'shared/components/store/store';
-import { getInputMap, getTypedEntries } from 'shared/helpers/get';
+import { getTypedEntries } from 'shared/helpers/get';
 import { withDelay } from 'shared/helpers/with';
 import { ButtonFilled } from 'shared/ui/main-button/button-filled.block';
+import { makeFields } from 'shared/helpers/make';
 import {
   type TFieldUnion,
   type TAddUsersState,
@@ -15,7 +16,6 @@ import styles from './styles.module.css';
 import { fieldsParams } from './_lib';
 
 interface AddUsersFormProps {
-  login: Block;
   foundList: Block;
   submitButton: Block;
   onInput: (e: Event) => void;
@@ -34,12 +34,7 @@ export class AddUsersForm extends Block<AddUsersFormProps> {
   private readonly _submitButton;
 
   constructor() {
-    addChatUsersController.start();
-
-    const { addUsers } = store.getState<TAddUsersState>();
-    const { fields } = addUsers;
-
-    const inputMap = getInputMap<TFieldUnion>(fieldsParams, fields);
+    const inputMap = makeFields(fieldsParams);
 
     const foundList = new FoundUsersList();
 
@@ -93,6 +88,7 @@ export class AddUsersForm extends Block<AddUsersFormProps> {
 
   public didMount(): void {
     store.on(this._onStoreUpdate);
+    addChatUsersController.start();
   }
 
   public willUnmount(): void {

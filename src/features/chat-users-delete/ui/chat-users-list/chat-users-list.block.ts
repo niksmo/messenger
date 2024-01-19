@@ -15,10 +15,7 @@ const store = Store.instance();
 
 export class ChatUsersList extends Block<ChatUsersListProps> {
   constructor() {
-    const { deleteUsers } = store.getState<TDeleteUsersState>();
-    const { currentUsers } = deleteUsers;
-    const users = createItems(currentUsers);
-    super({ users });
+    super({ users: [] });
   }
 
   protected getTemplateHook(): TemplateSpecification {

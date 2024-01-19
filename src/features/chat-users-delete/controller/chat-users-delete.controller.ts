@@ -3,8 +3,6 @@ import { ROUTE_PATH } from 'shared/constants/routes';
 import { AppRouter } from 'shared/components/router/router';
 import type { TChatListState } from 'entites/chat/model/chat-list.model';
 import type { TChatUsersSate } from 'entites/chat-user/model/chat-user.model';
-import { chatUsersController } from 'entites/chat-user/controller/chat-users.controller';
-import { goToLoginWithUnauth } from 'shared/helpers/go';
 import type { TDeleteUsersState } from '../model/chat-users-delete.model';
 import { ChatUsersDeleteAPI } from '../api/chat-users-delete.api';
 
@@ -22,21 +20,23 @@ export class DeleteChatUsersController {
     this._router = AppRouter.instance();
   }
 
-  async _start(): Promise<void> {
-    this._store.set(STORE_SLICE, { currentUsers: [], select: [], load: false });
-
-    await chatUsersController.getChatUsers();
-
+  _start(): void {
     const { chatUsers } = this._store.getState<TChatUsersSate>();
 
     if (chatUsers) {
       this._store.set(STORE_SLICE + '.currentUsers', Object.values(chatUsers));
+    } else {
+      this._store.set(STORE_SLICE, {
+        currentUsers: [],
+        select: [],
+        load: false,
+      });
     }
   }
 
   private _resetState(): void {
     this._store.set(STORE_SLICE, {
-      chatUsers: [],
+      currentUsers: [],
       select: [],
       load: false,
     });
@@ -61,10 +61,10 @@ export class DeleteChatUsersController {
       const { status, response } = xhr;
 
       if (status === 200) {
-        const { prev: prevLocation } = this._router.getHistoryState<{
-          prev: string;
-        }>();
-        this._router.go(prevLocation || ROUTE_PATH.MAIN);
+        this._store.getState<TChatUsersSate>().chatUsers = {};
+        this._router.go(ROUTE_PATH.MAIN);
+        this._resetState();
+        return;
       }
 
       if (status === 400) {
@@ -72,14 +72,14 @@ export class DeleteChatUsersController {
       }
 
       if (status === 401) {
-        goToLoginWithUnauth();
+        this._router.go(ROUTE_PATH.MAIN);
+        this._resetState();
+        return;
       }
 
       if (status === 500) {
         this._router.go(ROUTE_PATH[500]);
       }
-
-      this._resetState();
     } catch (err) {
       console.warn(err);
     } finally {
@@ -103,7 +103,7 @@ export class DeleteChatUsersController {
   }
 
   public start(): void {
-    void this._start();
+    this._start();
   }
 
   public select(e: Event): void {

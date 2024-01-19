@@ -29,7 +29,9 @@ export class LogoutController {
       if (status === 500) {
         this._router.go(ROUTE_PATH[500]);
       }
-    } catch (error) {}
+    } catch (err) {
+      console.warn(err);
+    }
   }
 }
 
