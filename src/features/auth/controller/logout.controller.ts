@@ -23,7 +23,7 @@ export class LogoutController {
 
       if (status === 200) {
         this._store.set(STORE_SLICE, { auth: false });
-        this._router.go(ROUTE_PATH.SIGNIN);
+        return;
       }
 
       if (status === 500) {

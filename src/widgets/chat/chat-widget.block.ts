@@ -26,8 +26,7 @@ const getChatUsersWithInterrupt = withInterrupt(
 
 export class ChatWidget extends Block<ChatWidgetProps> {
   constructor() {
-    const { chatList } = store.getState<TChatListState>();
-    const { currentChat } = { ...chatList };
+    const { currentChat, loaded } = store.getState<TChatListState>().chatList;
 
     // const messages = data.map((day) => {
     //   const { date, messages: messageList } = day;
@@ -38,7 +37,7 @@ export class ChatWidget extends Block<ChatWidgetProps> {
 
     const sender = new MessageSender();
 
-    const chatStub = new ChatStub();
+    const chatStub = new ChatStub({ loaded });
 
     super({
       isCurrentChat: Boolean(currentChat),

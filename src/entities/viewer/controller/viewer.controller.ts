@@ -17,10 +17,6 @@ class ViewerController {
     this._router = AppRouter.instance();
   }
 
-  private _goToLoacation(): void {
-    this._router.go(window.location.pathname, true);
-  }
-
   async requestCredentials(): Promise<void> {
     try {
       const xhr = await this._api.request();
@@ -28,17 +24,11 @@ class ViewerController {
 
       if (status === 200) {
         if (typeof response === 'string') {
-          const data = JSON.parse(response, reviveNullToString);
-          const viewerData = Object.assign({ auth: true }, data);
-          this._store.set(STORE_SLICE, viewerData);
-          this._goToLoacation();
-        }
-      }
+          const data = JSON.parse(response);
 
-      if (status === 401) {
-        if (typeof response === 'string') {
-          this._store.set(STORE_SLICE, { auth: false });
-          this._goToLoacation();
+          const viewerData = { ...data, auth: true, fetching: false };
+          this._store.set(STORE_SLICE, viewerData);
+          return;
         }
       }
 
@@ -52,6 +42,8 @@ class ViewerController {
       if (status === 500) {
         this._router.go(ROUTE_PATH[500]);
       }
+
+      this._store.set(STORE_SLICE, { auth: false, fetching: false });
     } catch (err) {
       console.warn(err);
     }

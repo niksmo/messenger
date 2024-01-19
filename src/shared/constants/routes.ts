@@ -12,7 +12,3 @@ export const ROUTE_PATH = {
   404: '/404',
   500: '/500',
 };
-
-export const ROUTE_SLUG = {
-  CHAT_ID: '/:chatId',
-};

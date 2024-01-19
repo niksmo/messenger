@@ -3,16 +3,13 @@ import {
   type TBlockConstructor,
   type IRoute,
 } from '../interfaces';
-import { AuthRoute, NotAuthRoute, Route } from './_route';
-
-const INIT_BASE_PATH = '/';
+import { Route } from './_route';
 
 export class AppRouter implements IAppRouter {
   private static _instance: AppRouter | null = null;
   private readonly _history: History;
   private readonly _routes: IRoute[] = [];
   private _appRoot: HTMLElement | null = null;
-  private _baseRoute: string | null = null;
   private _noMatchRoute: string | null = null;
   private _currentRoute: IRoute | null = null;
 
@@ -56,25 +53,20 @@ export class AppRouter implements IAppRouter {
 
     this._history.replaceState({}, '', this._noMatchRoute);
 
-    this._render(this._noMatchRoute, route);
+    this._render(route);
   }
 
   private _getRoute(path: string): IRoute | undefined {
     return this._routes.find((route) => route.match(path));
   }
 
-  private _render(path: string, route: IRoute): void {
+  private _render(route: IRoute): void {
     this._currentRoute?.leave();
     this._currentRoute = route;
-    this._currentRoute.render(path);
+    this._currentRoute.render();
   }
 
   private _onRoute(path: string): void {
-    if (path === INIT_BASE_PATH && this._baseRoute) {
-      this._history.replaceState({}, '', this._baseRoute);
-      path = this._baseRoute;
-    }
-
     const route = this._getRoute(path);
 
     if (!route) {
@@ -82,12 +74,7 @@ export class AppRouter implements IAppRouter {
       return;
     }
 
-    if (this._currentRoute === route) {
-      route.update(path);
-      return;
-    }
-
-    this._render(path, route);
+    this._render(route);
   }
 
   private _isRoot(appRoot: HTMLElement | null): appRoot is HTMLElement {
@@ -99,10 +86,6 @@ export class AppRouter implements IAppRouter {
 
   root(appRoot: HTMLElement): void {
     this._appRoot = appRoot;
-  }
-
-  base(path: string): void {
-    this._baseRoute = path;
   }
 
   noMatch(path: string): void {
@@ -131,7 +114,7 @@ export class AppRouter implements IAppRouter {
     this._history.forward();
   }
 
-  getState<TIndexed extends Record<string, unknown>>(): TIndexed {
+  getHistoryState<TIndexed extends Record<string, unknown>>(): TIndexed {
     return this._history.state;
   }
 
@@ -151,36 +134,6 @@ export class AppRouter implements IAppRouter {
   use(path: string, view: TBlockConstructor): void {
     if (this._isRoot(this._appRoot)) {
       const route = new Route(path, view, this._appRoot);
-      this._routes.push(route);
-    }
-  }
-
-  authUse(
-    path: string,
-    view: TBlockConstructor,
-    stub: TBlockConstructor,
-    redirectCb: () => void
-  ): void {
-    if (this._isRoot(this._appRoot)) {
-      const route = new AuthRoute(path, view, stub, redirectCb, this._appRoot);
-      this._routes.push(route);
-    }
-  }
-
-  notAuthUse(
-    path: string,
-    view: TBlockConstructor,
-    stub: TBlockConstructor,
-    redirectCb: () => void
-  ): void {
-    if (this._isRoot(this._appRoot)) {
-      const route = new NotAuthRoute(
-        path,
-        view,
-        stub,
-        redirectCb,
-        this._appRoot
-      );
       this._routes.push(route);
     }
   }

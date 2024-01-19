@@ -8,6 +8,22 @@ export interface TViewerState {
     login: string;
     avatar: string;
     email: string;
-    auth?: boolean;
+    auth: boolean;
+    fetching: boolean;
   };
 }
+
+export const viewer: TViewerState = {
+  viewer: {
+    auth: false,
+    fetching: true,
+    id: 0,
+    first_name: '',
+    second_name: '',
+    display_name: '',
+    phone: '',
+    login: '',
+    avatar: '',
+    email: '',
+  },
+};

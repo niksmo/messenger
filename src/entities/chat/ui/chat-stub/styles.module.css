@@ -8,7 +8,7 @@
 
 .chat-stub__cta {
   margin: 0;
-  padding: 0 8px;
+  padding: 0 16px;
   border-radius: 12px;
   font-size: var(--font-title-medium-size);
   line-height: var(--font-title-medium-height);

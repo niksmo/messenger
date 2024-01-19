@@ -9,7 +9,6 @@ import type { TDeleteUsersState } from '../model/chat-users-delete.model';
 import { ChatUsersDeleteAPI } from '../api/chat-users-delete.api';
 
 const STORE_SLICE = 'deleteUsers';
-const STORE_SELECT = STORE_SLICE + '.select';
 const STORE_LOAD = STORE_SLICE + '.load';
 
 export class DeleteChatUsersController {
@@ -48,7 +47,6 @@ export class DeleteChatUsersController {
       TDeleteUsersState & TChatListState
     >();
 
-    debugger;
     const { select: users } = deleteUsers;
     const { currentChat: chatId } = chatList;
 
@@ -63,7 +61,7 @@ export class DeleteChatUsersController {
       const { status, response } = xhr;
 
       if (status === 200) {
-        const { prev: prevLocation } = this._router.getState<{
+        const { prev: prevLocation } = this._router.getHistoryState<{
           prev: string;
         }>();
         this._router.go(prevLocation || ROUTE_PATH.MAIN);

@@ -1,10 +1,14 @@
 import { AppRouter } from 'shared/components/router/router';
-import { ROUTE_PATH, ROUTE_SLUG } from 'shared/constants/routes';
+import { ROUTE_PATH } from 'shared/constants/routes';
 import { Store } from 'shared/components/store/store';
-import { RequestAuthStub } from 'entites/viewer/ui/request-auth-stub/request-auth-stub';
-import { goToLogin, goToMain } from 'shared/helpers/go';
 import PAGE from 'pages/pages';
 import './styles/index.css';
+import { viewer } from 'entites/viewer/model/viewer.model';
+import { chatList } from 'entites/chat/model/chat-list.model';
+import {
+  withAuth,
+  withUnAuth,
+} from 'entites/viewer/ui/request-auth-stub/request-auth-stub';
 
 class App {
   private _root: null | HTMLElement = null;
@@ -19,86 +23,24 @@ class App {
       return;
     }
     const store = new Store();
+    store.start({ ...viewer, ...chatList });
+
     const router = new AppRouter();
-
     router.root(this._root);
-
-    router.authUse(
-      ROUTE_PATH.MAIN + ROUTE_SLUG.CHAT_ID,
-      PAGE.Main,
-      RequestAuthStub,
-      goToLogin
-    );
-
-    router.authUse(
-      ROUTE_PATH.ADD_CHAT,
-      PAGE.AddChat,
-      RequestAuthStub,
-      goToLogin
-    );
-
-    router.authUse(
-      ROUTE_PATH.ADD_USERS,
-      PAGE.AddUsers,
-      RequestAuthStub,
-      goToLogin
-    );
-
-    router.authUse(
-      ROUTE_PATH.DELETE_USERS,
-      PAGE.DeleteUsers,
-      RequestAuthStub,
-      goToLogin
-    );
-
-    router.authUse(
-      ROUTE_PATH.SETTINGS,
-      PAGE.Settings,
-      RequestAuthStub,
-      goToLogin
-    );
-
-    router.authUse(
-      ROUTE_PATH.EDIT_PROFILE,
-      PAGE.EditProfile,
-      RequestAuthStub,
-      goToLogin
-    );
-
-    router.authUse(
-      ROUTE_PATH.CHANGE_PASSWORD,
-      PAGE.ChangePassword,
-      RequestAuthStub,
-      goToLogin
-    );
-
-    router.authUse(
-      ROUTE_PATH.CHANGE_AVATAR,
-      PAGE.ChangeAvatar,
-      RequestAuthStub,
-      goToLogin
-    );
-
-    router.notAuthUse(
-      ROUTE_PATH.SIGNIN,
-      PAGE.Signin,
-      RequestAuthStub,
-      goToMain
-    );
-
-    router.notAuthUse(
-      ROUTE_PATH.SIGNUP,
-      PAGE.Signup,
-      RequestAuthStub,
-      goToMain
-    );
-
+    router.use(ROUTE_PATH.MAIN, withAuth(PAGE.Main));
+    router.use(ROUTE_PATH.ADD_CHAT, withAuth(PAGE.AddChat));
+    router.use(ROUTE_PATH.ADD_USERS, withAuth(PAGE.AddUsers));
+    router.use(ROUTE_PATH.DELETE_USERS, withAuth(PAGE.DeleteUsers));
+    router.use(ROUTE_PATH.SETTINGS, withAuth(PAGE.Settings));
+    router.use(ROUTE_PATH.EDIT_PROFILE, withAuth(PAGE.EditProfile));
+    router.use(ROUTE_PATH.CHANGE_PASSWORD, withAuth(PAGE.ChangePassword));
+    router.use(ROUTE_PATH.CHANGE_AVATAR, withAuth(PAGE.ChangeAvatar));
+    router.use(ROUTE_PATH.SIGNIN, withUnAuth(PAGE.Signin));
+    router.use(ROUTE_PATH.SIGNUP, withUnAuth(PAGE.Signup));
     router.use(ROUTE_PATH[404], PAGE.NotFound);
     router.use(ROUTE_PATH[500], PAGE.InternalError);
     router.noMatch(ROUTE_PATH[404]);
     router.start();
-
-    store.start();
   }
 }
 

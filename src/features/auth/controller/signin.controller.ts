@@ -71,15 +71,15 @@ class SigninController {
   private _verify(formData: Record<string, string>): boolean {
     const { isValid, hintData } = this._verifier.checkOnValidity(formData);
 
-    for (const field of Object.keys(hintData)) {
-      const hint = hintData[field];
-      if (typeof hint === 'string') {
-        this._store.set(`${STORE_FIELDS}.${field}`, {
-          hint,
-          error: Boolean(hint),
-        });
-      }
-    }
+    const fieldsState: Record<string, TInputState> = {};
+
+    Object.entries(hintData).reduce((map, [fieldName, hint]) => {
+      const value = formData[fieldName] ?? '';
+      map[fieldName] = { value, hint, error: Boolean(hint) };
+      return map;
+    }, fieldsState);
+
+    this._store.set(STORE_FIELDS, fieldsState);
 
     return isValid;
   }
@@ -123,8 +123,10 @@ class SigninController {
 
   public input(e: Event): void {
     const { field, value } = getInputValue(e);
-    this._store.set(`${STORE_FIELDS}.${field}`, { value, error: false });
-    this._store.set(STORE_ERROR, '');
+    this._store.set(STORE_SLICE, {
+      fields: { [field]: { value, error: false } },
+      error: '',
+    });
   }
 
   public verify(): void {

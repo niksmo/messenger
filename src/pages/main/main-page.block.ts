@@ -1,30 +1,20 @@
 import { Block } from 'shared/components/block/block';
 import { ChatListWidget } from 'widgets/chat-list/chat-list.block';
 import { ChatWidget } from 'widgets/chat/chat-widget.block';
-import { chatListController } from 'entites/chat/controller/chat-list.controller';
 import templateSpec from './main-page.template.hbs';
 import styles from './styles.module.css';
 
 interface MainPageProps {
-  chatId?: string;
-}
-
-interface InnerProps {
   chatListWidget: Block;
   chatWidget: Block;
 }
 
-export class MainPage extends Block<InnerProps> {
-  private _curChatId;
-
-  constructor(props: MainPageProps) {
-    const chatWidget = new ChatWidget();
+export class MainPage extends Block<MainPageProps> {
+  constructor() {
     const chatListWidget = new ChatListWidget();
+    const chatWidget = new ChatWidget();
 
     super({ chatListWidget, chatWidget });
-
-    const { chatId = '' } = { ...props };
-    this._curChatId = chatId;
   }
 
   protected getTemplateHook(): TemplateSpecification {
@@ -33,21 +23,5 @@ export class MainPage extends Block<InnerProps> {
 
   protected getStylesModuleHook(): CSSModuleClasses {
     return styles;
-  }
-
-  public didMount(): void {
-    chatListController.start(this._curChatId);
-  }
-
-  public didUpdate(): void {
-    chatListController.openChat(this._curChatId);
-  }
-
-  public setProps(props: Partial<MainPageProps>): void {
-    if (typeof props.chatId === 'string') {
-      this._curChatId = props.chatId;
-    }
-
-    super.setProps(props);
   }
 }
