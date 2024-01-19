@@ -23,7 +23,10 @@ export function withAuth(View: new () => Block): new () => Block {
 
     public didMount(): void {
       store.on(this._onStoreUpdate);
-      void viewerController.requestCredentials();
+      const { auth } = store.getState<TViewerState>().viewer;
+      if (!auth) {
+        void viewerController.requestCredentials();
+      }
     }
 
     public willUnmount(): void {
