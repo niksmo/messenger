@@ -8,7 +8,7 @@ import { chatList } from 'entites/chat/model/chat-list.model';
 import {
   withAuth,
   withUnAuth,
-} from 'entites/viewer/ui/request-auth-stub/request-auth-stub';
+} from 'entites/viewer/ui/auth-guard/auth-guard.hoc';
 
 class App {
   private _root: null | HTMLElement = null;
