@@ -29,10 +29,6 @@ export function withAuth(constructor: new () => Block): new () => Block {
       this._currentEl = this.getContent();
     }
 
-    protected getTemplateHook(): TemplateSpecification {
-      return templateSpec;
-    }
-
     public getContent(): HTMLElement {
       const { auth } = this._store.getState<TViewerState>().viewer;
 
