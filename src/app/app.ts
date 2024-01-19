@@ -5,6 +5,10 @@ import PAGE from 'pages/pages';
 import './styles/index.css';
 import { viewer } from 'entites/viewer/model/viewer.model';
 import { chatList } from 'entites/chat/model/chat-list.model';
+import {
+  withAuth,
+  withUnAuth,
+} from 'entites/viewer/ui/request-auth-stub/request-auth-stub';
 
 class App {
   private _root: null | HTMLElement = null;
@@ -23,16 +27,16 @@ class App {
 
     const router = new AppRouter();
     router.root(this._root);
-    router.use(ROUTE_PATH.MAIN, PAGE.Main);
-    router.use(ROUTE_PATH.ADD_CHAT, PAGE.AddChat);
-    router.use(ROUTE_PATH.ADD_USERS, PAGE.AddUsers);
-    router.use(ROUTE_PATH.DELETE_USERS, PAGE.DeleteUsers);
-    router.use(ROUTE_PATH.SETTINGS, PAGE.Settings);
-    router.use(ROUTE_PATH.EDIT_PROFILE, PAGE.EditProfile);
-    router.use(ROUTE_PATH.CHANGE_PASSWORD, PAGE.ChangePassword);
-    router.use(ROUTE_PATH.CHANGE_AVATAR, PAGE.ChangeAvatar);
-    router.use(ROUTE_PATH.SIGNIN, PAGE.Signin);
-    router.use(ROUTE_PATH.SIGNUP, PAGE.Signup);
+    router.use(ROUTE_PATH.MAIN, withAuth(PAGE.Main));
+    router.use(ROUTE_PATH.ADD_CHAT, withAuth(PAGE.AddChat));
+    router.use(ROUTE_PATH.ADD_USERS, withAuth(PAGE.AddUsers));
+    router.use(ROUTE_PATH.DELETE_USERS, withAuth(PAGE.DeleteUsers));
+    router.use(ROUTE_PATH.SETTINGS, withAuth(PAGE.Settings));
+    router.use(ROUTE_PATH.EDIT_PROFILE, withAuth(PAGE.EditProfile));
+    router.use(ROUTE_PATH.CHANGE_PASSWORD, withAuth(PAGE.ChangePassword));
+    router.use(ROUTE_PATH.CHANGE_AVATAR, withAuth(PAGE.ChangeAvatar));
+    router.use(ROUTE_PATH.SIGNIN, withUnAuth(PAGE.Signin));
+    router.use(ROUTE_PATH.SIGNUP, withUnAuth(PAGE.Signup));
     router.use(ROUTE_PATH[404], PAGE.NotFound);
     router.use(ROUTE_PATH[500], PAGE.InternalError);
     router.noMatch(ROUTE_PATH[404]);

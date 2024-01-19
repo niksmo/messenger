@@ -9,14 +9,21 @@ export interface TViewerState {
     avatar: string;
     email: string;
     auth: boolean;
+    fetching: boolean;
   };
 }
 
-export const viewer: {
-  viewer: Pick<TViewerState['viewer'], 'auth' | 'login'>;
-} = {
+export const viewer: TViewerState = {
   viewer: {
-    login: '',
     auth: false,
+    fetching: true,
+    id: 0,
+    first_name: '',
+    second_name: '',
+    display_name: '',
+    phone: '',
+    login: '',
+    avatar: '',
+    email: '',
   },
 };

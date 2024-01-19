@@ -17,8 +17,6 @@ interface ChatListWidgetProps {
 
 export class ChatListWidget extends Block<ChatListWidgetProps> {
   constructor() {
-    chatListController.start();
-
     const settingsButton = new OpenSettingsButton();
 
     const search = new SearchBar();
@@ -32,6 +30,10 @@ export class ChatListWidget extends Block<ChatListWidgetProps> {
     const chatList = new ChatList();
 
     super({ settingsButton, search, addChat, chatList });
+  }
+
+  public didMount(): void {
+    chatListController.start();
   }
 
   protected getTemplateHook(): TemplateSpecification {
