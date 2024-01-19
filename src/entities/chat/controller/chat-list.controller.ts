@@ -1,13 +1,9 @@
 import { Store } from 'shared/components/store/store';
 import { AppRouter } from 'shared/components/router/router';
 import { ROUTE_PATH } from 'shared/constants/routes';
-import { reviveNullToString } from 'shared/helpers/json';
-import { goToLoginWithUnauth } from 'shared/helpers/go';
 import { ChatListAPI } from '../api/chat-list.api';
-import { type TChatListState } from '../model/chat-list.model';
 
 const STORE_SLICE = 'chatList';
-const STORE_CHATS = STORE_SLICE + '.chats';
 const STORE_CURRENT_CHAT = STORE_SLICE + '.currentChat';
 const STORE_LOAD = STORE_SLICE + '.load';
 const STORAGE_CURRENT_CHAT_KEY = 'currentChat';
@@ -23,7 +19,7 @@ export class ChatListController {
     this._router = AppRouter.instance();
   }
 
-  private _getCurIdInLocal(): number | null {
+  public getCurChatIdInLocal(): number | null {
     const posibleStringId = localStorage.getItem(STORAGE_CURRENT_CHAT_KEY);
     if (posibleStringId === null) {
       return posibleStringId;
@@ -37,21 +33,9 @@ export class ChatListController {
   }
 
   private async _start(): Promise<void> {
-    const { loaded } = this._store.getState<TChatListState>().chatList;
-    if (loaded) {
-      return;
-    }
-
+    const currentChat = this.getCurChatIdInLocal();
+    this._store.set(STORE_CURRENT_CHAT, currentChat);
     await this._requestChats();
-
-    const currentChat = this._getCurIdInLocal();
-
-    this._store.set(STORE_SLICE, { currentChat, loaded: true });
-
-    this._store.on<TChatListState>(({ chatList }) => {
-      const { currentChat } = chatList;
-      localStorage.setItem(STORAGE_CURRENT_CHAT_KEY, String(currentChat));
-    });
   }
 
   private async _requestChats(): Promise<void> {
@@ -62,13 +46,14 @@ export class ChatListController {
       const { status, response } = xhr;
 
       if (status === 200 && typeof response === 'string') {
-        const chats = JSON.parse(response, reviveNullToString);
-        this._store.set(STORE_CHATS, chats);
+        const chats = JSON.parse(response);
+        this._store.set(STORE_SLICE, { chats });
         return;
       }
 
       if (status === 401) {
-        goToLoginWithUnauth();
+        this._store.set('viewer', { auth: false });
+        return;
       }
 
       if (status === 500) {
@@ -86,10 +71,11 @@ export class ChatListController {
   }
 
   public openChat(chatId: number): void {
-    const currentChat = this._getCurIdInLocal();
+    const currentChat = this.getCurChatIdInLocal();
 
     if (!currentChat || chatId !== currentChat) {
       this._store.set(STORE_CURRENT_CHAT, chatId);
+      localStorage.setItem(STORAGE_CURRENT_CHAT_KEY, String(chatId));
     }
   }
 }

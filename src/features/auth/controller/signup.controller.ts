@@ -50,10 +50,6 @@ class SignupController {
     this._store.set(STORE_SLICE, { fields, load: false });
   }
 
-  private _resetState(): void {
-    this.start();
-  }
-
   private _extractFormData(): Record<string, string> {
     const { signup } = this._store.getState<TSignupState>();
     const { fields } = signup;
@@ -112,8 +108,9 @@ class SignupController {
       const { status, response } = await this._api.create(formData);
 
       if (status === 200) {
-        this._resetState();
-        this._router.go(ROUTE_PATH.MAIN, true);
+        this.start();
+        this._store.set('viewer', { auth: true });
+        return;
       }
 
       if (status === 409) {
@@ -129,6 +126,7 @@ class SignupController {
             });
           }
         }
+        return;
       }
 
       if (status === 500) {

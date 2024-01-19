@@ -1,0 +1,14 @@
+<div class="guarded">
+  {{#if fetching}}
+    <main class="page_align_center">
+
+      <h1 class="loader">Loading app...</h1>
+
+    </main>
+  {{else}}
+
+    {{block}}
+
+  {{/if}}
+
+</div>

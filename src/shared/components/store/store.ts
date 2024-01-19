@@ -44,9 +44,7 @@ export class Store implements IStore {
 
   set(path: string, value: unknown): this {
     set(this._state, path, value);
-
     this._eventBus.emit(this._updateEvent, this._state);
-
     return this;
   }
 

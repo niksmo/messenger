@@ -3,8 +3,6 @@ import { AppRouter } from 'shared/components/router/router';
 import { verifierCreator } from 'shared/components/form-verifier/verifier';
 import { HINT } from 'shared/components/form-verifier/templates';
 import { ROUTE_PATH } from 'shared/constants/routes';
-import { goToLoginWithUnauth } from 'shared/helpers/go';
-import { reviveNullToString } from 'shared/helpers/json';
 import type {
   TChangeAvatarSlice,
   TChangeAvatarState,
@@ -98,29 +96,30 @@ export class ChangeAvatarController {
       const xhr = await this._api.update(formData);
       const { status, response } = xhr;
 
+      if (status === 200 && typeof response === 'string') {
+        this._store.set('viewer', JSON.parse(response));
+        this._router.go(ROUTE_PATH.SETTINGS);
+        return;
+      }
+
       if (status === 400 && typeof response === 'string') {
         const { reason } = JSON.parse(response);
         this._store.set(STORE_SLICE, { error: reason });
         return;
       }
 
-      if (status === 200 && typeof response === 'string') {
-        this._store.set('viewer', JSON.parse(response, reviveNullToString));
-        this._router.go(ROUTE_PATH.SETTINGS);
-      }
-
       if (status === 401) {
-        goToLoginWithUnauth();
+        this._store.set('viewer', { auth: false });
+        return;
       }
 
       if (status === 500) {
         this._router.go(ROUTE_PATH[500]);
       }
-
-      this.reset();
     } catch (err) {
       this._store.set(STORE_SLICE, { error: 'Image is too large' });
     } finally {
+      this.reset();
       this._store.set(STORE_SLICE, { load: false });
     }
   }

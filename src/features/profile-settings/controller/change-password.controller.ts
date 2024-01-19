@@ -57,10 +57,6 @@ class ChangePasswordController {
     this._store.set(STORE_SLICE, { fields, load: false });
   }
 
-  private _resetState(): void {
-    this.start();
-  }
-
   private _extractFormData(): Record<string, string> {
     const { changePassword } = this._store.getState<TChangePasswordState>();
     const { fields } = changePassword;
@@ -138,6 +134,12 @@ class ChangePasswordController {
       const reqBody = this._extractRequestBody(formData);
       const { status, response } = await this._api.update(reqBody);
 
+      if (status === 200) {
+        this.start();
+        this._router.go(ROUTE_PATH.SETTINGS, true);
+        return;
+      }
+
       if (status === 400) {
         if (typeof response === 'string') {
           const { reason } = JSON.parse(response);
@@ -149,22 +151,17 @@ class ChangePasswordController {
             });
           }
         }
-
         return;
       }
 
-      if (status === 200) {
-        this._router.go(ROUTE_PATH.SETTINGS, true);
-      }
-
       if (status === 401) {
-        goToLoginWithUnauth();
+        this._store.set('viewer', { auth: false });
+        return;
       }
 
       if (status === 500) {
         this._router.go(ROUTE_PATH[500]);
       }
-      this._resetState();
     } catch (err) {
       console.warn(err);
     } finally {

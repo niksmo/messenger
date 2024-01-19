@@ -1,5 +1,6 @@
 import { Block } from 'shared/components/block/block';
 import { Store } from 'shared/components/store/store.ts';
+import { addChatUsersController } from 'features/chat-users-add/controller/chat-users-add.controller.ts';
 import type {
   TAddUsersState,
   TFoundUser,
@@ -7,7 +8,6 @@ import type {
 import { FoundUsersItem } from './_list-item/list-item.block.ts';
 import templateSpec from './found-list.template.hbs';
 import styles from './styles.module.css';
-import { addChatUsersController } from 'features/chat-users-add/controller/chat-users-add.controller.ts';
 
 interface FoundUsersListProps {
   users: FoundUsersItem[];
@@ -16,14 +16,10 @@ interface FoundUsersListProps {
 const store = Store.instance();
 
 export class FoundUsersList extends Block<FoundUsersListProps> {
-  _cache;
-  constructor() {
-    const { addUsers } = store.getState<TAddUsersState>();
-    const { found } = addUsers;
-    const users = createItems(found);
-    super({ users });
+  _cache: TFoundUser[] | null = null;
 
-    this._cache = found;
+  constructor() {
+    super({ users: [] });
   }
 
   protected getTemplateHook(): TemplateSpecification {

@@ -5,7 +5,6 @@ import { HINT, TEMPLATE } from 'shared/components/form-verifier/templates';
 import { ROUTE_PATH } from 'shared/constants/routes';
 import { getInputValue } from 'shared/helpers/get';
 import { reviveNullToString } from 'shared/helpers/json';
-import { goToLoginWithUnauth } from 'shared/helpers/go';
 import { type TViewerState } from 'entites/viewer/model/viewer.model';
 import { EditProfileAPI } from '../api/edit-profile.api';
 import type {
@@ -37,25 +36,31 @@ class EditProfileController {
     });
   }
 
-  start(): void {
+  start(formEl?: HTMLElement): void {
     const { viewer } = this._store.getState<TViewerState>();
-    const { avatar, auth, id, ...initFieldsValues } = viewer;
+    const { avatar, auth, id, fetching, ...viewerData } = viewer;
 
-    const initFieldsState = Object.entries(initFieldsValues).reduce<
-      Record<string, TInputState>
-    >((map, [field, value]) => {
-      map[field] = { value, error: false, hint: '' };
-      return map;
-    }, {});
+    const fields: Record<string, TInputState> = {};
 
-    this._store.set(STORE_SLICE, {
-      fields: initFieldsState,
-      load: false,
-    });
-  }
+    Object.entries(viewerData).reduce((indexed, [field, paramValue]) => {
+      indexed[field] = { value: paramValue, error: false, hint: '' };
 
-  private _resetState(): void {
-    this.start();
+      if (formEl instanceof HTMLFormElement) {
+        const formElements = formEl.elements as unknown as Record<
+          string,
+          HTMLInputElement
+        >;
+
+        const DOMField = formElements[field];
+        if (DOMField) {
+          DOMField.value = paramValue;
+        }
+      }
+
+      return indexed;
+    }, fields);
+
+    this._store.set(STORE_SLICE, { fields, load: false });
   }
 
   private _extractFormData(): Record<string, string> {
@@ -102,6 +107,16 @@ class EditProfileController {
       this._store.set(STORE_LOAD, true);
       const { status, response } = await this._api.update(formData);
 
+      if (status === 200) {
+        if (typeof response === 'string') {
+          const viewerData = JSON.parse(response, reviveNullToString);
+          this._store.set('viewer', viewerData);
+        }
+        this.start();
+        this._router.go(ROUTE_PATH.SETTINGS);
+        return;
+      }
+
       if (status === 400) {
         if (typeof response === 'string') {
           const { reason } = JSON.parse(response);
@@ -117,23 +132,14 @@ class EditProfileController {
         return;
       }
 
-      if (status === 200) {
-        if (typeof response === 'string') {
-          const viewerData = JSON.parse(response, reviveNullToString);
-          this._store.set('viewer', viewerData);
-        }
-
-        this._router.go(ROUTE_PATH.SETTINGS);
-      }
-
       if (status === 401) {
-        goToLoginWithUnauth();
+        this._store.set('viewer', { auth: false });
+        return;
       }
 
       if (status === 500) {
         this._router.go(ROUTE_PATH[500]);
       }
-      this._resetState();
     } catch (err) {
       console.warn(err);
     } finally {

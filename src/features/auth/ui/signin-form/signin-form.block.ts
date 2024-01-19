@@ -1,7 +1,7 @@
 import { Block } from 'shared/components/block/block';
 import { Store } from 'shared/components/store/store';
 import { ButtonFilled } from 'shared/ui/main-button/button-filled.block';
-import { getInputMap } from 'shared/helpers/get';
+import { makeFields } from 'shared/helpers/make';
 import { type TSigninState } from '../../model/signin.model';
 import { signinController } from '../../controller/signin.controller';
 import templateSpec from './signin-form.template.hbs';
@@ -10,24 +10,19 @@ import { fieldsParams } from './_lib';
 const store = Store.instance();
 
 export class SigninForm extends Block {
-  private readonly _inputMap;
+  private readonly _fieldsMap;
   private readonly _submitButton;
 
   constructor() {
-    signinController.start();
-
-    const { signin } = store.getState<TSigninState>();
-    const { fields: fieldsState } = signin;
-
-    const inputMap = getInputMap(fieldsParams, fieldsState);
-
     const submitButton = new ButtonFilled({
       label: 'Sign in',
       type: 'submit',
     });
 
+    const fieldsMap = makeFields(fieldsParams);
+
     super({
-      ...inputMap,
+      ...fieldsMap,
       submitButton,
       onInput: (e: Event) => {
         signinController.input(e);
@@ -41,7 +36,7 @@ export class SigninForm extends Block {
       },
     });
 
-    this._inputMap = inputMap;
+    this._fieldsMap = fieldsMap;
     this._submitButton = submitButton;
   }
 
@@ -53,7 +48,7 @@ export class SigninForm extends Block {
     const { load, fields } = state.signin;
 
     Object.entries(fields).forEach(([field, props]) => {
-      const block = this._inputMap[field];
+      const block = this._fieldsMap[field];
       if (block) {
         block.setProps({ ...props });
       }
@@ -64,6 +59,7 @@ export class SigninForm extends Block {
 
   public didMount(): void {
     store.on(this._onStoreUpdate);
+    signinController.start();
   }
 
   public willUnmount(): void {

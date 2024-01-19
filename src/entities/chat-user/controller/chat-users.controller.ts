@@ -1,10 +1,10 @@
 import { AppRouter } from 'shared/components/router/router';
 import { Store } from 'shared/components/store/store';
-import { goToLoginWithUnauth } from 'shared/helpers/go';
 import { ROUTE_PATH } from 'shared/constants/routes';
 import type { TChatListState } from 'entites/chat/model/chat-list.model';
 import type { TChatUsersIndexed, TUser } from '../model/chat-user.model';
 import { ChatUsersAPI } from '../api/chat-user.api';
+import { chatListController } from 'entites/chat/controller/chat-list.controller';
 
 const STORE_SLICE = 'chatUsers';
 
@@ -28,9 +28,7 @@ export class ChatUsersController {
   }
 
   private _extractChatId(): number | null {
-    const { chatList } = this._store.getState<TChatListState>();
-    const { currentChat } = { ...chatList };
-    return currentChat ?? null;
+    return chatListController.getCurChatIdInLocal();
   }
 
   private _makeIndex(usersList: TUser[]): TChatUsersIndexed {
@@ -66,7 +64,7 @@ export class ChatUsersController {
       }
 
       if (status === 401) {
-        goToLoginWithUnauth();
+        this._store.set('viewer', { auth: false });
       }
 
       if (status === 404) {

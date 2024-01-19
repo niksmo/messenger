@@ -2,10 +2,10 @@ import { Block } from 'shared/components/block/block';
 import { Store } from 'shared/components/store/store';
 import { ButtonFilled } from 'shared/ui/main-button/button-filled.block';
 import type { TDeleteUsersState } from 'features/chat-users-delete/model/chat-users-delete.model';
+import { deleteChatUsersController } from 'features/chat-users-delete/controller/chat-users-delete.controller';
 import { ChatUsersList } from '../chat-users-list/chat-users-list.block';
 import templateSpec from './delete-users-form.template.hbs';
 import styles from './styles.module.css';
-import { deleteChatUsersController } from 'features/chat-users-delete/controller/chat-users-delete.controller';
 
 interface DeleteChatUsersFormProps {
   chatUsersList: Block;
@@ -19,8 +19,6 @@ export class DeleteChatUsersForm extends Block<DeleteChatUsersFormProps> {
   private readonly _submitButton;
 
   constructor() {
-    deleteChatUsersController.start();
-
     const chatUsersList = new ChatUsersList();
 
     const submitButton = new ButtonFilled({
@@ -57,6 +55,7 @@ export class DeleteChatUsersForm extends Block<DeleteChatUsersFormProps> {
 
   public didMount(): void {
     store.on(this._onStoreUpdate);
+    deleteChatUsersController.start();
   }
 
   public willUnmount(): void {
