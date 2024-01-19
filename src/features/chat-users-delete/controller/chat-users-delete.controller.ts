@@ -5,6 +5,8 @@ import type { TChatListState } from 'entites/chat/model/chat-list.model';
 import type { TChatUsersSate } from 'entites/chat-user/model/chat-user.model';
 import type { TDeleteUsersState } from '../model/chat-users-delete.model';
 import { ChatUsersDeleteAPI } from '../api/chat-users-delete.api';
+import { chatUsersController } from 'entites/chat-user/controller/chat-users.controller';
+import { chatListController } from 'entites/chat/controller/chat-list.controller';
 
 const STORE_SLICE = 'deleteUsers';
 const STORE_LOAD = STORE_SLICE + '.load';
@@ -20,23 +22,28 @@ export class DeleteChatUsersController {
     this._router = AppRouter.instance();
   }
 
-  _start(): void {
+  private async _start(): Promise<void> {
+    await chatUsersController.getChatUsers();
+
     const { chatUsers } = this._store.getState<TChatUsersSate>();
 
+    const initState: Record<string, unknown> = {
+      select: [],
+      load: false,
+    };
+
     if (chatUsers) {
-      this._store.set(STORE_SLICE + '.currentUsers', Object.values(chatUsers));
+      initState.users = Object.values(chatUsers);
     } else {
-      this._store.set(STORE_SLICE, {
-        currentUsers: [],
-        select: [],
-        load: false,
-      });
+      initState.users = [];
     }
+
+    this._store.set(STORE_SLICE, initState);
   }
 
   private _resetState(): void {
     this._store.set(STORE_SLICE, {
-      currentUsers: [],
+      users: [],
       select: [],
       load: false,
     });
@@ -47,17 +54,22 @@ export class DeleteChatUsersController {
       TDeleteUsersState & TChatListState
     >();
 
-    const { select: users } = deleteUsers;
-    const { currentChat: chatId } = chatList;
+    const { select } = deleteUsers;
+    const currentChat =
+      chatList.currentChat ?? chatListController.getCurChatIdInLocal();
 
-    if (!users.length || !chatId) {
+    if (!select.length || !currentChat) {
       return;
     }
 
     this._store.set(STORE_LOAD, true);
 
     try {
-      const xhr = await this._api.delete({ users, chatId });
+      const xhr = await this._api.delete({
+        users: select,
+        chatId: currentChat,
+      });
+
       const { status, response } = xhr;
 
       if (status === 200) {
@@ -103,7 +115,8 @@ export class DeleteChatUsersController {
   }
 
   public start(): void {
-    this._start();
+    this._store.set(STORE_SLICE, { users: [], select: [], load: false });
+    void this._start();
   }
 
   public select(e: Event): void {

@@ -35,10 +35,8 @@ export class ChatUsersList extends Block<ChatUsersListProps> {
   }
 
   private readonly _onStoreUpdate = (state: TDeleteUsersState): void => {
-    const { deleteUsers } = state;
-    const { currentUsers } = deleteUsers;
-    const users = createItems(currentUsers);
-    this.setProps({ users });
+    const { users } = state.deleteUsers;
+    this.setProps({ users: createItems(users) });
   };
 }
 
@@ -53,6 +51,7 @@ function createItems(chatUsersList: TUser[]): ChatUsersItem[] {
       login,
       role,
     } = userParams;
+
     return new ChatUsersItem({
       userId,
       avatar,

@@ -16,6 +16,7 @@ import {
   type TFoundUser,
 } from '../model/chat-users-add.model';
 import { ChatUsersAddAPI } from '../api/chat-users-add.api';
+import { chatListController } from 'entites/chat/controller/chat-list.controller';
 
 const STORE_SLICE = 'addUsers';
 const STORE_FIELDS = STORE_SLICE + '.fields';
@@ -35,6 +36,8 @@ export class AddChatUsersController {
   }
 
   start(): void {
+    void chatUsersController.getChatUsers();
+
     const fields: Record<string, TInputState> = {};
 
     fieldList.reduce((map, fieldName) => {
@@ -144,17 +147,21 @@ export class AddChatUsersController {
       TAddUsersState & TChatListState
     >();
 
-    const { select: users } = addUsers;
-    const { currentChat: chatId } = chatList;
+    const { select } = addUsers;
+    const currentChat =
+      chatList.currentChat ?? chatListController.getCurChatIdInLocal();
 
-    if (users.length === 0 || !chatId) {
+    if (select.length === 0 || !currentChat) {
       return;
     }
 
     this._store.set(STORE_LOAD, true);
 
     try {
-      const xhr = await this._api.create({ chatId, users });
+      const xhr = await this._api.create({
+        chatId: currentChat,
+        users: select,
+      });
       const { status, response } = xhr;
 
       if (status === 200) {
