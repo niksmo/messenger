@@ -18,7 +18,7 @@ class ChatController {
   }
 
   public start(): void {
-    //get chat id in local storage
+    //get chat id in state
     //if chat id null > return
     //else
     //get viewer id
@@ -73,7 +73,8 @@ class ChatController {
     );
 
     //add listeners, especially onmessage should set data in store
-    //add send ping on interval but need test memory lack when switch on another chat
+    //onopen set in store load = false, set ping interval - need test memory lack when switch on another chat
+    //onclose check wasClean;
   }
 
   public disconnect(): void {
@@ -90,7 +91,7 @@ class ChatController {
     }
   }
 
-  public send(data: string) {
+  public send(data: string): void {
     if (!this._ws) {
       return;
     }
@@ -98,3 +99,7 @@ class ChatController {
     this._ws.send(JSON.stringify(data));
   }
 }
+
+const chatController = new ChatController();
+
+export { chatController };

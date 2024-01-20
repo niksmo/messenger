@@ -30,7 +30,8 @@ export class ChatList extends Block<ChatListProps> {
   }
 
   protected _onStoreUpdate = ({ chatList }: TChatListState): void => {
-    const { chats, currentChat } = chatList;
+    const { chats, active } = chatList;
+    const { id: activeChatId = null } = { ...active };
 
     if (chats.length === 0) {
       this.setProps({ chats });
@@ -44,7 +45,7 @@ export class ChatList extends Block<ChatListProps> {
     if (this._viewMap.size === 0) {
       chats.forEach((chatData, idx) => {
         const { id } = chatData;
-        const view = createView(chatData, currentChat);
+        const view = createView(chatData, activeChatId);
         renderList[idx] = view;
         this._viewMap.set(id, view);
       });
@@ -54,9 +55,9 @@ export class ChatList extends Block<ChatListProps> {
         const indexedView = this._viewMap.get(id);
         if (!indexedView) {
           shouldReindex = true;
-          renderList[idx] = createView(chatData, currentChat);
+          renderList[idx] = createView(chatData, activeChatId);
         } else {
-          indexedView.setProps(propsAdapter(chatData, currentChat));
+          indexedView.setProps(propsAdapter(chatData, activeChatId));
           renderList[idx] = indexedView;
         }
       });

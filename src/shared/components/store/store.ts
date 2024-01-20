@@ -51,4 +51,16 @@ export class Store implements IStore {
   getState<State = Indexed>(): State {
     return this._state as State;
   }
+
+  restoreFromStorage(key: string, path: string): void {
+    const stored = localStorage.getItem(key);
+    if (stored === null) {
+      return;
+    }
+
+    try {
+      const data = JSON.parse(stored);
+      set(this._state, path, data);
+    } catch {}
+  }
 }

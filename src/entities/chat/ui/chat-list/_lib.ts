@@ -1,11 +1,8 @@
-import type {
-  TChatListState,
-  TChatParams,
-} from 'entites/chat/model/chat-list.model';
+import type { TChatListState, TChat } from 'entites/chat/model/chat-list.model';
 import { ChatListItem, type ChatListItemProps } from './list-item.block';
 
 export function createItems({
-  currentChat,
+  active,
   chats,
 }: TChatListState['chatList']): ChatListItem[] {
   return chats.map((chatParams) => {
@@ -19,7 +16,7 @@ export function createItems({
     const { content = '', time } = { ...lastMessage };
 
     return new ChatListItem({
-      active: id === currentChat,
+      active: id === active?.id,
       id,
       avatar,
       content,
@@ -31,8 +28,8 @@ export function createItems({
 }
 
 export function createView(
-  chatData: TChatParams,
-  currentChat: number | null
+  chatData: TChat,
+  activeChatId: number | null
 ): ChatListItem {
   const {
     id,
@@ -44,7 +41,7 @@ export function createView(
   const { content = '', time } = { ...lastMessage };
 
   return new ChatListItem({
-    active: id === currentChat,
+    active: id === activeChatId,
     id,
     avatar,
     content,
@@ -55,8 +52,8 @@ export function createView(
 }
 
 export function propsAdapter(
-  chatData: TChatParams,
-  currentChat: number | null
+  chatData: TChat,
+  activeChatId: number | null
 ): ChatListItemProps {
   const {
     id,
@@ -68,7 +65,7 @@ export function propsAdapter(
   const { content = '', time } = { ...lastMessage };
 
   return {
-    active: id === currentChat,
+    active: id === activeChatId,
     id,
     avatar,
     content,

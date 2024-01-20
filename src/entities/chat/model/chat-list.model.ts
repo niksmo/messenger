@@ -11,7 +11,7 @@ export interface TLastMessage {
   content: string;
 }
 
-export interface TChatParams {
+export interface TChat {
   id: number;
   title: string;
   avatar: string | null;
@@ -20,10 +20,12 @@ export interface TChatParams {
   last_message: TLastMessage | null;
 }
 
+export type TActiveChat = Omit<TChat, 'last_message'>;
+
 export interface TChatListState {
   chatList: {
-    currentChat: null | number;
-    chats: TChatParams[];
+    active: null | TActiveChat;
+    chats: TChat[];
     load: boolean;
   };
 }
@@ -31,7 +33,9 @@ export interface TChatListState {
 export const chatListState: TChatListState = {
   chatList: {
     chats: [],
-    currentChat: null,
-    load: false,
+    active: null,
+    load: true,
   },
 };
+
+export const CHAT_LIST_ACTIVE = 'chatList.active';

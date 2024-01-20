@@ -16,7 +16,6 @@ import {
   type TFoundUser,
 } from '../model/chat-users-add.model';
 import { ChatUsersAddAPI } from '../api/chat-users-add.api';
-import { chatListController } from 'entites/chat/controller/chat-list.controller';
 
 const STORE_SLICE = 'addUsers';
 const STORE_FIELDS = STORE_SLICE + '.fields';
@@ -147,11 +146,10 @@ export class AddChatUsersController {
       TAddUsersState & TChatListState
     >();
 
-    const { select } = addUsers;
-    const currentChat =
-      chatList.currentChat ?? chatListController.getCurChatIdInLocal();
+    const { select: selectedUsers } = addUsers;
+    const { active: activeChat } = chatList;
 
-    if (select.length === 0 || !currentChat) {
+    if (selectedUsers.length === 0 || !activeChat) {
       return;
     }
 
@@ -159,8 +157,8 @@ export class AddChatUsersController {
 
     try {
       const xhr = await this._api.create({
-        chatId: currentChat,
-        users: select,
+        chatId: activeChat.id,
+        users: selectedUsers,
       });
       const { status, response } = xhr;
 

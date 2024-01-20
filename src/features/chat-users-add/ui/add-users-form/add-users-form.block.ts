@@ -14,6 +14,7 @@ import { FoundUsersList } from '../found-list/found-list.block';
 import templateSpec from './add-users-form.template.hbs';
 import styles from './styles.module.css';
 import { fieldsParams } from './_lib';
+import { chatListController } from 'entites/chat/controller/chat-list.controller';
 
 interface AddUsersFormProps {
   foundList: Block;
@@ -88,6 +89,7 @@ export class AddUsersForm extends Block<AddUsersFormProps> {
 
   public didMount(): void {
     store.on(this._onStoreUpdate);
+    chatListController.start();
     addChatUsersController.start();
   }
 

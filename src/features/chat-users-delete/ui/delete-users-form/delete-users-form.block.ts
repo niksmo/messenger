@@ -6,6 +6,7 @@ import { deleteChatUsersController } from 'features/chat-users-delete/controller
 import { ChatUsersList } from '../chat-users-list/chat-users-list.block';
 import templateSpec from './delete-users-form.template.hbs';
 import styles from './styles.module.css';
+import { chatListController } from 'entites/chat/controller/chat-list.controller';
 
 interface DeleteChatUsersFormProps {
   chatUsersList: Block;
@@ -55,6 +56,7 @@ export class DeleteChatUsersForm extends Block<DeleteChatUsersFormProps> {
 
   public didMount(): void {
     store.on(this._onStoreUpdate);
+    chatListController.start();
     deleteChatUsersController.start();
   }
 

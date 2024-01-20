@@ -54,11 +54,10 @@ export class DeleteChatUsersController {
       TDeleteUsersState & TChatListState
     >();
 
-    const { select } = deleteUsers;
-    const currentChat =
-      chatList.currentChat ?? chatListController.getCurChatIdInLocal();
+    const { select: selectedUsers } = deleteUsers;
+    const { active: activeChat } = chatList;
 
-    if (!select.length || !currentChat) {
+    if (!selectedUsers.length || !activeChat) {
       return;
     }
 
@@ -66,8 +65,8 @@ export class DeleteChatUsersController {
 
     try {
       const xhr = await this._api.delete({
-        users: select,
-        chatId: currentChat,
+        chatId: activeChat.id,
+        users: selectedUsers,
       });
 
       const { status, response } = xhr;

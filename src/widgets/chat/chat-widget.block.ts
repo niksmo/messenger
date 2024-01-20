@@ -13,7 +13,7 @@ interface ChatWidgetProps {
   header: Block;
   // messages: Block[];
   sender: Block;
-  isCurrentChat: boolean;
+  isActiveChat: boolean;
   chatStub: Block;
 }
 
@@ -21,7 +21,7 @@ const store = Store.instance();
 
 export class ChatWidget extends Block<ChatWidgetProps> {
   constructor() {
-    const { currentChat, load } = store.getState<TChatListState>().chatList;
+    const { active, load } = store.getState<TChatListState>().chatList;
 
     // const messages = data.map((day) => {
     //   const { date, messages: messageList } = day;
@@ -35,7 +35,7 @@ export class ChatWidget extends Block<ChatWidgetProps> {
     const chatStub = new ChatStub({ load });
 
     super({
-      isCurrentChat: Boolean(currentChat),
+      isActiveChat: Boolean(active?.id),
       chatStub,
       header,
       // messages,
@@ -61,8 +61,7 @@ export class ChatWidget extends Block<ChatWidgetProps> {
   }
 
   private readonly _onStoreUpdate = (state: TChatListState): void => {
-    const { chatList } = state;
-    const { currentChat, load } = chatList;
-    this.setProps({ isCurrentChat: !load && Boolean(currentChat) });
+    const { active, load } = state.chatList;
+    this.setProps({ isActiveChat: !load && Boolean(active) });
   };
 }
