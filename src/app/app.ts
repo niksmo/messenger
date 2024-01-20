@@ -1,8 +1,9 @@
 import { AppRouter } from 'shared/components/router/router';
 import { ROUTE_PATH } from 'shared/constants/routes';
 import { Store } from 'shared/components/store/store';
-import { viewer } from 'entites/viewer/model/viewer.model';
-import { chatList } from 'entites/chat/model/chat-list.model';
+import { viewerState } from 'entites/viewer/model/viewer.model';
+import { chatListState } from 'entites/chat/model/chat-list.model';
+import { chatState } from 'entites/chat/model/chat.model';
 import { withAuth } from 'entites/viewer/hoc/with-auth.hoc';
 import { withUnAuth } from 'entites/viewer/hoc/with-unauth.hoc';
 import PAGE from 'pages/pages';
@@ -21,7 +22,7 @@ class App {
       return;
     }
     const store = new Store();
-    store.start({ ...viewer, ...chatList });
+    store.start({ ...viewerState, ...chatListState, ...chatState });
 
     const router = new AppRouter();
     router.root(this._root);

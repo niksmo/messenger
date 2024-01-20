@@ -28,7 +28,7 @@ export interface TChatListState {
   };
 }
 
-export const chatList: TChatListState = {
+export const chatListState: TChatListState = {
   chatList: {
     chats: [],
     currentChat: null,

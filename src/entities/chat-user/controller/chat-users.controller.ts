@@ -1,9 +1,8 @@
 import { AppRouter } from 'shared/components/router/router';
 import { Store } from 'shared/components/store/store';
 import { ROUTE_PATH } from 'shared/constants/routes';
-import type { TChatListState } from 'entites/chat/model/chat-list.model';
 import type { TChatUsersIndexed, TUser } from '../model/chat-user.model';
-import { ChatUsersAPI } from '../api/chat-user.api';
+import { ChatUsersAPI } from '../api/chat-users.api';
 import { chatListController } from 'entites/chat/controller/chat-list.controller';
 
 const STORE_SLICE = 'chatUsers';
