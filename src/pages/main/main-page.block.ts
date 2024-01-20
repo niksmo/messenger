@@ -4,6 +4,7 @@ import { ChatListWidget } from 'widgets/chat-list/chat-list.block';
 import { ChatWidget } from 'widgets/chat/chat-widget.block';
 import templateSpec from './main-page.template.hbs';
 import styles from './styles.module.css';
+import { chatController } from 'entites/chat/controller/chat.controller';
 
 interface MainPageProps {
   chatListWidget: Block;
@@ -28,5 +29,6 @@ export class MainPage extends Block<MainPageProps> {
 
   public didMount(): void {
     chatListController.start();
+    chatController.start();
   }
 }

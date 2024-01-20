@@ -8,6 +8,7 @@ import {
   type TChatListState,
 } from '../model/chat-list.model';
 import { STORAGE_KEY } from 'shared/constants/storage';
+import { chatController } from './chat.controller';
 
 const STORE_SLICE = 'chatList';
 const STORE_LOAD = STORE_SLICE + '.load';
@@ -97,6 +98,7 @@ export class ChatListController {
     }
 
     this._defineActive(chatId);
+    chatController.open(chatId);
   }
 }
 

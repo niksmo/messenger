@@ -1,8 +1,16 @@
 import { Store } from 'shared/components/store/store';
-import { ChatAPI } from '../api/chat.api';
 import { AppRouter } from 'shared/components/router/router';
 import { ROUTE_PATH } from 'shared/constants/routes';
+import { BASE_WS } from 'shared/constants/api';
+import {
+  VIWER_AUTH,
+  type TViewerState,
+} from 'entites/viewer/model/viewer.model';
+import { ChatAPI } from '../api/chat.api';
+import { type TChatListState } from '../model/chat-list.model';
+import { CHAT_LOAD } from '../model/chat.model';
 
+const PING_INTERVAL_30S = 30_000;
 const DISCONNECT_INTERVAL_500MS = 500;
 
 class ChatController {
@@ -18,45 +26,43 @@ class ChatController {
   }
 
   public start(): void {
-    //get chat id in state
-    //if chat id null > return
-    //else
-    //get viewer id
-    void this._open(viewerId, chatId);
+    const { chatList } = this._store.getState<TChatListState>();
+
+    const { active } = chatList;
+    if (!active) {
+      return;
+    }
+    void this._open(active.id);
   }
 
   public open(chatId: number): void {
-    //set load = true
-    //get viewer id
-    void this._open(viewerId, chatId);
+    void this._open(chatId);
   }
 
-  private async _open(viewerId: number, chatId: number): Promise<void> {
-    //requestToken
+  private async _open(chatId: number): Promise<void> {
+    this._store.set(CHAT_LOAD, true);
+
     const token = await this._requestToken(chatId);
 
     if (!token) {
       return;
     }
 
-    this.disconnect();
-
-    //connect
-    this._connect(viewerId, chatId, token);
+    this._connect(chatId, token);
   }
 
   private async _requestToken(chatId: number): Promise<string | undefined> {
     try {
-      //post request
       const { status, response } = await this._api.request(chatId);
+
       if (status === 200 && typeof response === 'string') {
-        //save token in store
-        //return token;
-        return 'token-1234';
+        const { token }: { token: string } = JSON.parse(response);
+        return token;
       }
 
       if (status === 401) {
-        this._store.set('viewer', { auth: false });
+        this._store.set(VIWER_AUTH, false);
+        return;
       }
 
       if (status === 500) {
@@ -67,26 +73,48 @@ class ChatController {
     }
   }
 
-  private _connect(viewerId: number, chatId: number, token: string): void {
-    this._ws = new WebSocket(
-      `wss://ya-praktikum.tech/ws/chats/${viewerId}/${chatId}/${token}`
-    );
-
-    //add listeners, especially onmessage should set data in store
-    //onopen set in store load = false, set ping interval - need test memory lack when switch on another chat
-    //onclose check wasClean;
-  }
-
-  public disconnect(): void {
-    if (!this._ws) {
-      return;
+  private _connect(chatId: number, token: string): void {
+    if (this._ws) {
+      this.disconnect();
     }
 
-    if (this._ws.bufferedAmount) {
-      //wait bufferedAmount
+    const { viewer } = this._store.getState<TViewerState>();
+
+    this._ws = new WebSocket(BASE_WS + `/${viewer.id}/${chatId}/${token}`);
+
+    this._ws.onopen = (e) => {
+      this._store.set(CHAT_LOAD, false);
+      console.log('on_open', e);
+
+      //catch memory lack
+      setInterval(() => {
+        if (this._ws?.readyState !== 1) {
+          return;
+        }
+        console.log('ws_ping');
+        this._ws?.send(JSON.stringify({ type: 'ping' }));
+      }, PING_INTERVAL_30S);
+    };
+
+    this._ws.onerror = (e) => {
+      console.log('on_error', e);
+    };
+
+    this._ws.onclose = (e) => {
+      if (!e.wasClean) {
+        void this._open(chatId);
+      }
+
+      console.log('on_close', e);
+    };
+  }
+
+  //this method for delete chat feature
+  public disconnect(): void {
+    if (this._ws?.bufferedAmount) {
       setTimeout(this.disconnect.bind(this), DISCONNECT_INTERVAL_500MS);
     } else {
-      this._ws.close();
+      this._ws?.close();
       this._ws = null;
     }
   }

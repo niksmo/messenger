@@ -27,3 +27,6 @@ export const viewerState: TViewerState = {
     email: '',
   },
 };
+
+export const VIEWER = 'viewer';
+export const VIWER_AUTH = VIEWER + '.auth';

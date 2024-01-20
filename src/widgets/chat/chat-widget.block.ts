@@ -32,7 +32,7 @@ export class ChatWidget extends Block<ChatWidgetProps> {
 
     const sender = new MessageSender();
 
-    const chatStub = new ChatStub({ load });
+    const chatStub = new ChatStub();
 
     super({
       isActiveChat: Boolean(active?.id),
@@ -61,7 +61,7 @@ export class ChatWidget extends Block<ChatWidgetProps> {
   }
 
   private readonly _onStoreUpdate = (state: TChatListState): void => {
-    const { active, load } = state.chatList;
-    this.setProps({ isActiveChat: !load && Boolean(active) });
+    const { load } = state.chatList;
+    this.setProps({ isActiveChat: !load });
   };
 }

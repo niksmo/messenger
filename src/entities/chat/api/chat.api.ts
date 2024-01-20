@@ -7,7 +7,7 @@ export class ChatAPI extends BaseAPI {
 
   constructor() {
     super();
-    this._http = new HttpTransport().setBaseURL(BASE_URL + '/chats');
+    this._http = new HttpTransport().setBaseURL(BASE_URL + '/chats/token');
   }
 
   async request(chatId: number): XHR {
