@@ -5,10 +5,6 @@ import type { Block } from 'shared/components/block/block';
 import { RequestAuthStub } from '../ui/auth-guard/auth-guard.block';
 import type { TViewerState } from '../model/viewer.model';
 import { viewerController } from '../controller/viewer.controller';
-import {
-  TChatListState,
-  chatListState,
-} from 'entites/chat/model/chat-list.model';
 import { chatListController } from 'entites/chat/controller/chat-list.controller';
 import { chatController } from 'entites/chat/controller/chat.controller';
 
