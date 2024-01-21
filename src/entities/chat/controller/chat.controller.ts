@@ -11,8 +11,8 @@ import { type TChatListState } from '../model/chat-list.model';
 import {
   CHAT_CONVERSATION,
   CHAT_LOAD,
-  TChatState,
-  TReceivedData,
+  type TChatState,
+  type TReceivedData,
 } from '../model/chat.model';
 
 const PING_INTERVAL_30S = 30_000;
@@ -35,6 +35,7 @@ class ChatController {
 
     const { active } = chatList;
     if (!active) {
+      this._store.set(CHAT_LOAD, false);
       return;
     }
     void this._open(active.id);

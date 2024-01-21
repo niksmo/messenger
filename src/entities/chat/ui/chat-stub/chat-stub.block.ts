@@ -38,6 +38,6 @@ export class ChatStub extends Block<ChatStubProps> {
   }: TChatState & TChatListState): void => {
     const { load: chatLoad } = chat;
     const { load: chatListLoad } = chatList;
-    this.setProps({ load: chatLoad || chatListLoad });
+    this.setProps({ load: chatListLoad || chatLoad });
   };
 }

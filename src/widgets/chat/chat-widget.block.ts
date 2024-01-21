@@ -21,7 +21,7 @@ const store = Store.instance();
 
 export class ChatWidget extends Block<ChatWidgetProps> {
   constructor() {
-    const { active, load } = store.getState<TChatListState>().chatList;
+    const { active } = store.getState<TChatListState>().chatList;
 
     // const messages = data.map((day) => {
     //   const { date, messages: messageList } = day;
@@ -35,7 +35,7 @@ export class ChatWidget extends Block<ChatWidgetProps> {
     const chatStub = new ChatStub();
 
     super({
-      isActiveChat: Boolean(active?.id),
+      isActiveChat: Boolean(active),
       chatStub,
       header,
       // messages,
@@ -61,7 +61,7 @@ export class ChatWidget extends Block<ChatWidgetProps> {
   }
 
   private readonly _onStoreUpdate = (state: TChatListState): void => {
-    const { load } = state.chatList;
-    this.setProps({ isActiveChat: !load });
+    const { load, active } = state.chatList;
+    this.setProps({ isActiveChat: !load && active });
   };
 }
