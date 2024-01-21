@@ -160,6 +160,7 @@ class ChatController {
     } else {
       this._ws?.close();
       this._ws = null;
+      this._store.set(CHAT_CONVERSATION, []);
     }
   }
 
