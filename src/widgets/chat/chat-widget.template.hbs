@@ -2,12 +2,8 @@
 
   {{#if isActiveChat}}
     {{header}}
-    <div class="{{styles.messages-container}}">
-      <ul class="base-list {{styles.messages__list}}">
-        {{#each messages}}
-          {{this}}
-        {{/each}}
-      </ul>
+    <div class="{{styles.message-list-container}}">
+      {{messageList}}
     </div>
     <div class="{{styles.message-input-container}}">
       {{sender}}

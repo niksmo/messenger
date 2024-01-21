@@ -14,20 +14,3 @@
   font-weight: var(--font-body-small-weight);
   letter-spacing: var(--font-body-small-spacing);
 }
-
-.status {
-  flex-shrink: 0;
-  height: 14px;
-  width: 14px;
-  color: var(--color-element-white);
-  background-color: currentcolor;
-  mask-size: 100%;
-}
-
-.status_style_readed {
-  mask-image: url('/svg/icon-16-readed.svg');
-}
-
-.status_style_delivered {
-  mask-image: url('/svg/icon-16-delivered.svg');
-}

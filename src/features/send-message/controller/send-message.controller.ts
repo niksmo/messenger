@@ -19,8 +19,14 @@ export class SendMessageController {
   }
 
   public send(): void {
-    const { content } = this._store.getState<TSendMessageState>().message;
-    chatController.send(content);
+    const { message } = this._store.getState<TSendMessageState>();
+
+    if (!message.content) {
+      return;
+    }
+
+    chatController.send(message.content);
+    message.content = '';
   }
 }
 

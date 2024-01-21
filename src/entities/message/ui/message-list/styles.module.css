@@ -1,0 +1,16 @@
+.message-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  margin: 0 auto;
+  padding-right: 16px;
+  padding-left: 16px;
+  max-width: 714px;
+  min-height: 100%;
+  list-style: none;
+}
+
+.message-list > :nth-child(n) {
+  margin-bottom: 10px;
+  display: flex;
+}

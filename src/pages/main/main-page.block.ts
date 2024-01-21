@@ -31,4 +31,8 @@ export class MainPage extends Block<MainPageProps> {
     chatListController.start();
     chatController.start();
   }
+
+  public willUnmount(): void {
+    chatListController.stop();
+  }
 }

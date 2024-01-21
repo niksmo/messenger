@@ -33,12 +33,6 @@ export class ChatList extends Block<ChatListProps> {
     const { chats, active } = chatList;
     const { id: activeChatId = null } = { ...active };
 
-    if (chats.length === 0) {
-      this.setProps({ chats });
-      this._viewMap.clear();
-      return;
-    }
-
     const renderList = new Array<Block>(chats.length);
     let shouldReindex = chats.length !== this._viewMap.size;
 

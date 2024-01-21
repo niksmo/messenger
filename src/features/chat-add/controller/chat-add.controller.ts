@@ -8,6 +8,7 @@ import {
   type TInputState,
   fieldList,
 } from '../model/chat-add.model';
+import { chatListController } from 'entites/chat/controller/chat-list.controller';
 
 const STORE_SLICE = 'addChat';
 const STORE_FIELDS = STORE_SLICE + '.fields';
@@ -62,6 +63,7 @@ class AddChatController {
       const { status, response } = xhr;
 
       if (status === 200) {
+        await chatListController.requestChats();
         this._router.go(ROUTE_PATH.MAIN);
         return;
       }

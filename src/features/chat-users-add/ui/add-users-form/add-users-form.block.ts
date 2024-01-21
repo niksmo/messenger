@@ -95,5 +95,6 @@ export class AddUsersForm extends Block<AddUsersFormProps> {
 
   public willUnmount(): void {
     store.off(this._onStoreUpdate);
+    chatListController.stop();
   }
 }

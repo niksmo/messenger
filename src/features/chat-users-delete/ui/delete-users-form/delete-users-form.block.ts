@@ -62,5 +62,6 @@ export class DeleteChatUsersForm extends Block<DeleteChatUsersFormProps> {
 
   public willUnmount(): void {
     store.off(this._onStoreUpdate);
+    chatListController.stop();
   }
 }

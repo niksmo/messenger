@@ -1,7 +1,6 @@
 import { Block } from 'shared/components/block/block';
 import { Avatar } from 'shared/ui/avatar/avatar.block';
 import { Counter } from 'shared/ui/counter/counter.block';
-import { normalizeTime } from './_lib';
 import templateSpec from './list-item.template.hbs';
 import styles from './list-item.styles.module.css';
 import { chatListController } from 'entites/chat/controller/chat-list.controller';
@@ -47,7 +46,7 @@ export class ChatListItem extends Block<InnerProps> {
       active,
       title,
       content,
-      time: normalizeTime(time),
+      time,
       avatar,
       unread,
       onClick: () => {

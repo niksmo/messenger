@@ -1,20 +1,19 @@
 import { Block } from 'shared/components/block/block';
-// import { DayMessages } from 'entites/message';
 import { Store } from 'shared/components/store/store';
 import { type TChatListState } from 'entites/chat/model/chat-list.model';
 import { ChatHeader } from 'entites/chat/ui/chat-header/chat-header.block';
 import { ChatStub } from 'entites/chat/ui/chat-stub/chat-stub.block';
-import { chatUsersController } from 'entites/chat-user/controller/chat-users.controller';
 import { MessageSender } from 'features/send-message/ui/message-sender/message-sender.block';
 import templateSpec from './chat-widget.template.hbs';
 import styles from './styles.module.css';
+import { MessageList } from 'entites/message/ui/message-list/message-list.block';
 
 interface ChatWidgetProps {
+  chatStub: Block;
   header: Block;
-  // messages: Block[];
+  messageList: Block;
   sender: Block;
   isActiveChat: boolean;
-  chatStub: Block;
 }
 
 const store = Store.instance();
@@ -23,22 +22,16 @@ export class ChatWidget extends Block<ChatWidgetProps> {
   constructor() {
     const { active } = store.getState<TChatListState>().chatList;
 
-    // const messages = data.map((day) => {
-    //   const { date, messages: messageList } = day;
-    //   return new DayMessages({ date, messageList });
-    // });
-
-    const header = new ChatHeader();
-
-    const sender = new MessageSender();
-
     const chatStub = new ChatStub();
+    const header = new ChatHeader();
+    const messageList = new MessageList();
+    const sender = new MessageSender();
 
     super({
       isActiveChat: Boolean(active),
       chatStub,
       header,
-      // messages,
+      messageList,
       sender,
     });
   }

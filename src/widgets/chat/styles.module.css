@@ -4,15 +4,9 @@
   height: 100%;
 }
 
-.messages-container {
+.message-list-container {
+  width: 100%;
   flex-grow: 1;
-  overflow: hidden;
-}
-
-.messages__list {
-  margin-left: auto;
-  margin-right: auto;
-  height: 100%;
   overflow-y: scroll;
 }
 

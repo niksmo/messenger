@@ -23,4 +23,8 @@ export class Counter extends Block<InnerProps> {
   protected getStylesModuleHook(): CSSModuleClasses {
     return styles;
   }
+
+  public setProps({ count }: Partial<CounterProps>): void {
+    super.setProps({ count, isHidden: count === 0 });
+  }
 }

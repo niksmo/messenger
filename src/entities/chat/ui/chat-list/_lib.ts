@@ -1,3 +1,4 @@
+import { normalizeTime } from 'shared/helpers/normalize';
 import type { TChatListState, TChat } from 'entites/chat/model/chat-list.model';
 import { ChatListItem, type ChatListItemProps } from './list-item.block';
 
@@ -73,13 +74,4 @@ export function propsAdapter(
     title,
     unread,
   };
-}
-
-export function normalizeTime(time?: string): string {
-  if (!time) {
-    return '';
-  }
-
-  const date = new Date(time);
-  return isNaN(date.valueOf()) ? '' : `${date.getHours()}:${date.getMinutes()}`;
 }

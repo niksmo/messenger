@@ -4,7 +4,6 @@ import { verifierCreator } from 'shared/components/form-verifier/verifier';
 import { HINT, TEMPLATE } from 'shared/components/form-verifier/templates';
 import { ROUTE_PATH } from 'shared/constants/routes';
 import { getInputValue } from 'shared/helpers/get';
-import { reviveNullToString } from 'shared/helpers/json';
 import { type TViewerState } from 'entites/viewer/model/viewer.model';
 import { EditProfileAPI } from '../api/edit-profile.api';
 import type {
@@ -109,7 +108,7 @@ class EditProfileController {
 
       if (status === 200) {
         if (typeof response === 'string') {
-          const viewerData = JSON.parse(response, reviveNullToString);
+          const viewerData = JSON.parse(response);
           this._store.set('viewer', viewerData);
         }
         this.start();

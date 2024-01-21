@@ -17,6 +17,7 @@ import {
 
 const PING_INTERVAL_30S = 30_000;
 const DISCONNECT_INTERVAL_500MS = 500;
+const UNREAD_MESSAGES_INCREMENT = 20;
 
 class ChatController {
   private readonly _store;
@@ -84,13 +85,17 @@ class ChatController {
       this.disconnect();
     }
 
-    const { viewer } = this._store.getState<TViewerState>();
+    const { viewer, chatList } = this._store.getState<
+      TViewerState & TChatListState
+    >();
 
     this._ws = new WebSocket(BASE_WS + `/${viewer.id}/${chatId}/${token}`);
 
     let interval: NodeJS.Timeout;
 
-    this._ws.onopen = (e) => {
+    this._ws.onopen = () => {
+      this._getUnreadMessages(chatList.active?.unread_count);
+
       this._store.set(CHAT_LOAD, false);
 
       interval = setInterval(() => {
@@ -113,9 +118,6 @@ class ChatController {
     };
 
     this._ws.onmessage = (e) => {
-      //delete
-      console.log('on_message', e);
-
       const { data: received } = e;
 
       if (typeof received !== 'string') {
@@ -124,21 +126,32 @@ class ChatController {
 
       const data: TReceivedData = JSON.parse(received);
 
-      if (Array.isArray(data)) {
-        //handle old messages
-        //concat arrays
-      } else {
-        const { type } = data;
+      let { conversation } = this._store.getState<TChatState>().chat;
 
-        if (type !== 'message') {
+      if (Array.isArray(data)) {
+        conversation = conversation.concat(data);
+      } else {
+        if (data.type !== 'message') {
           return;
         }
-
-        const { conversation } = this._store.getState<TChatState>().chat;
         conversation.push(data);
-        this._store.set(CHAT_CONVERSATION, conversation);
       }
+
+      this._store.set(CHAT_CONVERSATION, conversation);
     };
+  }
+
+  private _getUnreadMessages(unreadCount?: number): void {
+    if (!unreadCount || !this._ws) {
+      return;
+    }
+
+    let received = 0;
+
+    while (received < unreadCount) {
+      this._ws.send(JSON.stringify({ type: 'get old', content: received }));
+      received += UNREAD_MESSAGES_INCREMENT;
+    }
   }
 
   public disconnect(): void {
