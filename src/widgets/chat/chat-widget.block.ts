@@ -5,7 +5,7 @@ import { type TChatListState } from 'entites/chat/model/chat-list.model';
 import { ChatHeader } from 'entites/chat/ui/chat-header/chat-header.block';
 import { ChatStub } from 'entites/chat/ui/chat-stub/chat-stub.block';
 import { chatUsersController } from 'entites/chat-user/controller/chat-users.controller';
-import { MessageSender } from 'features/send-message/ui/container';
+import { MessageSender } from 'features/send-message/ui/message-sender/message-sender.block';
 import templateSpec from './chat-widget.template.hbs';
 import styles from './styles.module.css';
 

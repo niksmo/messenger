@@ -12,6 +12,7 @@ import { withAuth } from 'entites/viewer/hoc/with-auth.hoc';
 import { withUnAuth } from 'entites/viewer/hoc/with-unauth.hoc';
 import PAGE from 'pages/pages';
 import './styles/index.css';
+import { messageState } from 'features/send-message/model/send-message.model';
 
 class App {
   private _root: null | HTMLElement = null;
@@ -26,7 +27,12 @@ class App {
       return;
     }
     const store = new Store();
-    store.start({ ...viewerState, ...chatListState, ...chatState });
+    store.start({
+      ...viewerState,
+      ...chatListState,
+      ...chatState,
+      ...messageState,
+    });
     store.restoreFromStorage(STORAGE_KEY.ACTIVE_CHAT, CHAT_LIST_ACTIVE);
 
     const router = new AppRouter();

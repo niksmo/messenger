@@ -8,7 +8,12 @@ import {
 } from 'entites/viewer/model/viewer.model';
 import { ChatAPI } from '../api/chat.api';
 import { type TChatListState } from '../model/chat-list.model';
-import { CHAT_LOAD } from '../model/chat.model';
+import {
+  CHAT_CONVERSATION,
+  CHAT_LOAD,
+  TChatState,
+  TReceivedData,
+} from '../model/chat.model';
 
 const PING_INTERVAL_30S = 30_000;
 const DISCONNECT_INTERVAL_500MS = 500;
@@ -82,34 +87,70 @@ class ChatController {
 
     this._ws = new WebSocket(BASE_WS + `/${viewer.id}/${chatId}/${token}`);
 
+    let interval: NodeJS.Timeout;
+
     this._ws.onopen = (e) => {
       this._store.set(CHAT_LOAD, false);
+
+      //delete
       console.log('on_open', e);
 
-      //catch memory lack
-      setInterval(() => {
+      interval = setInterval(() => {
         if (this._ws?.readyState !== 1) {
           return;
         }
-        console.log('ws_ping');
+
+        //delete
         this._ws?.send(JSON.stringify({ type: 'ping' }));
       }, PING_INTERVAL_30S);
     };
 
-    this._ws.onerror = (e) => {
-      console.log('on_error', e);
+    this._ws.onerror = () => {
+      console.warn('WebSocket error');
     };
 
     this._ws.onclose = (e) => {
+      clearInterval(interval);
       if (!e.wasClean) {
         void this._open(chatId);
       }
 
+      //delete
       console.log('on_close', e);
+    };
+
+    this._ws.onmessage = (e) => {
+      //delete
+      console.log('on_message', e);
+
+      const { data: received } = e;
+
+      if (typeof received !== 'string') {
+        return;
+      }
+
+      const data: TReceivedData = JSON.parse(received);
+
+      if (Array.isArray(data)) {
+        //handle old messages
+        //concat arrays
+      } else {
+        const { type } = data;
+
+        if (type !== 'message') {
+          return;
+        }
+
+        debugger;
+
+        const { conversation } = this._store.getState<TChatState>().chat;
+        conversation.push(data);
+        this._store.set(CHAT_CONVERSATION, conversation);
+      }
     };
   }
 
-  //this method for delete chat feature
+  //for delete chat feature
   public disconnect(): void {
     if (this._ws?.bufferedAmount) {
       setTimeout(this.disconnect.bind(this), DISCONNECT_INTERVAL_500MS);
@@ -119,12 +160,12 @@ class ChatController {
     }
   }
 
-  public send(data: string): void {
+  public send(content: string): void {
     if (!this._ws) {
       return;
     }
 
-    this._ws.send(JSON.stringify(data));
+    this._ws.send(JSON.stringify({ type: 'message', content }));
   }
 }
 

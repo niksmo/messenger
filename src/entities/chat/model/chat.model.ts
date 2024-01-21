@@ -1,7 +1,11 @@
+import type { TMessage } from 'entites/message/model/message.model';
+
+export type TReceivedData = TMessage | TMessage[];
+
 export interface TChatState {
   chat: {
     load: boolean;
-    conversation: unknown[];
+    conversation: TMessage[];
   };
 }
 
