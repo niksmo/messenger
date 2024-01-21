@@ -1,5 +1,5 @@
 import uuid from 'shared/packages/uuid/uuid';
-import { Input, type InputProps } from 'shared/ui/input';
+import { Input, type InputProps } from 'shared/ui/input/input.block';
 
 export function makeFields(
   fieldsParams: Array<Omit<InputProps, 'id'>>
