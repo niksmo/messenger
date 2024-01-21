@@ -1,8 +1,9 @@
-import type { TChatListState } from 'entites/chat/model/chat-list.model';
-import { ChatListItem } from './list-item.block';
+import { normalizeTime } from 'shared/helpers/normalize';
+import type { TChatListState, TChat } from 'entites/chat/model/chat-list.model';
+import { ChatListItem, type ChatListItemProps } from './list-item.block';
 
 export function createItems({
-  currentChat,
+  active,
   chats,
 }: TChatListState['chatList']): ChatListItem[] {
   return chats.map((chatParams) => {
@@ -13,22 +14,64 @@ export function createItems({
       title,
       unread_count: unread,
     } = chatParams;
-    const { content = '', time = '' } = { ...lastMessage };
+    const { content = '', time } = { ...lastMessage };
 
     return new ChatListItem({
-      active: id === currentChat,
+      active: id === active?.id,
       id,
       avatar,
       content,
-      time,
+      time: normalizeTime(time),
       title,
       unread,
     });
   });
 }
 
-export function normalizeTime(time: string): string {
-  const date = new Date(time);
+export function createView(
+  chatData: TChat,
+  activeChatId: number | null
+): ChatListItem {
+  const {
+    id,
+    avatar,
+    last_message: lastMessage,
+    title,
+    unread_count: unread,
+  } = chatData;
+  const { content = '', time } = { ...lastMessage };
 
-  return isNaN(date.valueOf()) ? '' : `${date.getHours()}:${date.getMinutes()}`;
+  return new ChatListItem({
+    active: id === activeChatId,
+    id,
+    avatar,
+    content,
+    time: normalizeTime(time),
+    title,
+    unread,
+  });
+}
+
+export function propsAdapter(
+  chatData: TChat,
+  activeChatId: number | null
+): ChatListItemProps {
+  const {
+    id,
+    avatar,
+    last_message: lastMessage,
+    title,
+    unread_count: unread,
+  } = chatData;
+  const { content = '', time } = { ...lastMessage };
+
+  return {
+    active: id === activeChatId,
+    id,
+    avatar,
+    content,
+    time: normalizeTime(time),
+    title,
+    unread,
+  };
 }

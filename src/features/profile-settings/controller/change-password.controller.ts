@@ -3,7 +3,6 @@ import { Store } from 'shared/components/store/store';
 import { verifierCreator } from 'shared/components/form-verifier/verifier';
 import { HINT, TEMPLATE } from 'shared/components/form-verifier/templates';
 import { ROUTE_PATH } from 'shared/constants/routes';
-import { goToLoginWithUnauth } from 'shared/helpers/go';
 import { getInputValue } from 'shared/helpers/get';
 import { ChangePasswordAPI } from '../api/change-password.api';
 import {

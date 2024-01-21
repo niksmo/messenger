@@ -1,6 +1,7 @@
 import { Block } from 'shared/components/block/block';
 import { IconButton } from 'shared/ui/icon-button/icon-button.block';
-import { MessageInput } from '../input';
+import { sendMessageController } from '../../../controller/send-message.controller';
+import { MessageInput } from '../_input/input.block';
 import templateSpec from './form.template.hbs';
 import styles from './styles.module.css';
 
@@ -13,7 +14,7 @@ interface MessageFormProps {
 
 export class MessageForm extends Block<MessageFormProps> {
   constructor() {
-    const input = new MessageInput({ name: 'message' });
+    const input = new MessageInput();
 
     const submitButton = new IconButton({
       type: 'submit',
@@ -29,7 +30,13 @@ export class MessageForm extends Block<MessageFormProps> {
       submitButton,
       onSubmit(e) {
         e.preventDefault();
-        alert(e.target);
+
+        sendMessageController.send();
+
+        const { target: form } = e;
+        if (form instanceof HTMLFormElement) {
+          form.reset();
+        }
       },
     });
   }

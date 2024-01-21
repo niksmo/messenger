@@ -5,7 +5,7 @@ import {
   type TStyle,
 } from '../icon-button/icon-button.block';
 import { Overlay } from './_overlay/dropdown-overlay.block';
-import { Menu } from './_menu/dropdown-menu.block';
+import { Menu } from './_menu-container/dropdown-menu.block';
 import type { MenuItem } from './menu-item.block';
 import templateSpec from './dropdown.template.hbs';
 

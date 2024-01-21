@@ -1,10 +1,10 @@
 import { Block } from 'shared/components/block/block';
-
-import { MessageForm } from '../form';
-import { AttachMediaMenuItem, AttachFileMenuItem } from '../menu-item';
-import templateSpec from './container.template.hbs';
-import styles from './styles.module.css';
 import { DropdownMenu } from 'shared/ui/dropdown/dropdown.block';
+import { AttachMediaMenuItem } from './_attach-menu-item/menu-item-media.block';
+import { AttachFileMenuItem } from './_attach-menu-item/menu-item-file.block';
+import { MessageForm } from './_form/form.block';
+import templateSpec from './message-sender.template.hbs';
+import styles from './styles.module.css';
 
 interface MessageSenderProps {
   menu: Block;

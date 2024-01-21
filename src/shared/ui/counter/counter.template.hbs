@@ -1,1 +1,5 @@
-<p class="{{styles.counter}} {{styles.is-hidden}}">{{count}}</p>
+<div class="counter">
+  {{#unless isHidden}}
+    <p class="{{styles.counter}}">{{count}}</p>
+  {{/unless}}
+</div>

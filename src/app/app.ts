@@ -1,12 +1,18 @@
+import { Store } from 'shared/components/store/store';
+import { STORAGE_KEY } from 'shared/constants/storage';
 import { AppRouter } from 'shared/components/router/router';
 import { ROUTE_PATH } from 'shared/constants/routes';
-import { Store } from 'shared/components/store/store';
-import { viewer } from 'entites/viewer/model/viewer.model';
-import { chatList } from 'entites/chat/model/chat-list.model';
+import { viewerState } from 'entites/viewer/model/viewer.model';
+import {
+  CHAT_LIST_ACTIVE,
+  chatListState,
+} from 'entites/chat/model/chat-list.model';
+import { chatState } from 'entites/chat/model/chat.model';
 import { withAuth } from 'entites/viewer/hoc/with-auth.hoc';
 import { withUnAuth } from 'entites/viewer/hoc/with-unauth.hoc';
 import PAGE from 'pages/pages';
 import './styles/index.css';
+import { messageState } from 'features/send-message/model/send-message.model';
 
 class App {
   private _root: null | HTMLElement = null;
@@ -21,7 +27,13 @@ class App {
       return;
     }
     const store = new Store();
-    store.start({ ...viewer, ...chatList });
+    store.start({
+      ...viewerState,
+      ...chatListState,
+      ...chatState,
+      ...messageState,
+    });
+    store.restoreFromStorage(STORAGE_KEY.ACTIVE_CHAT, CHAT_LIST_ACTIVE);
 
     const router = new AppRouter();
     router.root(this._root);

@@ -1,10 +1,9 @@
 import { AppRouter } from 'shared/components/router/router';
 import { Store } from 'shared/components/store/store';
 import { ROUTE_PATH } from 'shared/constants/routes';
-import type { TChatListState } from 'entites/chat/model/chat-list.model';
+import { type TChatListState } from 'entites/chat/model/chat-list.model';
 import type { TChatUsersIndexed, TUser } from '../model/chat-user.model';
-import { ChatUsersAPI } from '../api/chat-user.api';
-import { chatListController } from 'entites/chat/controller/chat-list.controller';
+import { ChatUsersAPI } from '../api/chat-users.api';
 
 const STORE_SLICE = 'chatUsers';
 
@@ -27,10 +26,6 @@ export class ChatUsersController {
     this.start();
   }
 
-  private _extractChatId(): number | null {
-    return chatListController.getCurChatIdInLocal();
-  }
-
   private _makeIndex(usersList: TUser[]): TChatUsersIndexed {
     const chatUsersIndex: TChatUsersIndexed = {};
 
@@ -44,13 +39,14 @@ export class ChatUsersController {
   }
 
   public async getChatUsers(): Promise<void> {
-    const currentChat = this._extractChatId();
-    if (!currentChat) {
+    const { active } = this._store.getState<TChatListState>().chatList;
+
+    if (!active?.id) {
       return;
     }
 
     try {
-      const xhr = await this._api.request(String(currentChat));
+      const xhr = await this._api.request(String(active.id));
       const { status, response } = xhr;
 
       if (status === 200) {
@@ -71,7 +67,7 @@ export class ChatUsersController {
         this._router.go(ROUTE_PATH[404]);
       }
 
-      if (status === 500) {
+      if (status === 500 || status === 400) {
         this._router.go(ROUTE_PATH[500]);
       }
 

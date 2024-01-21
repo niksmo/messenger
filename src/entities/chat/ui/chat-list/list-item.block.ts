@@ -1,12 +1,11 @@
 import { Block } from 'shared/components/block/block';
 import { Avatar } from 'shared/ui/avatar/avatar.block';
 import { Counter } from 'shared/ui/counter/counter.block';
-import { normalizeTime } from './_lib';
 import templateSpec from './list-item.template.hbs';
 import styles from './list-item.styles.module.css';
 import { chatListController } from 'entites/chat/controller/chat-list.controller';
 
-interface ChatListItemProps {
+export interface ChatListItemProps {
   id: number;
   active: boolean;
   avatar: string | null;
@@ -27,20 +26,36 @@ interface InnerProps {
 }
 
 export class ChatListItem extends Block<InnerProps> {
+  private readonly _avatar;
+  private readonly _unread;
   constructor(props: ChatListItemProps) {
-    const { id, title, avatar, unread, content, time, active } = props;
+    const {
+      id,
+      title,
+      avatar: src,
+      unread: count,
+      content,
+      time,
+      active,
+    } = props;
+
+    const avatar = new Avatar({ name: title, src });
+    const unread = new Counter({ count });
 
     super({
       active,
       title,
       content,
-      time: normalizeTime(time),
-      avatar: new Avatar({ name: title, src: avatar }),
-      unread: new Counter({ count: unread }),
+      time,
+      avatar,
+      unread,
       onClick: () => {
         chatListController.openChat(id);
       },
     });
+
+    this._avatar = avatar;
+    this._unread = unread;
   }
 
   protected getTemplateHook(): TemplateSpecification {
@@ -49,5 +64,12 @@ export class ChatListItem extends Block<InnerProps> {
 
   protected getStylesModuleHook(): CSSModuleClasses {
     return styles;
+  }
+
+  public setProps(props: Partial<ChatListItemProps & InnerProps>): void {
+    const { unread: count, avatar: src, title, ...rest } = props;
+    this._avatar.setProps({ src, name: title });
+    this._unread.setProps({ count });
+    super.setProps({ title, ...rest });
   }
 }

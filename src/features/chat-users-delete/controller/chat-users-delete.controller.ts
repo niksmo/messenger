@@ -6,7 +6,6 @@ import type { TChatUsersSate } from 'entites/chat-user/model/chat-user.model';
 import type { TDeleteUsersState } from '../model/chat-users-delete.model';
 import { ChatUsersDeleteAPI } from '../api/chat-users-delete.api';
 import { chatUsersController } from 'entites/chat-user/controller/chat-users.controller';
-import { chatListController } from 'entites/chat/controller/chat-list.controller';
 
 const STORE_SLICE = 'deleteUsers';
 const STORE_LOAD = STORE_SLICE + '.load';
@@ -54,11 +53,10 @@ export class DeleteChatUsersController {
       TDeleteUsersState & TChatListState
     >();
 
-    const { select } = deleteUsers;
-    const currentChat =
-      chatList.currentChat ?? chatListController.getCurChatIdInLocal();
+    const { select: selectedUsers } = deleteUsers;
+    const { active: activeChat } = chatList;
 
-    if (!select.length || !currentChat) {
+    if (!selectedUsers.length || !activeChat) {
       return;
     }
 
@@ -66,8 +64,8 @@ export class DeleteChatUsersController {
 
     try {
       const xhr = await this._api.delete({
-        users: select,
-        chatId: currentChat,
+        chatId: activeChat.id,
+        users: selectedUsers,
       });
 
       const { status, response } = xhr;

@@ -2,16 +2,23 @@ import { Store } from 'shared/components/store/store';
 import { AppRouter } from 'shared/components/router/router';
 import { ROUTE_PATH } from 'shared/constants/routes';
 import { ChatListAPI } from '../api/chat-list.api';
+import {
+  CHAT_LIST_ACTIVE,
+  type TChat,
+  type TChatListState,
+} from '../model/chat-list.model';
+import { STORAGE_KEY } from 'shared/constants/storage';
+import { chatController } from './chat.controller';
 
 const STORE_SLICE = 'chatList';
-const STORE_CURRENT_CHAT = STORE_SLICE + '.currentChat';
 const STORE_LOAD = STORE_SLICE + '.load';
-const STORAGE_CURRENT_CHAT_KEY = 'currentChat';
+const POLLING_INTERVAL_5S = 5_000;
 
 export class ChatListController {
   private readonly _api;
   private readonly _store;
   private readonly _router;
+  private _longPolling: null | NodeJS.Timeout = null;
 
   constructor() {
     this._api = new ChatListAPI();
@@ -19,35 +26,56 @@ export class ChatListController {
     this._router = AppRouter.instance();
   }
 
-  public getCurChatIdInLocal(): number | null {
-    const posibleStringId = localStorage.getItem(STORAGE_CURRENT_CHAT_KEY);
-    if (posibleStringId === null) {
-      return posibleStringId;
+  private _defineActive(chatId?: number): void {
+    const { load, chats, active } =
+      this._store.getState<TChatListState>().chatList;
+
+    let activeChat: TChat | undefined;
+
+    if (chatId) {
+      activeChat = chats.find((chatData) => chatData.id === chatId);
+    } else {
+      if (!load || !active) {
+        return;
+      }
+      activeChat = chats.find((chatData) => chatData.id === active.id);
     }
-    const posibleChatId = parseInt(posibleStringId);
-    if (isNaN(posibleChatId)) {
-      return null;
+
+    if (!activeChat) {
+      this._store.set(CHAT_LIST_ACTIVE, null);
+      localStorage.removeItem(STORAGE_KEY.ACTIVE_CHAT);
+      return;
     }
-    const chatId = posibleChatId;
-    return chatId;
+
+    const { last_message: _, ...activeMeta } = activeChat;
+
+    this._store.set(CHAT_LIST_ACTIVE, activeMeta);
+    localStorage.setItem(STORAGE_KEY.ACTIVE_CHAT, JSON.stringify(activeMeta));
   }
 
   private async _start(): Promise<void> {
-    const currentChat = this.getCurChatIdInLocal();
-    this._store.set(STORE_CURRENT_CHAT, currentChat);
-    await this._requestChats();
+    const { load } = this._store.getState<TChatListState>().chatList;
+
+    this._longPolling = setInterval(() => {
+      void this.requestChats();
+    }, POLLING_INTERVAL_5S);
+
+    if (!load) {
+      return;
+    }
+
+    await this.requestChats();
   }
 
-  private async _requestChats(): Promise<void> {
+  public async requestChats(): Promise<void> {
     try {
-      this._store.set(STORE_LOAD, true);
-
-      const xhr = await this._api.request();
-      const { status, response } = xhr;
+      const { status, response } = await this._api.request();
 
       if (status === 200 && typeof response === 'string') {
-        const chats = JSON.parse(response);
+        const chats: TChat[] = JSON.parse(response);
         this._store.set(STORE_SLICE, { chats });
+        this._defineActive();
+        this._store.set(STORE_LOAD, false);
         return;
       }
 
@@ -61,8 +89,6 @@ export class ChatListController {
       }
     } catch (err) {
       console.warn(err);
-    } finally {
-      this._store.set(STORE_LOAD, false);
     }
   }
 
@@ -70,13 +96,23 @@ export class ChatListController {
     void this._start();
   }
 
-  public openChat(chatId: number): void {
-    const currentChat = this.getCurChatIdInLocal();
-
-    if (!currentChat || chatId !== currentChat) {
-      this._store.set(STORE_CURRENT_CHAT, chatId);
-      localStorage.setItem(STORAGE_CURRENT_CHAT_KEY, String(chatId));
+  public stop(): void {
+    if (!this._longPolling) {
+      return;
     }
+
+    clearInterval(this._longPolling);
+  }
+
+  public openChat(chatId: number): void {
+    const { active } = this._store.getState<TChatListState>().chatList;
+
+    if (active?.id === chatId) {
+      return;
+    }
+
+    this._defineActive(chatId);
+    chatController.open(chatId);
   }
 }
 

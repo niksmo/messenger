@@ -54,18 +54,13 @@ export class ChatHeader extends Block<ChatHeaderProps> {
   }
 
   private readonly _onStoreUpdate = (state: TChatListState): void => {
-    const { chats, currentChat, load } = state.chatList;
+    const { active, load } = state.chatList;
 
-    if (load) {
+    if (load || !active) {
       return;
     }
 
-    const curChatData = chats.find((chat) => chat.id === currentChat);
-
-    if (curChatData) {
-      const { avatar, title } = curChatData;
-      this._avatar.setProps({ src: avatar, name: title });
-      this.setProps({ title });
-    }
+    this._avatar.setProps({ src: active.avatar, name: active.title });
+    this.setProps({ title: active.title });
   };
 }

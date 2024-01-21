@@ -13,7 +13,7 @@ export interface TViewerState {
   };
 }
 
-export const viewer: TViewerState = {
+export const viewerState: TViewerState = {
   viewer: {
     auth: false,
     fetching: true,
@@ -27,3 +27,6 @@ export const viewer: TViewerState = {
     email: '',
   },
 };
+
+export const VIEWER = 'viewer';
+export const VIWER_AUTH = VIEWER + '.auth';

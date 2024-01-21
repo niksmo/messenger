@@ -1,9 +1,9 @@
 import { Block } from 'shared/components/block/block';
-import templateSpec from './bubble.template.hbs';
-import styles from '../base-styles.module.css';
+import templateSpec from './bubble-buddy.template.hbs';
+import styles from './base-styles.module.css';
 
 interface BubbleProps {
-  text: string;
+  content: string;
   time: string;
 }
 
