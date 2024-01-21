@@ -8,16 +8,6 @@
 
 Проект развёрнут на Netlify и доступен по URL - https://lambent-kangaroo-ac7913.netlify.app
 
-Реализованные страницы:
-
-- messenger main https://lambent-kangaroo-ac7913.netlify.app/
-- edit profile https://lambent-kangaroo-ac7913.netlify.app/edit-profile/
-- change password https://lambent-kangaroo-ac7913.netlify.app/change-password/
-- signup https://lambent-kangaroo-ac7913.netlify.app/signup/
-- signin https://lambent-kangaroo-ac7913.netlify.app/signin/
-- 404 https://lambent-kangaroo-ac7913.netlify.app/404/
-- 500 https://lambent-kangaroo-ac7913.netlify.app/500/
-
 ### Технологии
 
 [![Handlebars][Handlebars-badge]][Handlebars-url]
