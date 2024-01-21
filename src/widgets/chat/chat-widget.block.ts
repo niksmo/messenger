@@ -53,7 +53,6 @@ export class ChatWidget extends Block<ChatWidgetProps> {
 
   public didMount(): void {
     store.on(this._onStoreUpdate);
-    void chatUsersController.getChatUsers();
   }
 
   public willUnmount(): void {

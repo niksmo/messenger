@@ -6,7 +6,6 @@ import type { TChatUsersSate } from 'entites/chat-user/model/chat-user.model';
 import type { TDeleteUsersState } from '../model/chat-users-delete.model';
 import { ChatUsersDeleteAPI } from '../api/chat-users-delete.api';
 import { chatUsersController } from 'entites/chat-user/controller/chat-users.controller';
-import { chatListController } from 'entites/chat/controller/chat-list.controller';
 
 const STORE_SLICE = 'deleteUsers';
 const STORE_LOAD = STORE_SLICE + '.load';

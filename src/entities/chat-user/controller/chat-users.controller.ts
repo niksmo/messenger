@@ -67,7 +67,7 @@ export class ChatUsersController {
         this._router.go(ROUTE_PATH[404]);
       }
 
-      if (status === 500) {
+      if (status === 500 || status === 400) {
         this._router.go(ROUTE_PATH[500]);
       }
 

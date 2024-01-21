@@ -93,15 +93,10 @@ class ChatController {
     this._ws.onopen = (e) => {
       this._store.set(CHAT_LOAD, false);
 
-      //delete
-      console.log('on_open', e);
-
       interval = setInterval(() => {
         if (this._ws?.readyState !== 1) {
           return;
         }
-
-        //delete
         this._ws?.send(JSON.stringify({ type: 'ping' }));
       }, PING_INTERVAL_30S);
     };
@@ -115,9 +110,6 @@ class ChatController {
       if (!e.wasClean) {
         void this._open(chatId);
       }
-
-      //delete
-      console.log('on_close', e);
     };
 
     this._ws.onmessage = (e) => {
@@ -142,8 +134,6 @@ class ChatController {
           return;
         }
 
-        debugger;
-
         const { conversation } = this._store.getState<TChatState>().chat;
         conversation.push(data);
         this._store.set(CHAT_CONVERSATION, conversation);
@@ -151,7 +141,6 @@ class ChatController {
     };
   }
 
-  //for delete chat feature
   public disconnect(): void {
     if (this._ws?.bufferedAmount) {
       setTimeout(this.disconnect.bind(this), DISCONNECT_INTERVAL_500MS);
