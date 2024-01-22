@@ -12,11 +12,14 @@ interface InnerProps extends AvatarProps {
 }
 
 function getNamePrefix(name?: string): string {
-  if (name?.[0]) {
-    return name[0].toUpperCase();
+  let prefix = '';
+  if (!name?.[0]) {
+    return prefix;
   }
 
-  return '?';
+  prefix = name[0].toUpperCase();
+
+  return prefix;
 }
 
 export class Avatar extends Block<InnerProps> {
