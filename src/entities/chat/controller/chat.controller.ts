@@ -6,14 +6,15 @@ import {
   VIWER_AUTH,
   type TViewerState,
 } from 'entites/viewer/model/viewer.model';
+import type { TMessage } from 'entites/message/model/message.model';
 import { ChatAPI } from '../api/chat.api';
 import { type TChatListState } from '../model/chat-list.model';
 import {
   CHAT_CONVERSATION,
   CHAT_LOAD,
   type TChatState,
-  type TReceivedData,
 } from '../model/chat.model';
+import { chatListController } from './chat-list.controller';
 
 const PING_INTERVAL_30S = 30_000;
 const DISCONNECT_INTERVAL_500MS = 500;
@@ -43,19 +44,26 @@ class ChatController {
   }
 
   public open(chatId: number): void {
+    this._store.set(CHAT_LOAD, true);
     void this._open(chatId);
   }
 
   private async _open(chatId: number): Promise<void> {
-    this._store.set(CHAT_LOAD, true);
-
     const token = await this._requestToken(chatId);
 
     if (!token) {
       return;
     }
 
-    this._connect(chatId, token);
+    await this._connect(chatId, token);
+
+    const { load } = this._store.getState<TChatState>().chat;
+
+    if (load) {
+      await this._fetchOldMessages();
+    }
+
+    this._subscribe(chatId);
   }
 
   private async _requestToken(chatId: number): Promise<string | undefined> {
@@ -80,30 +88,36 @@ class ChatController {
     }
   }
 
-  private _connect(chatId: number, token: string): void {
-    if (this._ws) {
-      this.disconnect();
+  private _subscribe(chatId: number): void {
+    if (!this._ws) {
+      return;
     }
 
-    const { viewer, chatList } = this._store.getState<
-      TViewerState & TChatListState
-    >();
+    const interval = setInterval(() => {
+      this._ws?.send(JSON.stringify({ type: 'ping' }));
+    }, PING_INTERVAL_30S);
 
-    this._ws = new WebSocket(BASE_WS + `/${viewer.id}/${chatId}/${token}`);
+    this._ws.onmessage = (e) => {
+      const { data: received } = e;
 
-    let interval: NodeJS.Timeout;
+      if (typeof received !== 'string') {
+        return;
+      }
 
-    this._ws.onopen = () => {
-      this._getUnreadMessages(chatList.active?.unread_count);
+      try {
+        const data: TMessage = JSON.parse(received);
 
-      this._store.set(CHAT_LOAD, false);
+        const { conversation } = this._store.getState<TChatState>().chat;
 
-      interval = setInterval(() => {
-        if (this._ws?.readyState !== 1) {
+        if (data.type !== 'message') {
           return;
         }
-        this._ws?.send(JSON.stringify({ type: 'ping' }));
-      }, PING_INTERVAL_30S);
+
+        conversation.push(data);
+        this._store.set(CHAT_CONVERSATION, conversation);
+      } catch (err) {
+        console.warn(err);
+      }
     };
 
     this._ws.onerror = () => {
@@ -116,42 +130,70 @@ class ChatController {
         void this._open(chatId);
       }
     };
+  }
 
-    this._ws.onmessage = (e) => {
-      const { data: received } = e;
+  private async _connect(chatId: number, token: string): Promise<Event> {
+    return await new Promise<Event>((resolve, reject) => {
+      if (this._ws) {
+        this.disconnect();
+      }
 
-      if (typeof received !== 'string') {
+      const { viewer } = this._store.getState<TViewerState & TChatListState>();
+
+      this._ws = new WebSocket(BASE_WS + `/${viewer.id}/${chatId}/${token}`);
+
+      this._ws.onopen = (e) => {
+        resolve(e);
+      };
+
+      this._ws.onerror = (e) => {
+        reject(e);
+      };
+    });
+  }
+
+  private async _fetchOldMessages(): Promise<MessageEvent> {
+    let counter = 0;
+    this._ws?.send(JSON.stringify({ type: 'get old', content: counter }));
+
+    return await new Promise<MessageEvent>((resolve, reject) => {
+      if (!this._ws) {
         return;
       }
 
-      const data: TReceivedData = JSON.parse(received);
+      let oldMessages: TMessage[] = [];
 
-      let { conversation } = this._store.getState<TChatState>().chat;
+      this._ws.onmessage = (e) => {
+        const { data: received } = e;
 
-      if (Array.isArray(data)) {
-        conversation = conversation.concat(data);
-      } else {
-        if (data.type !== 'message') {
+        if (typeof received !== 'string') {
           return;
         }
-        conversation.push(data);
-      }
 
-      this._store.set(CHAT_CONVERSATION, conversation);
-    };
-  }
+        try {
+          const data: TMessage[] = JSON.parse(received);
 
-  private _getUnreadMessages(unreadCount?: number): void {
-    if (!unreadCount || !this._ws) {
-      return;
-    }
+          if (!Array.isArray(data)) {
+            throw TypeError('not messages array');
+          }
 
-    let received = 0;
+          oldMessages = oldMessages.concat(data);
 
-    while (received < unreadCount) {
-      this._ws.send(JSON.stringify({ type: 'get old', content: received }));
-      received += UNREAD_MESSAGES_INCREMENT;
-    }
+          if (data.length < 20) {
+            this._store.set('chat', { conversation: oldMessages, load: false });
+            void chatListController.requestChats();
+            resolve(e);
+            return;
+          }
+
+          counter += UNREAD_MESSAGES_INCREMENT;
+          this._ws?.send(JSON.stringify({ type: 'get old', content: counter }));
+        } catch (err) {
+          console.warn(err);
+          reject(e);
+        }
+      };
+    });
   }
 
   public disconnect(): void {

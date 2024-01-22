@@ -12,13 +12,11 @@ import { chatController } from './chat.controller';
 
 const STORE_SLICE = 'chatList';
 const STORE_LOAD = STORE_SLICE + '.load';
-const POLLING_INTERVAL_5S = 5_000;
 
 export class ChatListController {
   private readonly _api;
   private readonly _store;
   private readonly _router;
-  private _longPolling: null | NodeJS.Timeout = null;
 
   constructor() {
     this._api = new ChatListAPI();
@@ -56,10 +54,6 @@ export class ChatListController {
   private async _start(): Promise<void> {
     const { load } = this._store.getState<TChatListState>().chatList;
 
-    this._longPolling = setInterval(() => {
-      void this.requestChats();
-    }, POLLING_INTERVAL_5S);
-
     if (!load) {
       return;
     }
@@ -94,14 +88,6 @@ export class ChatListController {
 
   public start(): void {
     void this._start();
-  }
-
-  public stop(): void {
-    if (!this._longPolling) {
-      return;
-    }
-
-    clearInterval(this._longPolling);
   }
 
   public openChat(chatId: number): void {
