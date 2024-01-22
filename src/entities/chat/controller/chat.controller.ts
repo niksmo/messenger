@@ -14,7 +14,6 @@ import {
   CHAT_LOAD,
   type TChatState,
 } from '../model/chat.model';
-import { chatListController } from './chat-list.controller';
 
 const PING_INTERVAL_30S = 30_000;
 const DISCONNECT_INTERVAL_500MS = 500;
@@ -88,6 +87,86 @@ class ChatController {
     }
   }
 
+  private async _fetchOldMessages(): Promise<MessageEvent> {
+    let counter = 0;
+    this._ws?.send(JSON.stringify({ type: 'get old', content: counter }));
+
+    return await new Promise<MessageEvent>((resolve, reject) => {
+      if (!this._ws) {
+        return;
+      }
+
+      let oldMessages: TMessage[] = [];
+
+      this._ws.onmessage = (e) => {
+        const { data: received } = e;
+
+        if (typeof received !== 'string') {
+          return;
+        }
+
+        try {
+          const data: TMessage[] = JSON.parse(received);
+
+          if (!Array.isArray(data)) {
+            throw TypeError('not messages array');
+          }
+
+          oldMessages = oldMessages.concat(data);
+
+          if (data.length < 20) {
+            const { chats, active } =
+              this._store.getState<TChatListState>().chatList;
+
+            if (active) {
+              const selectedChat = chats.find(
+                (chatData) => chatData.id === active.id
+              );
+
+              if (selectedChat) {
+                selectedChat.unread_count = 0;
+                active.unread_count = 0;
+              }
+            }
+
+            this._store.set('chat', {
+              conversation: oldMessages.reverse(),
+              load: false,
+            });
+            resolve(e);
+            return;
+          }
+
+          counter += OLD_MESSAGES_INCREMENT;
+          this._ws?.send(JSON.stringify({ type: 'get old', content: counter }));
+        } catch (err) {
+          console.warn(err);
+          reject(e);
+        }
+      };
+    });
+  }
+
+  private async _connect(chatId: number, token: string): Promise<Event> {
+    return await new Promise<Event>((resolve, reject) => {
+      if (this._ws) {
+        this.disconnect();
+      }
+
+      const { viewer } = this._store.getState<TViewerState & TChatListState>();
+
+      this._ws = new WebSocket(BASE_WS + `/${viewer.id}/${chatId}/${token}`);
+
+      this._ws.onopen = (e) => {
+        resolve(e);
+      };
+
+      this._ws.onerror = (e) => {
+        reject(e);
+      };
+    });
+  }
+
   private _subscribe(chatId: number): void {
     if (!this._ws) {
       return;
@@ -130,70 +209,6 @@ class ChatController {
         void this._open(chatId);
       }
     };
-  }
-
-  private async _connect(chatId: number, token: string): Promise<Event> {
-    return await new Promise<Event>((resolve, reject) => {
-      if (this._ws) {
-        this.disconnect();
-      }
-
-      const { viewer } = this._store.getState<TViewerState & TChatListState>();
-
-      this._ws = new WebSocket(BASE_WS + `/${viewer.id}/${chatId}/${token}`);
-
-      this._ws.onopen = (e) => {
-        resolve(e);
-      };
-
-      this._ws.onerror = (e) => {
-        reject(e);
-      };
-    });
-  }
-
-  private async _fetchOldMessages(): Promise<MessageEvent> {
-    let counter = 0;
-    this._ws?.send(JSON.stringify({ type: 'get old', content: counter }));
-
-    return await new Promise<MessageEvent>((resolve, reject) => {
-      if (!this._ws) {
-        return;
-      }
-
-      let oldMessages: TMessage[] = [];
-
-      this._ws.onmessage = (e) => {
-        const { data: received } = e;
-
-        if (typeof received !== 'string') {
-          return;
-        }
-
-        try {
-          const data: TMessage[] = JSON.parse(received);
-
-          if (!Array.isArray(data)) {
-            throw TypeError('not messages array');
-          }
-
-          oldMessages = oldMessages.concat(data);
-
-          if (data.length < 20) {
-            this._store.set('chat', { conversation: oldMessages, load: false });
-            void chatListController.requestChats();
-            resolve(e);
-            return;
-          }
-
-          counter += OLD_MESSAGES_INCREMENT;
-          this._ws?.send(JSON.stringify({ type: 'get old', content: counter }));
-        } catch (err) {
-          console.warn(err);
-          reject(e);
-        }
-      };
-    });
   }
 
   public disconnect(): void {
