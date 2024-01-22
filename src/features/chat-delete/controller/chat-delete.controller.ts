@@ -2,6 +2,7 @@ import { Store } from 'shared/components/store/store';
 import { AppRouter } from 'shared/components/router/router';
 import { DeleteChatAPI } from '../api/chat-delete.api';
 import type { TChatListState } from 'entites/chat/model/chat-list.model';
+import { ROUTE_PATH } from 'shared/constants/routes';
 
 class DeleteChatController {
   private readonly _api;
@@ -22,28 +23,35 @@ class DeleteChatController {
     }
 
     try {
-      const { status, response } = await this._api.delete(active.id);
+      const { status } = await this._api.delete(active.id);
 
       if (status === 200) {
-        // filter chatList
-        // set active to null
-        // route to main
+        const { chats, active } =
+          this._store.getState<TChatListState>().chatList;
+
+        const filteredChats = chats.filter(
+          (chatData) => chatData.id !== active?.id
+        );
+
+        this._store.set('chatList', { active: null, chats: filteredChats });
+        return;
       }
 
       if (status === 400) {
-        // throw error
+        throw Error('Delete chat: 400 (bad request)');
       }
 
       if (status === 401) {
         this._store.set('viewer', { auth: false });
+        return;
       }
 
       if (status === 403) {
-        // throw error
+        throw Error('Delete chat: forbidden');
       }
 
       if (status === 500) {
-        // route to 500
+        this._router.go(ROUTE_PATH[500]);
       }
     } catch (err) {
       console.warn(err);

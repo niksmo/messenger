@@ -13,6 +13,6 @@ export class DeleteChatAPI extends BaseAPI {
   }
 
   async delete(chatId: number): XHR {
-    return await this._http.delete(JSON.stringify({ chatId }));
+    return await this._http.delete('/chats', JSON.stringify({ chatId }));
   }
 }
