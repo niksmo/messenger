@@ -18,7 +18,7 @@ import { chatListController } from './chat-list.controller';
 
 const PING_INTERVAL_30S = 30_000;
 const DISCONNECT_INTERVAL_500MS = 500;
-const UNREAD_MESSAGES_INCREMENT = 20;
+const OLD_MESSAGES_INCREMENT = 20;
 
 class ChatController {
   private readonly _store;
@@ -186,7 +186,7 @@ class ChatController {
             return;
           }
 
-          counter += UNREAD_MESSAGES_INCREMENT;
+          counter += OLD_MESSAGES_INCREMENT;
           this._ws?.send(JSON.stringify({ type: 'get old', content: counter }));
         } catch (err) {
           console.warn(err);

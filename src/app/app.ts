@@ -10,9 +10,9 @@ import {
 import { chatState } from 'entites/chat/model/chat.model';
 import { withAuth } from 'entites/viewer/hoc/with-auth.hoc';
 import { withUnAuth } from 'entites/viewer/hoc/with-unauth.hoc';
+import { messageState } from 'features/send-message/model/send-message.model';
 import PAGE from 'pages/pages';
 import './styles/index.css';
-import { messageState } from 'features/send-message/model/send-message.model';
 
 class App {
   private _root: null | HTMLElement = null;
