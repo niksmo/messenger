@@ -5,7 +5,6 @@ import type { Block } from 'shared/components/block/block';
 import { RequestAuthStub } from '../ui/auth-guard/auth-guard.block';
 import type { TViewerState } from '../model/viewer.model';
 import { viewerController } from '../controller/viewer.controller';
-import { chatListController } from 'entites/chat/controller/chat-list.controller';
 import { chatController } from 'entites/chat/controller/chat.controller';
 
 const store = Store.instance();
@@ -40,7 +39,6 @@ export function withAuth(View: new () => Block): new () => Block {
       if (this._block === null || !auth) {
         if (!fetching && !auth) {
           router.go(ROUTE_PATH.SIGNIN, true, { prev: location.pathname });
-          chatListController.stop();
           chatController.disconnect();
           store.set('chatList', {
             chats: [],
