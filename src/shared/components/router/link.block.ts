@@ -1,6 +1,6 @@
 import { Block } from '../block/block';
-import templateSpec from './link.template.hbs';
 import { AppRouter } from './router';
+import templateSpec from './link.template.hbs';
 
 interface LinkProps {
   href: string;
