@@ -1,0 +1,16 @@
+.bubble_own {
+  margin-left: auto;
+  color: var(--color-text-white);
+  background-color: var(--color-background-accent);
+  border-radius: 12px 12px 0;
+}
+
+.bubble_own .bubble__time {
+  color: inherit;
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: var(--font-body-small-size);
+  line-height: var(--font-body-small-height);
+  font-weight: var(--font-body-small-weight);
+  letter-spacing: var(--font-body-small-spacing);
+}

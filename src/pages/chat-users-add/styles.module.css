@@ -1,0 +1,21 @@
+.page__headline {
+  margin: 0 0 50px;
+  text-align: center;
+  font-size: var(--font-title-large-size);
+  line-height: var(--font-title-large-height);
+  font-weight: var(--font-title-large-weight);
+  letter-spacing: var(--font-title-large-spacing);
+}
+
+.page__form {
+  display: flex;
+  flex-direction: column;
+  max-width: 360px;
+}
+
+.page__transition {
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

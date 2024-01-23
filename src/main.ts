@@ -1,4 +1,4 @@
-import app from 'app';
+import App from './app/app';
 
 const root = document.getElementById('app');
 
@@ -6,4 +6,4 @@ if (root === null) {
   throw Error('add HTMLElement with id: #app');
 }
 
-root.append(app.getContent());
+App.initRoot(root).bootstrap();

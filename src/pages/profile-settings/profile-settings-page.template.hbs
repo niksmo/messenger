@@ -1,0 +1,27 @@
+<main class="page_align_center {{styles.content-wrapper}}">
+
+  <h1 class="{{styles.page__headline}}">Settings</h1>
+
+
+
+  <div class="{{styles.profile-info}}">
+    {{profileInfo}}
+  </div>
+
+  <nav class="{{styles.nav}}">
+    <ul class="base-list {{styles.nav-list}}">
+      {{#each navList}}
+        <li>
+          {{this}}
+        </li>
+      {{/each}}
+    </ul>
+  </nav>
+
+  <div class="{{styles.page__transition}}">
+    {{transitionButton}}
+  </div>
+
+
+
+</main>

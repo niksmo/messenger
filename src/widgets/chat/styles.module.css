@@ -1,0 +1,15 @@
+.chat {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.message-list-container {
+  width: 100%;
+  flex-grow: 1;
+  overflow-y: scroll;
+}
+
+.message-input-container {
+  display: flex;
+}

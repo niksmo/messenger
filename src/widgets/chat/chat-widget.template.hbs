@@ -1,0 +1,15 @@
+<div class="{{styles.chat}}">
+
+  {{#if isActiveChat}}
+    {{header}}
+    <div class="{{styles.message-list-container}}">
+      {{messageList}}
+    </div>
+    <div class="{{styles.message-input-container}}">
+      {{sender}}
+    </div>
+  {{else}}
+    {{chatStub}}
+  {{/if}}
+
+</div>

@@ -1,18 +1,18 @@
 import { template as templator } from 'handlebars/runtime';
-import { EventBus } from 'shared/packages/event-bus';
-import { uuid } from 'shared/packages/uuid';
+import EventBus from 'shared/packages/event-bus/event-bus';
+import uuid from 'shared/packages/uuid/uuid';
 import { type IBlock } from '../interfaces';
-import { type TBlockEventsMap, pickBlocksAndEvents, shallowEqual } from './lib';
-import { EVENT, TMP_TAG } from './consts';
+import {
+  type TBlockEventsMap,
+  pickBlocksAndEvents,
+  shallowEqual,
+  traverseBlocksTreeAndCall,
+} from './_lib';
+import { EVENT, TMP_TAG } from './_consts';
 
-interface IBlockProps {
-  [key: string]: unknown;
-  id?: string | number;
-}
+export type TIndexed = Record<string, unknown>;
 
-abstract class Block<TProps extends IBlockProps = Record<string, unknown>>
-  implements IBlock
-{
+export abstract class Block<TProps = TIndexed> implements IBlock {
   private readonly _stubId = uuid();
   private readonly _eventBus = new EventBus();
   private readonly _templator = templator;
@@ -20,13 +20,11 @@ abstract class Block<TProps extends IBlockProps = Record<string, unknown>>
   private _element: Node | null = null;
   private _updatingPropsNum = 0;
   private _events: TBlockEventsMap | null = null;
-  protected id: string | number | undefined;
+  protected childBlocks: Map<string, Block> | null = null;
   protected props;
 
-  constructor(props: TProps | IBlockProps = {}) {
-    const { id } = props;
-    this.id = id;
-    this.props = this._proxyProps(props);
+  constructor(props?: TProps) {
+    this.props = this._proxyProps(props ?? {});
     this._subscribe();
     this._eventBus.emit(EVENT.INIT, props);
   }
@@ -41,14 +39,14 @@ abstract class Block<TProps extends IBlockProps = Record<string, unknown>>
     }
   }
 
-  protected abstract _getTemplateSpec(): TemplateSpecification;
-  protected _getStylesModule?(): CSSModuleClasses;
+  protected abstract getTemplateHook(): TemplateSpecification;
+  protected getStylesModuleHook?(): CSSModuleClasses;
 
-  private _proxyProps(props: IBlockProps): IBlockProps {
+  private _proxyProps(props: TIndexed): TIndexed {
     const self = this;
     let propsCounter = 0;
-    let oldProps: IBlockProps = {};
-    const newProps: IBlockProps = {};
+    let oldProps: TIndexed = {};
+    const newProps: TIndexed = {};
 
     return new Proxy(props, {
       set(props, p, newValue) {
@@ -64,7 +62,7 @@ abstract class Block<TProps extends IBlockProps = Record<string, unknown>>
         propsCounter += 1;
 
         if (propsCounter === self._updatingPropsNum) {
-          self._eventBus.emit(EVENT.UPDATE, oldProps, newProps);
+          self._eventBus.emit(EVENT.COMPARE, oldProps, newProps);
           propsCounter = 0;
         }
 
@@ -77,6 +75,8 @@ abstract class Block<TProps extends IBlockProps = Record<string, unknown>>
     this._eventBus.on(EVENT.INIT, this._init.bind(this));
     this._eventBus.on(EVENT.MOUNT, this._didMount.bind(this));
     this._eventBus.on(EVENT.UPDATE, this._didUpdate.bind(this));
+    this._eventBus.on(EVENT.UNMOUNT, this._willUnmount.bind(this));
+    this._eventBus.on(EVENT.COMPARE, this._compareProps.bind(this));
     this._eventBus.on(EVENT.RENDER, this._render.bind(this));
   }
 
@@ -93,8 +93,8 @@ abstract class Block<TProps extends IBlockProps = Record<string, unknown>>
   }
 
   private _render(): void {
-    const compileTemplate = this._templator(this._getTemplateSpec());
-    const styles = this._getStylesModule ? this._getStylesModule() : {};
+    const compileTemplate = this._templator(this.getTemplateHook());
+    const styles = this.getStylesModuleHook ? this.getStylesModuleHook() : {};
     const htmlCode = compileTemplate({
       ...this.props,
       styles,
@@ -112,6 +112,8 @@ abstract class Block<TProps extends IBlockProps = Record<string, unknown>>
       this.props
     );
 
+    this.childBlocks = childBlocks;
+
     const stubs = Array.from(block.getElementsByTagName(TMP_TAG));
 
     stubs.forEach((stub) => {
@@ -122,14 +124,13 @@ abstract class Block<TProps extends IBlockProps = Record<string, unknown>>
 
         if (node) {
           stub.replaceWith(node);
-          childBlock?.dispatchDidMount();
         }
       }
     });
 
     this._removeEvents();
 
-    const selector = this._getListenersSelector();
+    const selector = this.getListenersSelectorHook();
     const listenersTarget = selector ? block.querySelector(selector) : block;
 
     propsEvents.forEach((cb, eventType) => {
@@ -144,66 +145,71 @@ abstract class Block<TProps extends IBlockProps = Record<string, unknown>>
     this._element = block;
   }
 
-  protected renderInterceptor(
+  protected renderInterceptorHook(
     shouldRender: boolean,
     _causeProps: Map<string, unknown>,
-    _oldProps: IBlockProps,
-    _block: Block<TProps>
+    _oldProps: TIndexed
   ): boolean {
     return shouldRender;
   }
 
-  protected _getListenersSelector(): string {
+  protected getListenersSelectorHook(): string {
     return '';
   }
 
   private _didMount(): void {
-    this.didMount();
+    traverseBlocksTreeAndCall.call(this, 'didMount');
   }
 
-  private _didUpdate(oldProps: TProps, newProps: TProps): void {
+  private _didUpdate(): void {
+    traverseBlocksTreeAndCall.call(this, 'didUpdate');
+  }
+
+  private _willUnmount(): void {
+    traverseBlocksTreeAndCall.call(this, 'willUnmount');
+  }
+
+  private _compareProps(oldProps: TIndexed, newProps: TIndexed): void {
     const [isEqual, causeProps] = this._shallowEqual(oldProps, newProps);
 
-    const shouldRender = this.renderInterceptor(
+    const shouldRender = this.renderInterceptorHook(
       !isEqual,
       causeProps,
-      oldProps,
-      this
+      oldProps
     );
 
     if (shouldRender) {
       this._eventBus.emit(EVENT.RENDER);
     }
 
-    this.didUpdate();
+    this._eventBus.emit(EVENT.UPDATE);
   }
 
   public didMount(): void {}
 
   public didUpdate(): void {}
 
+  public willUnmount(): void {}
+
   public dispatchDidMount(): void {
     this._eventBus.emit(EVENT.MOUNT);
+  }
+
+  public dispatchDidUpdate(): void {
+    this._eventBus.emit(EVENT.UPDATE);
+  }
+
+  public dispatchWillUnmount(): void {
+    this._eventBus.emit(EVENT.UNMOUNT);
   }
 
   public getContent(): HTMLElement {
     return this._element as HTMLElement;
   }
 
-  public setProps(newProps: Partial<TProps | IBlockProps>): void {
-    this._updatingPropsNum = Object.keys(newProps).length;
+  public setProps<TProps>(props: Partial<TProps>): void {
+    this._updatingPropsNum = Object.keys(props).length;
 
-    Object.assign(this.props, newProps);
-  }
-
-  public setVisible(): void {
-    this.getContent().style.display = 'block';
-  }
-
-  public setHidden(): void {
-    this.getContent().style.display = 'none';
+    Object.assign(this.props, props);
   }
 }
-
-export { Block };
-export type { IBlockProps };

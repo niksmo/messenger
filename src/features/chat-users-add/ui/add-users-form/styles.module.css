@@ -1,0 +1,13 @@
+.form-container {
+  width: 100%;
+}
+
+.submit-button {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.found-container {
+  height: 540px;
+}

@@ -83,19 +83,11 @@
 }
 
 .form-input__support {
-  display: none;
   margin: 0;
   padding: 4px 16px 0;
   font-size: var(--font-body-small-size);
   line-height: var(--font-body-small-height);
   font-weight: var(--font-body-small-weight);
   letter-spacing: var(--font-body-small-spacing);
-}
-
-.form-input__support_error {
-  color: var(--color-text-error);
-}
-
-.form-input__support_visible {
-  display: block;
+  color: var(--color-text-primary);
 }
