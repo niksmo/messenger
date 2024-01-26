@@ -1,22 +1,21 @@
-import { template as templator } from 'handlebars/runtime';
-import EventBus from 'shared/packages/event-bus/event-bus';
-import uuid from 'shared/packages/uuid/uuid';
-import { type IBlock } from '../interfaces';
+import Handlebars from 'handlebars/runtime.js';
+import EventBus from '../../packages/event-bus/event-bus.ts';
+import uuid from '../../packages/uuid/uuid.ts';
 import {
-  type TBlockEventsMap,
   pickBlocksAndEvents,
   shallowEqual,
   traverseBlocksTreeAndCall,
-} from './_lib';
-import { EVENT, TMP_TAG } from './_consts';
+} from './_lib.ts';
+import { EVENT, TMP_TAG } from './_consts.ts';
 
-export type TIndexed = Record<string, unknown>;
+const { template: templator } = Handlebars;
 
-export abstract class Block<TProps = TIndexed> implements IBlock {
+type TIndexed = Record<string, unknown>;
+type TBlockEventsMap = Map<string, EventListenerOrEventListenerObject>;
+
+export abstract class Block<TProps = TIndexed> {
   private readonly _stubId = uuid();
   private readonly _eventBus = new EventBus();
-  private readonly _templator = templator;
-  private readonly _shallowEqual = shallowEqual;
   private _element: Node | null = null;
   private _updatingPropsNum = 0;
   private _events: TBlockEventsMap | null = null;
@@ -93,7 +92,7 @@ export abstract class Block<TProps = TIndexed> implements IBlock {
   }
 
   private _render(): void {
-    const compileTemplate = this._templator(this.getTemplateHook());
+    const compileTemplate = templator(this.getTemplateHook());
     const styles = this.getStylesModuleHook ? this.getStylesModuleHook() : {};
     const htmlCode = compileTemplate({
       ...this.props,
@@ -170,7 +169,7 @@ export abstract class Block<TProps = TIndexed> implements IBlock {
   }
 
   private _compareProps(oldProps: TIndexed, newProps: TIndexed): void {
-    const [isEqual, causeProps] = this._shallowEqual(oldProps, newProps);
+    const [isEqual, causeProps] = shallowEqual(oldProps, newProps);
 
     const shouldRender = this.renderInterceptorHook(
       !isEqual,

@@ -1,10 +1,8 @@
-import type { IBaseAPI } from '../interfaces';
-
 function throwError(): never {
   throw new Error('Not implemented');
 }
 
-export class BaseAPI implements IBaseAPI {
+export class BaseAPI {
   async create(..._args: unknown[]): Promise<unknown> {
     throwError();
   }

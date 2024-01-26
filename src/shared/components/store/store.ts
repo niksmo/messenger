@@ -1,10 +1,9 @@
-import { set } from 'shared/helpers/set';
 import EventBus from 'shared/packages/event-bus/event-bus';
-import { type IStore } from '../interfaces';
+import { set } from 'shared/helpers/set';
 
 type Indexed = Record<string, unknown>;
 
-export class Store implements IStore {
+export class Store {
   private static _instance: null | Store = null;
   private _state: Indexed = {};
   private readonly _eventBus: EventBus;

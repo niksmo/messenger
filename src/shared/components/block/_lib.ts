@@ -1,5 +1,14 @@
-import { Block, type TIndexed } from './block';
-import { DOMEvent } from './_consts';
+import { Block } from './block.ts';
+import { DOMEvent } from './_consts.ts';
+
+type TIndexed = Record<string, unknown>;
+
+type TBlockId = string;
+type TEventType = string;
+
+type TBlockEventsMap = Map<TEventType, EventListenerOrEventListenerObject>;
+
+type TBlocksMap = Map<TBlockId, Block>;
 
 export function shallowEqual(
   curProps: unknown,
@@ -20,14 +29,6 @@ export function shallowEqual(
 
   return [isEqual, causeProps];
 }
-
-type TBlockId = string;
-type TEventType = string;
-export type TBlockEventsMap = Map<
-  TEventType,
-  EventListenerOrEventListenerObject
->;
-export type TBlocksMap = Map<TBlockId, Block>;
 
 function isBlock(probBlock: unknown | Block): probBlock is Block<TIndexed> {
   return probBlock instanceof Block;

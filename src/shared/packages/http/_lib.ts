@@ -1,4 +1,4 @@
-import { isObject } from 'shared/helpers/is';
+import { isObject } from '../../helpers/is.ts';
 
 const HTTP = 'http:';
 const HTTPS = 'https:';

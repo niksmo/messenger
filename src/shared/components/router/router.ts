@@ -1,17 +1,15 @@
-import {
-  type IAppRouter,
-  type TBlockConstructor,
-  type IRoute,
-} from '../interfaces';
-import { Route } from './_route';
+import { type Block } from '../block/block.ts';
+import { Route } from './_route.ts';
 
-export class AppRouter implements IAppRouter {
+type TBlockConstructor = new (props?: Record<string, unknown>) => Block;
+
+export class AppRouter {
   private static _instance: AppRouter | null = null;
   private readonly _history: History;
-  private readonly _routes: IRoute[] = [];
+  private readonly _routes: Route[] = [];
   private _appRoot: HTMLElement | null = null;
   private _noMatchRoute: string | null = null;
-  private _currentRoute: IRoute | null = null;
+  private _currentRoute: Route | null = null;
 
   constructor() {
     const { history } = window;
@@ -56,11 +54,11 @@ export class AppRouter implements IAppRouter {
     this._render(route);
   }
 
-  private _getRoute(path: string): IRoute | undefined {
+  private _getRoute(path: string): Route | undefined {
     return this._routes.find((route) => route.match(path));
   }
 
-  private _render(route: IRoute): void {
+  private _render(route: Route): void {
     this._currentRoute?.leave();
     this._currentRoute = route;
     this._currentRoute.render();
