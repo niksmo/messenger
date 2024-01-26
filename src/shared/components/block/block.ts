@@ -1,4 +1,4 @@
-import Handlebars from 'handlebars';
+import Handlebars from 'handlebars/runtime.js';
 import EventBus from '../../packages/event-bus/event-bus.ts';
 import uuid from '../../packages/uuid/uuid.ts';
 import {
@@ -13,7 +13,7 @@ const { template: templator } = Handlebars;
 type TIndexed = Record<string, unknown>;
 type TBlockEventsMap = Map<string, EventListenerOrEventListenerObject>;
 
-export class Block<TProps = TIndexed> {
+export abstract class Block<TProps = TIndexed> {
   private readonly _stubId = uuid();
   private readonly _eventBus = new EventBus();
   private _element: Node | null = null;
@@ -38,9 +38,7 @@ export class Block<TProps = TIndexed> {
     }
   }
 
-  protected getTemplateHook(): TemplateSpecification {
-    return '';
-  }
+  protected abstract getTemplateHook(): TemplateSpecification;
   protected getStylesModuleHook?(): CSSModuleClasses;
 
   private _proxyProps(props: TIndexed): TIndexed {

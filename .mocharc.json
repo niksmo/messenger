@@ -1,6 +1,6 @@
 {
-  "extension": [".ts"],
-  "spec": "src/**/*.spec.ts",
+  "extension": ["ts"],
+  "spec": "./src/**/*.spec.ts",
   "require": "./src/shared/config/mochaSetup.js",
-  "node-option": ["import=./src/shared/config/ts-nodeEsmRegister.js"]
+  "node-option": ["import=node-esm-loader/register"]
 }

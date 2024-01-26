@@ -1,9 +1,16 @@
 import { Block } from './block.ts';
+import templateSpec from './block.template.hbs';
 
-const block = new Block();
+class Component extends Block {
+  protected getTemplateHook(): TemplateSpecification {
+    return templateSpec;
+  }
+}
+
+const component = new Component();
 
 describe('Component', () => {
   it('should...', () => {
-    console.log(block);
+    console.log(component.getContent());
   });
 });

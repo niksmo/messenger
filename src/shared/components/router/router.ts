@@ -1,4 +1,4 @@
-import { Block } from '../block/block.ts';
+import { type Block } from '../block/block.ts';
 import { Route } from './_route.ts';
 
 type TBlockConstructor = new (props?: Record<string, unknown>) => Block;
