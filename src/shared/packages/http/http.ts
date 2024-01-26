@@ -4,7 +4,7 @@ import {
   normalizeURL,
   serializeToSearch,
   setRequestHeader,
-} from './_lib';
+} from './_lib.ts';
 
 if (!XMLHttpRequest) {
   throw ReferenceError(

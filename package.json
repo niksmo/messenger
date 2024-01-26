@@ -7,6 +7,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "test": "mocha",
     "build": "tsc && vite build",
     "start": "npm run build && node src/server/app.js",
     "preview": "vite preview",
@@ -17,6 +18,7 @@
     "lint-fix": "stylelint \"**/*.css\" --fix && prettier . --write && node_modules/.bin/eslint --ext .js,.ts \"./\" --fix"
   },
   "devDependencies": {
+    "@types/mocha": "^10.0.6",
     "@types/node": "^20.8.9",
     "@typescript-eslint/eslint-plugin": "^6.14.0",
     "autoprefixer": "^10.4.16",
@@ -28,9 +30,12 @@
     "eslint-plugin-n": "^16.4.0",
     "eslint-plugin-promise": "^6.1.1",
     "express": "^4.18.2",
+    "jsdom": "^24.0.0",
+    "mocha": "^10.2.0",
     "prettier": "3.1.1",
     "stylelint": "^16.0.2",
     "stylelint-config-standard": "^35.0.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
     "vite": "^4.4.5"
   },

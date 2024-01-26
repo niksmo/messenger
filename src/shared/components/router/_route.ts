@@ -1,12 +1,10 @@
-import {
-  type IRoute,
-  type TBlockConstructor,
-  type IBlock,
-} from '../interfaces';
+import { Block } from '../block/block.ts';
 
-export class Route implements IRoute {
+type TBlockConstructor = new (props?: Record<string, unknown>) => Block;
+
+export class Route {
   protected _view: TBlockConstructor;
-  protected _block: IBlock | null = null;
+  protected _block: Block | null = null;
   protected _path;
   protected _appRoot;
 
