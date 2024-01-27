@@ -56,11 +56,7 @@ class ChatController {
 
     await this._connect(chatId, token);
 
-    const { load } = this._store.getState<TChatState>().chat;
-
-    if (load) {
-      await this._fetchOldMessages();
-    }
+    await this._fetchOldMessages();
 
     this._subscribe(chatId);
   }
