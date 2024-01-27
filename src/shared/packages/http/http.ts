@@ -78,7 +78,6 @@ class HttpTransport {
     timeout?: number
   ): XHR {
     const reqBody = serializeToSearch(body);
-
     return await this._request(METHOD.GET, pathOrURL, reqBody, header, timeout);
   }
 

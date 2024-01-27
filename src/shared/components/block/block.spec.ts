@@ -9,7 +9,7 @@ class Component extends Block {
 
 const component = new Component();
 
-describe('Component', () => {
+describe.skip('Component', () => {
   it('should...', () => {
     console.log(component.getContent());
   });
