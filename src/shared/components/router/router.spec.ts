@@ -78,13 +78,13 @@ describe('Router', () => {
     expect(fakeDispatchWillUnmount.callCount).to.equal(1);
   });
 
-  it('should render on on back', () => {
+  it('should render on "back"', () => {
     router.go('/next');
     router.back();
     expect(nextFakeDispatchDidMount.callCount).to.equal(2);
   });
 
-  it('should render on forward', () => {
+  it('should render on "forward"', () => {
     router.go('/next');
     router.back();
     router.forward();
