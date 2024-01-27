@@ -1,13 +1,18 @@
-import { type Block } from '../block/block.ts';
 import { Route } from './_route.ts';
 
-type TBlockConstructor = new (props?: Record<string, unknown>) => Block;
+export interface TBlock {
+  getContent: () => HTMLElement;
+  dispatchDidMount: () => void;
+  dispatchWillUnmount: () => void;
+}
+
+export type TBlockConstructor = new (props?: Record<string, unknown>) => TBlock;
 
 export class AppRouter {
   private static _instance: AppRouter | null = null;
   private readonly _history: History;
-  private readonly _routes: Route[] = [];
   private _appRoot: HTMLElement | null = null;
+  private _routes: Route[] = [];
   private _noMatchRoute: string | null = null;
   private _currentRoute: Route | null = null;
 
@@ -82,15 +87,15 @@ export class AppRouter {
     return true;
   }
 
-  root(appRoot: HTMLElement): void {
+  public root(appRoot: HTMLElement): void {
     this._appRoot = appRoot;
   }
 
-  noMatch(path: string): void {
+  public noMatch(path: string): void {
     this._noMatchRoute = path;
   }
 
-  go(
+  public go(
     path: string,
     replace: boolean = false,
     state: Record<string, unknown> = {}
@@ -104,35 +109,41 @@ export class AppRouter {
     this._onRoute(path);
   }
 
-  back(): void {
+  public back(): void {
     this._history.back();
   }
 
-  forward(): void {
+  public forward(): void {
     this._history.forward();
   }
 
-  getHistoryState<TIndexed extends Record<string, unknown>>(): TIndexed {
-    return this._history.state;
-  }
-
-  start(): void {
-    window.addEventListener('popstate', (evt) => {
+  public start(): void {
+    window.onpopstate = (evt: PopStateEvent) => {
       const { currentTarget } = evt;
       if (currentTarget instanceof Window) {
         const { pathname } = currentTarget.location;
         this._onRoute(pathname);
       }
-    });
+    };
 
     const { pathname } = window.location;
     this._onRoute(pathname);
   }
 
-  use(path: string, view: TBlockConstructor): void {
-    if (this._isRoot(this._appRoot)) {
-      const route = new Route(path, view, this._appRoot);
-      this._routes.push(route);
+  public use(path: string, view: TBlockConstructor): void {
+    if (!this._isRoot(this._appRoot)) {
+      return;
     }
+
+    const route = new Route(path, view, this._appRoot);
+    this._routes.push(route);
+  }
+
+  public reset(): void {
+    AppRouter._instance = null;
+    this._appRoot = null;
+    this._routes = [];
+    this._noMatchRoute = null;
+    this._currentRoute = null;
   }
 }

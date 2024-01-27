@@ -1,10 +1,8 @@
-import { type Block } from '../block/block.ts';
-
-type TBlockConstructor = new (props?: Record<string, unknown>) => Block;
+import type { TBlock, TBlockConstructor } from './router.ts';
 
 export class Route {
   protected _view: TBlockConstructor;
-  protected _block: Block | null = null;
+  protected _block: TBlock | null = null;
   protected _path;
   protected _appRoot;
 
@@ -14,17 +12,17 @@ export class Route {
     this._appRoot = appRoot;
   }
 
-  match(path: string): boolean {
+  public match(path: string): boolean {
     return this._path === path;
   }
 
-  leave(): void {
+  public leave(): void {
     this._block?.dispatchWillUnmount();
     this._block?.getContent().remove();
     this._block = null;
   }
 
-  render(): void {
+  public render(): void {
     this._block = new this._view();
     this._appRoot.append(this._block.getContent());
     this._block.dispatchDidMount();
