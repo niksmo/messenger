@@ -13,7 +13,6 @@ const hbsLoader = {
   },
   format(url) {
     if (url.endsWith('.hbs')) {
-      debugger;
       return { format: HBS_MODULE_TYPE };
     }
   },

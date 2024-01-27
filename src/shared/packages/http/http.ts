@@ -12,29 +12,9 @@ if (!XMLHttpRequest) {
   );
 }
 
-interface IHttpTransportConfig {
-  setBaseURL: (baseURL: string) => IHttpTransportConfig;
-  setTimeout: (intMs: number) => IHttpTransportConfig;
-  setHeader: (header: Record<string, string>) => IHttpTransportConfig;
-}
-
-type TRequest<T = undefined> = (
-  pathOrURL: string,
-  body: T,
-  header?: Record<string, string>,
-  timeout?: number
-) => XHR;
-
-interface IHttpTransportAgent {
-  get: TRequest;
-  post: TRequest;
-  put: TRequest;
-  delete: TRequest;
-}
-
 export type XHR = Promise<XMLHttpRequest>;
 
-class HttpTransport implements IHttpTransportConfig, IHttpTransportAgent {
+class HttpTransport {
   private _baseURL: null | string = null;
   private _timeout = 1000;
   private _header: Record<string, string> = {};
@@ -44,8 +24,8 @@ class HttpTransport implements IHttpTransportConfig, IHttpTransportAgent {
     return this;
   }
 
-  public setTimeout(intInMs: number): this {
-    this._timeout = intInMs;
+  public setTimeout(ms: number): this {
+    this._timeout = ms;
     return this;
   }
 
@@ -73,19 +53,15 @@ class HttpTransport implements IHttpTransportConfig, IHttpTransportAgent {
       xhr.open(method, reqURL, true);
       xhr.withCredentials = true;
 
-      setRequestHeader(xhr, Object.assign(this._header, rHeader));
+      setRequestHeader(xhr, { ...this._header, ...rHeader });
 
       xhr.send(body);
 
-      const xhrResolve = (
-        _e: ProgressEvent<XMLHttpRequestEventTarget>
-      ): void => {
+      const xhrResolve = (): void => {
         resolve(xhr);
       };
 
-      const xhrReject = (
-        _e: ProgressEvent<XMLHttpRequestEventTarget>
-      ): void => {
+      const xhrReject = (): void => {
         reject(xhr);
       };
 
@@ -97,7 +73,7 @@ class HttpTransport implements IHttpTransportConfig, IHttpTransportAgent {
 
   public async get(
     pathOrURL: string,
-    body?: Record<string, string>,
+    body: Record<string, string> = {},
     header?: Record<string, string>,
     timeout?: number
   ): XHR {
