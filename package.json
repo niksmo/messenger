@@ -15,7 +15,8 @@
     "stylelint": "stylelint \"**/*.css\"",
     "eslint": "node_modules/.bin/eslint --ext .js,.ts \"./\"",
     "lint": "npm run typecheck && prettier . --check && npm run stylelint && npm run eslint",
-    "lint-fix": "stylelint \"**/*.css\" --fix && prettier . --write && node_modules/.bin/eslint --ext .js,.ts \"./\" --fix"
+    "lint-fix": "stylelint \"**/*.css\" --fix && prettier . --write && node_modules/.bin/eslint --ext .js,.ts \"./\" --fix",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@types/chai": "4.3.11",
@@ -34,6 +35,7 @@
     "eslint-plugin-promise": "6.1.1",
     "esm-loader-typescript": "1.0.6",
     "express": "4.18.2",
+    "husky": "^9.0.6",
     "jsdom": "24.0.0",
     "mocha": "10.2.0",
     "node-esm-loader": "0.3.0",
