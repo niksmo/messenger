@@ -17,7 +17,7 @@ import {
 
 const PING_INTERVAL_30S = 30_000;
 const DISCONNECT_INTERVAL_500MS = 500;
-const UNREAD_MESSAGES_INCREMENT = 20;
+const OLD_MESSAGES_INCREMENT = 20;
 
 class ChatController {
   private readonly _store;
@@ -56,11 +56,7 @@ class ChatController {
 
     await this._connect(chatId, token);
 
-    const { load } = this._store.getState<TChatState>().chat;
-
-    if (load) {
-      await this._fetchOldMessages();
-    }
+    await this._fetchOldMessages();
 
     this._subscribe(chatId);
   }
@@ -137,7 +133,7 @@ class ChatController {
             return;
           }
 
-          counter += UNREAD_MESSAGES_INCREMENT;
+          counter += OLD_MESSAGES_INCREMENT;
           this._ws?.send(JSON.stringify({ type: 'get old', content: counter }));
         } catch (err) {
           console.warn(err);

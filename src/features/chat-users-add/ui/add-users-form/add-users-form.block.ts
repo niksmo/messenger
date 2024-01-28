@@ -40,7 +40,7 @@ export class AddUsersForm extends Block<AddUsersFormProps> {
     const foundList = new FoundUsersList();
 
     const submitButton = new ButtonFilled({
-      label: 'Add to chat',
+      label: 'Add',
       type: 'submit',
     });
 

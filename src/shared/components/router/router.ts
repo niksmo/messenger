@@ -1,17 +1,20 @@
-import {
-  type IAppRouter,
-  type TBlockConstructor,
-  type IRoute,
-} from '../interfaces';
-import { Route } from './_route';
+import { Route } from './_route.ts';
 
-export class AppRouter implements IAppRouter {
+export interface TBlock {
+  getContent: () => HTMLElement;
+  dispatchDidMount: () => void;
+  dispatchWillUnmount: () => void;
+}
+
+export type TBlockConstructor = new (props?: Record<string, unknown>) => TBlock;
+
+export class AppRouter {
   private static _instance: AppRouter | null = null;
   private readonly _history: History;
-  private readonly _routes: IRoute[] = [];
   private _appRoot: HTMLElement | null = null;
+  private _routes: Route[] = [];
   private _noMatchRoute: string | null = null;
-  private _currentRoute: IRoute | null = null;
+  private _currentRoute: Route | null = null;
 
   constructor() {
     const { history } = window;
@@ -56,11 +59,11 @@ export class AppRouter implements IAppRouter {
     this._render(route);
   }
 
-  private _getRoute(path: string): IRoute | undefined {
+  private _getRoute(path: string): Route | undefined {
     return this._routes.find((route) => route.match(path));
   }
 
-  private _render(route: IRoute): void {
+  private _render(route: Route): void {
     this._currentRoute?.leave();
     this._currentRoute = route;
     this._currentRoute.render();
@@ -84,15 +87,15 @@ export class AppRouter implements IAppRouter {
     return true;
   }
 
-  root(appRoot: HTMLElement): void {
+  public root(appRoot: HTMLElement): void {
     this._appRoot = appRoot;
   }
 
-  noMatch(path: string): void {
+  public noMatch(path: string): void {
     this._noMatchRoute = path;
   }
 
-  go(
+  public go(
     path: string,
     replace: boolean = false,
     state: Record<string, unknown> = {}
@@ -106,35 +109,41 @@ export class AppRouter implements IAppRouter {
     this._onRoute(path);
   }
 
-  back(): void {
+  public back(): void {
     this._history.back();
   }
 
-  forward(): void {
+  public forward(): void {
     this._history.forward();
   }
 
-  getHistoryState<TIndexed extends Record<string, unknown>>(): TIndexed {
-    return this._history.state;
-  }
-
-  start(): void {
-    window.addEventListener('popstate', (evt) => {
+  public start(): void {
+    window.onpopstate = (evt: PopStateEvent) => {
       const { currentTarget } = evt;
       if (currentTarget instanceof Window) {
         const { pathname } = currentTarget.location;
         this._onRoute(pathname);
       }
-    });
+    };
 
     const { pathname } = window.location;
     this._onRoute(pathname);
   }
 
-  use(path: string, view: TBlockConstructor): void {
-    if (this._isRoot(this._appRoot)) {
-      const route = new Route(path, view, this._appRoot);
-      this._routes.push(route);
+  public use(path: string, view: TBlockConstructor): void {
+    if (!this._isRoot(this._appRoot)) {
+      return;
     }
+
+    const route = new Route(path, view, this._appRoot);
+    this._routes.push(route);
+  }
+
+  public reset(): void {
+    AppRouter._instance = null;
+    this._appRoot = null;
+    this._routes = [];
+    this._noMatchRoute = null;
+    this._currentRoute = null;
   }
 }

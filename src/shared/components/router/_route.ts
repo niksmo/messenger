@@ -1,12 +1,8 @@
-import {
-  type IRoute,
-  type TBlockConstructor,
-  type IBlock,
-} from '../interfaces';
+import type { TBlock, TBlockConstructor } from './router.ts';
 
-export class Route implements IRoute {
+export class Route {
   protected _view: TBlockConstructor;
-  protected _block: IBlock | null = null;
+  protected _block: TBlock | null = null;
   protected _path;
   protected _appRoot;
 
@@ -16,17 +12,17 @@ export class Route implements IRoute {
     this._appRoot = appRoot;
   }
 
-  match(path: string): boolean {
+  public match(path: string): boolean {
     return this._path === path;
   }
 
-  leave(): void {
+  public leave(): void {
     this._block?.dispatchWillUnmount();
     this._block?.getContent().remove();
     this._block = null;
   }
 
-  render(): void {
+  public render(): void {
     this._block = new this._view();
     this._appRoot.append(this._block.getContent());
     this._block.dispatchDidMount();

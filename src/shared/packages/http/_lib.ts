@@ -1,7 +1,9 @@
-import { isObject } from 'shared/helpers/is';
+import { isObject } from '../../helpers/is.ts';
 
 const HTTP = 'http:';
 const HTTPS = 'https:';
+
+const EMPTY_STR = '';
 
 export const enum METHOD {
   GET = 'GET',
@@ -16,60 +18,36 @@ function isSupportScheme(scheme: string): boolean {
   return SCHEMES.some((supScheme) => supScheme === scheme);
 }
 
-export function normalizeURL(origin: string): string | null {
-  let result = null;
+export function normalizeURL(origin: string): string {
+  const { href, protocol } = new URL(origin);
 
-  try {
-    const { href, protocol } = new URL(origin);
-
-    if (!isSupportScheme(protocol)) {
-      throw TypeError(
-        `Fetcher. Unsupport protocol: ${protocol}. Retype on "http(s)"`
-      );
-    }
-
-    result = href;
-  } catch (err) {
-    if (err instanceof Error) {
-      console.warn(err);
-    }
+  if (!isSupportScheme(protocol)) {
+    throw TypeError(`Unsupport protocol: ${protocol}. Retype on "http(s)"`);
   }
-
-  return result;
-}
-
-export function getHref(baseURL: string | null, path: string): string {
-  if (baseURL) {
-    const { href } = new URL(baseURL + path);
-
-    return href;
-  }
-
-  const probHref = normalizeURL(path);
-
-  if (!probHref) {
-    throw TypeError(`Invalid origin. BaseURL: ${baseURL} | Path: ${path}.`);
-  }
-
-  const href = probHref;
 
   return href;
 }
 
-function inspectBody(body: unknown): never | object {
-  if (!isObject(body)) {
-    throw new Error('The "body" must be an object');
+export function getHref(baseURL: string | null, pathOrURL: string): string {
+  if (URL.canParse(pathOrURL)) {
+    const url = pathOrURL;
+    return normalizeURL(url);
   }
-  return body;
+
+  if (!baseURL) {
+    throw TypeError('Set baseURL or pass it in request');
+  }
+
+  const path = pathOrURL;
+
+  const { href } = new URL(baseURL + path);
+  return href;
 }
 
 export function serializeToSearch(body: unknown): string {
-  const EMPTY_STR = '';
-  if (!body) {
-    return EMPTY_STR;
+  if (!isObject(body)) {
+    throw new Error('The "body" must be an object');
   }
-
-  inspectBody(body);
 
   const entries = Object.entries(body);
 
@@ -77,8 +55,15 @@ export function serializeToSearch(body: unknown): string {
     return EMPTY_STR;
   }
 
-  const searchEntries = entries.map((entry) => entry.join('='));
-  const searchParams = ['?', ...searchEntries.join('&')].join('');
+  const searchEntries = entries.map(([param, value]) => {
+    if (typeof value !== 'string') {
+      throw new Error('The "body" must be an Record<string,string>');
+    }
+
+    return [encodeURIComponent(param), encodeURIComponent(value)].join('=');
+  });
+
+  const searchParams = '?' + searchEntries.join('&');
   return searchParams;
 }
 
@@ -86,8 +71,8 @@ export function setRequestHeader(
   xhr: XMLHttpRequest,
   header: Record<string, string>
 ): XMLHttpRequest {
-  Object.entries(header).forEach(([p, v]) => {
-    xhr.setRequestHeader(p, v);
+  Object.entries(header).forEach(([param, value]) => {
+    xhr.setRequestHeader(param, value);
   });
   return xhr;
 }

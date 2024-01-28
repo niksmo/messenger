@@ -1,7 +1,7 @@
 import { Block } from 'shared/components/block/block';
-import templateSpec from './overlay.template.hbs';
-import styles from './styles.module.css';
 import { withInterrupt } from 'shared/helpers/with';
+import styles from './styles.module.css';
+import templateSpec from './overlay.template.hbs';
 
 interface OverlayProps {
   isVisible: boolean;
