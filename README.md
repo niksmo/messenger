@@ -14,7 +14,7 @@ SPA Приложение "Мессенджер"
 
 [Макет в Figma](https://www.figma.com/file/Ua9cekgMgr02O2A1yuFKZM/%5Bniksmo%5D_Messenger?type=design&node-id=0%3A1&mode=design&t=sPwR4djZwzHhCgUS-1)
 
-Проект развёрнут на Netlify и доступен по URL - https://lambent-kangaroo-ac7913.netlify.app
+Проект развёрнут на Netlify и доступен по URL - https://65b6106a6f90960008d7db04--lambent-kangaroo-ac7913.netlify.app
 
 ### Реализованные функции
 
